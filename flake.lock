@@ -603,13 +603,13 @@
         "lastModified": 1743493800,
         "narHash": "sha256-Sflih/14nszOxegnwMLFmK9pF9WALn/kijknmekWwHE=",
         "owner": "aka-raccoon",
-        "repo": "spacewim",
+        "repo": ".editor",
         "rev": "fba48031041ade5d0f1e8a912c64beebe1599805",
         "type": "github"
       },
       "original": {
         "owner": "aka-raccoon",
-        "repo": "spacewim",
+        "repo": ".editor",
         "type": "github"
       }
     },
@@ -702,11 +702,11 @@
         "rev": "04c2ac5707aae4a5b14e45dfc827e44de530144e",
         "revCount": 8,
         "type": "git",
-        "url": "ssh://git@github.com/aka-raccoon/sfs"
+        "url": "ssh://git@github.com/aka-raccoon/.constants"
       },
       "original": {
         "type": "git",
-        "url": "ssh://git@github.com/aka-raccoon/sfs"
+        "url": "ssh://git@github.com/aka-raccoon/.constants"
       }
     },
     "snacks-nvim": {
