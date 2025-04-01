@@ -11,7 +11,7 @@ let
 in
 {
   options.modules.raycast = {
-    enable = lib.mkEnableOption "Raycast";
+    enable = lib.mkEnableOption "raycast";
   };
 
   config = lib.mkIf cfg.enable {
