@@ -14,6 +14,7 @@
       aerospace.enable = true;
       ghostty.enable = true;
       karabiner-elements.enable = true;
+      safari.enable = true;
       zen-browser.enable = true;
     };
     homebrew = {
