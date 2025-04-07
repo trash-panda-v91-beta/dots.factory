@@ -90,12 +90,8 @@ in
             };
             keybinding = {
               commits = {
-                moveDownCommit = "<c-d>";
-                moveUpCommit = "<c-u>";
-              };
-              universal = {
-                scrollDownMain-alt2 = "<disabled>";
-                scrollUpMain-alt2 = "<disabled>";
+                moveDownCommit = "J";
+                moveUpCommit = "K";
               };
             };
             inherit (cfg) services;
