@@ -600,11 +600,11 @@
         "snacks-nvim": "snacks-nvim"
       },
       "locked": {
-        "lastModified": 1743493800,
-        "narHash": "sha256-Sflih/14nszOxegnwMLFmK9pF9WALn/kijknmekWwHE=",
+        "lastModified": 1744022968,
+        "narHash": "sha256-CIdvdgTzPaGopzgeBYXQ6Tpp6PvZ3Rk8Kksq8/OXgV4=",
         "owner": "aka-raccoon",
         "repo": ".editor",
-        "rev": "fba48031041ade5d0f1e8a912c64beebe1599805",
+        "rev": "f8f326e7b1ed53b2ca7a75aa84518ff84e5d4bc3",
         "type": "github"
       },
       "original": {
