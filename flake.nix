@@ -1,5 +1,5 @@
 {
-  description = ".factory";
+  description = "dot.factory";
 
   inputs = {
     flake-parts = {
@@ -25,7 +25,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixvim.url = "github:aka-raccoon/.editor";
+    editor.url = "github:aka-raccoon/dot.editor";
 
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
 

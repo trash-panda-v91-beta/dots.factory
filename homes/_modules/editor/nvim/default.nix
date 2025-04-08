@@ -7,7 +7,7 @@
 }:
 let
   cfg = config.modules.editor.nvim;
-  nixvim = inputs.nixvim.packages.${pkgs.system}.default;
+  nixvim = inputs.editor.packages.${pkgs.system}.default;
 in
 {
   options.modules.editor.nvim = {
