@@ -21,7 +21,7 @@ in
       text = ''
         #!/bin/bash
         # @raycast.schemaVersion 1
-        # @raycast.title Build dots ◉◉◉◉
+        # @raycast.title Build dots ◉◉
         # @raycast.mode compact
         # @raycast.packageName Raycast Scripts
         # @raycast.icon 💾
@@ -30,7 +30,7 @@ in
         # Documentation:
         # @raycast.description Run NixOS rebuild command
 
-        /run/current-system/sw/bin/darwin-rebuild switch --flake "git+ssh://git@github.com/aka-raccoon/.factory/#${hostname}"
+        /run/current-system/sw/bin/darwin-rebuild switch --flake "git+ssh://git@github.com/aka-raccoon/dot.factory/#${hostname}"
       '';
       executable = true;
     };
