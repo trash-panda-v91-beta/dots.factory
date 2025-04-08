@@ -49,7 +49,7 @@ in
       background-blur-radius = 20
 
       adjust-cell-height = 30%
-      command = ${pkgs.fish}/bin/fish -c "${pkgs.tmux}/bin/tmux new -A -s code"
+      command = ${pkgs.fish}/bin/fish -c "${pkgs.tmux}/bin/tmux new -A -s hack"
       copy-on-select = true
       cursor-style = block
       font-family = "JetBrains Mono"
@@ -73,8 +73,6 @@ in
       # To delete from the current position to the start of the line
       keybind = super+backspace=esc:w
 
-      # TMUX integration considering that my leader key is ctrl + b
-
       # Go to the N window in tmux in tmux it is Ctrl+b+number
       keybind = super+one=text:\x02\x31
       keybind = super+two=text:\x02\x32
@@ -86,14 +84,11 @@ in
       keybind = super+eight=text:\x02\x38
       keybind = super+nine=text:\x02\x39
 
-      # New tmux window on Cmd+o in tmux it is Ctrl+b+c
-      keybind = super+o=text:\x02\x63
-
       # Close tmux pane on Cmd+w in tmux it is Ctrl+b+x (it is using a custom keybind in tmux to kill the pane)
       keybind = super+w=text:\x02\x78
 
-      # Switch to a window using tmux-fzf on Cmd+p in tmux it is Ctrl+b+w
-      keybind = super+p=text:\x02\x77
+      # Switch a tmux session on Cmd+o in tmux it is Ctrl+b+w
+      keybind = super+o=text:\x02\x77
 
       # Rename a tmux window on Cmd+r in tmux it is Ctrl+b+,
       keybind = super+r=text:\x02\x2c
@@ -101,14 +96,13 @@ in
       # Go to the previous tmux window on Cmd+h in tmux it is Ctrl+b+p
       keybind = super+h=text:\x02\x70
 
-      # Go to the next tmux window on Cmd+l in tmux it is Ctrl+b+n
+      # Go to the last tmux session on Cmd+l in tmux it is Ctrl+b+n
       keybind = super+l=text:\x02\x6e
 
       # Split the window horizontally on Cmd+minus in tmux it is Ctrl+b+" (For me it is horizontal split but in tmux it is considered vertical split)
       keybind = super+minus=text:\x02\x22
 
       # Split the window vertically on Cmd+backslash in tmux it is Ctrl+b+% (For me it is vertical split but in tmux it is considered horizontal split)
-      # TODO: I want to change it Cmd+pipe but looks like ghostty doesn't support that key for now
       keybind = super+backslash=text:\x02\x25
 
       # Toggle pane zoom on Cmd+z in tmux it is Ctrl+b+z
@@ -123,7 +117,7 @@ in
       # Map super+s to alt+s
       keybind = super+s=text:\x1bs
 
-      # Map super+s to alt+s
+      # Map super+t to alt+t
       keybind = super+t=text:\x1bt
 
       # Ignore new window shortcut

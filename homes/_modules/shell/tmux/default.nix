@@ -31,9 +31,6 @@ in
       shell = "${pkgs.fish}/bin/fish";
       plugins = with pkgs.tmuxPlugins; [
         {
-          plugin = tmux-fzf;
-        }
-        {
           plugin = resurrect;
           extraConfig = ''
             # Save and restore session
@@ -80,38 +77,47 @@ in
         set -gu default-command
         set -g default-shell "$SHELL"
 
-        bind-key -n M-k run-shell "sesh connect \"$(
-        sesh list --icons | fzf-tmux -p 80%,70% \
-          --no-sort --ansi --border-label ' sesh ' --prompt '⚡  ' \
-          --header '  ^a all ^t tmux ^g configs ^x zoxide ^d tmux kill ^f find' \
-          --bind 'tab:down,btab:up' \
-          --bind 'ctrl-a:change-prompt(⚡  )+reload(sesh list --icons)' \
-          --bind 'ctrl-t:change-prompt(🪟  )+reload(sesh list -t --icons)' \
-          --bind 'ctrl-g:change-prompt(⚙️  )+reload(sesh list -c --icons)' \
-          --bind 'ctrl-x:change-prompt(📁  )+reload(sesh list -z --icons)' \
-          --bind 'ctrl-f:change-prompt(🔎  )+reload(fd -H -d 2 -t d -E .Trash . ~)' \
-          --bind 'ctrl-d:execute(tmux kill-session -t {2..})+change-prompt(⚡  )+reload(sesh list --icons)' \
-          --preview-window 'right:55%' \
-          --preview 'sesh preview {}'
+        bind-key "w" run-shell "sesh connect \"$(
+          sesh list --icons --hide-duplicates | fzf-tmux -p 80%,50% --no-border \
+            --ansi \
+            --list-border \
+            --no-sort --prompt '⚡  ' \
+            --color 'list-border:6,input-border:3,preview-border:4,header-bg:-1,header-border:6' \
+            --input-border \
+            --header-border \
+            --bind 'tab:down,btab:up' \
+            --bind 'ctrl-b:abort' \
+            --bind 'ctrl-a:change-prompt(⚡  )+reload(sesh list --icons)' \
+            --bind 'ctrl-t:change-prompt(  )+reload(sesh list -t --icons)' \
+            --bind 'ctrl-g:change-prompt(⚙️  )+reload(sesh list -c --icons)' \
+            --bind 'ctrl-x:change-prompt(📁  )+reload(sesh list -z --icons)' \
+            --bind 'ctrl-f:change-prompt(🔎  )+reload(fd -H -d 2 -t d -E .Trash . ~)' \
+            --bind 'ctrl-d:execute(tmux kill-session -t {2..})+change-prompt(⚡  )+reload(sesh list --icons)' \
+            --preview-window 'right:70%' \
+            --preview 'sesh preview {}' \
         )\""
 
         set -g detach-on-destroy off
-        bind -N "last-session (via sesh) " L run-shell "sesh last"
+        bind -N "last-session (via sesh) " n run-shell "sesh last"
         bind -N "switch to root session (via sesh) " 9 run-shell "sesh connect --root \'$(pwd)\'"
       '';
     };
     home.packages = with pkgs; [
       fd
-      fzf
-      sesh
+      unstable.fzf
+      unstable.sesh
       zoxide
 
     ];
-    xdg.configFile."sesh/sesh.toml" = ''
+    xdg.configFile."sesh/sesh.toml".text = ''
+      [default_session]
+      startup_command = "nvim -c ':lua Snacks.picker.smart()'"
+      preview_command = "eza --all --git --icons --color=always {}"
+
       [[session]]
-      name = "Downloads 📥"
+      name = "Downloads"
       path = "~/Downloads"
-      startup_command = "ls"
+      startup_command = "yazi"
     '';
   };
 }

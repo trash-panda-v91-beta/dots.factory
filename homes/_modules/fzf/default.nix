@@ -13,7 +13,10 @@ in
   };
   config = lib.mkIf cfg.enable {
     programs = {
-      fzf.enable = true;
+      fzf = {
+        enable = true;
+        package = pkgs.unstable.fzf;
+      };
       fish = {
         plugins = [
           {

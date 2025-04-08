@@ -20,7 +20,6 @@ in
     ];
     fonts.fontconfig.enable = true;
     programs.fzf.colors = {
-      bg = "#16181a";
       "bg+" = "#3c4048";
       fg = "#ffffff";
       "fg+" = "#ffffff";
@@ -49,10 +48,10 @@ in
           set -g status-left-length 100
           set -g status-left ""
           set -ga status-left "#{?client_prefix,#{#[bg=default,fg=#{@thm_bg},bold]  #S },#{#[bg=default,fg=#{@thm_green}]  #S }}"
-          set -ga status-left "#[bg=default,fg=#{@thm_overlay_0},none]│"
-          set -ga status-left "#[bg=default,fg=#{@thm_yellow}]  #{=/-32/...:#{s|$USER|~|:#{b:pane_current_path}}} "
+          set -ga status-left "#{?#{==:#{=/-32/...:#{s|$USER|~|:#{b:pane_current_path}}},#{s|_|.|:session_name}},, #[bg=default,fg=#{@thm_overlay_0},none]│}"
+          set -ga status-left "#{?#{==:#{=/-32/...:#{s|$USER|~|:#{b:pane_current_path}}},#{s|_|.|:session_name}},,#[bg=default,fg=#{@thm_yellow}]  #{=/-32/...:#{s|$USER|~|:#{b:pane_current_path}}} }"
           set -ga status-left "#[bg=default,fg=#{@thm_overlay_0},none]#{?window_zoomed_flag,│,}"
-          set -ga status-left "#[bg=default,fg=#{@thm_maroon}]#{?window_zoomed_flag,  zoom ,}"
+          set -ga status-left "#[bg=default,fg=#{@thm_maroon}]#{?window_zoomed_flag,   ,}"
 
           # status right look and feel
           set -g status-right-length 60
