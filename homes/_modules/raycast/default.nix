@@ -17,14 +17,15 @@ in
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [ raycast ];
 
-    xdg.configFile."${scripts}/build-dots.sh" = {
+    xdg.configFile."${scripts}/rebuild-dots.sh" = {
       text = ''
-        #!/bin/bash
+        #!${pkgs.bash}/bin/bash
+
         # @raycast.schemaVersion 1
-        # @raycast.title Build dots ◉◉
+        # @raycast.title Rebuild dots
         # @raycast.mode compact
         # @raycast.packageName Raycast Scripts
-        # @raycast.icon 💾
+        # @raycast.icon ⚫
         # @raycast.currentDirectoryPath ~
         # @raycast.needsConfirmation false
         # Documentation:
