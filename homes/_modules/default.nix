@@ -16,6 +16,7 @@
     ./kubernetes
     ./security
     ./raycast
+    ./run-on-unlock
     ./shell
     ./terminals
     ./themes
