@@ -7,6 +7,7 @@
 }:
 {
   karabiner-config = pkgs.callPackage ./karabiner-config { };
+  run-on-unlock = pkgs.callPackage ./run-on-unlock { };
   vifari = pkgs.callPackage ./vifari { };
   talhelper = inputs.talhelper.packages.${pkgs.system}.default;
 }
