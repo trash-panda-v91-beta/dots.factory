@@ -28,9 +28,6 @@ in
           };
         };
       };
-      home.sessionVariables = {
-        AWS_DEFAULT_REGION = cfg.region;
-      };
     })
   ];
 }
