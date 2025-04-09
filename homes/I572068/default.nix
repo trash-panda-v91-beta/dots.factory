@@ -34,6 +34,9 @@
       atuin = {
         enable = false;
       };
+      aws = {
+        enable = true;
+      };
       fish.enable = true;
 
       git = {
