@@ -29,7 +29,6 @@
       };
     };
     raycast.enable = true;
-    run-on-unlock.enable = true;
     shell = {
       atuin = {
         enable = true;
