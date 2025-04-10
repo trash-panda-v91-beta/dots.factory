@@ -4,6 +4,7 @@
     ./mutability.nix
     ./secrets.nix
 
+    ./any-nix-shell
     ./browsers
     ./desktop
     ./deployment
