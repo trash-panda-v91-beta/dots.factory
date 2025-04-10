@@ -23,7 +23,7 @@
     karabiner-config.enable = true;
 
     raycast.enable = true;
-
+    run-on-unlock.enable = true;
     security = {
       ssh = {
         enable = true;
