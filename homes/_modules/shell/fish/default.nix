@@ -8,8 +8,6 @@ let
   inherit (pkgs.stdenv.hostPlatform) isDarwin;
   inherit (config.home) username homeDirectory;
   cfg = config.modules.shell.fish;
-  hasPackage = pname: lib.any (p: p ? pname && p.pname == pname) config.home.packages;
-  hasAnyNixShell = hasPackage "any-nix-shell";
 in
 {
   options.modules.shell.fish = {
@@ -38,55 +36,47 @@ in
 
           va = "auto_activate_venv";
         };
-        interactiveShellInit =
-          ''
-            function remove_path
-              if set -l index (contains -i $argv[1] $PATH)
-                set --erase --universal fish_user_paths[$index]
-              end
+        interactiveShellInit = ''
+          function remove_path
+            if set -l index (contains -i $argv[1] $PATH)
+              set --erase --universal fish_user_paths[$index]
             end
+          end
 
-            function update_path
-              if test -d $argv[1]
-                fish_add_path -m $argv[1]
-              else
-                remove_path $argv[1]
-              end
-            end
-
-            # Paths are in reverse priority order
-            update_path /opt/homebrew/bin
-            update_path /nix/var/nix/profiles/default/bin
-            update_path /run/current-system/sw/bin
-            update_path /etc/profiles/per-user/${username}/bin
-            update_path /run/wrappers/bin
-            update_path ${homeDirectory}/go/bin
-            update_path ${homeDirectory}/.cargo/bin
-            update_path ${homeDirectory}/.local/bin
-
-            set fish_greeting # Disable greeting
-            fish_vi_key_bindings
-
-            set -gx fish_vi_force_cursor 1
-            set -gx fish_cursor_default block
-            set -gx fish_cursor_insert line blink
-            set -gx fish_cursor_visual block
-            set -gx fish_cursor_replace_one underscoreeval
-            set -gx PIP_REQUIRE_VIRTUALENV true
-            set -gx PATH $PATH $HOME/.krew/bin
-
-            function __auto_auto_activate_venv --on-variable PWD
-              auto_activate_venv
-            end
-          ''
-          + (
-            if hasAnyNixShell then
-              ''
-                any-nix-shell fish --info-right | source
-              ''
+          function update_path
+            if test -d $argv[1]
+              fish_add_path -m $argv[1]
             else
-              ""
-          );
+              remove_path $argv[1]
+            end
+          end
+
+          # Paths are in reverse priority order
+          update_path /opt/homebrew/bin
+          update_path /nix/var/nix/profiles/default/bin
+          update_path /run/current-system/sw/bin
+          update_path /etc/profiles/per-user/${username}/bin
+          update_path /run/wrappers/bin
+          update_path ${homeDirectory}/go/bin
+          update_path ${homeDirectory}/.cargo/bin
+          update_path ${homeDirectory}/.local/bin
+
+          set fish_greeting # Disable greeting
+          fish_vi_key_bindings
+
+          set -gx fish_vi_force_cursor 1
+          set -gx fish_cursor_default block
+          set -gx fish_cursor_insert line blink
+          set -gx fish_cursor_visual block
+          set -gx fish_cursor_replace_one underscoreeval
+          set -gx PIP_REQUIRE_VIRTUALENV true
+          set -gx PATH $PATH $HOME/.krew/bin
+
+          function __auto_auto_activate_venv --on-variable PWD
+            auto_activate_venv
+          end
+        '';
+
         functions = {
           auto_activate_venv = {
             body = ''

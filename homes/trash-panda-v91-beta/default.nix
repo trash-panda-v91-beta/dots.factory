@@ -12,6 +12,9 @@
   ];
 
   modules = {
+    any-nix-shell = {
+      enable = true;
+    };
     editor = {
       nvim = {
         enable = true;
