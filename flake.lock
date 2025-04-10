@@ -40,11 +40,11 @@
         "snacks-nvim": "snacks-nvim"
       },
       "locked": {
-        "lastModified": 1744182654,
-        "narHash": "sha256-pt7NbVnyPGMWjCEL2RXZ39bc2mBWmfuulicIyY2+SgA=",
+        "lastModified": 1744283773,
+        "narHash": "sha256-JiSmErcYBzMJH7OElOhxtOY2RuSRctYKHO9MlDbFXqE=",
         "owner": "aka-raccoon",
         "repo": "dot.editor",
-        "rev": "1090557487b8175f34c7cc830b161cf5e67dba5f",
+        "rev": "97eb11add1e61a9c59efd9ffe0845a95ca376526",
         "type": "github"
       },
       "original": {
