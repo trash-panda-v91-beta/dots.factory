@@ -4,6 +4,7 @@
     ./mutability.nix
     ./secrets.nix
 
+    ./aichat
     ./any-nix-shell
     ./browsers
     ./desktop
