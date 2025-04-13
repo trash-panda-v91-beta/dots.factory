@@ -122,6 +122,9 @@ in
 
       # Ignore new window shortcut
       keybind = super+n=ignore
+
+      # Map super+d to alt+d
+      keybind = super+d=text:\x1bd
     '';
   };
 }
