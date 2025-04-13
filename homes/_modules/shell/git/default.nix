@@ -6,6 +6,18 @@
 }:
 let
   cfg = config.modules.shell.git;
+  makeCommitMessage = pkgs.writeShellApplication {
+    name = "make-commit-message";
+    bashOptions = [ ];
+    runtimeEnv  = {"MODEL_NAME" = config.modules.aichat.model; };
+    runtimeInputs = with pkgs; [
+      curl
+      fzf
+      jq
+      unstable.aichat
+    ];
+    text = builtins.readFile ./make-commit-message.sh;
+  };
   inherit (pkgs.stdenv) isDarwin;
 in
 {
@@ -88,6 +100,20 @@ in
               nerdFontsVersion = 3;
               border = "rounded";
             };
+            customCommands = [
+              {
+                key = "o";
+                command = "gh pr view {{.SelectedLocalBranch.Name}} --web || gh pr create {{.SelectedLocalBranch.Name}} --web";
+                context = "remoteBranches";
+              }
+              {
+                key = "<c-c>";
+                description = "Pick AI commit";
+                context = "files";
+                subprocess = true;
+                command = "${makeCommitMessage}/bin/make-commit-message";
+              }
+            ];
             keybinding = {
               commits = {
                 moveDownCommit = "J";
