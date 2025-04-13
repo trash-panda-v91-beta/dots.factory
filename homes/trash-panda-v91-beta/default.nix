@@ -12,6 +12,7 @@
   ];
 
   modules = {
+    aichat.enable = true;
     any-nix-shell = {
       enable = true;
     };
