@@ -10,6 +10,7 @@
   ];
 
   modules = {
+    aichat.enable = true;
     editor = {
       nvim = {
         enable = true;
