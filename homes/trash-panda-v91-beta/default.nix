@@ -77,5 +77,8 @@
         enable = true;
       };
     };
+    zk = {
+      enable = true;
+    };
   };
 }
