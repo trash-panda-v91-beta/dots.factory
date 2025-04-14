@@ -6,6 +6,7 @@
 }:
 let
   cfg = config.modules.aichat;
+  yaml = pkgs.formats.yaml { };
   aiChatConfig = {
     stream = false;
     inherit (cfg) model;
@@ -15,8 +16,8 @@ let
         name = "copilot";
         api_base = "https://api.githubcopilot.com";
         patch = {
-        chat_completions = {
-          ".*" = {
+          chat_completions = {
+            ".*" = {
               headers = {
                 "Copilot-Integration-Id" = "vscode-chat";
                 "Editor-Version" = "aichat/0.1.0";
@@ -41,6 +42,9 @@ in
     home.packages = with pkgs; [
       unstable.aichat
     ];
-    xdg.configFile."aichat/config.yaml".text = lib.generators.toYAML {} aiChatConfig;
+    xdg.configFile."aichat/config.yaml" = {
+      source = yaml.generate "config.yaml" aiChatConfig;
+      enable = true;
+    };
   };
 }
