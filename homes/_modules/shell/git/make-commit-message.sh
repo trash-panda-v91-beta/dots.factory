@@ -10,8 +10,8 @@ done
 
 # Load Copilot API key
 load_copilot_key() {
-  OAUTH_TOKEN=$(jq '."github.com".oauth_token' -r ~/.config/github-copilot/apps.json 2>/dev/null)
-  if [ -z "$OAUTH_TOKEN" ]; then
+  OAUTH_TOKEN=$(jq 'to_entries[] | select(.key | startswith("github.com")) | .value.oauth_token' -r ~/.config/github-copilot/apps.json 2>/dev/null)
+  if [ -z "$OAUTH_TOKEN" ] || [ "$OAUTH_TOKEN" = "null" ]; then
     echo "Error: Unable to retrieve GitHub OAuth token. Check your Copilot configuration."
     exit 1
   fi
@@ -50,7 +50,7 @@ if [ ${#diff} -gt $max_diff_length ]; then
   diff="${diff:0:$max_diff_length}... (truncated)"
 fi
 
-aichat -m "$MODEL_NAME": "Please suggest 10 commit messages, given the following diff:
+COPILOT_API_KEY=$COPILOT_API_KEY aichat "Please suggest 10 commit messages, given the following diff:
     \`\`\`diff
     $diff
     \`\`\`
