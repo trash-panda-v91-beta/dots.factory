@@ -23,6 +23,7 @@
     ./terminals
     ./themes
     ./virtualisation
+    ./zk
   ];
 
   config = {
