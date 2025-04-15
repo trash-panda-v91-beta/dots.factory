@@ -9,7 +9,9 @@ let
   makeCommitMessage = pkgs.writeShellApplication {
     name = "make-commit-message";
     bashOptions = [ ];
-    runtimeEnv  = {"MODEL_NAME" = config.modules.aichat.model; };
+    runtimeEnv = {
+      "MODEL_NAME" = config.modules.aichat.model;
+    };
     runtimeInputs = with pkgs; [
       curl
       fzf
@@ -35,6 +37,10 @@ in
     };
     includes = lib.mkOption {
       type = lib.types.listOf lib.types.attrs;
+      default = [ ];
+    };
+    ignores = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
       default = [ ];
     };
   };
@@ -87,9 +93,8 @@ in
             # Sops
             ".decrypted~*"
             "*.decrypted.*"
-            # Python virtualenvs
             ".venv"
-          ];
+          ] ++ cfg.ignores;
         };
 
         lazygit = {
