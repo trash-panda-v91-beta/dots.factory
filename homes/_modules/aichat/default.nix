@@ -34,7 +34,7 @@ in
     enable = lib.mkEnableOption "aichat";
     model = lib.mkOption {
       type = lib.types.str;
-      default = "copilot:gpt-4o";
+      default = "copilot:claude-3.7-sonnet";
     };
   };
 
