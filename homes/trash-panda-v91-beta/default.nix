@@ -79,6 +79,8 @@
     };
     zk = {
       enable = true;
+      author = "trash-panda";
+      directory = config.home.file."brain";
     };
   };
 }

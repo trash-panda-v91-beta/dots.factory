@@ -1,4 +1,5 @@
 {
+  config,
   inputs,
   hostname,
   ...
@@ -70,6 +71,7 @@
     };
     zk = {
       enable = true;
+      directory = config.home.file."brain";
     };
   };
 }

@@ -8,43 +8,42 @@
 let
   cfg = config.modules.zk;
   nixvim = inputs.editor.packages.${pkgs.system}.default;
-  brain = config.home.homeDirectory + "/brain";
 in
 {
   options.modules.zk = {
     enable = lib.mkEnableOption "zk";
+    directory = lib.mkOption {
+      type = lib.types.nullOr lib.types.path;
+      default = null;
+      description = ''
+        The directory where zk stores its notes.
+        If null, no directory will be specified and zk will use its default location.
+      '';
+    };
+    author = lib.mkOption {
+      type = lib.types.nullOr lib.types.str;
+      default = null;
+      description = ''
+        The author name to be used in the notes.
+      '';
+    };
   };
   config = lib.mkIf cfg.enable {
-    home.sessionVariables = {
-      ZK_NOTEBOOK_DIR = brain;
+    home.sessionVariables = lib.mkIf (cfg.directory != null) {
+      ZK_NOTEBOOK_DIR = cfg.directory;
     };
-    home.file."/brain/.zk/templates/daily.md".text = ''
-      ---
-      created: {{format-date now '%Y-%m-%d'}}
-      tags:
-        - daily
-      ---
-
-      # {{format-date now '%Y-%m-%d'}}
-
-      ## Tasks
-
-      ## Notes
-
-      ## Navigation
-      [ Yesterday ](/journal/daily/{{format-date (date "yesterday") '%Y/%Y-%m-%d'}}) <-> [ Tomorrow ](/journal/daily/{{format-date (date "tomorrow") '%Y/%Y-%m-%d'}})
-    '';
+    home.file."${config.xdg.configHome}/zk/templates/" = {
+      source = ./templates;
+      recursive = true;
+    };
     programs = {
       zk = {
         enable = true;
         settings = {
-          notebook = {
-            dir = brain;
-          };
           note = {
             language = "en";
             defaultTitle = "Untitled";
-            filename = "{{id}}-{{slug title}}";
+            filename = "{{id}}";
             extension = "md";
             template = "default.md";
             idCharset = "alphanum";
@@ -52,27 +51,26 @@ in
             idCase = "lower";
           };
           extra = {
-            author = "trash-panda";
+            author = lib.mkIf (cfg.author != null) cfg.author;
           };
           group = {
             daily = {
-              paths = [ "journal/daily" ];
+              paths = [ "daily" ];
               note = {
-                filename = "{{format-date now 'journal/daily/%Y-%m-%d'}}";
+                filename = "{{format-date now 'daily/%Y-%m-%d'}}";
                 template = "daily.md";
               };
             };
           };
           format = {
             markdown = {
+              link-format = "markdown";
               hashtags = true;
-              colonTags = true;
             };
           };
           tool = {
             editor = "${nixvim}/bin/nvim";
             shell = "${pkgs.fish}/bin/fish";
-
             pager = "less -FIRX";
             fzfPreview = "${pkgs.bat}/bin/bat -p --color always {-1}";
           };
@@ -80,10 +78,7 @@ in
             recents = "--sort created- --created-after 'last two weeks'";
           };
           alias = {
-            edlast = "zk edit --limit 1 --sort modified- $@";
-            daily = "zk new --no-input \"$ZK_NOTEBOOK_DIR/journal/daily\"";
-            recent = "zk edit --sort created- --created-after 'last two weeks' --interactive";
-            lucky = "zk list --quiet --format full --sort random --limit 1";
+            daily = "zk new --group daily";
           };
           lsp = {
             diagnostics = {
