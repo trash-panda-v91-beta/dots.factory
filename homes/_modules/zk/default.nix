@@ -18,6 +18,22 @@ in
     home.sessionVariables = {
       ZK_NOTEBOOK_DIR = brain;
     };
+    home.file."/brain/.zk/templates/daily.md".text = ''
+      ---
+      created: {{format-date now '%Y-%m-%d'}}
+      tags:
+        - daily
+      ---
+
+      # {{format-date now '%Y-%m-%d'}}
+
+      ## Tasks
+
+      ## Notes
+
+      ## Navigation
+      [ Yesterday ](/journal/daily/{{format-date (date "yesterday") '%Y/%Y-%m-%d'}}) <-> [ Tomorrow ](/journal/daily/{{format-date (date "tomorrow") '%Y/%Y-%m-%d'}})
+    '';
     programs = {
       zk = {
         enable = true;
@@ -39,13 +55,11 @@ in
             author = "trash-panda";
           };
           group = {
-            journal = {
-              paths = [
-                "journal/weekly"
-                "journal/daily"
-              ];
+            daily = {
+              paths = [ "journal/daily" ];
               note = {
-                filename = "{{format-date now}}";
+                filename = "{{format-date now 'journal/daily/%Y-%m-%d'}}";
+                template = "daily.md";
               };
             };
           };
@@ -58,6 +72,7 @@ in
           tool = {
             editor = "${nixvim}/bin/nvim";
             shell = "${pkgs.fish}/bin/fish";
+
             pager = "less -FIRX";
             fzfPreview = "${pkgs.bat}/bin/bat -p --color always {-1}";
           };
@@ -66,6 +81,7 @@ in
           };
           alias = {
             edlast = "zk edit --limit 1 --sort modified- $@";
+            daily = "zk new --no-input \"$ZK_NOTEBOOK_DIR/journal/daily\"";
             recent = "zk edit --sort created- --created-after 'last two weeks' --interactive";
             lucky = "zk list --quiet --format full --sort random --limit 1";
           };
