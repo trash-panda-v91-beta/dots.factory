@@ -12,8 +12,8 @@ in
 {
   options.modules.zk = {
     enable = lib.mkEnableOption "zk";
-    directory = lib.mkOption {
-      type = lib.types.nullOr lib.types.path;
+    default_directory = lib.mkOption {
+      type = lib.types.nullOr lib.types.str;
       default = null;
       description = ''
         The directory where zk stores its notes.
@@ -29,8 +29,8 @@ in
     };
   };
   config = lib.mkIf cfg.enable {
-    home.sessionVariables = lib.mkIf (cfg.directory != null) {
-      ZK_NOTEBOOK_DIR = cfg.directory;
+    home.sessionVariables = lib.mkIf (cfg.default_directory != null) {
+      ZK_NOTEBOOK_DIR = cfg.default_directory;
     };
     home.file."${config.xdg.configHome}/zk/templates/" = {
       source = ./templates;
