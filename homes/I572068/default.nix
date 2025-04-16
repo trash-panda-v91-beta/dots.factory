@@ -71,7 +71,7 @@
     };
     zk = {
       enable = true;
-      directory = config.home.file."brain";
+      default_directory = "${config.home.homeDirectory}/brain";
     };
   };
 }
