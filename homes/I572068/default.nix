@@ -16,6 +16,10 @@
       nvim = {
         enable = true;
         makeDefaultEditor = true;
+        aiProvider = {
+          name = "copilot";
+          model = null;
+        };
       };
     };
     fd.enable = true;
