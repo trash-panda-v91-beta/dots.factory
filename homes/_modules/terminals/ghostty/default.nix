@@ -13,12 +13,11 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-
-    home = {
-      sessionVariables = {
-        TERM = "xterm-ghostty";
-      };
-    };
+    programs.fish.interactiveShellInit = ''
+      if test "$TERM_PROGRAM" != ghostty
+          set -x TERM xterm-256color
+      end
+    '';
     xdg.configFile."ghostty/config".text = ''
       # cyberdream theme for ghostty
       palette = 0=#16181a
