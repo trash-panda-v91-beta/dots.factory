@@ -20,6 +20,10 @@
       nvim = {
         enable = true;
         makeDefaultEditor = true;
+        aiProvider = {
+          name = "copilot";
+          model = "claude-3.7-sonnet";
+        };
       };
     };
     fd.enable = true;
