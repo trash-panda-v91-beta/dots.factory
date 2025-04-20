@@ -1,16 +1,20 @@
 import {
   ifDevice,
   map,
+  withModifier,
   layer,
   toApp,
+  toKey,
   rule,
   writeToProfile,
+  toKey,
 } from 'karabiner.ts'
 
 function main() {
   writeToProfile(
     'Default',
     [
+      apps_launcher(),
       arrow_keys(),
       keyboard_apple(),
     ],
@@ -23,14 +27,24 @@ function main() {
 }
 
 function arrow_keys() {
-  return layer('⇥', 'launch-app').manipulators({
-    b: toApp('Zen'),
-    c: toApp('Calendar'),
-    f: toApp('Finder'),
-    s: toApp('Slack'),
-    e: toApp('Mail'),
-    t: toApp('Ghostty'),
+  return layer('⇥', 'Arrow keys').manipulators({
+    h: toKey('←'),
+    j: toKey('↓'),
+    k: toKey('↑'),
+    l: toKey('→'),
   })
+}
+function apps_launcher() {
+  return rule('Launch Apps').manipulators([
+    withModifier('⌥⌃⇧')({
+      b: toApp('Zen'),
+      c: toApp('Calendar'),
+      e: toApp('Mail'),
+      f: toApp('Finder'),
+      s: toApp('Slack'),
+      t: toApp('Ghostty'),
+    }),
+  ])
 }
 
 
