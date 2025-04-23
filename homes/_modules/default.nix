@@ -19,6 +19,7 @@
     ./security
     ./raycast
     ./run-on-unlock
+    ./rust-development
     ./shell
     ./terminals
     ./themes
