@@ -37,6 +37,7 @@
       };
     };
     raycast.enable = true;
+    rust-development.enable = true;
     shell = {
       atuin = {
         enable = true;
