@@ -36,7 +36,7 @@
       };
     };
 
-    rust-development = true;sh
+    rust-development.enable = true;
     shell = {
       atuin = {
         enable = false;
