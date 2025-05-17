@@ -20,6 +20,7 @@
         "https://nix-community.cachix.org"
         "https://cache.garnix.io"
         "https://numtide.cachix.org"
+        "https://cache.nixos.org/"
       ];
 
       trusted-public-keys = [
@@ -57,7 +58,7 @@
     };
 
     # Add nixpkgs input to NIX_PATH
-    nixPath = ["nixpkgs=${inputs.nixpkgs.outPath}"];
+    nixPath = [ "nixpkgs=${inputs.nixpkgs.outPath}" ];
 
     # garbage collection
     gc = {
