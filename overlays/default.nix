@@ -67,6 +67,7 @@
 
   nixpkgs-overlays = _final: prev: {
     _1password-gui = prev._1password-gui.override { polkitPolicyOwners = inputs.nixpkgs.lib.users; };
+    nodejs = prev.nodejs_22;
     # services.karabiner-elements is broken after Karabiner-Elements v15.0
     # https://github.com/LnL7/nix-darwin/issues/1041
     karabiner-elements = prev.karabiner-elements.overrideAttrs (oldAttrs: {
