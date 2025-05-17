@@ -16,8 +16,8 @@ in
     home.packages = with pkgs; [
       fira-code
       jetbrains-mono
-      iosevka
     ];
+
     fonts.fontconfig.enable = true;
     programs.fzf.colors = {
       "bg+" = "#3c4048";
