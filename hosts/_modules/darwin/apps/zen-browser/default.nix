@@ -13,7 +13,7 @@ in
   config = lib.mkIf cfg.enable {
     homebrew = {
       casks = [
-        "zen-browser"
+        "zen"
       ];
     };
   };
