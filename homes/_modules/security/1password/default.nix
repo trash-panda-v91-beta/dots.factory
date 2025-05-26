@@ -32,6 +32,14 @@ in
             identityAgent = "'~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock'";
           };
         };
+        matchBlocks."git.${inputs.secrets.domain}" = {
+          user = "git";
+          identityFile = personalGithubPubKeyPath;
+          identitiesOnly = true;
+          extraOptions = {
+            identityAgent = "'~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock'";
+          };
+        };
         matchBlocks."asc.internal" = {
           user = "git";
           identityFile = personalGithubPubKeyPath;
