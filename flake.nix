@@ -34,7 +34,7 @@
     };
 
     secrets = {
-      url = "git+ssh://git@github.com/aka-raccoon/.constants";
+      url = "git+ssh://git@github.com/trash-panda-v91-beta/dots.factory.constants";
     };
 
   };
