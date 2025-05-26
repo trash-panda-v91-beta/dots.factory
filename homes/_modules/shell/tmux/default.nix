@@ -111,13 +111,18 @@ in
     ];
     xdg.configFile."sesh/sesh.toml".text = ''
       [default_session]
-      startup_command = "nvim -c ':lua Snacks.picker.smart()'"
       preview_command = "eza --all --git --icons --color=always {}"
 
       [[session]]
-      name = "Downloads"
+      name = "downloads"
       path = "~/Downloads"
       startup_command = "yazi"
-    '';
+
+      [[session]]
+      name = "k9s"
+      path = "~"
+      startup_command = "k9s"
+    
+'';
   };
 }
