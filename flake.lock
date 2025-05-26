@@ -713,17 +713,17 @@
     },
     "secrets": {
       "locked": {
-        "lastModified": 1736866421,
-        "narHash": "sha256-37noHBc17KxSTIHCimtfbcJfXbj0WGT/QBUqle2mqbw=",
+        "lastModified": 1748261744,
+        "narHash": "sha256-EHOW/k+W7h3lM8w9OWp5p6dKrK1jhJweo+tHmrUe5pk=",
         "ref": "refs/heads/main",
-        "rev": "04c2ac5707aae4a5b14e45dfc827e44de530144e",
-        "revCount": 8,
+        "rev": "82bc449c1f318889ae3f50c3735b42350d4fdb36",
+        "revCount": 9,
         "type": "git",
-        "url": "ssh://git@github.com/aka-raccoon/.constants"
+        "url": "ssh://git@github.com/trash-panda-v91-beta/dots.factory.constants"
       },
       "original": {
         "type": "git",
-        "url": "ssh://git@github.com/aka-raccoon/.constants"
+        "url": "ssh://git@github.com/trash-panda-v91-beta/dots.factory.constants"
       }
     },
     "snacks-nvim": {
