@@ -33,7 +33,6 @@ in
           };
         };
         matchBlocks."git.${inputs.secrets.domain}" = {
-          user = "git";
           identityFile = personalGithubPubKeyPath;
           identitiesOnly = true;
           extraOptions = {
