@@ -115,7 +115,7 @@ in
                 key = "<c-c>";
                 description = "Pick AI commit";
                 context = "files";
-                subprocess = true;
+                otput = "terminal";
                 command = "${makeCommitMessage}/bin/make-commit-message";
               }
             ];
