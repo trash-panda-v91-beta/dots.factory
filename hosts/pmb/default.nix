@@ -16,6 +16,7 @@
       karabiner-elements.enable = true;
       safari.enable = true;
       zen-browser.enable = true;
+      hammerspoon.enable = true;
     };
     homebrew = {
       casks = [
