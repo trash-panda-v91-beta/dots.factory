@@ -28,6 +28,7 @@
     };
     karabiner-config.enable = true;
 
+    hammerspoon-config.enable = true;
     raycast.enable = true;
     run-on-unlock.enable = true;
     security = {
