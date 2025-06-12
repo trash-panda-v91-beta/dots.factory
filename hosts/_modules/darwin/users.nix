@@ -5,6 +5,7 @@
   ...
 }:
 {
+  system.primaryUser = builtins.elemAt users 0;
   users.users = lib.foldl' (
     acc: user:
     acc
@@ -23,5 +24,6 @@
         sudo chsh -s /run/current-system/sw/bin/fish ${user}
       '') users
     )}
-  '';
+  
+'';
 }
