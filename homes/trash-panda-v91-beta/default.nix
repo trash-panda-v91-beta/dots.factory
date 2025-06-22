@@ -86,7 +86,7 @@
     zk = {
       enable = true;
       author = "trash-panda";
-      default_directory = "${config.home.homeDirectory}/brain";
+      default_directory = "${config.home.homeDirectory}/notes";
     };
   };
 }

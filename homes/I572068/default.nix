@@ -77,7 +77,7 @@
     };
     zk = {
       enable = true;
-      default_directory = "${config.home.homeDirectory}/brain";
+      default_directory = "${config.home.homeDirectory}/notes";
     };
   };
 }
