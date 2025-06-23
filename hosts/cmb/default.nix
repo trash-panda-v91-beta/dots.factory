@@ -6,6 +6,7 @@ _: {
       ghostty.enable = true;
       karabiner-elements.enable = true;
       zen-browser.enable = true;
+      safari.enable = true;
       hammerspoon.enable = true;
     };
   };
