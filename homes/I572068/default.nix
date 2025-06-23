@@ -30,7 +30,8 @@
 
     hammerspoon-config.enable = true;
     raycast.enable = true;
-    run-on-unlock.enable = true;
+    # TODO: fix build
+    run-on-unlock.enable = false;
     security = {
       ssh = {
         enable = true;
