@@ -37,7 +37,7 @@ function arrow_keys() {
 function apps_launcher() {
   return rule('Launch Apps').manipulators([
     withModifier('⌥⌃⇧')({
-      b: toApp('Zen'),
+      b: toApp('Safari'),
       c: toApp('Calendar'),
       e: toApp('Mail'),
       f: toApp('Finder'),
