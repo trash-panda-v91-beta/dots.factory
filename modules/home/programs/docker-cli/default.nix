@@ -1,18 +1,21 @@
 {
-  pkgs,
-  lib,
   config,
+  lib,
+  pkgs,
+  namespace,
   ...
 }:
+
+with lib;
 let
-  cfg = config.modules.virtualisation.docker-cli;
+  cfg = config.${namespace}.programs.docker-cli;
 in
 {
-  options.modules.virtualisation.docker-cli = {
+  options.${namespace}.programs.docker-cli = {
     enable = lib.mkEnableOption "docker-cli";
   };
 
-  config = lib.mkIf cfg.enable {
+  config = mkIf cfg.enable {
     home.packages = [
       pkgs.docker-buildx
       pkgs.docker-client

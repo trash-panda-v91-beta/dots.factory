@@ -2,13 +2,14 @@
   pkgs,
   config,
   lib,
+  namespace,
   ...
 }:
 let
-  cfg = config.modules.themes.cyberdream;
+  cfg = config.${namespace}.themes.cyberdream;
 in
 {
-  options.modules.themes.cyberdream = {
+  options.${namespace}.themes.cyberdream = {
     enable = lib.mkEnableOption "cyberdream";
   };
 

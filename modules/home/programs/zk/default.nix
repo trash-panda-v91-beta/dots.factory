@@ -1,35 +1,39 @@
 {
   config,
-  inputs,
   lib,
   pkgs,
+  namespace,
+  inputs,
   ...
 }:
+
+with lib;
 let
-  cfg = config.modules.zk;
+  cfg = config.${namespace}.programs.zk;
   nixvim = inputs.editor.packages.${pkgs.system}.default;
 in
 {
-  options.modules.zk = {
-    enable = lib.mkEnableOption "zk";
-    default_directory = lib.mkOption {
-      type = lib.types.nullOr lib.types.str;
+  options.${namespace}.programs.zk = {
+    enable = mkEnableOption "zk";
+    default_directory = mkOption {
+      type = types.nullOr types.str;
       default = null;
       description = ''
         The directory where zk stores its notes.
         If null, no directory will be specified and zk will use its default location.
       '';
     };
-    author = lib.mkOption {
-      type = lib.types.nullOr lib.types.str;
+    author = mkOption {
+      type = types.nullOr types.str;
       default = null;
       description = ''
         The author name to be used in the notes.
       '';
     };
   };
-  config = lib.mkIf cfg.enable {
-    home.sessionVariables = lib.mkIf (cfg.default_directory != null) {
+  
+  config = mkIf cfg.enable {
+    home.sessionVariables = mkIf (cfg.default_directory != null) {
       ZK_NOTEBOOK_DIR = cfg.default_directory;
     };
     home.file."${config.xdg.configHome}/zk/templates/" = {
@@ -51,7 +55,7 @@ in
             idCase = "lower";
           };
           extra = {
-            author = lib.mkIf (cfg.author != null) cfg.author;
+            author = mkIf (cfg.author != null) cfg.author;
           };
           group = {
             daily = {

@@ -1,9 +1,19 @@
 {
+  namespace,
   pkgs,
+  lib,
+  config,
   ...
 }:
+let
+  cfg = config.${namespace}.programs.zoxide;
+in
 {
-  config = {
+  options.${namespace}.programs.zoxide = {
+    enable = lib.mkEnableOption "zoxide";
+  };
+
+  config = lib.mkIf cfg.enable {
     programs.zoxide = {
       enable = true;
     };

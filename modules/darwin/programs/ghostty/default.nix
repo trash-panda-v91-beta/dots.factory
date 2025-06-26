@@ -1,14 +1,15 @@
 {
-  lib,
   config,
+  lib,
+  namespace,
   pkgs,
   ...
 }:
 let
-  cfg = config.modules.terminals.ghostty;
+  cfg = config.${namespace}.programs.ghostty;
 in
 {
-  options.modules.terminals.ghostty = {
+  options.${namespace}.programs.ghostty = {
     enable = lib.mkEnableOption "ghostty";
   };
 

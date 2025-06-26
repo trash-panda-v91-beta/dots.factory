@@ -1,35 +1,37 @@
 {
-  pkgs,
-  lib,
   config,
+  lib,
+  pkgs,
+  namespace,
   ...
 }:
+
+with lib;
 let
-  cfg = config.modules.virtualisation.colima;
-  package = pkgs.unstable.colima;
+  cfg = config.${namespace}.programs.colima;
 in
 {
-  options.modules.virtualisation.colima = {
+  options.${namespace}.programs.colima = {
     enable = lib.mkEnableOption "colima";
     startService = lib.mkEnableOption "colima service";
   };
 
-  config = lib.mkMerge [
-    (lib.mkIf (cfg.enable && cfg.startService) {
+  config = mkMerge [
+    (mkIf (cfg.enable && cfg.startService) {
       launchd.agents.colima = {
         enable = true;
         config = {
           EnvironmentVariables = {
             PATH = "/Users/${config.home.username}/.nix-profile/bin:/etc/profiles/per-user/${config.home.username}/bin:/run/current-system/sw/bin:/nix/var/nix/profiles/default/bin:/usr/bin:/bin:/usr/sbin:/sbin";
           };
-          ProgramArguments = lib.mkMerge [
+          ProgramArguments = mkMerge [
             [
-            "${package}/bin/colima"
-            "start"
-            "--foreground"
+              "${pkgs.unstable.colima}/bin/colima"
+              "start"
+              "--foreground"
             ]
 
-            (lib.mkIf (pkgs.system == "aarch64-darwin") [
+            (mkIf (pkgs.system == "aarch64-darwin") [
               "--arch" "aarch64"
               "--vm-type" "vz"
               "--vz-rosetta"
@@ -44,9 +46,9 @@ in
       };
     })
 
-    (lib.mkIf cfg.enable {
+    (mkIf cfg.enable {
       home.packages = [
-        package
+        pkgs.unstable.colima
       ];
 
       programs.ssh = {

@@ -6,6 +6,7 @@
   ...
 }:
 {
+  home.stateVersion = "25.05";
   ${namespace} = {
     user = {
       enable = true;
