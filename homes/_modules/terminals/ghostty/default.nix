@@ -42,7 +42,9 @@ in
       selection-background = #3c4048
       selection-foreground = #ffffff
 
-      custom-shader = ${./shader.glsl}
+      custom-shader = ${shaders/bloom025.glsl}
+      custom-shader = ${shaders/cursor_blaze_no_trail.glsl}
+      custom-shader = ${shaders/cursor_smear.glsl}
 
       background-opacity = 0.90
       background-blur-radius = 20
