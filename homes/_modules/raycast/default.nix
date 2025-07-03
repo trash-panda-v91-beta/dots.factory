@@ -32,7 +32,7 @@ in
           # Documentation:
           # @raycast.description Run NixOS rebuild command
 
-          /run/current-system/sw/bin/darwin-rebuild switch --flake "git+ssh://git@github.com/aka-raccoon/dot.factory/#${hostname}"
+          /run/current-system/sw/bin/darwin-rebuild switch --flake "git+ssh://git@github.com/trash-panda/dot.factory/#${hostname}"
         '';
         executable = true;
       };

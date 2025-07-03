@@ -60,8 +60,8 @@
 
       git = {
         enable = true;
-        username = "aka-raccoon";
-        email = "42897550+aka-raccoon@users.noreply.github.com";
+        username = "trash-panda-v91-beta";
+        email = "42897550+trash-panda-v91-beta@users.noreply.github.com";
       };
 
       go-task.enable = true;
