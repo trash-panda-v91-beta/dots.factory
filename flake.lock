@@ -39,16 +39,15 @@
         "mcphub-nvim": "mcphub-nvim",
         "nixpkgs": "nixpkgs_3",
         "nixvim": "nixvim",
-        "obsidian-nvim": "obsidian-nvim",
         "snacks-nvim": "snacks-nvim",
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1756368964,
-        "narHash": "sha256-q3ZRQxU05AXl7g17LM9LmWyziGEtNPgw2WesvLmzxLw=",
+        "lastModified": 1756370016,
+        "narHash": "sha256-1hNNc9vxRcKFfDtPaShcbElz/cPD4iUn3+hylvr3SKM=",
         "owner": "aka-raccoon",
         "repo": "dot.editor",
-        "rev": "9d15a81d8086bcd34ccfe9a41e7c2bae557e91e4",
+        "rev": "3e60e3c1d8330ddb90f479b5be42f579c6dbfc8f",
         "type": "github"
       },
       "original": {
@@ -653,11 +652,11 @@
     },
     "nixpkgs_3": {
       "locked": {
-        "lastModified": 1756361592,
-        "narHash": "sha256-kwEe1ze8iB1QOB6is0GrhvYJgAaJ+6394IQ3Y5KSmG0=",
+        "lastModified": 1756369280,
+        "narHash": "sha256-vT4MwP40YINH/+yN81Ab8SNXvBwO0vQMcG4wTlsodi0=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "d045122407417a92e21d44a656859e8b841a690a",
+        "rev": "079b7a006c021a2a378400fe286d1a49830bca46",
         "type": "github"
       },
       "original": {
@@ -789,23 +788,6 @@
       "original": {
         "owner": "NuschtOS",
         "repo": "search",
-        "type": "github"
-      }
-    },
-    "obsidian-nvim": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1751487862,
-        "narHash": "sha256-GlQBO3k3uUz+oPUMJhqkTszjrs8tz4GabrW+3drQIYo=",
-        "owner": "trash-panda-v91-beta",
-        "repo": "obsidian.nvim",
-        "rev": "360ff19c04c285b7c7baf8dddcf1b0eab9900b31",
-        "type": "github"
-      },
-      "original": {
-        "owner": "trash-panda-v91-beta",
-        "ref": "update-get-plugin-info",
-        "repo": "obsidian.nvim",
         "type": "github"
       }
     },
