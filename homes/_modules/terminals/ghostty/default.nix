@@ -54,7 +54,7 @@ in
       copy-on-select = true
       cursor-style = block
       font-family = "JetBrains Mono"
-      font-size = 15
+      font-size = 16
       font-thicken = true
       mouse-hide-while-typing = true
       macos-non-native-fullscreen=false
