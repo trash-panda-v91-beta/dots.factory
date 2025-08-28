@@ -18,7 +18,7 @@
         makeDefaultEditor = true;
         aiProvider = {
           name = "copilot";
-          model = null;
+          model = "claude-3.7-sonnet";
         };
       };
     };
