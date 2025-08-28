@@ -46,9 +46,12 @@ in
           np = "networkpolicies";
         };
       };
-
+      skins = {
+        cyberdream = ./k9s_skin.yaml;
+      };
       settings = {
         k9s = {
+          skin = "cyberdream";
           liveViewAutoRefresh = false;
           refreshRate = 2;
           maxConnRetry = 5;
