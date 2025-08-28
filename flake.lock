@@ -33,8 +33,25 @@
         "type": "github"
       }
     },
+    "codecompanion-gitcommit-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1755261544,
+        "narHash": "sha256-ZsxkxM5GnPZ0C2IRfaE8ktTlq5W7Zspp58cEiNZ3VCI=",
+        "owner": "jinzhongjia",
+        "repo": "codecompanion-gitcommit.nvim",
+        "rev": "e237b9901d64074fa84f74c1b20892303e3e1830",
+        "type": "github"
+      },
+      "original": {
+        "owner": "jinzhongjia",
+        "repo": "codecompanion-gitcommit.nvim",
+        "type": "github"
+      }
+    },
     "editor": {
       "inputs": {
+        "codecompanion-gitcommit-nvim": "codecompanion-gitcommit-nvim",
         "mcp-hub": "mcp-hub",
         "mcphub-nvim": "mcphub-nvim",
         "nixpkgs": "nixpkgs_3",
@@ -43,11 +60,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1756370016,
-        "narHash": "sha256-1hNNc9vxRcKFfDtPaShcbElz/cPD4iUn3+hylvr3SKM=",
+        "lastModified": 1756420450,
+        "narHash": "sha256-DbuWN5InE/Gu94ugghxUN6kDReyBKuAApDhnu1atAMs=",
         "owner": "aka-raccoon",
         "repo": "dot.editor",
-        "rev": "3e60e3c1d8330ddb90f479b5be42f579c6dbfc8f",
+        "rev": "af1a4f3b4e50a7a345cb2ed6ac45fed9fcd286c5",
         "type": "github"
       },
       "original": {
