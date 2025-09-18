@@ -1,0 +1,16 @@
+{
+  "Nixvim Plugin": {
+    "prefix": "nixvim plugin",
+    "body": [
+      "{ delib, ... }:",
+      "delib.module {",
+      "  name = \"programs.nixvim.plugins.${1:Plugin Name}\";",
+      "  options = delib.singleEnableOption true;",
+      "  home.ifEnabled.programs.nixvim.plugins.${1:Plugin Name} = {",
+      "    enable = true;",
+      "  };",
+      "}"
+    ],
+    "description": "Template for adding a Nixvim plugin using delib."
+  }
+}

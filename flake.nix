@@ -2,97 +2,98 @@
   description = "dot.factory";
 
   inputs = {
-    flake-parts = {
-      url = "github:hercules-ci/flake-parts";
-      inputs.nixpkgs-lib.follows = "nixpkgs";
+    constants = {
+      url = "git+ssh://git@github.com/trash-panda-v91-beta/dots.factory.constants";
     };
-
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-
+    codecompanion-gitcommit-nvim = {
+      url = "github:jinzhongjia/codecompanion-gitcommit.nvim/0.0.14";
+      flake = false;
+    };
+    denix = {
+      url = "github:yunfachi/denix";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+      inputs.nix-darwin.follows = "nix-darwin";
+    };
+    homebrew-cask = {
+      url = "github:homebrew/homebrew-cask";
+      flake = false;
+    };
+    homebrew-core = {
+      url = "github:homebrew/homebrew-core";
+      flake = false;
+    };
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.05";
+      url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
     nix-darwin = {
-      url = "github:nix-darwin/nix-darwin/nix-darwin-25.05";
+      url = "github:nix-darwin/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
+    nix-homebrew.url = "github:zhaofengli/nix-homebrew";
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    nixvim.url = "github:nix-community/nixvim";
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    editor.url = "github:aka-raccoon/dot.editor";
-
-    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
-
-    talhelper = {
-      url = "github:budimanjojo/talhelper";
+    vault.url = "git+ssh://git@github.com/trash-panda-v91-beta/dots.vault";
+    zen-browser = {
+      url = "github:0xc000022070/zen-browser-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    secrets = {
-      url = "git+ssh://git@github.com/trash-panda-v91-beta/dots.factory.constants";
-    };
-
   };
 
   outputs =
-    { flake-parts, ... }@inputs:
+    { denix, self, ... }@inputs:
     let
-      mkPkgsWithSystem =
-        system:
-        import inputs.nixpkgs {
-          inherit system;
-          overlays = builtins.attrValues (import ./overlays { inherit inputs; });
-          config.allowUnfree = true;
+      mkConfigurations =
+        moduleSystem:
+        denix.lib.configurations {
+          inherit moduleSystem;
+          homeManagerUser = "trash-panda-v91-beta";
+
+          paths = [
+            ./modules
+            ./overlays
+            ./rices
+          ]
+          ++ {
+            nixos = [ ./hosts/nixos ];
+            darwin = [ ./hosts/darwin ];
+            home = [ ./hosts ];
+          }
+          .${moduleSystem};
+
+          extensions = with denix.lib.extensions; [
+            args
+            (base.withConfig {
+              args.enable = true;
+              hosts.features = {
+                features = [
+                  "coding"
+                  "githubCopilot"
+                  "kubernetes"
+                ];
+              };
+            })
+            (overlays.withConfig {
+              defaultTargets = [
+                # "nixos"
+                "darwin"
+              ];
+            })
+          ];
+
+          specialArgs = {
+            inherit inputs self moduleSystem;
+          };
         };
-      mkSystemLib = import ./lib/mkSystem.nix { inherit inputs mkPkgsWithSystem; };
     in
-    flake-parts.lib.mkFlake { inherit inputs; } {
-      systems = [
-        "aarch64-darwin"
-        "x86_64-linux"
-      ];
-
-      perSystem =
-        {
-          system,
-          inputs,
-          pkgs,
-          ...
-        }:
-        {
-          _module.args.pkgs = mkPkgsWithSystem system;
-          packages = import ./pkgs { inherit pkgs inputs; };
-        };
-
-      imports = [ ];
-
-      flake = {
-        nixosConfigurations = {
-          ley = mkSystemLib.mkNixosSystem "x86_64-linux" "ley" [ "c4300n" ];
-        };
-        darwinConfigurations = {
-          amb = mkSystemLib.mkDarwinSystem "aarch64-darwin" "amb" [ "c4300n" ];
-          cmb = mkSystemLib.mkDarwinSystem "aarch64-darwin" "cmb" [ "CORPORATE_USER" ];
-          pmb = mkSystemLib.mkDarwinSystem "aarch64-darwin" "pmb" [ "trash-panda-v91-beta" ];
-        };
-
-        ciSystems =
-          let
-            nixos = inputs.nixpkgs.lib.genAttrs (builtins.attrNames inputs.self.nixosConfigurations) (
-              attr: inputs.self.nixosConfigurations.${attr}.config.system.build.toplevel
-            );
-            darwin = inputs.nixpkgs.lib.genAttrs (builtins.attrNames inputs.self.darwinConfigurations) (
-              attr: inputs.self.darwinConfigurations.${attr}.system
-            );
-          in
-          nixos // darwin;
-
-      };
+    {
+      nixosConfigurations = mkConfigurations "nixos";
+      homeConfigurations = mkConfigurations "home";
+      darwinConfigurations = mkConfigurations "darwin";
     };
-
 }

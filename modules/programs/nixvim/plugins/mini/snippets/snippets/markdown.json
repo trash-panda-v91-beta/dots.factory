@@ -1,0 +1,17 @@
+{
+  "Task Frontmatter": {
+    "prefix": "task-note",
+    "body": [
+      "---",
+      "tags:",
+      "  - task",
+      "aliases:",
+      "  - ${1:Task Title}",
+      "title: ${1:Task Title}",
+      "status: open",
+      "---",
+      "# ${1:Task Title}"
+    ],
+    "description": "Frontmatter for a Markdown task note"
+  }
+}
