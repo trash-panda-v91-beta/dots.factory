@@ -1,1 +1,0 @@
-![Logo](.github/logo.png)

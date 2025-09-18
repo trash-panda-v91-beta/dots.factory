@@ -1,0 +1,45 @@
+{
+  self,
+  system ? builtins.currentSystem,
+}:
+let
+
+  dropLast =
+    list:
+    let
+      len = builtins.length list;
+      dropped = builtins.genList (builtins.elemAt list) (len - 1);
+    in
+    if list == [ ] || len == 1 then [ ] else dropped;
+
+  findFlake =
+    dir:
+    let
+      isPart = part: builtins.isString part && part != "" && part != ".";
+      parts = builtins.filter isPart (builtins.split "/+" dir);
+    in
+    findFlake' parts;
+
+  findFlake' =
+    parts:
+    let
+      dir = "/" + builtins.concatStringsSep "/" parts;
+      files = builtins.readDir dir;
+      isFlake = files."flake.nix" or null == "regular";
+      parent = dropLast parts;
+    in
+    if parts == [ ] then
+      null
+    else if isFlake then
+      dir
+    else
+      findFlake' parent;
+
+  path = findFlake (builtins.getEnv "PWD");
+in
+{
+  inherit system self path;
+
+  local = if path == null then null else builtins.getFlake path;
+  global = builtins.getFlake self;
+}
