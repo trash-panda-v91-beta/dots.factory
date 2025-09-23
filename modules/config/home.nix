@@ -7,6 +7,13 @@
   pkgs,
   ...
 }:
+let
+  shared.home-manager = {
+    useGlobalPkgs = true;
+    useUserPackages = true;
+    backupFileExtension = "backup";
+  };
+in
 delib.module {
   name = "home";
   options = delib.singleEnableOption true;
@@ -18,31 +25,7 @@ delib.module {
     inputs.home-manager.nixosModules.home-manager
   ];
 
-  home.always =
-    { myconfig, ... }:
-    let
-      username = myconfig.user.name;
-    in
-    {
-      home = {
-        inherit username;
-        homeDirectory = if pkgs.stdenv.isDarwin then "/Users/${username}" else "/home/${username}";
-      };
-    };
-
   home.ifEnabled.programs.home-manager.enable = true;
-  nixos.ifEnabled = {
-    home-manager = {
-      useGlobalPkgs = true;
-      useUserPackages = true;
-      backupFileExtension = "backup";
-    };
-  };
-  darwin.ifEnabled = {
-    home-manager = {
-      useGlobalPkgs = true;
-      useUserPackages = true;
-      backupFileExtension = "backup";
-    };
-  };
+  nixos.ifEnabled = shared;
+  darwin.ifEnabled = shared;
 }
