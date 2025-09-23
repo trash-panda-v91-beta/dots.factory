@@ -15,12 +15,16 @@ delib.module {
 
   home.ifEnabled =
     { myconfig, ... }:
+    let
+      sshPrivateKey = "${homeconfig.home.homeDirectory}/.ssh/${myconfig.user.name}";
+    in
     {
       sops = {
         age.sshKeyPaths = [
-          "${homeconfig.home.homeDirectory}/.ssh/${myconfig.user.name}"
+          sshPrivateKey
         ];
         defaultSopsFile = inputs.vault.secrets;
+        environment.SOPS_AGE_SSH_PRIVATE_KEY_FILE = sshPrivateKey;
         gnupg.sshKeyPaths = [ ];
       };
       home.packages = [

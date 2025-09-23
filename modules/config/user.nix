@@ -16,20 +16,29 @@ delib.module {
     ssh.publicKey = noDefault (strOption null);
   };
 
+  home.always =
+    { cfg, ... }:
+    let
+      username = cfg.name;
+    in
+    {
+      home = {
+        inherit username;
+        homeDirectory = if pkgs.stdenv.isDarwin then "/Users/${username}" else "/home/${username}";
+      };
+    };
+
   home.ifEnabled =
     { cfg, myconfig, ... }:
-    let
-      sshPublicKeyPath = "${homeconfig.home.homeDirectory}/.ssh/${cfg.name}.pub";
-    in
     {
       home.file.sshPublicKey = {
         text = inputs.vault.constants.users.${cfg.name}.ssh.publicKey;
-        target = ".ssh/${cfg.name}";
+        target = ".ssh/${cfg.name}.pub";
       };
       programs.ssh = lib.mkIf (myconfig.programs._1password.enable && myconfig.programs.git.enable) {
         matchBlocks."github.com" = {
           user = "git";
-          identityFile = sshPublicKeyPath;
+          identityFile = "${homeconfig.home.homeDirectory}/${homeconfig.home.file.sshPublicKey.target}";
           identitiesOnly = true;
           extraOptions = {
             identityAgent = "'${myconfig.programs._1password.agentSocket}'";
