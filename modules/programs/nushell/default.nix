@@ -1,5 +1,6 @@
 {
   delib,
+  lib,
   ...
 }:
 delib.module {
@@ -9,7 +10,7 @@ delib.module {
   };
 
   home.ifEnabled =
-    { cfg, ... }:
+    { cfg, myconfig, ... }:
     {
       programs.nushell = {
         enable = cfg.enable;
@@ -25,9 +26,7 @@ delib.module {
         # https://github.com/nix-community/home-manager/pull/6941
         extraLogin = ''
           use std/util "path add"
-          path add "/run/current-system/sw/bin"
-          path add "/opt/homebrew/bin"
-          path add $"/etc/profiles/per-user/($env.USER)/bin"
+          ${lib.concatMapStringsSep "\n" (p: "path add \"${p}\"") myconfig.constants.path}
         '';
       };
     };

@@ -88,8 +88,7 @@ in
         )\""
 
         set -g detach-on-destroy off
-        bind -N "last-session (via sesh) " n run-shell "sesh last"
-        bind -N "switch to root session (via sesh) " 9 run-shell "sesh connect --root \'$(pwd)\'"
+        bind -N "last-session (via sesh) " M-l run-shell "sesh last"
       '';
     };
     home.packages = with pkgs; [
