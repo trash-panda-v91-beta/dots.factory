@@ -34,21 +34,6 @@
         "type": "github"
       }
     },
-    "constants": {
-      "locked": {
-        "lastModified": 1748540737,
-        "narHash": "sha256-zdzgGwOoX7DhKhkcQ2cG+qKuyuPXPUsPFCiYUFH7zlw=",
-        "ref": "refs/heads/main",
-        "rev": "3f69c83a47bc2e557411fd6a5594353d047f641c",
-        "revCount": 10,
-        "type": "git",
-        "url": "ssh://git@github.com/trash-panda-v91-beta/dots.factory.constants"
-      },
-      "original": {
-        "type": "git",
-        "url": "ssh://git@github.com/trash-panda-v91-beta/dots.factory.constants"
-      }
-    },
     "denix": {
       "inputs": {
         "home-manager": [
@@ -425,7 +410,6 @@
     "root": {
       "inputs": {
         "codecompanion-gitcommit-nvim": "codecompanion-gitcommit-nvim",
-        "constants": "constants",
         "denix": "denix",
         "home-manager": "home-manager",
         "homebrew-cask": "homebrew-cask",
@@ -493,15 +477,15 @@
       "locked": {
         "lastModified": 1758615197,
         "narHash": "sha256-2nhWPEiUYdZcxwkRIdAVpszsmFOZzYzNvNtoE0R38mA=",
-        "ref": "refs/heads/main",
+        "owner": "trash-panda-v91-beta",
+        "repo": "dots.vault",
         "rev": "79cecc8c4d0ee158f0848b098a4930eaf038f4a9",
-        "revCount": 1,
-        "type": "git",
-        "url": "ssh://git@github.com/trash-panda-v91-beta/dots.vault"
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "ssh://git@github.com/trash-panda-v91-beta/dots.vault"
+        "owner": "trash-panda-v91-beta",
+        "repo": "dots.vault",
+        "type": "github"
       }
     },
     "zen-browser": {
