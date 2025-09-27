@@ -2,9 +2,6 @@
   description = "dot.factory";
 
   inputs = {
-    constants = {
-      url = "git+ssh://git@github.com/trash-panda-v91-beta/dots.factory.constants";
-    };
     codecompanion-gitcommit-nvim = {
       url = "github:jinzhongjia/codecompanion-gitcommit.nvim/0.0.14";
       flake = false;
@@ -38,7 +35,8 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    vault.url = "git+ssh://git@github.com/trash-panda-v91-beta/dots.vault";
+    # vault.url = "git+ssh://git@github.com/trash-panda-v91-beta/dots.vault";
+    vault.url = "github:trash-panda-v91-beta/dots.vault";
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -95,5 +93,21 @@
       nixosConfigurations = mkConfigurations "nixos";
       homeConfigurations = mkConfigurations "home";
       darwinConfigurations = mkConfigurations "darwin";
+
+      # Add default package for nix build
+      packages.aarch64-darwin.default = inputs.nixpkgs.legacyPackages.aarch64-darwin.stdenv.mkDerivation {
+        name = "dots-factory";
+        version = "0.1.0";
+        src = ./.;
+        installPhase = ''
+          mkdir -p "$out"/bin
+          echo "echo 'dots.factory configuration system'" >"$out"/bin/dots-factory
+          chmod +x "$out"/bin/dots-factory
+        '';
+        meta = {
+          description = "dot.factory configuration system";
+          mainProgram = "dots-factory";
+        };
+      };
     };
 }
