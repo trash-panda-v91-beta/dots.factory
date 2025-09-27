@@ -2,6 +2,10 @@
   description = "dot.factory";
 
   inputs = {
+    cachix = {
+      url = "github:cachix/cachix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     constants = {
       url = "git+ssh://git@github.com/trash-panda-v91-beta/dots.factory.constants";
     };
