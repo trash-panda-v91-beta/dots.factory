@@ -387,6 +387,22 @@
         "type": "github"
       }
     },
+    "opencode-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1758976730,
+        "narHash": "sha256-kDECQEBk9pZZ7u1w0Tj45ilotMmF8wBHTwSyeQTEQE8=",
+        "owner": "sudo-tee",
+        "repo": "opencode.nvim",
+        "rev": "b9395af29afe3da7a06b40f860bdf4d92b09e4dd",
+        "type": "github"
+      },
+      "original": {
+        "owner": "sudo-tee",
+        "repo": "opencode.nvim",
+        "type": "github"
+      }
+    },
     "pre-commit-hooks": {
       "inputs": {
         "flake-compat": "flake-compat",
@@ -418,6 +434,7 @@
         "nix-homebrew": "nix-homebrew",
         "nixpkgs": "nixpkgs_2",
         "nixvim": "nixvim",
+        "opencode-nvim": "opencode-nvim",
         "sops-nix": "sops-nix",
         "vault": "vault",
         "zen-browser": "zen-browser"
