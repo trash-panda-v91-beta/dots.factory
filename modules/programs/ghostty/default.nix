@@ -51,6 +51,7 @@ delib.module {
 
         keybind = [
           "super+t=ignore"
+          "super+d=ignore"
         ];
       };
     };
