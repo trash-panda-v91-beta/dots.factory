@@ -6,6 +6,6 @@ delib.module {
 
   home.ifEnabled.programs.nixvim = {
     extraPlugins = [ pkgs.local.opencode-nvim ];
-    extraConfigLua = ''require("opencode").setup({ prefered_picker = "mini.pick", prefered_completion = "blink" })'';
+    extraConfigLua = ''require("opencode").setup({ prefered_picker = "snacks.picker", prefered_completion = "blink" })'';
   };
 }
