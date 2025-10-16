@@ -1,7 +1,7 @@
 { delib, pkgs, ... }:
 delib.module {
   name = "programs.nixvim.plugins.mini.pick";
-  options = delib.singleEnableOption true;
+  options = delib.singleEnableOption false;
   home.ifEnabled.programs.nixvim = {
     extraFiles."lua/smartpick.lua".source = ./smartpick.lua;
     extraPackages = with pkgs; [ ripgrep ];
