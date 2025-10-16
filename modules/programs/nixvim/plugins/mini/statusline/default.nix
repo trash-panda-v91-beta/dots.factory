@@ -5,6 +5,6 @@ delib.module {
   options = delib.singleEnableOption true;
 
   home.ifEnabled.programs.nixvim.plugins.mini-statusline = {
-    enable = true;
+    enable = false;
   };
 }
