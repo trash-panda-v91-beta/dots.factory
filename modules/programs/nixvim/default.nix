@@ -92,8 +92,6 @@ delib.module {
             plugins = true;
           };
           combinePlugins = {
-            enable = true;
-
             standalonePlugins = with pkgs; [
               local.codecompanion-gitcommit-nvim
               vimPlugins.codecompanion-history-nvim
