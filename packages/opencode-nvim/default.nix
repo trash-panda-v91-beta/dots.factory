@@ -30,6 +30,7 @@ vimUtils.buildVimPlugin {
     "opencode.api"
     "opencode.core"
     "opencode.ui.output_renderer"
+    "opencode.api_client"
   ];
 
 }
