@@ -24,9 +24,8 @@ delib.module {
       settings = {
         adjust-cell-height = "30%";
         custom-shader = [
-          "${shaders/bloom025.glsl}"
-          "${shaders/cursor_blaze_no_trail.glsl}"
-          "${shaders/cursor_smear.glsl}"
+          "${shaders/cursor_tail.glsl}"
+          "${shaders/ripple_cursor.glsl}"
         ];
         background-opacity = 0.95;
         background-blur-radius = 30;
