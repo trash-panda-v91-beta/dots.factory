@@ -15,7 +15,16 @@ delib.host {
   type = "desktop";
 
   myconfig = {
-    user.name = "trash-panda-v91-beta";
+    user = {
+      name = "trash-panda-v91-beta";
+      ssh.matchBlocks = [
+        {
+          name = "asc.internal";
+          user = "trash-panda-v91-beta";
+        }
+      ];
+    };
+
     programs = {
       git.userEmail = "42897550+trash-panda-v91-beta@users.noreply.github.com";
       nushell.enable = true;

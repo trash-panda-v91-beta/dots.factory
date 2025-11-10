@@ -14,6 +14,24 @@ delib.module {
     name = strOption "trash-panda-v91-beta";
     email = noDefault (strOption null);
     ssh.publicKey = noDefault (strOption null);
+    ssh.matchBlocks = lib.mkOption {
+      type = lib.types.listOf (
+        lib.types.submodule {
+          options = {
+            name = lib.mkOption {
+              type = lib.types.str;
+              description = "The name of the SSH match block";
+            };
+            user = lib.mkOption {
+              type = lib.types.str;
+              description = "The user for the SSH match block";
+            };
+          };
+        }
+      );
+      default = [ ];
+      description = "List of SSH match blocks to configure";
+    };
   };
 
   home.always =
@@ -36,14 +54,30 @@ delib.module {
         target = ".ssh/${cfg.name}.pub";
       };
       programs.ssh = lib.mkIf (myconfig.programs._1password.enable && myconfig.programs.git.enable) {
-        matchBlocks."github.com" = {
-          user = "git";
-          identityFile = "${homeconfig.home.homeDirectory}/${homeconfig.home.file.sshPublicKey.target}";
-          identitiesOnly = true;
-          extraOptions = {
-            identityAgent = "'${myconfig.programs._1password.agentSocket}'";
-          };
-        };
+        matchBlocks = lib.mkMerge [
+          {
+            "github.com" = {
+              user = "git";
+              identityFile = "${homeconfig.home.homeDirectory}/${homeconfig.home.file.sshPublicKey.target}";
+              identitiesOnly = true;
+              extraOptions = {
+                identityAgent = "'${myconfig.programs._1password.agentSocket}'";
+              };
+            };
+          }
+          (lib.mkMerge (
+            map (block: {
+              ${block.name} = {
+                user = block.user;
+                identityFile = "${homeconfig.home.homeDirectory}/${homeconfig.home.file.sshPublicKey.target}";
+                identitiesOnly = true;
+                extraOptions = {
+                  IdentityAgent = "'${myconfig.programs._1password.agentSocket}'";
+                };
+              };
+            }) cfg.ssh.matchBlocks
+          ))
+        ];
       };
     };
 
