@@ -13,6 +13,8 @@ delib.module {
       settings = {
 
         keybinds = {
+          leader = "alt+j";
+          sidebar_toggle = "alt+b";
           history_previous = "pageup";
           history_next = "pagedown";
           messages_half_page_up = "up";
