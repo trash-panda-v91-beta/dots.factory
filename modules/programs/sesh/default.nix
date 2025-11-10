@@ -25,25 +25,60 @@ delib.module {
             };
             session = [
               {
-                name = "k9s";
+                name = "asc";
                 path = "~";
-                startup_command = "k9s";
+                startup_command = "ssh asc.internal";
+              }
+              {
+                name = "dots";
+                path = "~/repos/personal/dots.factory";
+                startup_command = "nvim";
+              }
+              {
+                name = "dots (sidekick)";
+                path = "~/repos/personal/dots.factory";
+                startup_command = "opencode";
+              }
+              {
+                name = "nebular grid";
+                path = "~/repos/personal/nebular-grid";
+                startup_command = "nvim";
+              }
+              {
+                name = "nebular grid (sidekick)";
+                path = "~/repos/personal/nebular-grid";
+                startup_command = "opencode";
+              }
+              {
+                name = "notes";
+                path = "~/notes";
+                startup_command = "nvim";
+              }
+              {
+                name = "notes (sidekick)";
+                path = "~/notes";
+                startup_command = "sidekick";
               }
               {
                 name = "hack";
                 path = "~";
               }
               {
-                name = "dots";
-                path = "~/repos/personal/dots.factory/";
-                startup_command = "nvim";
+                name = "psb";
+                path = "~/repos/personal/nebular-grid";
+                startup_command = "k9s";
+              }
+              {
+                name = "sidekick";
+                path = "~";
+                startup_command = "opencode";
               }
             ];
           };
         };
         tmux.extraConfig = ''
           bind -n M-p run-shell "sesh last"
-          bind -n M-s run-shell "sesh connect $(sesh list -i | fzf --ansi --tmux bottom,20%,30% --style minimal)"
+          bind -n M-s run-shell "sesh connect $(sesh list -i | fzf --ansi --tmux bottom,70%,40% --style minimal)"
 
           set -g detach-on-destroy off
         '';

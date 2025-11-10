@@ -13,7 +13,6 @@ delib.overlayModule {
             # Colors
             set -ogq @thm_rosewater "#ff5ea0"
             set -ogq @thm_flamingo "#ff5ea0"
-            set -ogq @thm_rosewater "#ff5ea0"
             set -ogq @thm_pink "#ff5ea0"
             set -ogq @thm_mauve "#ff5ef1"
             set -ogq @thm_red "#ff6e5e"
@@ -38,6 +37,7 @@ delib.overlayModule {
             set -ogq @thm_surface_0 "#1e2124"
             set -ogq @thm_mantle "#1e2124"
             set -ogq @thm_crust "#1e2124"
+          END
         '';
       });
     };
