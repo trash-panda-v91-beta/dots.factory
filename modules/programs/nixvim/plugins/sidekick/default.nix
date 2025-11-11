@@ -1,42 +1,40 @@
 {
   delib,
-  lib,
-  pkgs,
   ...
 }:
 delib.module {
   name = "programs.nixvim.plugins.sidekick";
 
-  options = delib.singleEnableOption true;
+  options = delib.singleEnableOption false;
 
-  myconfig.ifEnabled.unfreePackages.allow = [ "copilot-language-server" ];
+  myconfig.ifEnabled.unfreePackages.allow = [
+    "copilot-language-server"
+  ];
 
   home.ifEnabled.programs.nixvim = {
 
-    plugins.which-key.settings.spec = [
-      {
-        __unkeyed-1 = "<leader>as";
-        group = "Sidekick";
-        icon = "🤖";
-      }
-    ];
-
-    extraPlugins = [
-      pkgs.master.vimPlugins.sidekick-nvim
-    ];
-
-    extraConfigLua =
-      let
+    plugins = {
+      sidekick = {
+        enable = true;
         settings = {
           mux = {
-            enabled = true;
-            backend = "tmux";
+            enableb = true;
           };
         };
-      in
-      ''
-        require('sidekick').setup(${lib.generators.toLua { } settings})
-      '';
+      };
+
+      which-key.settings.spec = [
+        {
+          __unkeyed-1 = "<leader>s";
+          group = "Sidekick";
+          icon = "🤖";
+          mode = [
+            "n"
+            "v"
+          ];
+        }
+      ];
+    };
 
     keymaps = [
       {
@@ -59,7 +57,7 @@ delib.module {
       }
       {
         mode = "n";
-        key = "<leader>ast";
+        key = "<leader>st";
         action.__raw = "function() require('sidekick.cli').toggle({ focus = true }) end";
         options.desc = "Sidekick Toggle";
       }
@@ -69,27 +67,9 @@ delib.module {
           "v"
           "v"
         ];
-        key = "<leader>asp";
+        key = "<leader>sp";
         action.__raw = "function() require('sidekick.cli').select_prompt() end";
         options.desc = "Ask Prompt";
-      }
-      {
-        mode = [
-          "n"
-          "v"
-        ];
-        key = "<leader>asc";
-        action.__raw = "function() require('sidekick.cli').toggle({ name = 'claude', focus = true }) end";
-        options.desc = "Claude Toggle";
-      }
-      {
-        mode = [
-          "n"
-          "v"
-        ];
-        key = "<leader>asg";
-        action.__raw = "function() require('sidekick.cli').toggle({ name = 'gemini', focus = true }) end";
-        options.desc = "Gemini Toggle";
       }
       {
         mode = [

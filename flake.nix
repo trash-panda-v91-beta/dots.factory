@@ -3,7 +3,7 @@
 
   inputs = {
     codecompanion-gitcommit-nvim = {
-      url = "github:jinzhongjia/codecompanion-gitcommit.nvim/0.0.14";
+      url = "github:jinzhongjia/codecompanion-gitcommit.nvim";
       flake = false;
     };
     denix = {

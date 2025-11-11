@@ -134,7 +134,7 @@ let
         ProgramArguments = [
           "/usr/bin/sudo"
           "-E"
-          "${lib.getExe cfg.package}"
+          "/run/current-system/sw/bin/kanata"
           "--cfg"
           "${keyboard.configFile}"
         ];
