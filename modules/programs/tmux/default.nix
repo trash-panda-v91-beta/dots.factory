@@ -35,6 +35,9 @@ delib.module {
         bind -n M-k resize-pane -U
         bind -n M-j resize-pane -D
 
+        # Enter copy mode
+        bind -n M-v copy-mode 
+
         # Use visual selection mode as vi
         bind -T copy-mode-vi v send-keys -X begin-selection
         bind -T copy-mode-vi C-v send-keys -X rectangle-toggle
