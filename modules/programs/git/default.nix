@@ -20,11 +20,16 @@ delib.module {
   home.ifEnabled =
     { cfg, ... }:
     {
-
+      programs.delta.enable = true;
       programs.git = {
         enable = cfg.enable;
-        delta.enable = true;
-        extraConfig = {
+        ignores = [
+          ".DS_Store"
+          ".venv"
+          "Thumbs.db"
+        ];
+        lfs.enable = cfg.enableLFS;
+        settings = {
           commit.verbose = true;
           core.autocrlf = "input";
           diff.algorithm = "histogram";
@@ -35,15 +40,11 @@ delib.module {
           pull.rebase = true;
           push.autoSetupRemote = true;
           rebase.autoStash = true;
+          user = {
+            name = cfg.username;
+            email = cfg.userEmail;
+          };
         };
-        ignores = [
-          ".DS_Store"
-          ".venv"
-          "Thumbs.db"
-        ];
-        lfs.enable = cfg.enableLFS;
-        userName = cfg.username;
-        userEmail = cfg.userEmail;
         signing.key = cfg.userSigningKey;
       };
     };
