@@ -1,8 +1,4 @@
-{
-  delib,
-  host,
-  ...
-}:
+{ delib, host, ... }:
 delib.module {
   name = "programs.git";
   options =
@@ -30,8 +26,8 @@ delib.module {
         ];
         lfs.enable = cfg.enableLFS;
         settings = {
-          commit.verbose = true;
           core.autocrlf = "input";
+          core.editor = "nvim";
           diff.algorithm = "histogram";
           fetch.prune = true;
           help.autocorrect = 10;
