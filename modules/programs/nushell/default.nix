@@ -1,5 +1,6 @@
 {
   delib,
+  homeconfig,
   lib,
   ...
 }:
@@ -16,10 +17,20 @@ delib.module {
         enable = cfg.enable;
         settings = {
           show_banner = false;
+          edit_mode = "vi";
+          cursor_shape = {
+            vi_insert = "line";
+            vi_normal = "block";
+          };
         };
         shellAliases = {
           nu-open = "open";
           open = "^open";
+        };
+
+        environmentVariables = homeconfig.home.sessionVariables // {
+          PROMPT_INDICATOR_VI_INSERT = lib.mkForce "";
+          PROMPT_INDICATOR_VI_NORMAL = lib.mkForce "";
         };
 
         # TODO: replace with home.sessionPath once available
