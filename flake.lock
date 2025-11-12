@@ -85,11 +85,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1762440070,
-        "narHash": "sha256-xxdepIcb39UJ94+YydGP221rjnpkDZUlykKuF54PsqI=",
+        "lastModified": 1762810396,
+        "narHash": "sha256-dxFVgQPG+R72dkhXTtqUm7KpxElw3u6E+YlQ2WaDgt8=",
         "owner": "hercules-ci",
         "repo": "flake-parts",
-        "rev": "26d05891e14c88eb4a5d5bee659c0db5afb609d8",
+        "rev": "0bdadb1b265fb4143a75bd1ec7d8c915898a9923",
         "type": "github"
       },
       "original": {
@@ -145,11 +145,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1762787259,
-        "narHash": "sha256-t2U/GLLXHa2+kJkwnFNRVc2fEJ/lUfyZXBE5iKzJdcs=",
+        "lastModified": 1762964643,
+        "narHash": "sha256-RYHN8O/Aja59XDji6WSJZPkJpYVUfpSkyH+PEupBJqM=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "37a3d97f2873e0f68711117c34d04b7c7ead8f4e",
+        "rev": "827f2a23373a774a8805f84ca5344654c31f354b",
         "type": "github"
       },
       "original": {
@@ -162,11 +162,11 @@
     "homebrew-cask": {
       "flake": false,
       "locked": {
-        "lastModified": 1762812545,
-        "narHash": "sha256-kdi1NrrLHYZ4Bq9yN2Z1G8IhCAh8aknoGwR1uy3wt1w=",
+        "lastModified": 1762963312,
+        "narHash": "sha256-KFsw/nOFpntJgJuIppe+5Goy3/S/cE8C2ClVE5Dr0oI=",
         "owner": "homebrew",
         "repo": "homebrew-cask",
-        "rev": "fdd5a1ec3b5d0860a4c57a7c4d7443fe6d98d365",
+        "rev": "361586a67b2a51e77af43a2ff1a1fa1424729c0a",
         "type": "github"
       },
       "original": {
@@ -178,11 +178,11 @@
     "homebrew-core": {
       "flake": false,
       "locked": {
-        "lastModified": 1762812915,
-        "narHash": "sha256-sNpDW5K6MqyzaWdNuSlP0l9HUzdYRLBJSmji2FR2Y5o=",
+        "lastModified": 1762962113,
+        "narHash": "sha256-y7CQooT0VmacDwHg0CYYYaFSkdN7HMl1LvCCvMCZXM8=",
         "owner": "homebrew",
         "repo": "homebrew-core",
-        "rev": "4674162b61fa61637264b965c9cf12c8370213e5",
+        "rev": "a06bc6e7852c629882cedce2991d79cbbc04322e",
         "type": "github"
       },
       "original": {
@@ -291,11 +291,11 @@
     },
     "nixpkgs-master": {
       "locked": {
-        "lastModified": 1762812074,
-        "narHash": "sha256-VPmfimY7jEaL0I2b9gqIGbDa+aDiGcR6dXfdJreg2/U=",
+        "lastModified": 1762964091,
+        "narHash": "sha256-q/I8/tpUZ9ERa9LRs4cA2fdyKuFPfxGfjxLchVqxQok=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "33599735af95a4addcac4b028cd67b5ae1e01028",
+        "rev": "21d917558bfe2dc6e5ab0722974fde1f6be1cc77",
         "type": "github"
       },
       "original": {
@@ -307,11 +307,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1762482733,
-        "narHash": "sha256-g/da4FzvckvbiZT075Sb1/YDNDr+tGQgh4N8i5ceYMg=",
+        "lastModified": 1762604901,
+        "narHash": "sha256-Pr2jpryIaQr9Yx8p6QssS03wqB6UifnnLr3HJw9veDw=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "e1ebeec86b771e9d387dd02d82ffdc77ac753abc",
+        "rev": "f6b44b2401525650256b977063dbcf830f762369",
         "type": "github"
       },
       "original": {
@@ -345,11 +345,11 @@
         "systems": "systems_2"
       },
       "locked": {
-        "lastModified": 1762789067,
-        "narHash": "sha256-z0VQRaEARqF5eARuAFhDixV+g5B+5IJ1iDKSUM+5EIY=",
+        "lastModified": 1762904125,
+        "narHash": "sha256-+T9oUulnXOQmy37GGOivHSvEyViA4gQ41mFZEPEDuOA=",
         "owner": "nix-community",
         "repo": "nixvim",
-        "rev": "2dc09e09cc65026f0899cc50291e244ee24835d3",
+        "rev": "84902b354fd0f122c40880b90dc8ac89d4d0daea",
         "type": "github"
       },
       "original": {
@@ -384,11 +384,11 @@
     "opencode-nvim": {
       "flake": false,
       "locked": {
-        "lastModified": 1762806182,
-        "narHash": "sha256-DaWjBPqkyOup6nZuwbzHOvZ1eURhJbG7Chpo8oZJ2xg=",
+        "lastModified": 1762959216,
+        "narHash": "sha256-p/nZIEXxZ8HfyigZMJaZPvlj8G1ptlpg+JUhI05hf2w=",
         "owner": "sudo-tee",
         "repo": "opencode.nvim",
-        "rev": "94a71c5640d2563de0d6c9cfe832905ed1e00e93",
+        "rev": "ce73d36f173556b4c8665526d0143a56815301ca",
         "type": "github"
       },
       "original": {
