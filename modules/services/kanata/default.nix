@@ -10,7 +10,7 @@ delib.module {
   options = delib.singleEnableOption (moduleSystem == "darwin");
 
   darwin.always.imports = [
-    ../../../extra/kanata-module.nix
+    ../../../extra/services/kanata.nix
   ];
 
   myconfig.ifEnabled.services.karabiner-dk.enable = true;
