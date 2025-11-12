@@ -52,7 +52,21 @@ delib.module {
         };
         taps = cfg.taps ++ (builtins.attrNames nixHomebrewTaps);
       };
-      system.primaryUser = myconfig.user.name;
+      system = {
+        defaults = {
+          dock = {
+            autohide = true;
+            orientation = "bottom";
+            showhidden = true;
+            tilesize = 50;
+          };
+          NSGlobalDomain = {
+            InitialKeyRepeat = 20;
+            KeyRepeat = 1;
+          };
+        };
+        primaryUser = myconfig.user.name;
+      };
       security.pam.services.sudo_local = {
         enable = true;
         reattach = true;
