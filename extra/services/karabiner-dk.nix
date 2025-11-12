@@ -1,4 +1,3 @@
-# TODO: switch to upstream once https://github.com/nix-darwin/nix-darwin/pull/1595 is merged
 {
   config,
   lib,
@@ -32,7 +31,8 @@ in
     };
     launchd.daemons.start-karabiner-dk = {
       script = ''
-        "${parentAppDir}/.Karabiner-VirtualHIDDevice-Manager.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Manager" activate
+        		spctl -a -vvv -t install "${parentAppDir}/.Karabiner-VirtualHIDDevice-Manager.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Manager"
+        		"${parentAppDir}/.Karabiner-VirtualHIDDevice-Manager.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Manager" activate
       '';
       serviceConfig.Label = "org.nixos.start-karabiner-dk";
       serviceConfig.RunAtLoad = true;
@@ -43,7 +43,7 @@ in
         "activate"
       ];
       serviceConfig.RunAtLoad = true;
-      managedBy = "auscybernix.keybinds.karabiner-driver-kit.enable";
+      managedBy = "services.karabiner-dk.enable";
     };
     system.activationScripts.postActivation.text = ''
       		launchctl kickstart -k system/org.pqrs.Karabiner-DriverKit-VirtualHIDDevice-Daemon

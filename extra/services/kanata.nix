@@ -1,4 +1,3 @@
-# Heavily inspire by https://github.com/NixOS/nixpkgs/blob/nixos-25.05/nixos/modules/services/hardware/kanata.nix
 {
   config,
   lib,
@@ -8,6 +7,8 @@
 let
   cfg = config.services.kanata;
 
+  kanataExec = "${lib.getExe cfg.package}";
+
   upstreamDoc =
     "See [the upstream documentation](https://github.com/jtroo/kanata/blob/main/docs/config.adoc)"
     + "and [example config files](https://github.com/jtroo/kanata/tree/main/cfg_samples) for more information.";
@@ -15,7 +16,7 @@ let
   mkSudoersConfig =
     name: keyboard:
     pkgs.runCommand "sudoers-kanata-${name}" { } ''
-      KANATA_BIN="${cfg.package}/bin/kanata"
+      KANATA_BIN=${kanataExec}
       SHASUM=$(sha256sum "$KANATA_BIN" | cut -d' ' -f1)
       cat <<EOF >"$out"
       ${config.system.primaryUser} ALL=(root) SETENV: NOPASSWD: sha256:$SHASUM $KANATA_BIN --cfg ${keyboard.configFile}
@@ -134,7 +135,7 @@ let
         ProgramArguments = [
           "/usr/bin/sudo"
           "-E"
-          "/run/current-system/sw/bin/kanata"
+          "${kanataExec}"
           "--cfg"
           "${keyboard.configFile}"
         ];
