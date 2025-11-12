@@ -11,8 +11,6 @@ delib.module {
     programs.opencode = {
       enable = true;
       settings = {
-        cursor_style = "line";
-
         keybinds = {
           sidebar_toggle = "ctrl+b";
           session_list = "ctrl+s";
