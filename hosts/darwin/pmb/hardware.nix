@@ -13,6 +13,7 @@ delib.host {
     system.stateVersion = "24.05";
   };
   darwin = {
+    networking.hostName = "pmb";
     nixpkgs.hostPlatform = "aarch64-darwin";
     system.stateVersion = 6;
   };
