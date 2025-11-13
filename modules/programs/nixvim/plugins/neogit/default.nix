@@ -2,13 +2,9 @@
 delib.module {
   name = "programs.nixvim.plugins.neogit";
 
-  options = with lib; {
-    enable = delib.singleEnableOption true;
-    gitService = mkOption {
-      type = types.nullOr types.str;
-      default = null;
-      description = "Custom git service hostname for GitHub Enterprise Server";
-    };
+  options.programs.nixvim.plugins.neogit = with delib; {
+    enable = boolOption true;
+    gitService = allowNull (strOption null);
   };
 
   home.ifEnabled =
