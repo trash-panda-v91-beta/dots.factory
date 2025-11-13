@@ -47,8 +47,10 @@ sync hostname=`hostname -s`:
   NIX_CONFIG="access-tokens = github.com=$GH_TOKEN" nh darwin switch . --hostname {{hostname}}
 
 # Update all flake inputs to their latest versions
-update:
-  nix flake update
+update input="":
+  #!/usr/bin/env bash
+  GH_TOKEN=$(op read "op://Private/dots.vault Read Access/password")
+  NIX_CONFIG="access-tokens = github.com=$GH_TOKEN" nix flake update {{input}}
 
 # Update flake inputs and sync configuration
 upgrade hostname=`hostname -s`:
