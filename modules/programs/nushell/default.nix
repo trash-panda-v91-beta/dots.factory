@@ -11,7 +11,11 @@ delib.module {
   };
 
   home.ifEnabled =
-    { cfg, myconfig, ... }:
+    {
+      cfg,
+      myconfig,
+      ...
+    }:
     {
       programs.nushell = {
         enable = cfg.enable;
@@ -26,6 +30,7 @@ delib.module {
         shellAliases = {
           nu-open = "open";
           open = "^open";
+          sync-dots = "with-env { NIX_CONFIG: $\"access-tokens = github.com=(op read 'op://Private/dots.vault Read Access/password')\" } { nh darwin switch 'github:trash-panda-v91-beta/dots.factory' --hostname ${myconfig.host.name} }";
         };
 
         environmentVariables = homeconfig.home.sessionVariables // {
