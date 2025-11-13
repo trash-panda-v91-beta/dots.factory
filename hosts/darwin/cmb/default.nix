@@ -1,5 +1,6 @@
 {
   delib,
+  inputs,
   ...
 }:
 delib.host {
@@ -24,6 +25,7 @@ delib.host {
       user.name = "CORPORATE_USER";
       programs = {
         git.userEmail = myconfig.user.email;
+        nixvim.plugins.neogit.gitService = inputs.vault.constants.corporate.gitService;
         nushell.enable = true;
       };
     };
