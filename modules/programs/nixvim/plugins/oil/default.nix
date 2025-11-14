@@ -1,4 +1,4 @@
-{delib, ...}:
+{ delib, ... }:
 delib.module {
   name = "programs.nixvim.plugins.oil";
 
