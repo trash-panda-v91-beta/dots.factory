@@ -10,33 +10,32 @@ delib.module {
     services = attrsOption { };
   };
 
-  home.ifEnabled=
+  home.ifEnabled =
     { cfg, ... }:
     {
-programs.lazygit={ 
-      enable = cfg.enable;
-      settings = {
-        customCommands = [
-          {
-            key = "o";
-            command = "gh pr view {{.SelectedLocalBranch.Name}} --web || gh pr create {{.SelectedLocalBranch.Name}} --web";
-            context = "remoteBranches";
-          }
-        ];
-        gui = {
-          border = "rounded";
-          nerdFontsVersion = 3;
-          showIcons = true;
-        };
-        keybinding = {
-          commits = {
-            moveDownCommit = "J";
-            moveUpCommit = "K";
+      programs.lazygit = {
+        enable = cfg.enable;
+        settings = {
+          customCommands = [
+            {
+              key = "o";
+              command = "gh pr view {{.SelectedLocalBranch.Name}} --web || gh pr create {{.SelectedLocalBranch.Name}} --web";
+              context = "remoteBranches";
+            }
+          ];
+          gui = {
+            border = "rounded";
+            nerdFontsVersion = 3;
+            showIcons = true;
           };
+          keybinding = {
+            commits = {
+              moveDownCommit = "J";
+              moveUpCommit = "K";
+            };
+          };
+          services = cfg.services;
         };
-        services = cfg.services;
-      };
       };
     };
 }
-

@@ -111,10 +111,10 @@
       };
 
       formatter = {
-        aarch64-darwin = inputs.nixpkgs.legacyPackages.aarch64-darwin.nixfmt-rfc-style;
-        x86_64-linux = inputs.nixpkgs.legacyPackages.x86_64-linux.nixfmt-rfc-style;
-        aarch64-linux = inputs.nixpkgs.legacyPackages.aarch64-linux.nixfmt-rfc-style;
-        x86_64-darwin = inputs.nixpkgs.legacyPackages.x86_64-darwin.nixfmt-rfc-style;
+        aarch64-darwin = inputs.nixpkgs.legacyPackages.aarch64-darwin.nixfmt-tree;
+        x86_64-linux = inputs.nixpkgs.legacyPackages.x86_64-linux.nixfmt-tree;
+        aarch64-linux = inputs.nixpkgs.legacyPackages.aarch64-linux.nixfmt-tree;
+        x86_64-darwin = inputs.nixpkgs.legacyPackages.x86_64-darwin.nixfmt-tree;
       };
     };
 }

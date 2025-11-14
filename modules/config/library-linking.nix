@@ -37,7 +37,7 @@ delib.module {
       # Run it in the applications script so it happens before launchd
       system.activationScripts.applications.text = lib.mkAfter ''
         echo "setting up library paths for apps..." >&2
-        
+
         if [ -d "${config.system.build.applications}/Library" ] || [ -e "${config.system.build.applications}/Library" ]; then
           rsyncFlags=(
             --checksum
