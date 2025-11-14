@@ -12,6 +12,13 @@ delib.module {
     programs.direnv = {
       enable = true;
       enableNushellIntegration = true;
+      nix-direnv = {
+        enable = true;
+      };
     };
+    programs.git.ignores = [
+      ".direnv"
+      ".envrc"
+    ];
   };
 }
