@@ -95,7 +95,6 @@
       homeConfigurations = mkConfigurations "home";
       darwinConfigurations = mkConfigurations "darwin";
 
-      # Add default package for nix build
       packages.aarch64-darwin.default = inputs.nixpkgs.legacyPackages.aarch64-darwin.stdenv.mkDerivation {
         name = "dots-factory";
         version = "0.1.0";
@@ -109,6 +108,13 @@
           description = "dot.factory configuration system";
           mainProgram = "dots-factory";
         };
+      };
+
+      formatter = {
+        aarch64-darwin = inputs.nixpkgs.legacyPackages.aarch64-darwin.nixfmt-rfc-style;
+        x86_64-linux = inputs.nixpkgs.legacyPackages.x86_64-linux.nixfmt-rfc-style;
+        aarch64-linux = inputs.nixpkgs.legacyPackages.aarch64-linux.nixfmt-rfc-style;
+        x86_64-darwin = inputs.nixpkgs.legacyPackages.x86_64-darwin.nixfmt-rfc-style;
       };
     };
 }
