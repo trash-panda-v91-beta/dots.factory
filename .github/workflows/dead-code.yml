@@ -1,0 +1,102 @@
+---
+name: "Dead Code"
+
+on:
+  schedule:
+    # Run every Monday at 9 AM UTC
+    - cron: "0 9 * * 1"
+  workflow_dispatch:
+
+jobs:
+  scan:
+    name: "Scan for Dead Code"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v31
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+            accept-flake-config = true
+
+      - name: Setup Cachix
+        uses: cachix/cachix-action@v15
+        with:
+          name: dotsfactory
+          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+
+      - name: Run deadnix
+        id: deadnix
+        continue-on-error: true
+        run: |
+          nix run nixpkgs#deadnix -- --fail . > deadnix-report.txt 2>&1 || true
+          if [ -s deadnix-report.txt ]; then
+            echo "found=true" >> $GITHUB_OUTPUT
+            cat deadnix-report.txt
+          else
+            echo "found=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Check for unused flake inputs
+        id: unused-inputs
+        continue-on-error: true
+        run: |
+          echo "Checking for unused flake inputs..."
+          nix flake metadata --json > metadata.json
+
+          echo "Flake inputs:" > unused-inputs-report.txt
+          cat metadata.json | nix run nixpkgs#jq -- -r '.locks.nodes | keys[]' | grep -v "root" >> unused-inputs-report.txt || true
+
+          if [ -s unused-inputs-report.txt ]; then
+            echo "found=true" >> $GITHUB_OUTPUT
+            cat unused-inputs-report.txt
+          else
+            echo "found=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create issue if problems found
+        if: steps.deadnix.outputs.found == 'true' || steps.unused-inputs.outputs.found == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |-
+          existing_issue=$(gh issue list --label "dead-code" --state open --json number --jq '.[0].number')
+
+          # Prepare issue body
+          cat > issue-body.md << 'EOF'
+          ## Dead Code Detection Report
+
+          The automated dead code detection workflow found potential issues:
+
+          EOF
+
+          if [ "${{ steps.deadnix.outputs.found }}" == "true" ]; then
+            echo "### 🔍 Deadnix - Unused Nix Code" >> issue-body.md
+            echo "\`\`\`" >> issue-body.md
+            cat deadnix-report.txt >> issue-body.md
+            echo "\`\`\`" >> issue-body.md
+            echo "" >> issue-body.md
+          fi
+
+          if [ "${{ steps.orphaned-files.outputs.found }}" == "true" ]; then
+            echo "### 📁 Potentially Orphaned Files" >> issue-body.md
+            echo "\`\`\`" >> issue-body.md
+            cat orphaned-report.txt >> issue-body.md
+            echo "\`\`\`" >> issue-body.md
+            echo "" >> issue-body.md
+          fi
+
+          echo "Workflow run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" >> issue-body.md
+
+          if [ -n "$existing_issue" ]; then
+            echo "Updating existing issue #$existing_issue"
+            gh issue comment "$existing_issue" --body-file issue-body.md
+          else
+            echo "Creating new issue"
+            gh issue create \
+              --title "Dead Code Detection: Issues Found on $(date +%Y-%m-%d)" \
+              --body-file issue-body.md \
+              --label "dead-code"
+          fi

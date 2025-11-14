@@ -1,11 +1,16 @@
-name: "Update flakes"
+---
+name: "Update Flake"
+
 on:
+  schedule:
+    # Run daily at midnight UTC
+    - cron: "0 0 * * *"
   repository_dispatch:
   workflow_dispatch:
-  schedule:
-    - cron: "0 0 * * *"
+
 jobs:
   update-flake-lock:
+    name: "Update Flake Lock"
     runs-on: ubuntu-latest
     steps:
       - name: Create GitHub App token
@@ -31,7 +36,8 @@ jobs:
             echo "name=$name"
             echo "email=$id+$name@users.noreply.github.com"
           } >> "$GITHUB_OUTPUT"
-      - uses: actions/checkout@v5
+      - name: Checkout repository
+        uses: actions/checkout@v5
       - name: Setup Git
         env:
           GIT_USER_NAME: ${{ steps.user-info.outputs.name }}
@@ -65,5 +71,5 @@ jobs:
 
             [update-flake-lock]: https://github.com/DeterminateSystems/update-flake-lock
             [${{ github.run_id }}]: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-          pr-labels: |
+          pr-labels: |-
             merge-queue

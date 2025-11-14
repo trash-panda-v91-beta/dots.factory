@@ -1,0 +1,165 @@
+---
+name: "Security"
+
+on:
+  schedule:
+    # Run every Monday at 10 AM UTC
+    - cron: "0 10 * * 1"
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  secrets:
+    name: "Scan for Secrets"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Run Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  vulnerabilities:
+    name: "Scan for Vulnerabilities"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v31
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+            accept-flake-config = true
+
+      - name: Setup Cachix
+        uses: cachix/cachix-action@v15
+        with:
+          name: dotsfactory
+          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+
+      - name: Scan with vulnix
+        id: vulnix
+        continue-on-error: true
+        run: |
+          echo "Installing vulnix..."
+          nix profile install nixpkgs#vulnix
+
+          echo "Building system closure for vulnerability scanning..."
+          echo "Scanning pmb configuration..."
+          nix build .#darwinConfigurations.pmb.system --no-link --print-out-paths > system-path.txt
+          system_path=$(cat system-path.txt)
+
+          echo "Running vulnix scan..." > vulnix-report.txt
+          vulnix --system "$system_path" >> vulnix-report.txt 2>&1 || {
+            echo "found=true" >> $GITHUB_OUTPUT
+            cat vulnix-report.txt
+            exit 0
+          }
+
+          echo "found=false" >> $GITHUB_OUTPUT
+          echo "No vulnerabilities found!" | tee vulnix-report.txt
+
+      - name: Check for insecure Nix settings
+        id: nix-check
+        continue-on-error: true
+        run: |
+          echo "Checking for insecure Nix configurations..." > nix-check-report.txt
+
+          # Check for allow-unfree without proper controls
+          if grep -r "allowUnfree = true" . --include="*.nix" 2>/dev/null; then
+            echo "⚠️  Found allowUnfree settings - ensure this is intentional" >> nix-check-report.txt
+          fi
+
+          # Check for insecure packages
+          if grep -r "permittedInsecurePackages" . --include="*.nix" 2>/dev/null; then
+            echo "⚠️  Found permittedInsecurePackages - review these exceptions:" >> nix-check-report.txt
+            grep -r "permittedInsecurePackages" . --include="*.nix" >> nix-check-report.txt
+          fi
+
+          # Check for disabled sandbox
+          if grep -r "sandbox = false" . --include="*.nix" 2>/dev/null; then
+            echo "🚨 Found disabled sandbox - this is a security risk!" >> nix-check-report.txt
+          fi
+
+          if [ $(wc -l < nix-check-report.txt) -gt 1 ]; then
+            echo "found=true" >> $GITHUB_OUTPUT
+            cat nix-check-report.txt
+          else
+            echo "found=false" >> $GITHUB_OUTPUT
+            echo "No insecure Nix settings found!" | tee nix-check-report.txt
+          fi
+
+      - name: Upload scan results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-scan-results
+          path: |
+            vulnix-report.txt
+            nix-check-report.txt
+          retention-days: 90
+
+      - name: Create issue if vulnerabilities found
+        if: github.event_name == 'schedule' && (steps.vulnix.outputs.found == 'true' || steps.nix-check.outputs.found == 'true')
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          existing_issue=$(gh issue list --label "security" --state open --json number --jq '.[0].number')
+
+          cat > issue-body.md << 'EOF'
+          ## 🔒 Security Scan Report
+
+          The automated security scanning workflow found potential vulnerabilities:
+
+          EOF
+
+          if [ "${{ steps.vulnix.outputs.found }}" == "true" ]; then
+            echo "### 🐛 Vulnix - Known CVEs" >> issue-body.md
+            echo "\`\`\`" >> issue-body.md
+            cat vulnix-report.txt >> issue-body.md
+            echo "\`\`\`" >> issue-body.md
+            echo "" >> issue-body.md
+          fi
+
+          if [ "${{ steps.nix-check.outputs.found }}" == "true" ]; then
+            echo "### ⚙️ Nix Configuration Issues" >> issue-body.md
+            echo "\`\`\`" >> issue-body.md
+            cat nix-check-report.txt >> issue-body.md
+            echo "\`\`\`" >> issue-body.md
+            echo "" >> issue-body.md
+          fi
+
+          echo "---" >> issue-body.md
+          echo "**Action Items:**" >> issue-body.md
+          echo "- Review the vulnerabilities listed above" >> issue-body.md
+          echo "- Update affected packages where possible" >> issue-body.md
+          echo "- Document any accepted risks" >> issue-body.md
+          echo "" >> issue-body.md
+          echo "Workflow run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" >> issue-body.md
+
+          if [ -n "$existing_issue" ]; then
+            echo "Updating existing issue #$existing_issue"
+            gh issue comment "$existing_issue" --body-file issue-body.md
+          else
+            echo "Creating new issue"
+            gh issue create \
+              --title "Security Scan: Vulnerabilities Found on $(date +%Y-%m-%d)" \
+              --body-file issue-body.md \
+              --label "security" \
+              --label "high-priority"
+          fi
+
+      - name: Fail on critical vulnerabilities in PRs
+        if: github.event_name == 'pull_request' && steps.vulnix.outputs.found == 'true'
+        run: |-
+          echo "::warning::Security vulnerabilities detected! Review the scan results above."
+          exit 1
