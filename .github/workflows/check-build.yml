@@ -117,7 +117,6 @@ jobs:
   build:
     name: "Build (${{ matrix.system }}/${{ matrix.host }})"
     runs-on: ${{ matrix.runner }}
-    if: github.ref == 'refs/heads/main'
     permissions:
       actions: write
       contents: read
