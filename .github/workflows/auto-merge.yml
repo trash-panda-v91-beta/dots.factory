@@ -16,6 +16,8 @@ on:
 jobs:
   enable:
     name: "Enable Auto Merge"
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
     if: contains(github.event.pull_request.labels.*.name, 'merge-queue')
     steps:
