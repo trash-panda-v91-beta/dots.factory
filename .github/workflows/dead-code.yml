@@ -22,12 +22,6 @@ jobs:
             experimental-features = nix-command flakes
             accept-flake-config = true
 
-      - name: Setup Cachix
-        uses: cachix/cachix-action@v15
-        with:
-          name: dotsfactory
-          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-
       - name: Run deadnix
         id: deadnix
         continue-on-error: true
@@ -43,6 +37,8 @@ jobs:
       - name: Check for unused flake inputs
         id: unused-inputs
         continue-on-error: true
+        env:
+          NIX_CONFIG: "access-tokens = github.com=${{ secrets.VAULT_READ_TOKEN }}"
         run: |
           echo "Checking for unused flake inputs..."
           nix flake metadata --json > metadata.json
