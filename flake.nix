@@ -91,24 +91,9 @@
         };
     in
     {
-      nixosConfigurations = mkConfigurations "nixos";
-      homeConfigurations = mkConfigurations "home";
       darwinConfigurations = mkConfigurations "darwin";
-
-      packages.aarch64-darwin.default = inputs.nixpkgs.legacyPackages.aarch64-darwin.stdenv.mkDerivation {
-        name = "dots-factory";
-        version = "0.1.0";
-        src = ./.;
-        installPhase = ''
-          mkdir -p "$out"/bin
-          echo "echo 'dots.factory configuration system'" >"$out"/bin/dots-factory
-          chmod +x "$out"/bin/dots-factory
-        '';
-        meta = {
-          description = "dot.factory configuration system";
-          mainProgram = "dots-factory";
-        };
-      };
+      homeConfigurations = mkConfigurations "home";
+      nixosConfigurations = mkConfigurations "nixos";
 
       formatter = {
         aarch64-darwin = inputs.nixpkgs.legacyPackages.aarch64-darwin.nixfmt-tree;
