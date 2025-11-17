@@ -12,6 +12,9 @@ jobs:
   flake-check:
     name: "Check Flake"
     runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -22,6 +25,16 @@ jobs:
           extra_nix_config: |
             experimental-features = nix-command flakes
             accept-flake-config = true
+
+      - name: Cache Nix store
+        uses: nix-community/cache-nix-action@v6
+        with:
+          primary-key: nix-${{ runner.os }}-flake-check-${{ hashFiles('**/*.nix', '**/flake.lock') }}
+          restore-prefixes-first-match: nix-${{ runner.os }}-flake-check-
+          gc-max-store-size-linux: 5G
+          purge: true
+          purge-prefixes: nix-${{ runner.os }}-flake-check-
+          purge-created: 604800
 
       - name: Check flake
         env:
@@ -31,6 +44,9 @@ jobs:
   format-check:
     name: "Check Formatting"
     runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -42,6 +58,16 @@ jobs:
             experimental-features = nix-command flakes
             accept-flake-config = true
 
+      - name: Cache Nix store
+        uses: nix-community/cache-nix-action@v6
+        with:
+          primary-key: nix-${{ runner.os }}-format-${{ hashFiles('**/*.nix', '**/flake.lock') }}
+          restore-prefixes-first-match: nix-${{ runner.os }}-format-
+          gc-max-store-size-linux: 5G
+          purge: true
+          purge-prefixes: nix-${{ runner.os }}-format-
+          purge-created: 604800
+
       - name: Check formatting
         run: |
           nix fmt -- --fail-on-change .
@@ -49,6 +75,9 @@ jobs:
   validate:
     name: "Validate (${{ matrix.system }}/${{ matrix.host }})"
     runs-on: ${{ matrix.runner }}
+    permissions:
+      actions: write
+      contents: read
     strategy:
       matrix:
         include:
@@ -67,6 +96,16 @@ jobs:
             experimental-features = nix-command flakes
             accept-flake-config = true
 
+      - name: Cache Nix store
+        uses: nix-community/cache-nix-action@v6
+        with:
+          primary-key: nix-${{ runner.os }}-validate-${{ matrix.host }}-${{ hashFiles('**/*.nix', '**/flake.lock') }}
+          restore-prefixes-first-match: nix-${{ runner.os }}-validate-${{ matrix.host }}-
+          gc-max-store-size-macos: 5G
+          purge: true
+          purge-prefixes: nix-${{ runner.os }}-validate-${{ matrix.host }}-
+          purge-created: 604800
+
       - name: Evaluate ${{ matrix.host }} configuration
         env:
           NIX_CONFIG: "access-tokens = github.com=${{ secrets.VAULT_READ_TOKEN }}"
@@ -79,6 +118,9 @@ jobs:
     name: "Build (${{ matrix.system }}/${{ matrix.host }})"
     runs-on: ${{ matrix.runner }}
     if: github.ref == 'refs/heads/main'
+    permissions:
+      actions: write
+      contents: read
     strategy:
       matrix:
         include:
@@ -96,6 +138,16 @@ jobs:
           extra_nix_config: |
             experimental-features = nix-command flakes
             accept-flake-config = true
+
+      - name: Cache Nix store
+        uses: nix-community/cache-nix-action@v6
+        with:
+          primary-key: nix-${{ runner.os }}-build-${{ matrix.host }}-${{ hashFiles('**/*.nix', '**/flake.lock') }}
+          restore-prefixes-first-match: nix-${{ runner.os }}-build-${{ matrix.host }}-
+          gc-max-store-size-macos: 5G
+          purge: true
+          purge-prefixes: nix-${{ runner.os }}-build-${{ matrix.host }}-
+          purge-created: 604800
 
       - name: Setup Cachix (with push)
         uses: cachix/cachix-action@v15
