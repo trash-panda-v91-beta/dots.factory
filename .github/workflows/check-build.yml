@@ -111,7 +111,7 @@ jobs:
           NIX_CONFIG: "access-tokens = github.com=${{ secrets.VAULT_READ_TOKEN }}"
         run: |-
           echo "Evaluating configuration for ${{ matrix.host }} (${{ matrix.system }})..."
-          nix eval .#${{ matrix.system }}Configurations.${{ matrix.host }}.system.config.system.build.toplevel --apply 'x: "Configuration evaluates successfully"'
+          nix eval .#${{ matrix.system }}Configurations.${{ matrix.host }}.system --apply 'x: "Configuration evaluates successfully"'
           echo "✓ Configuration evaluation successful"
 
   build:
