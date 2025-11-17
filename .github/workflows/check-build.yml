@@ -47,12 +47,14 @@ jobs:
           nix fmt -- --fail-on-change .
 
   validate:
-    name: "Validate (${{ matrix.host }})"
-    runs-on: ubuntu-latest
+    name: "Validate (${{ matrix.system }}/${{ matrix.host }})"
+    runs-on: ${{ matrix.runner }}
     strategy:
       matrix:
-        host:
-          - cmb
+        include:
+          - host: cmb
+            system: darwin
+            runner: macos-latest
       fail-fast: false
     steps:
       - name: Checkout repository
@@ -69,18 +71,20 @@ jobs:
         env:
           NIX_CONFIG: "access-tokens = github.com=${{ secrets.VAULT_READ_TOKEN }}"
         run: |-
-          echo "Evaluating configuration for ${{ matrix.host }}..."
-          nix eval .#darwinConfigurations.${{ matrix.host }}.system.config.system.build.toplevel --apply 'x: "Configuration evaluates successfully"'
+          echo "Evaluating configuration for ${{ matrix.host }} (${{ matrix.system }})..."
+          nix eval .#${{ matrix.system }}Configurations.${{ matrix.host }}.system.config.system.build.toplevel --apply 'x: "Configuration evaluates successfully"'
           echo "✓ Configuration evaluation successful"
 
   build:
-    name: "Build (${{ matrix.host }})"
-    runs-on: ubuntu-latest
+    name: "Build (${{ matrix.system }}/${{ matrix.host }})"
+    runs-on: ${{ matrix.runner }}
     if: github.ref == 'refs/heads/main'
     strategy:
       matrix:
-        host:
-          - pmb
+        include:
+          - host: pmb
+            system: darwin
+            runner: macos-latest
       fail-fast: false
     steps:
       - name: Checkout repository
@@ -103,6 +107,6 @@ jobs:
         env:
           NIX_CONFIG: "access-tokens = github.com=${{ secrets.VAULT_READ_TOKEN }}"
         run: |-
-          echo "Building configuration for ${{ matrix.host }}..."
-          nix build .#darwinConfigurations.${{ matrix.host }}.system --print-out-paths
+          echo "Building configuration for ${{ matrix.host }} (${{ matrix.system }})..."
+          nix build .#${{ matrix.system }}Configurations.${{ matrix.host }}.system --print-out-paths
           echo "✓ Build successful, pushed to Cachix"
