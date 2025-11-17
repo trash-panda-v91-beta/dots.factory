@@ -67,7 +67,6 @@ delib.module {
             "shfmt"
           ];
           css = [ "stylelint" ];
-          fish = [ "fish_indent" ];
           javascript = {
             __unkeyed-1 = "prettierd";
             __unkeyed-2 = "biome";
