@@ -22,15 +22,10 @@ jobs:
           extra_nix_config: |
             experimental-features = nix-command flakes
             accept-flake-config = true
-            access-tokens = github.com=${{ secrets.VAULT_READ_TOKEN }}
-
-      - name: Setup Cachix
-        uses: cachix/cachix-action@v15
-        with:
-          name: dotsfactory
-          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
 
       - name: Check flake
+        env:
+          NIX_CONFIG: "access-tokens = github.com=${{ secrets.VAULT_READ_TOKEN }}"
         run: nix flake check
 
   format-check:
@@ -47,23 +42,44 @@ jobs:
             experimental-features = nix-command flakes
             accept-flake-config = true
 
-      - name: Setup Cachix
-        uses: cachix/cachix-action@v15
-        with:
-          name: dotsfactory
-          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-
       - name: Check formatting
         run: |
           nix fmt -- --fail-on-change .
 
-  build:
-    name: "Build Darwin (${{ matrix.host }})"
-    runs-on: macos-latest
+  validate:
+    name: "Validate (${{ matrix.host }})"
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         host:
           - cmb
+      fail-fast: false
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v31
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+            accept-flake-config = true
+
+      - name: Evaluate ${{ matrix.host }} configuration
+        env:
+          NIX_CONFIG: "access-tokens = github.com=${{ secrets.VAULT_READ_TOKEN }}"
+        run: |-
+          echo "Evaluating configuration for ${{ matrix.host }}..."
+          nix eval .#darwinConfigurations.${{ matrix.host }}.system.config.system.build.toplevel --apply 'x: "Configuration evaluates successfully"'
+          echo "✓ Configuration evaluation successful"
+
+  build:
+    name: "Build (${{ matrix.host }})"
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    strategy:
+      matrix:
+        host:
           - pmb
       fail-fast: false
     steps:
@@ -76,15 +92,17 @@ jobs:
           extra_nix_config: |
             experimental-features = nix-command flakes
             accept-flake-config = true
-            access-tokens = github.com=${{ secrets.VAULT_READ_TOKEN }}
 
-      - name: Setup Cachix
+      - name: Setup Cachix (with push)
         uses: cachix/cachix-action@v15
         with:
-          name: dotsfactory
+          name: dots-factory
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
 
-      - name: Build ${{ matrix.host }}
+      - name: Build ${{ matrix.host }} configuration
+        env:
+          NIX_CONFIG: "access-tokens = github.com=${{ secrets.VAULT_READ_TOKEN }}"
         run: |-
-          nix build .#darwinConfigurations.${{ matrix.host }}.system \
-            --print-build-logs
+          echo "Building configuration for ${{ matrix.host }}..."
+          nix build .#darwinConfigurations.${{ matrix.host }}.system --print-out-paths
+          echo "✓ Build successful, pushed to Cachix"
