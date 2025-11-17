@@ -9,6 +9,8 @@ on:
 jobs:
   secrets:
     name: "Scan for Secrets"
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
