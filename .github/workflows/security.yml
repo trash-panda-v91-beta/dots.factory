@@ -27,8 +27,13 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   vulnerabilities:
-    name: "Scan for Vulnerabilities"
-    runs-on: ubuntu-latest
+    name: "Scan for Vulnerabilities - ${{ matrix.system }}"
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      matrix:
+        include:
+          - system: pmb
+            runner: macos-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -50,8 +55,8 @@ jobs:
           nix profile install nixpkgs#vulnix
 
           echo "Building system closure for vulnerability scanning..."
-          echo "Scanning pmb configuration..."
-          nix build .#darwinConfigurations.pmb.system --no-link --print-out-paths > system-path.txt
+          echo "Scanning ${{ matrix.system }} configuration..."
+          nix build .#darwinConfigurations.${{ matrix.system }}.system --no-link --print-out-paths > system-path.txt
           system_path=$(cat system-path.txt)
 
           echo "Running vulnix scan..." > vulnix-report.txt
@@ -98,7 +103,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: security-scan-results
+          name: security-scan-results-${{ matrix.system }}
           path: |
             vulnix-report.txt
             nix-check-report.txt
