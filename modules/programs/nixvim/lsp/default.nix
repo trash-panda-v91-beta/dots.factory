@@ -36,7 +36,7 @@ delib.module {
       biome.enable = true;
       dockerls.enable = true;
       eslint.enable = true;
-      fish_lsp.enable = true;
+      fish_lsp.enable = false;
       gopls.enable = true;
       harper_ls = {
         enable = true;
