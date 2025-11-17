@@ -11,6 +11,10 @@ jobs:
   scan:
     name: "Scan for Dead Code"
     runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: read
+      issues: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -21,6 +25,16 @@ jobs:
           extra_nix_config: |
             experimental-features = nix-command flakes
             accept-flake-config = true
+
+      - name: Cache Nix store
+        uses: nix-community/cache-nix-action@v6
+        with:
+          primary-key: nix-${{ runner.os }}-dead-code-${{ hashFiles('**/*.nix', '**/flake.lock') }}
+          restore-prefixes-first-match: nix-${{ runner.os }}-dead-code-
+          gc-max-store-size-linux: 5G
+          purge: true
+          purge-prefixes: nix-${{ runner.os }}-dead-code-
+          purge-created: 604800
 
       - name: Run deadnix
         id: deadnix

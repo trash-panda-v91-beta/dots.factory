@@ -29,6 +29,10 @@ jobs:
   vulnerabilities:
     name: "Scan for Vulnerabilities - ${{ matrix.system }}"
     runs-on: ${{ matrix.runner }}
+    permissions:
+      actions: write
+      contents: read
+      issues: write
     strategy:
       matrix:
         include:
@@ -44,6 +48,16 @@ jobs:
           extra_nix_config: |
             experimental-features = nix-command flakes
             accept-flake-config = true
+
+      - name: Cache Nix store
+        uses: nix-community/cache-nix-action@v6
+        with:
+          primary-key: nix-${{ runner.os }}-security-${{ matrix.system }}-${{ hashFiles('**/*.nix', '**/flake.lock') }}
+          restore-prefixes-first-match: nix-${{ runner.os }}-security-${{ matrix.system }}-
+          gc-max-store-size-macos: 5G
+          purge: true
+          purge-prefixes: nix-${{ runner.os }}-security-${{ matrix.system }}-
+          purge-created: 604800
 
       - name: Scan with vulnix
         id: vulnix
