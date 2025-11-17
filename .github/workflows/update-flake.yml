@@ -19,7 +19,7 @@ jobs:
       issues: write
     steps:
       - name: Create GitHub App token
-        uses: actions/create-github-app-token@v2
+        uses: actions/create-github-app-token@67018539274d69449ef7c02e8e71183d1719ab42 # v2
         id: app-token
         with:
           app-id: ${{ vars.CI_APP_ID }}
@@ -42,7 +42,7 @@ jobs:
             echo "email=$id+$name@users.noreply.github.com"
           } >> "$GITHUB_OUTPUT"
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
       - name: Setup Git
         env:
           GIT_USER_NAME: ${{ steps.user-info.outputs.name }}
@@ -51,14 +51,14 @@ jobs:
           git config user.name "$GIT_USER_NAME"
           git config user.email "$GIT_USER_EMAIL"
       - name: Install Nix
-        uses: cachix/install-nix-action@v31
+        uses: cachix/install-nix-action@fd24c48048070c1be9acd18c9d369a83f0fe94d7 # v31
         with:
           extra_nix_config: |
             experimental-features = nix-command flakes
             accept-flake-config = true
 
       - name: Cache Nix store
-        uses: nix-community/cache-nix-action@v6
+        uses: nix-community/cache-nix-action@135667ec418502fa5a3598af6fb9eb733888ce6a # v6
         with:
           primary-key: nix-${{ runner.os }}-update-flake-${{ hashFiles('**/flake.lock') }}
           restore-prefixes-first-match: nix-${{ runner.os }}-update-flake-
@@ -68,7 +68,7 @@ jobs:
           purge-created: 604800
 
       - name: Update flake.lock
-        uses: DeterminateSystems/update-flake-lock@v27
+        uses: DeterminateSystems/update-flake-lock@c5930b397a673a70ca70be06020e943aeac310a1 # v27
         env:
           NIX_CONFIG: "access-tokens = github.com=${{ steps.app-token.outputs.token }}"
         with:

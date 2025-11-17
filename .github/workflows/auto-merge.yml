@@ -22,7 +22,7 @@ jobs:
     if: contains(github.event.pull_request.labels.*.name, 'merge-queue')
     steps:
       - name: Create GitHub App token
-        uses: actions/create-github-app-token@v2
+        uses: actions/create-github-app-token@67018539274d69449ef7c02e8e71183d1719ab42 # v2
         id: app-token
         with:
           app-id: ${{ vars.CI_APP_ID }}
