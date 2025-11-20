@@ -52,12 +52,6 @@ delib.module {
 
         bind -n M-w last-window
 
-        bind -T copy-mode-vi 'C-h' select-pane -L
-        bind -T copy-mode-vi 'C-j' select-pane -D
-        bind -T copy-mode-vi 'C-k' select-pane -U
-        bind -T copy-mode-vi 'C-l' select-pane -R
-        bind -T copy-mode-vi 'C-\' select-pane -l
-
         set-option -g focus-events on
         set -gu default-command
       '';
