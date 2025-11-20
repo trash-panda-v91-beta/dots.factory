@@ -1,4 +1,4 @@
-{ delib, ... }:
+{ delib, pkgs, ... }:
 delib.module {
   name = "programs.nixvim.plugins.tmux-navigator";
 
@@ -9,7 +9,12 @@ delib.module {
         enable = boolOption myconfig.programs.tmux.enable;
       };
     };
-  home.ifEnabled.programs.nixvim.plugins.tmux-navigator = {
-    enable = true;
+  home.ifEnabled.programs = {
+    tmux.plugins = with pkgs.tmuxPlugins; [
+      vim-tmux-navigator
+    ];
+    nixvim.plugins.tmux-navigator = {
+      enable = true;
+    };
   };
 }
