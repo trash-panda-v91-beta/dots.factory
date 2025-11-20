@@ -7,10 +7,33 @@
 delib.module {
   name = "programs.sesh";
 
-  options = delib.singleEnableOption true;
+  options.programs.sesh = with delib; {
+    enable = boolOption true;
+
+    sessions = listOfOption attrs [ ];
+    windows = listOfOption attrs [ ];
+  };
 
   home.ifEnabled =
-    { myconfig, ... }:
+    {
+      cfg,
+      myconfig,
+      ...
+    }:
+    let
+      defaultSessions = [
+        {
+          name = "hack";
+          path = "~";
+        }
+      ];
+      defaultWindows = [
+        {
+          name = "sidekick";
+          startup_script = "opencode";
+        }
+      ];
+    in
     {
       programs = {
         ghostty.settings.command = "env PATH=\"${lib.concatStringsSep ":" myconfig.constants.path}:$PATH\" ${pkgs.lib.getExe pkgs.sesh} connect hack";
@@ -20,60 +43,8 @@ delib.module {
           enableAlias = false;
           enableTmuxIntegration = false;
           settings = {
-            default_session = {
-              preview_command = "";
-            };
-            session = [
-              {
-                name = "asc";
-                path = "~";
-                startup_command = "ssh asc.internal";
-              }
-              {
-                name = "dots";
-                path = "~/repos/personal/dots.factory";
-                startup_command = "nvim";
-              }
-              {
-                name = "dots (sidekick)";
-                path = "~/repos/personal/dots.factory";
-                startup_command = "opencode";
-              }
-              {
-                name = "nebular grid";
-                path = "~/repos/personal/nebular-grid";
-                startup_command = "nvim";
-              }
-              {
-                name = "nebular grid (sidekick)";
-                path = "~/repos/personal/nebular-grid";
-                startup_command = "opencode";
-              }
-              {
-                name = "notes";
-                path = "~/notes";
-                startup_command = "nvim";
-              }
-              {
-                name = "notes (sidekick)";
-                path = "~/notes";
-                startup_command = "sidekick";
-              }
-              {
-                name = "hack";
-                path = "~";
-              }
-              {
-                name = "psb";
-                path = "~/repos/personal/nebular-grid";
-                startup_command = "k9s";
-              }
-              {
-                name = "sidekick";
-                path = "~";
-                startup_command = "opencode";
-              }
-            ];
+            session = defaultSessions ++ cfg.sessions;
+            window = defaultWindows ++ cfg.windows;
           };
         };
         tmux.extraConfig = ''
