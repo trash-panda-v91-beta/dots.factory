@@ -1,5 +1,6 @@
 {
   delib,
+  pkgs,
   ...
 }:
 delib.module {
@@ -21,5 +22,9 @@ delib.module {
         };
       };
     };
+
+    programs.tmux.extraConfig = ''
+      bind -n M-i new-window "${pkgs.lib.getExe pkgs.opencode}"
+    '';
   };
 }

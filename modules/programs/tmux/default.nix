@@ -50,6 +50,8 @@ delib.module {
         bind -T copy-mode Escape send-keys -X cancel
         bind -T copy-mode-vi Escape send-keys -X cancel
 
+        bind -n M-w last-window
+
         bind -T copy-mode-vi 'C-h' select-pane -L
         bind -T copy-mode-vi 'C-j' select-pane -D
         bind -T copy-mode-vi 'C-k' select-pane -U

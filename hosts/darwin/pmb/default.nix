@@ -28,6 +28,38 @@ delib.host {
     programs = {
       git.userEmail = "42897550+trash-panda-v91-beta@users.noreply.github.com";
       nushell.enable = true;
+      sesh = {
+        sessions = [
+          {
+            name = "asc";
+            path = "~";
+            startup_command = "ssh asc.internal";
+          }
+          {
+            name = "dots";
+            path = "~/repos/personal/dots.factory";
+            startup_command = "nvim";
+            windows = [ "sidekick" ];
+          }
+          {
+            name = "nebular grid";
+            path = "~/repos/personal/nebular-grid";
+            startup_command = "nvim";
+            windows = [ "sidekick" ];
+          }
+          {
+            name = "notes";
+            path = "~/notes";
+            startup_command = "nvim";
+            windows = [ "sidekick" ];
+          }
+          {
+            name = "psb";
+            path = "~/repos/personal/nebular-grid";
+            startup_command = "k9s";
+          }
+        ];
+      };
     };
   };
 }
