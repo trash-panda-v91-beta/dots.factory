@@ -9,7 +9,7 @@ delib.module {
       filetypes = [
         "codecompanion"
         "markdown"
-        "opencode-nvim"
+        "opencode_output"
       ];
     in
     {
