@@ -1,44 +1,497 @@
-{ delib, ... }:
+{
+  delib,
+  lib,
+  pkgs,
+  ...
+}:
+let
+  mkBlinkPlugin =
+    {
+      enable ? true,
+      ...
+    }@args:
+    {
+      inherit enable;
+      lazyLoad.settings.event = [
+        "InsertEnter"
+        "CmdlineEnter"
+      ];
+    }
+    // (builtins.removeAttrs args [ "enable" ]);
+in
 delib.module {
   name = "programs.nixvim.plugins.blink-cmp";
 
   options = delib.singleEnableOption true;
 
-  home.ifEnabled.programs.nixvim.plugins.blink-cmp = {
-    enable = true;
+  home.ifEnabled.programs.nixvim = {
+    plugins = {
+      blink-cmp-dictionary = mkBlinkPlugin { };
+      blink-cmp-git = mkBlinkPlugin { };
+      blink-cmp-spell = mkBlinkPlugin { };
+      blink-emoji = mkBlinkPlugin { };
+      blink-ripgrep = mkBlinkPlugin { };
+    };
 
-    lazyLoad.settings.event = [
-      "CmdlineEnter"
-      "InsertEnter"
+    extraPackages = with pkgs; [
+      gh
+      wordnet
     ];
-    settings = {
-      completion = {
-        list = {
-          selection = {
-            auto_insert = true;
+
+    extraPlugins = with pkgs.vimPlugins; [
+      blink-cmp-conventional-commits
+      blink-cmp-npm-nvim
+      blink-cmp-yanky
+    ];
+    plugins.blink-cmp = {
+      enable = true;
+
+      lazyLoad.settings.event = [
+        "InsertEnter"
+        "CmdlineEnter"
+      ];
+
+      settings = {
+        cmdline = {
+          completion = {
+            list.selection = {
+              preselect = false;
+            };
+            menu.auto_show = true;
+          };
+          keymap = {
+            preset = "enter";
+            "<CR>" = [
+              "accept_and_enter"
+              "fallback"
+            ];
+          };
+        };
+
+        completion = {
+          keyword = {
+            range = "full";
+          };
+
+          trigger = {
+            prefetch_on_insert = true;
+            show_on_backspace = true;
+          };
+
+          ghost_text.enabled = true;
+
+          accept.auto_brackets = {
+            override_brackets_for_filetypes = {
+              lua = [
+                "{"
+                "}"
+              ];
+              nix = [
+                "{"
+                "}"
+              ];
+            };
+          };
+
+          documentation = {
+            auto_show = true;
+            auto_show_delay_ms = 200;
+            window.border = "rounded";
+          };
+
+          list.selection = {
+            auto_insert = false;
             preselect = false;
+          };
+
+          menu = {
+            border = "rounded";
+            direction_priority.__raw = ''
+              function()
+                local ctx = require('blink.cmp').get_context()
+                local item = require('blink.cmp').get_selected_item()
+                if ctx == nil or item == nil then return { 's', 'n' } end
+
+                local item_text = item.textEdit ~= nil and item.textEdit.newText or item.insertText or item.label
+                local is_multi_line = item_text:find('\n') ~= nil
+
+                if is_multi_line or vim.g.blink_cmp_upwards_ctx_id == ctx.id then
+                  vim.g.blink_cmp_upwards_ctx_id = ctx.id
+                  return { 'n', 's' }
+                end
+                return { 's', 'n' }
+              end
+            '';
+            draw = {
+              snippet_indicator = "◦";
+              treesitter = [ "lsp" ];
+              columns.__raw = ''
+                function()
+                  if vim.g.blink_show_item_idx == nil then vim.g.blink_show_item_idx = true end
+
+                  if vim.g.blink_show_item_idx then
+                    return {
+                      { "item_idx" },
+                      { "label" },
+                      { "kind_icon", "kind", gap = 1 },
+                      { "source_name", gap = 1 }
+                    }
+                  else
+                    return {
+                      { "label" },
+                      { "kind_icon", "kind", gap = 1 },
+                      { "source_name", gap = 1 }
+                    }
+                  end
+                end
+              '';
+              components = {
+                item_idx = {
+                  text.__raw = ''
+                    function(ctx)
+                      return ctx.idx == 10 and '0' or ctx.idx >= 10 and ' ' or tostring(ctx.idx)
+                    end
+                  '';
+                  highlight = "BlinkCmpItemIdx";
+                };
+                kind_icon = {
+                  ellipsis = false;
+                  text.__raw = ''
+                    function(ctx)
+                      local kind_icon, _, _ = require('mini.icons').get('lsp', ctx.kind)
+                      -- Check for both nil and the default fallback icon
+                      if not kind_icon or kind_icon == '󰞋' then
+                        -- Use our configured kind_icons
+                        return require('blink.cmp.config').appearance.kind_icons[ctx.kind] or ""
+                      end
+                      return kind_icon
+                    end,
+                    -- Optionally, you may also use the highlights from mini.icons
+                    highlight = function(ctx)
+                      local _, hl, _ = require('mini.icons').get('lsp', ctx.kind)
+                      return hl
+                    end
+                  '';
+                };
+              };
+            };
+          };
+        };
+
+        fuzzy = {
+          implementation = "rust";
+          sorts = [
+            "exact"
+            "score"
+            "sort_text"
+          ];
+          prebuilt_binaries = {
+            download = false;
+          };
+        };
+
+        appearance = {
+          kind_icons = {
+            Text = "";
+            Field = "";
+            Variable = "";
+            Class = "";
+            Interface = "";
+            TypeParameter = "";
+          };
+        };
+
+        keymap = {
+          preset = "enter";
+          "<C-.>" = [
+            "show"
+            "show_documentation"
+            "hide_documentation"
+          ];
+          "<A-1>" = [
+            {
+              __raw = "function(cmp) cmp.accept({ index = 1 }) end";
+            }
+          ];
+          "<A-2>" = [
+            {
+              __raw = "function(cmp) cmp.accept({ index = 2 }) end";
+            }
+          ];
+          "<A-3>" = [
+            {
+              __raw = "function(cmp) cmp.accept({ index = 3 }) end";
+            }
+          ];
+          "<A-4>" = [
+            {
+              __raw = "function(cmp) cmp.accept({ index = 4 }) end";
+            }
+          ];
+          "<A-5>" = [
+            {
+              __raw = "function(cmp) cmp.accept({ index = 5 }) end";
+            }
+          ];
+          "<A-6>" = [
+            {
+              __raw = "function(cmp) cmp.accept({ index = 6 }) end";
+            }
+          ];
+          "<A-7>" = [
+            {
+              __raw = "function(cmp) cmp.accept({ index = 7 }) end";
+            }
+          ];
+          "<A-8>" = [
+            {
+              __raw = "function(cmp) cmp.accept({ index = 8 }) end";
+            }
+          ];
+          "<A-9>" = [
+            {
+              __raw = "function(cmp) cmp.accept({ index = 9 }) end";
+            }
+          ];
+          "<A-0>" = [
+            {
+              __raw = "function(cmp) cmp.accept({ index = 10 }) end";
+            }
+          ];
+          "<C-y>" = [
+            {
+              __raw = ''
+                function(cmp)
+                  if cmp.snippet_active() then
+                    return cmp.accept()
+                  else
+                    return cmp.select_and_accept()
+                  end
+                end
+              '';
+            }
+            "fallback"
+          ];
+        };
+
+        signature = {
+          enabled = true;
+          window.border = "rounded";
+        };
+        snippets.preset = "mini_snippets";
+
+        sources = {
+          default = lib.mkDefault [
+            "buffer"
+            "lsp"
+            "path"
+            "snippets"
+            "dictionary"
+            "emoji"
+            "nerdfont"
+            "spell"
+            "yank"
+            "ripgrep"
+          ];
+
+          providers = {
+            buffer = {
+              score_offset = 45;
+              min_keyword_length = 2;
+              max_items = 15;
+              opts = {
+                get_bufnrs.__raw = ''
+                  function()
+                    if vim.g.blink_buffer_all_buffers == nil then vim.g.blink_buffer_all_buffers = true end
+
+                    if vim.g.blink_buffer_all_buffers then
+                      return vim.tbl_filter(function(bufnr)
+                        return vim.bo[bufnr].buftype == ""
+                      end, vim.api.nvim_list_bufs())
+                    else
+                      return { vim.api.nvim_get_current_buf() }
+                    end
+                  end
+                '';
+              };
+            };
+
+            lsp = {
+              score_offset = 80;
+              fallbacks = [ ]; # Allow buffer to show independently
+              transform_items.__raw = ''
+                function(_, items)
+                  return vim.tbl_filter(function(item)
+                    return item.kind ~= require('blink.cmp.types').CompletionItemKind.Keyword
+                  end, items)
+                end
+              '';
+            };
+
+            path = {
+              score_offset = 55;
+              opts = {
+                get_cwd.__raw = ''
+                  function(context)
+                    if vim.g.blink_path_from_cwd == nil then vim.g.blink_path_from_cwd = false end
+
+                    if vim.g.blink_path_from_cwd then
+                      return vim.fn.getcwd()
+                    else
+                      local bufpath = vim.api.nvim_buf_get_name(context.bufnr)
+                      if bufpath == "" then
+                        return vim.fn.getcwd()
+                      end
+                      return vim.fn.fnamemodify(bufpath, ":p:h")
+                    end
+                  end
+                '';
+              };
+            };
+
+            snippets = {
+              score_offset = 60;
+              should_show_items.__raw = ''
+                function(ctx)
+                  return ctx.trigger.initial_kind ~= 'trigger_character'
+                end
+              '';
+            };
+
+            conventional_commits = {
+              name = "Conventional Commits";
+              module = "blink-cmp-conventional-commits";
+              score_offset = 68;
+              enabled.__raw = ''
+                function()
+                  return vim.bo.filetype == 'gitcommit'
+                end
+              '';
+            };
+
+            dictionary = {
+              name = "Dict";
+              module = "blink-cmp-dictionary";
+              min_keyword_length = 3;
+              max_items = 8;
+              score_offset = 8;
+            };
+
+            emoji = {
+              name = "Emoji";
+              module = "blink-emoji";
+              score_offset = 10;
+            };
+
+            git = {
+              name = "Git";
+              module = "blink-cmp-git";
+              enabled = true;
+              score_offset = 70;
+              should_show_items.__raw = ''
+                function()
+                  return vim.o.filetype == 'gitcommit' or vim.o.filetype == 'markdown'
+                end
+              '';
+              opts = {
+                git_centers = {
+                  github = {
+                    issue = {
+                      on_error.__raw = "function(_,_) return true end";
+                    };
+                  };
+                };
+              };
+            };
+
+            nerdfont = {
+              module = "blink-nerdfont";
+              name = "Nerd Fonts";
+              score_offset = 68;
+              opts = {
+                insert = true;
+              };
+            };
+
+            ripgrep = {
+              name = "Ripgrep";
+              module = "blink-ripgrep";
+              async = true;
+              timeout_ms = 500;
+              max_items = 10;
+              min_keyword_length = 4;
+              score_offset = 5;
+            };
+
+            spell = {
+              name = "Spell";
+              module = "blink-cmp-spell";
+              max_items = 3;
+              score_offset = 15;
+            };
+
+            yank = {
+              name = "yank";
+              module = "blink-yanky";
+              score_offset = 69;
+              max_items = 3;
+            };
           };
         };
       };
-      fuzzy = {
-        implementation = "rust";
-        prebuilt_binaries = {
-          download = false;
-        };
-      };
-      signature = {
-        enabled = true;
-      };
-      snippets.preset = "mini_snippets";
-      sources = {
-        default = [
-          "lsp"
-          "path"
-          "snippets"
-          "buffer"
-        ];
-      };
     };
 
+    keymaps = [
+      {
+        mode = "n";
+        key = "<leader>uca";
+        action.__raw = ''
+          function()
+            -- vim.b.completion is nil by default (enabled), false = disabled
+            if vim.b.completion == false then
+              vim.b.completion = true
+              vim.notify("Completion On", "info")
+            else
+              vim.b.completion = false
+              vim.notify("Completion Off", "info")
+            end
+          end
+        '';
+        options.desc = "Toggle Completions (Buffer)";
+      }
+      {
+        mode = "n";
+        key = "<leader>uci";
+        action.__raw = ''
+          function()
+            vim.g.blink_show_item_idx = not vim.g.blink_show_item_idx
+            vim.notify(string.format("Completion Item Index %s", vim.g.blink_show_item_idx and "On" or "Off"), "info")
+          end
+        '';
+        options.desc = "Completion Item Index toggle";
+      }
+      {
+        mode = "n";
+        key = "<leader>ucp";
+        action.__raw = ''
+          function()
+            vim.g.blink_path_from_cwd = not vim.g.blink_path_from_cwd
+            vim.notify(string.format("Path Completion from CWD %s", vim.g.blink_path_from_cwd and "On" or "Off"), "info")
+          end
+        '';
+        options.desc = "Path Completion from CWD toggle";
+      }
+      {
+        mode = "n";
+        key = "<leader>ucb";
+        action.__raw = ''
+          function()
+            vim.g.blink_buffer_all_buffers = not vim.g.blink_buffer_all_buffers
+            vim.notify(string.format("Buffer Completion from All Buffers %s", vim.g.blink_buffer_all_buffers and "On" or "Off"), "info")
+          end
+        '';
+        options.desc = "Buffer Completion from All Buffers toggle";
+      }
+    ];
   };
 }
