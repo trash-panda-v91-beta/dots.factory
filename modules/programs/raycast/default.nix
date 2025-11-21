@@ -1,15 +1,20 @@
 {
   delib,
-  moduleSystem,
   pkgs,
   ...
 }:
 delib.module {
   name = "programs.raycast";
 
-  options = delib.singleEnableOption (moduleSystem == "darwin");
+  options = delib.singleEnableOption false;
 
   myconfig.ifEnabled.unfreePackages.allow = [ "raycast" ];
+
+  darwin.ifEnabled = {
+    environment.systemPackages = with pkgs; [
+      raycast
+    ];
+  };
 
   home.ifEnabled =
     {
@@ -40,8 +45,6 @@ delib.module {
           echo "Building and switching to configuration for '${myconfig.host.name}' ..."
           NIX_CONFIG="access-tokens = github.com=$GH_TOKEN" nh darwin switch . --hostname {{hostname}}
         '';
-
       };
-      home.packages = [ pkgs.raycast ];
     };
 }
