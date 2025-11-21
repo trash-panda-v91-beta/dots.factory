@@ -82,6 +82,7 @@ delib.module {
         };
 
         luaLoader.enable = true;
+        nixpkgs.config.allowUnfree = true;
 
         performance = {
           byteCompileLua = {
