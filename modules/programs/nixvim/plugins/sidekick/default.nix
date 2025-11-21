@@ -5,7 +5,7 @@
 delib.module {
   name = "programs.nixvim.plugins.sidekick";
 
-  options = delib.singleEnableOption false;
+  options = delib.singleEnableOption true;
 
   myconfig.ifEnabled.unfreePackages.allow = [
     "copilot-language-server"
@@ -57,28 +57,39 @@ delib.module {
       }
       {
         mode = "n";
-        key = "<leader>st";
-        action.__raw = "function() require('sidekick.cli').toggle({ focus = true }) end";
-        options.desc = "Sidekick Toggle";
+        key = "<leader>ss";
+        action.__raw = "function() require('sidekick.cli').toggle({ name = 'opencode', focus = true }) end";
+        options.desc = "Toggle OpenCode";
       }
       {
         mode = [
           "n"
           "v"
+        ];
+        key = "<leader>st";
+        action.__raw = "function() require('sidekick.cli').send({ msg = '{this}' }) end";
+        options.desc = "Send This";
+      }
+      {
+        mode = "n";
+        key = "<leader>sf";
+        action.__raw = "function() require('sidekick.cli').send({ msg = '{file}' }) end";
+        options.desc = "Send File";
+      }
+      {
+        mode = "v";
+        key = "<leader>sv";
+        action.__raw = "function() require('sidekick.cli').send({ msg = '{selection}' }) end";
+        options.desc = "Send Selection";
+      }
+      {
+        mode = [
+          "n"
           "v"
         ];
         key = "<leader>sp";
-        action.__raw = "function() require('sidekick.cli').select_prompt() end";
-        options.desc = "Ask Prompt";
-      }
-      {
-        mode = [
-          "n"
-          "v"
-        ];
-        key = "<leader>aso";
-        action.__raw = "function() require('sidekick.cli').toggle({ name = 'opencode', focus = true }) end";
-        options.desc = "Opencode Toggle";
+        action.__raw = "function() require('sidekick.cli').prompt() end";
+        options.desc = "Select Prompt";
       }
     ];
   };
