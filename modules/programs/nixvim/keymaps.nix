@@ -1,8 +1,5 @@
 {
   delib,
-  inputs,
-  host,
-  pkgs,
   ...
 }:
 delib.module {

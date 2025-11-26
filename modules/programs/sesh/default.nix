@@ -11,7 +11,6 @@ delib.module {
     enable = boolOption true;
 
     sessions = listOfOption attrs [ ];
-    windows = listOfOption attrs [ ];
   };
 
   home.ifEnabled =
@@ -27,12 +26,6 @@ delib.module {
           path = "~";
         }
       ];
-      defaultWindows = [
-        {
-          name = "sidekick";
-          startup_script = "opencode";
-        }
-      ];
     in
     {
       programs = {
@@ -44,7 +37,6 @@ delib.module {
           enableTmuxIntegration = false;
           settings = {
             session = defaultSessions ++ cfg.sessions;
-            window = defaultWindows ++ cfg.windows;
           };
         };
         tmux.extraConfig = ''

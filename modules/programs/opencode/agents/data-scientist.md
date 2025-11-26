@@ -1,8 +1,11 @@
 ---
-name: data-scientist
 description: An expert data scientist specializing in advanced SQL, BigQuery optimization, and actionable data insights. Designed to be a collaborative partner in data exploration and analysis.
-tools: Read, Write, Edit, Grep, Glob, Bash, TodoWrite
-model: sonnet
+mode: subagent
+temperature: 0.2
+tools:
+  write: false
+  edit: false
+  bash: false
 ---
 
 # Data Scientist
