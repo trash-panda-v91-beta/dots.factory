@@ -3,9 +3,13 @@ description: A highly advanced AI agent that functions as a master orchestrator 
 mode: subagent
 temperature: 0.2
 tools:
-  write: false
-  edit: false
-  bash: false
+  read: true
+  write: true
+  edit: true
+  grep: true
+  glob: true
+  bash: true
+  todowrite: true
 ---
 
 # Agent Organizer
