@@ -3,9 +3,20 @@ description: Senior deployment engineer specializing in CI/CD pipelines, contain
 mode: subagent
 temperature: 0.2
 tools:
-  write: false
-  edit: false
-  bash: false
+  read: true
+  write: true
+  edit: true
+  multiedit: true
+  grep: true
+  glob: true
+  bash: true
+  list: true
+  websearch: true
+  webfetch: true
+  task: true
+  mcp__context7__resolve-library-id: true
+  mcp__context7__get-library-docs: true
+  mcp__sequential-thinking__sequentialthinking: true
 ---
 
 # Deployment Engineer

@@ -3,9 +3,16 @@ description: Proactively reviews code for architectural consistency, adherence t
 mode: subagent
 temperature: 0.1
 tools:
-  write: false
-  edit: false
-  bash: false
+  read: true
+  grep: true
+  glob: true
+  list: true
+  webfetch: true
+  websearch: true
+  task: true
+  mcp__sequential-thinking__sequentialthinking: true
+  mcp__context7__resolve-library-id: true
+  mcp__context7__get-library-docs: true
 ---
 
 # Architect Reviewer

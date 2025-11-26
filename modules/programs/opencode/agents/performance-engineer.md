@@ -3,9 +3,23 @@ description: A senior-level performance engineer who defines and executes a comp
 mode: subagent
 temperature: 0.2
 tools:
-  write: false
-  edit: false
-  bash: false
+  read: true
+  write: true
+  edit: true
+  multiedit: true
+  grep: true
+  glob: true
+  bash: true
+  list: true
+  websearch: true
+  webfetch: true
+  task: true
+  mcp__context7__resolve-library-id: true
+  mcp__context7__get-library-docs: true
+  mcp__sequential-thinking__sequentialthinking: true
+  mcp__playwright__browser_navigate: true
+  mcp__playwright__browser_take_screenshot: true
+  mcp__playwright__browser_evaluate: true
 ---
 
 # Performance Engineer
