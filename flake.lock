@@ -402,11 +402,11 @@
         "nixpkgs": "nixpkgs_4"
       },
       "locked": {
-        "lastModified": 1764158684,
-        "narHash": "sha256-D4VNmzDKIhG6xoSYSfMjqnFe9XnHofiN4XQptavGnWE=",
+        "lastModified": 1764190539,
+        "narHash": "sha256-ZO01CYbI+HMiZJ8YmnnOxIYjl8yIMPTl8wqh5Oq+JbU=",
         "owner": "sst",
         "repo": "opencode",
-        "rev": "51455e2a1e182cf91e321ac180476232df932853",
+        "rev": "3ff0eb3065e477af8f9c7c50c37c2b04e919e689",
         "type": "github"
       },
       "original": {
