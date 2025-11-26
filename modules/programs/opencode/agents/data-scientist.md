@@ -3,9 +3,19 @@ description: An expert data scientist specializing in advanced SQL, BigQuery opt
 mode: subagent
 temperature: 0.2
 tools:
-  write: false
-  edit: false
-  bash: false
+  read: true
+  write: true
+  edit: true
+  grep: true
+  glob: true
+  bash: true
+  list: true
+  webfetch: true
+  websearch: true
+  task: true
+  mcp__context7__resolve-library-id: true
+  mcp__context7__get-library-docs: true
+  mcp__sequential-thinking__sequentialthinking: true
 ---
 
 # Data Scientist
