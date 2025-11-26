@@ -1,8 +1,11 @@
 ---
-name: debugger
 description: Debugging specialist for errors, test failures, and unexpected behavior. Use proactively when encountering any issues.
-tools: Read, Write, Edit, MultiEdit, Grep, Glob, Bash, LS, WebSearch, WebFetch, TodoWrite, Task, mcp__context7__resolve-library-id, mcp__context7__get-library-docs, mcp__sequential-thinking__sequentialthinking
-model: sonnet
+mode: subagent
+temperature: 0.2
+tools:
+  write: false
+  edit: false
+  bash: false
 ---
 
 # Debugger

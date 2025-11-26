@@ -32,6 +32,9 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     nixpkgs-master.url = "github:nixos/nixpkgs/master";
     nixvim.url = "github:nix-community/nixvim";
+    opencode = {
+      url = "github:sst/opencode/dev";
+    };
     opencode-nvim = {
       url = "github:sudo-tee/opencode.nvim";
       flake = false;
