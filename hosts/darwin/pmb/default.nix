@@ -27,6 +27,14 @@ delib.host {
 
     programs = {
       git.userEmail = "42897550+trash-panda-v91-beta@users.noreply.github.com";
+      mcp.servers = {
+        hass = {
+          url = "https://hass.nebular-grid.space/api/mcp";
+          headers = {
+            Authorization = "Bearer {env:HASS_TOKEN}";
+          };
+        };
+      };
       nushell.enable = true;
       sesh = {
         sessions = [
