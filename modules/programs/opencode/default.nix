@@ -56,7 +56,7 @@ delib.module {
         ${cfg.alias} = sidekickCommand;
       };
       programs.tmux.extraConfig = ''
-        bind -n M-i new-window ${cfg.alias}
+        bind -n M-i new-window opencode
       '';
 
       programs.sesh.settings.windows = [
