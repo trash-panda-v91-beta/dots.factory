@@ -25,12 +25,39 @@ delib.module {
           autoshare = false;
           autoupdate = false;
           keybinds = {
+            # Navigation
             sidebar_toggle = "ctrl+b";
-            session_list = "ctrl+s";
-            history_previous = "pageup";
-            history_next = "pagedown";
+            session_list = "ctrl+l";
+            session_new = "ctrl+n";
+            session_timeline = "ctrl+g";
+            session_child_cycle = "ctrl+right";
+            session_child_cycle_reverse = "ctrl+left";
+
+            # Messages
+            messages_page_up = "pageup";
+            messages_page_down = "pagedown";
             messages_half_page_up = "up";
             messages_half_page_down = "down";
+            messages_copy = "ctrl+y";
+            messages_undo = "ctrl+z";
+            messages_redo = "ctrl+shift+z";
+            messages_toggle_conceal = "ctrl+h";
+
+            # Tools
+            command_list = "ctrl+p";
+            model_list = "ctrl+m";
+            agent_list = "ctrl+a";
+            editor_open = "ctrl+e";
+            theme_list = "ctrl+t";
+
+            # Session management
+            session_compact = "ctrl+k";
+            session_export = "ctrl+x";
+            status_view = "ctrl+s";
+
+            # History
+            history_previous = "ctrl+up";
+            history_next = "ctrl+down";
           };
         };
         agents = {
