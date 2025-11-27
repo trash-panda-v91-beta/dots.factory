@@ -36,6 +36,15 @@ delib.host {
         };
       };
       nushell.enable = true;
+      nixvim.plugins.obsidian = {
+        enable = true;
+        workspaces = [
+          {
+            name = "personal";
+            path = "~/notes";
+          }
+        ];
+      };
       sesh = {
         sessions = [
           {
