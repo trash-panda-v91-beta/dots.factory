@@ -27,15 +27,12 @@ delib.host {
         git.userEmail = myconfig.user.email;
         nixvim.plugins.obsidian = {
           enable = true;
-          settings = {
-            legacy_commands = false;
-            workspaces = [
-              {
-                name = "notes";
-                path = "~/notes";
-              }
-            ];
-          };
+          workspaces = [
+            {
+              name = "notes";
+              path = "~/notes";
+            }
+          ];
         };
         nixvim.plugins.neogit.gitService = inputs.vault.constants.corporate.gitService;
         nushell.enable = true;
