@@ -28,6 +28,15 @@ delib.module {
 
       codecompanion = {
         enable = true;
+        lazyLoad.settings = {
+          cmd = [
+            "CodeCompanion"
+            "CodeCompanionChat"
+            "CodeCompanionActions"
+            "CodeCompanionAdd"
+          ];
+          ft = [ "gitcommit" ];
+        };
         settings = {
           adapters.http = {
             tavily = {
