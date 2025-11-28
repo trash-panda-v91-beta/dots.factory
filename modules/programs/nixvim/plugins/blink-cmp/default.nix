@@ -112,22 +112,11 @@ delib.module {
               treesitter = [ "lsp" ];
               columns.__raw = ''
                 function()
-                  if vim.g.blink_show_item_idx == nil then vim.g.blink_show_item_idx = true end
-
-                  if vim.g.blink_show_item_idx then
-                    return {
-                      { "item_idx" },
-                      { "label" },
-                      { "kind_icon", "kind", gap = 1 },
-                      { "source_name", gap = 1 }
-                    }
-                  else
-                    return {
-                      { "label" },
-                      { "kind_icon", "kind", gap = 1 },
-                      { "source_name", gap = 1 }
-                    }
-                  end
+                  return {
+                    { "label" },
+                    { "kind_icon", "kind", gap = 1 },
+                    { "source_name", gap = 1 }
+                  }
                 end
               '';
               components = {
