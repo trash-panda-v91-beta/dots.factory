@@ -71,7 +71,7 @@ jobs:
           system_path=$(cat system-path.txt)
 
           echo "Running vulnix scan..." > vulnix-report.txt
-          vulnix --system "$system_path" >> vulnix-report.txt 2>&1 || {
+          vulnix "$system_path" >> vulnix-report.txt 2>&1 || {
             echo "found=true" >> $GITHUB_OUTPUT
             cat vulnix-report.txt
             exit 0
