@@ -17,7 +17,7 @@ delib.module {
     ];
     plugins = {
       blink-cmp.settings.sources = {
-        default = [ "codecompanion" ];
+        default = lib.mkAfter [ "codecompanion" ];
         providers.codecompanion = {
           enabled = true;
           async = true;
