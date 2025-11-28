@@ -1,7 +1,6 @@
 {
   delib,
   lib,
-  pkgs,
   ...
 }:
 let
@@ -26,23 +25,9 @@ delib.module {
 
   home.ifEnabled.programs.nixvim = {
     plugins = {
-      blink-cmp-dictionary = mkBlinkPlugin { };
-      blink-cmp-git = mkBlinkPlugin { };
-      blink-cmp-spell = mkBlinkPlugin { };
-      blink-emoji = mkBlinkPlugin { };
       blink-ripgrep = mkBlinkPlugin { };
     };
 
-    extraPackages = with pkgs; [
-      gh
-      wordnet
-    ];
-
-    extraPlugins = with pkgs.vimPlugins; [
-      blink-cmp-conventional-commits
-      blink-cmp-npm-nvim
-      blink-cmp-yanky
-    ];
     plugins.blink-cmp = {
       enable = true;
 
@@ -203,75 +188,6 @@ delib.module {
 
         keymap = {
           preset = "enter";
-          "<C-.>" = [
-            "show"
-            "show_documentation"
-            "hide_documentation"
-          ];
-          "<A-1>" = [
-            {
-              __raw = "function(cmp) cmp.accept({ index = 1 }) end";
-            }
-          ];
-          "<A-2>" = [
-            {
-              __raw = "function(cmp) cmp.accept({ index = 2 }) end";
-            }
-          ];
-          "<A-3>" = [
-            {
-              __raw = "function(cmp) cmp.accept({ index = 3 }) end";
-            }
-          ];
-          "<A-4>" = [
-            {
-              __raw = "function(cmp) cmp.accept({ index = 4 }) end";
-            }
-          ];
-          "<A-5>" = [
-            {
-              __raw = "function(cmp) cmp.accept({ index = 5 }) end";
-            }
-          ];
-          "<A-6>" = [
-            {
-              __raw = "function(cmp) cmp.accept({ index = 6 }) end";
-            }
-          ];
-          "<A-7>" = [
-            {
-              __raw = "function(cmp) cmp.accept({ index = 7 }) end";
-            }
-          ];
-          "<A-8>" = [
-            {
-              __raw = "function(cmp) cmp.accept({ index = 8 }) end";
-            }
-          ];
-          "<A-9>" = [
-            {
-              __raw = "function(cmp) cmp.accept({ index = 9 }) end";
-            }
-          ];
-          "<A-0>" = [
-            {
-              __raw = "function(cmp) cmp.accept({ index = 10 }) end";
-            }
-          ];
-          "<C-y>" = [
-            {
-              __raw = ''
-                function(cmp)
-                  if cmp.snippet_active() then
-                    return cmp.accept()
-                  else
-                    return cmp.select_and_accept()
-                  end
-                end
-              '';
-            }
-            "fallback"
-          ];
         };
 
         signature = {
@@ -281,16 +197,11 @@ delib.module {
         snippets.preset = "mini_snippets";
 
         sources = {
-          default = lib.mkDefault [
+          default = lib.mkBefore [
             "buffer"
             "lsp"
             "path"
             "snippets"
-            "dictionary"
-            "emoji"
-            "nerdfont"
-            "spell"
-            "yank"
             "ripgrep"
           ];
 
@@ -358,83 +269,23 @@ delib.module {
               '';
             };
 
-            conventional_commits = {
-              name = "Conventional Commits";
-              module = "blink-cmp-conventional-commits";
-              score_offset = 68;
-              enabled.__raw = ''
-                function()
-                  return vim.bo.filetype == 'gitcommit'
-                end
-              '';
-            };
-
-            dictionary = {
-              name = "Dict";
-              module = "blink-cmp-dictionary";
-              min_keyword_length = 3;
-              max_items = 8;
-              score_offset = 8;
-            };
-
-            emoji = {
-              name = "Emoji";
-              module = "blink-emoji";
-              score_offset = 10;
-            };
-
-            git = {
-              name = "Git";
-              module = "blink-cmp-git";
-              enabled = true;
-              score_offset = 70;
-              should_show_items.__raw = ''
-                function()
-                  return vim.o.filetype == 'gitcommit' or vim.o.filetype == 'markdown'
-                end
-              '';
-              opts = {
-                git_centers = {
-                  github = {
-                    issue = {
-                      on_error.__raw = "function(_,_) return true end";
-                    };
-                  };
-                };
-              };
-            };
-
-            nerdfont = {
-              module = "blink-nerdfont";
-              name = "Nerd Fonts";
-              score_offset = 68;
-              opts = {
-                insert = true;
-              };
-            };
-
             ripgrep = {
               name = "Ripgrep";
               module = "blink-ripgrep";
               async = true;
               timeout_ms = 500;
               max_items = 10;
-              min_keyword_length = 4;
+              min_keyword_length = 3;
               score_offset = 5;
-            };
-
-            spell = {
-              name = "Spell";
-              module = "blink-cmp-spell";
-              max_items = 3;
-              score_offset = 15;
-            };
-
-            yank = {
-              name = "yank";
-              module = "blink-yanky";
-              score_offset = 69;
-              max_items = 3;
+              opts = {
+                prefix_min_len = 3;
+                context_size = 5;
+                max_filesize = "1M";
+                project_root_marker = ".git";
+                project_root_fallback = true;
+                search_casing = "--ignore-case";
+                fallback_to_regex_highlighting = true;
+              };
             };
           };
         };
@@ -447,7 +298,6 @@ delib.module {
         key = "<leader>uca";
         action.__raw = ''
           function()
-            -- vim.b.completion is nil by default (enabled), false = disabled
             if vim.b.completion == false then
               vim.b.completion = true
               vim.notify("Completion On", "info")
@@ -458,28 +308,6 @@ delib.module {
           end
         '';
         options.desc = "Toggle Completions (Buffer)";
-      }
-      {
-        mode = "n";
-        key = "<leader>uci";
-        action.__raw = ''
-          function()
-            vim.g.blink_show_item_idx = not vim.g.blink_show_item_idx
-            vim.notify(string.format("Completion Item Index %s", vim.g.blink_show_item_idx and "On" or "Off"), "info")
-          end
-        '';
-        options.desc = "Completion Item Index toggle";
-      }
-      {
-        mode = "n";
-        key = "<leader>ucp";
-        action.__raw = ''
-          function()
-            vim.g.blink_path_from_cwd = not vim.g.blink_path_from_cwd
-            vim.notify(string.format("Path Completion from CWD %s", vim.g.blink_path_from_cwd and "On" or "Off"), "info")
-          end
-        '';
-        options.desc = "Path Completion from CWD toggle";
       }
       {
         mode = "n";
