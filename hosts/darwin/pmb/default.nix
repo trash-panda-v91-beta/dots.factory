@@ -26,6 +26,7 @@ delib.host {
     };
 
     programs = {
+      actual.enable = true;
       git.userEmail = "42897550+trash-panda-v91-beta@users.noreply.github.com";
       mcp.servers = {
         hass = {
