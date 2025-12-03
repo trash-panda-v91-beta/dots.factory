@@ -1,7 +1,7 @@
 { delib, ... }:
 delib.module {
   name = "programs.nixvim.plugins.mini.clue";
-  options = delib.singleEnableOption true;
+  options = delib.singleEnableOption false;
   home.ifEnabled.programs.nixvim.plugins.mini = {
     enable = true;
     modules.clue = {
