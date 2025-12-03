@@ -31,7 +31,7 @@ delib.host {
       git.userEmail = "42897550+trash-panda-v91-beta@users.noreply.github.com";
       mcp.servers = {
         actualBudget = {
-          disabled = false;
+          disabled = true;
           command = "docker";
           args = [
             "run"
@@ -47,7 +47,7 @@ delib.host {
             "--enable-write"
           ];
         };
-        hass = {
+        home-assistant = {
           disabled = false;
           url = "https://hass.nebular-grid.space/api/mcp";
           headers = {
