@@ -7,6 +7,6 @@ delib.module {
   home.ifEnabled.programs.nixvim.plugins.fastaction = {
     enable = true;
 
-    lazyLoad.settings.lazy = true;
+    lazyLoad.settings.event = "LspAttach";
   };
 }
