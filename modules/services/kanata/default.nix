@@ -2,6 +2,7 @@
   delib,
   moduleSystem,
   pkgs,
+  config,
   ...
 }:
 delib.module {
@@ -107,6 +108,12 @@ delib.module {
           windows-altgr cancel-lctl-press
         '';
       };
+    };
+  };
+
+  home.ifEnabled = {
+    programs.nushell.shellAliases = {
+      start-kanata = "sudo kanata --cfg ${config.services.kanata.keyboards.internal.configFile}";
     };
   };
 }
