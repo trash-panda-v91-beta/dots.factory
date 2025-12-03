@@ -99,6 +99,13 @@
       homeConfigurations = mkConfigurations "home";
       nixosConfigurations = mkConfigurations "nixos";
 
+      templates = {
+        rust = {
+          path = ./templates/rust;
+          description = "Rust development environment with rust-overlay";
+        };
+      };
+
       formatter = {
         aarch64-darwin = inputs.nixpkgs.legacyPackages.aarch64-darwin.nixfmt-tree;
         x86_64-linux = inputs.nixpkgs.legacyPackages.x86_64-linux.nixfmt-tree;
