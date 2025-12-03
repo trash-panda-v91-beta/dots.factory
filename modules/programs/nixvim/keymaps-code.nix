@@ -164,21 +164,28 @@ delib.module {
         options.desc = "Expand macro";
       }
 
-      # Code action (has fallback to generic LSP code action)
+      # Code action (using fastaction)
       {
         mode = "n";
         key = "<leader>ca";
         action.__raw = ''
           function()
-            local ft = vim.bo.filetype
-            if ft == 'rust' then
-              vim.cmd.RustLsp('codeAction')
-            else
-              vim.lsp.buf.code_action()
-            end
+            require('fastaction').code_action()
           end
         '';
         options.desc = "Code action";
+      }
+
+      # Visual mode code action (using fastaction)
+      {
+        mode = "v";
+        key = "<leader>ca";
+        action.__raw = ''
+          function()
+            require('fastaction').range_code_action()
+          end
+        '';
+        options.desc = "Code action (range)";
       }
 
       # Hover actions (has fallback to generic LSP hover)
