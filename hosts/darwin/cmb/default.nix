@@ -24,6 +24,7 @@ delib.host {
     {
       user.name = "CORPORATE_USER";
       programs = {
+        colima.enable = true;
         git.userEmail = myconfig.user.email;
         nixvim.plugins.obsidian = {
           enable = true;
