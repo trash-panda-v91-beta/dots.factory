@@ -39,6 +39,14 @@ delib.module {
           };
         };
 
+        tavily = {
+          disabled = false;
+          url = "https://mcp.tavily.com/mcp";
+          headers = {
+            Authorization = "Bearer {env:TAVILY_TOKEN}";
+          };
+        };
+
         sequential-thinking = {
           disabled = false;
           command = "${pkgs.docker}/bin/docker";

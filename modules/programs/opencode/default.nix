@@ -23,6 +23,7 @@ delib.module {
 
       hassEnabled = serverEnabled "hass";
       actualEnabled = serverEnabled "actualBudget";
+      tavilyEnabled = serverEnabled "tavily";
 
       # Build environment variables list based on enabled servers
       envVars =
@@ -32,6 +33,9 @@ delib.module {
         ++ lib.optionals actualEnabled [
           "ACTUAL_PASSWORD: 'op://NebularGrid/Actual/password'"
           "ACTUAL_BUDGET_SYNC_ID: 'op://NebularGrid/Actual/sync id'"
+        ]
+        ++ lib.optionals tavilyEnabled [
+          "TAVILY_TOKEN: 'op://Private/op4p2ok4buizqra3jssnnoet3u/credential'"
         ];
 
       # Build the command - use op run only if we have env vars
