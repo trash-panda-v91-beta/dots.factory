@@ -1,5 +1,6 @@
 {
   delib,
+  lib,
   pkgs,
   ...
 }:
@@ -12,11 +13,51 @@ delib.module {
   };
 
   home.ifEnabled =
-    { cfg, ... }:
+    { cfg, myconfig, ... }:
     let
-      sidekickCommand = "with-env { HASS_TOKEN: 'op://Private/HASS MCP/password'} {${pkgs.lib.getExe pkgs._1password-cli} run --no-masking -- ${pkgs.lib.getExe pkgs.local.opencode}}";
+      # Check if MCP servers are enabled
+      mcpConfig = myconfig.programs.mcp or { };
+
+      # Helper to check if a server is enabled
+      serverEnabled = serverName: !(mcpConfig.servers.${serverName}.disabled or true);
+
+      hassEnabled = serverEnabled "hass";
+      actualEnabled = serverEnabled "actualBudget";
+
+      # Build environment variables list based on enabled servers
+      envVars =
+        lib.optionals hassEnabled [
+          "HASS_TOKEN: 'op://Private/HASS MCP/password'"
+        ]
+        ++ lib.optionals actualEnabled [
+          "ACTUAL_PASSWORD: 'op://NebularGrid/Actual/password'"
+          "ACTUAL_BUDGET_SYNC_ID: 'op://NebularGrid/Actual/sync id'"
+        ];
+
+      # Build the command - use op run only if we have env vars
+      opencodeExe = lib.getExe pkgs.local.opencode;
+      sidekickCommand =
+        if envVars == [ ] then
+          opencodeExe
+        else
+          let
+            envRecord = lib.concatStringsSep ", " envVars;
+            opExe = lib.getExe pkgs._1password-cli;
+          in
+          ''with-env { ${envRecord} } { ${opExe} run --no-masking -- ${opencodeExe} }'';
     in
     {
+      assertions = [
+        {
+          assertion = hassEnabled -> (mcpConfig.servers.hass ? "url" || mcpConfig.servers.hass ? "command");
+          message = "OpenCode: HASS MCP server is enabled but has no url or command configured";
+        }
+        {
+          assertion = actualEnabled -> (mcpConfig.servers.actualBudget ? "command");
+          message = "OpenCode: Actual Budget MCP server is enabled but has no command configured";
+        }
+      ];
+
       programs.opencode = {
         enable = true;
         enableMcpIntegration = true;
@@ -83,7 +124,7 @@ delib.module {
         ${cfg.alias} = sidekickCommand;
       };
       programs.tmux.extraConfig = ''
-        bind -n M-i new-window opencode
+        bind -n M-i new-window -n "opencode" "${lib.getExe pkgs.nushell} -l -c '${cfg.alias}'"
       '';
 
       programs.sesh.settings.windows = [

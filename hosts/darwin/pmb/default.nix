@@ -29,7 +29,25 @@ delib.host {
       actual.enable = true;
       git.userEmail = "42897550+trash-panda-v91-beta@users.noreply.github.com";
       mcp.servers = {
+        actualBudget = {
+          disabled = false;
+          command = "docker";
+          args = [
+            "run"
+            "-i"
+            "--rm"
+            "-e"
+            "ACTUAL_PASSWORD={env:ACTUAL_PASSWORD}"
+            "-e"
+            "ACTUAL_SERVER_URL=https://actual.nebular-grid.space"
+            "-e"
+            "ACTUAL_BUDGET_SYNC_ID={env:ACTUAL_BUDGET_SYNC_ID}"
+            "sstefanov/actual-mcp:latest"
+            "--enable-write"
+          ];
+        };
         hass = {
+          disabled = false;
           url = "https://hass.nebular-grid.space/api/mcp";
           headers = {
             Authorization = "Bearer {env:HASS_TOKEN}";
