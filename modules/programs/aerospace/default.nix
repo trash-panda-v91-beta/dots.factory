@@ -12,7 +12,7 @@ delib.module {
   home.ifEnabled.programs.aerospace = {
     enable = true;
     launchd.enable = true;
-    userSettings = {
+    settings = {
       gaps = {
         outer.left = 20;
         outer.bottom = 20;
