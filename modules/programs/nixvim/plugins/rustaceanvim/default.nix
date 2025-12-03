@@ -2,19 +2,17 @@
   delib,
   pkgs,
   lib,
+  host,
   ...
 }:
 delib.module {
   name = "programs.nixvim.plugins.rustaceanvim";
 
-  options = delib.singleEnableOption false;
+  options = delib.singleEnableOption host.rustFeatured;
 
   home.ifEnabled.programs.nixvim = {
     plugins.rustaceanvim = {
       enable = true;
-
-      # Use system rust-analyzer from cargo package
-      rustAnalyzerPackage = null;
 
       settings = {
         dap = {
@@ -74,7 +72,10 @@ delib.module {
           };
         };
 
-        tools.enable_clippy = true;
+        tools = {
+          enable_clippy = true;
+          test_executor = "background";
+        };
       };
     };
   };
