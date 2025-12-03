@@ -32,6 +32,7 @@ delib.module {
     let
       builtinServers = {
         context7 = {
+          disabled = false;
           url = "https://mcp.context7.com/mcp";
           headers = {
             CONTEXT7_API_KEY = "{env:CONTEXT7_API_KEY}";
@@ -39,6 +40,7 @@ delib.module {
         };
 
         sequential-thinking = {
+          disabled = true;
           command = "${pkgs.docker}/bin/docker";
           args = [
             "run"
@@ -49,6 +51,7 @@ delib.module {
         };
 
         filesystem = {
+          disabled = true;
           command = "${pkgs.docker}/bin/docker";
           args = [
             "run"
@@ -59,14 +62,6 @@ delib.module {
             "-e"
             "ALLOWED_DIRECTORIES=/workspace"
             "mcp/filesystem"
-          ];
-        };
-
-        github = {
-          command = "${pkgs.lib.getExe pkgs.github-mcp-server}";
-          args = [
-            "--read-only"
-            "stdio"
           ];
         };
       };
