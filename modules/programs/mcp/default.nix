@@ -40,7 +40,7 @@ delib.module {
         };
 
         sequential-thinking = {
-          disabled = true;
+          disabled = false;
           command = "${pkgs.docker}/bin/docker";
           args = [
             "run"
