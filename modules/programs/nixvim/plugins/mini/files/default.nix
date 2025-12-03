@@ -7,7 +7,8 @@ delib.module {
       enable = true;
       modules.files = {
         mappings = {
-          synchronize = "s";
+          close = "<Esc>";
+          synchronize = "<CR>";
         };
       };
     };
