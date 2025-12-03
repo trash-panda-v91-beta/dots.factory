@@ -1,36 +1,13 @@
 { delib, ... }:
 delib.module {
   name = "programs.nixvim.plugins.mini.files";
-  options = delib.singleEnableOption true;
-  home.ifEnabled.programs.nixvim = {
-    plugins.mini = {
-      enable = true;
-      modules.files = {
-        mappings = {
-          close = "<Esc>";
-          synchronize = "<CR>";
-        };
-      };
-    };
-    keymaps = [
-      {
-        mode = "n";
-        key = "-";
-        action = ":lua  MiniFiles.open(vim.api.nvim_buf_get_name(0))<CR>";
-        options = {
-          desc = "Open file explorer in current folder";
-          silent = true;
-        };
-      }
-      {
-        mode = "n";
-        key = "_";
-        action = ":lua  MiniFiles.open()<CR>";
-        options = {
-          desc = "Open file explorer";
-          silent = true;
-        };
-      }
-    ];
+
+  # This module now only provides additional configuration
+  # The fileManager module handles enabling it
+  options = delib.singleEnableOption false;
+
+  home.ifEnabled.programs.nixvim.plugins.mini.modules.files = {
+    # Additional user-configurable options can go here
+    # The fileManager module sets the defaults
   };
 }
