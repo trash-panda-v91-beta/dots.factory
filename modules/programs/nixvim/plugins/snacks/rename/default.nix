@@ -11,7 +11,7 @@ delib.module {
       keymaps = [
         {
           mode = "n";
-          key = "<leader>cr";
+          key = "<leader>fR";
           action = "<cmd>lua Snacks.rename.rename_file()<CR>";
           options.desc = "Rename File";
         }
