@@ -4,7 +4,6 @@
   pkgs,
   ...
 }:
-with lib;
 let
   cfg = config.services.karabiner-dk;
 
@@ -13,10 +12,10 @@ in
 {
   meta.maintainers = [ lib.maintainers.auscyber or "auscyber" ];
   options.services.karabiner-dk = {
-    enable = mkEnableOption "Karabiner-DK";
-    package = mkPackageOption pkgs "karabiner-dk" { };
+    enable = lib.mkEnableOption "Karabiner-DK";
+    package = lib.mkPackageOption pkgs "karabiner-dk" { };
   };
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     environment.systemPackages = [
       cfg.package
     ];

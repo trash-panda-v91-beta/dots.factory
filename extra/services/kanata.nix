@@ -7,7 +7,7 @@
 let
   cfg = config.services.kanata;
 
-  kanataExec = "${lib.getExe cfg.package}";
+  kanataExec = lib.getExe cfg.package;
 
   upstreamDoc =
     "See [the upstream documentation](https://github.com/jtroo/kanata/blob/main/docs/config.adoc)"
