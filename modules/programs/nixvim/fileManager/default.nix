@@ -11,7 +11,7 @@ delib.module {
         "oil"
         "yazi"
       ];
-      default = "mini-files";
+      default = "yazi";
       description = "Which file manager plugin to use";
     };
 
