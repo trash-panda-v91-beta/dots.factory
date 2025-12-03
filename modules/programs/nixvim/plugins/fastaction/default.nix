@@ -8,5 +8,14 @@ delib.module {
     enable = true;
 
     lazyLoad.settings.event = "LspAttach";
+
+    settings = {
+      dismiss_keys = [
+        "j"
+        "k"
+        "<Esc>"
+        "<C-c>"
+      ];
+    };
   };
 }
