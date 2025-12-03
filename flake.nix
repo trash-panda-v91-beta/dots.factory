@@ -77,6 +77,7 @@
                   "githubCopilot"
                   "kubernetes"
                   "python"
+                  "rust"
                 ];
               };
             })

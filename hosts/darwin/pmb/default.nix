@@ -10,6 +10,7 @@ delib.host {
     "githubCopilot"
     "kubernetes"
     "python"
+    "rust"
   ];
   rice = "cyberdream-dark";
   type = "desktop";
