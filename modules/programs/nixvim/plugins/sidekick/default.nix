@@ -18,7 +18,7 @@ delib.module {
         enable = true;
         settings = {
           mux = {
-            enableb = true;
+            enabled = true;
           };
         };
       };
@@ -45,9 +45,12 @@ delib.module {
         key = "<Tab>";
         action.__raw = ''
           function()
-            if not require("sidekick").nes_jump_or_apply() then
-              return "<Tab>"
+            -- Try to jump or apply next edit suggestion
+            if require("sidekick").nes_jump_or_apply() then
+              return "" -- Success, consume keystroke
             end
+            
+            return "<Tab>" -- Fallback to normal tab
           end
         '';
         options = {
@@ -90,6 +93,27 @@ delib.module {
         key = "<leader>sp";
         action.__raw = "function() require('sidekick.cli').prompt() end";
         options.desc = "Select Prompt";
+      }
+      {
+        mode = "n";
+        key = "<leader>sc";
+        action.__raw = ''
+          function()
+            -- Check current state before toggling (nil/true = enabled, false = disabled)
+            local was_enabled = vim.g.sidekick_nes ~= false
+            
+            -- Toggle the state
+            require("sidekick.nes").toggle()
+            
+            -- Show the new state (opposite of what it was)
+            local status = was_enabled and "disabled" or "enabled"
+            vim.notify(
+              string.format("Next Edit Suggestions: %s", status),
+              vim.log.levels.INFO
+            )
+          end
+        '';
+        options.desc = "Toggle Next Edit Suggestions";
       }
     ];
   };

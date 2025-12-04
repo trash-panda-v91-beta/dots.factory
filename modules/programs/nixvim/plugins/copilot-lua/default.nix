@@ -17,7 +17,14 @@ delib.module {
         default = lib.mkAfter [ "copilot" ];
 
         providers.copilot = {
-          enabled = true;
+          enabled.__raw = ''
+            function()
+              if vim.g.copilot_completions_enabled == nil then
+                vim.g.copilot_completions_enabled = true
+              end
+              return vim.g.copilot_completions_enabled
+            end
+          '';
           async = true;
           module = "blink-copilot";
           name = "copilot";
@@ -32,6 +39,36 @@ delib.module {
           suggestions.enable = false;
         };
       };
+
+      which-key.settings.spec = [
+        {
+          __unkeyed-1 = "<leader>sg";
+          group = "GitHub Copilot";
+          icon = "";
+          mode = [ "n" ];
+        }
+      ];
     };
+
+    keymaps = [
+      {
+        mode = "n";
+        key = "<leader>sgc";
+        action.__raw = ''
+          function()
+            if vim.g.copilot_completions_enabled == nil then
+              vim.g.copilot_completions_enabled = true
+            end
+            vim.g.copilot_completions_enabled = not vim.g.copilot_completions_enabled
+            local status = vim.g.copilot_completions_enabled and "enabled" or "disabled"
+            vim.notify(
+              string.format("GitHub Copilot completions: %s", status),
+              vim.log.levels.INFO
+            )
+          end
+        '';
+        options.desc = "Toggle GitHub Copilot Completions";
+      }
+    ];
   };
 }
