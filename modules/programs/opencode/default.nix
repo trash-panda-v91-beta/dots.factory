@@ -15,10 +15,8 @@ delib.module {
   home.ifEnabled =
     { cfg, myconfig, ... }:
     let
-      # Check if MCP servers are enabled
       mcpConfig = myconfig.programs.mcp or { };
 
-      # Helper to check if a server is enabled
       serverEnabled = serverName: !(mcpConfig.servers.${serverName}.disabled or true);
 
       hassEnabled = serverEnabled "hass";
@@ -38,7 +36,6 @@ delib.module {
           "TAVILY_TOKEN: 'op://Private/op4p2ok4buizqra3jssnnoet3u/credential'"
         ];
 
-      # Build the command - use op run only if we have env vars
       opencodeExe = lib.getExe pkgs.local.opencode;
       sidekickCommand =
         if envVars == [ ] then
@@ -69,6 +66,7 @@ delib.module {
         settings = {
           autoshare = false;
           autoupdate = false;
+          instructions = [ ./rules/nushell.md ];
           keybinds = {
             # Navigation
             sidebar_toggle = "ctrl+b";
