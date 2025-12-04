@@ -13,6 +13,7 @@ delib.module {
   home.ifEnabled.programs.nixvim = {
     plugins.rustaceanvim = {
       enable = true;
+      lazyLoad.settings.ft = "rust";
 
       settings = {
         dap = {
