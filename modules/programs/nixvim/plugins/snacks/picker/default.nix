@@ -8,6 +8,19 @@ delib.module {
       pkgs.ripgrep
     ];
     plugins.snacks.settings.picker = {
+      enabled = true;
+      ui_select = true;
+      prompt = "";
+
+      formatters = {
+        file = {
+          filename_first = true;
+          truncate = 100;
+        };
+      };
+
+      layout = "vertical";
+
       layouts = {
         select = {
           layout = {

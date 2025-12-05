@@ -61,6 +61,8 @@ delib.module {
           trigger = {
             prefetch_on_insert = true;
             show_on_backspace = true;
+            show_on_insert_on_trigger_character = true;
+            show_in_snippet = true;
           };
 
           ghost_text.enabled = true;
@@ -79,43 +81,33 @@ delib.module {
           };
 
           documentation = {
-            auto_show = true;
+            auto_show = false;
             auto_show_delay_ms = 200;
-            window.border = "rounded";
+            window.border = "single";
           };
 
           list.selection = {
-            auto_insert = false;
-            preselect = false;
+            auto_insert = true;
+            preselect = true;
           };
 
           menu = {
-            border = "rounded";
-            direction_priority.__raw = ''
-              function()
-                local ctx = require('blink.cmp').get_context()
-                local item = require('blink.cmp').get_selected_item()
-                if ctx == nil or item == nil then return { 's', 'n' } end
-
-                local item_text = item.textEdit ~= nil and item.textEdit.newText or item.insertText or item.label
-                local is_multi_line = item_text:find('\n') ~= nil
-
-                if is_multi_line or vim.g.blink_cmp_upwards_ctx_id == ctx.id then
-                  vim.g.blink_cmp_upwards_ctx_id = ctx.id
-                  return { 'n', 's' }
-                end
-                return { 's', 'n' }
-              end
-            '';
+            border = "single";
+            min_width = 35;
+            auto_show = true;
+            auto_show_delay_ms = 300;
+            direction_priority = [
+              "n"
+              "s"
+            ];
             draw = {
               snippet_indicator = "◦";
               treesitter = [ "lsp" ];
               columns.__raw = ''
                 function()
                   return {
-                    { "label" },
-                    { "kind_icon", "kind", gap = 1 },
-                    { "source_name", gap = 1 }
+                    { "kind_icon" },
+                    { "label", "label_description", gap = 1 }
                   }
                 end
               '';
@@ -177,11 +169,16 @@ delib.module {
 
         keymap = {
           preset = "enter";
+          "<c-space>" = [
+            "show"
+            "show_documentation"
+            "hide_documentation"
+          ];
         };
 
         signature = {
           enabled = true;
-          window.border = "rounded";
+          window.border = "single";
         };
         snippets.preset = "mini_snippets";
 
