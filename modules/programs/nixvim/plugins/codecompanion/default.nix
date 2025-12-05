@@ -59,7 +59,7 @@ delib.module {
             chat = {
               window = {
                 layout = "horizontal";
-                height = 0.5;
+                height = 0.9;
                 position = "bottom";
               };
             };
