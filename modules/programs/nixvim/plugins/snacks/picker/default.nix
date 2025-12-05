@@ -8,6 +8,38 @@ delib.module {
       pkgs.ripgrep
     ];
     plugins.snacks.settings.picker = {
+      layouts = {
+        select = {
+          layout = {
+            relative = "cursor";
+            width = 70;
+            min_width = 0;
+            row = 1;
+          };
+        };
+      };
+
+      win = {
+        list = {
+          on_buf.__raw = ''
+            function(self)
+                self:execute 'calculate_file_truncate_width'
+            end
+          '';
+        };
+        preview = {
+          on_buf.__raw = ''
+            function(self)
+                self:execute 'calculate_file_truncate_width'
+            end
+          '';
+          on_close.__raw = ''
+            function(self)
+                self:execute 'calculate_file_truncate_width'
+            end
+          '';
+        };
+      };
     };
     keymaps = [
       {
