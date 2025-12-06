@@ -20,6 +20,7 @@ delib.overlayModule {
             set -ogq @thm_peach "#ffbd5e"
             set -ogq @thm_yellow "#f1ff5e"
             set -ogq @thm_green "#5eff6c"
+            set -ogq @thm_cyan "#5ef1ff"
             set -ogq @thm_teal "#5ef1ff"
             set -ogq @thm_sky "#5ef1ff"
             set -ogq @thm_sapphire "#5ef1ff"
