@@ -37,8 +37,8 @@ delib.rice {
     # Status left: mode symbol + session + directory (always show) + zoom indicator
     set -g status-left-length 100
     set -g status-left ""
-    # Mode symbol (priority: prefix > copy mode > zoom > normal)
-    set -ga status-left "#{?client_prefix,#[fg=#{@cyberdream_red}]#[bold]○ #[nobold],#{?pane_in_mode,#[fg=#{@cyberdream_yellow}]#[bold]▼ #[nobold],#{?window_zoomed_flag,#[fg=#{@cyberdream_green}]#[bold]■ #[nobold],#[fg=#{@cyberdream_cyan}]#[bold]◎ #[nobold]}}}"
+    # Mode symbol (priority: prefix > copy mode > normal)
+    set -ga status-left "#{?client_prefix,#[fg=#{@cyberdream_red}]#[bold]○ #[nobold],#{?pane_in_mode,#[fg=#{@cyberdream_yellow}]#[bold]▼ #[nobold],#[fg=#{@cyberdream_cyan}]#[bold]◎ #[nobold]}}"
     # Session name (yellow)
     set -ga status-left "#[fg=#{@cyberdream_yellow}]#[bold]#S#[nobold]"
     # Directory - always show if different from session
@@ -46,9 +46,9 @@ delib.rice {
     # Zoom indicator (conditional, after directory)
     set -ga status-left "#[fg=#{@cyberdream_red}]#{?window_zoomed_flag,  ▪,}"
 
-    # Status right: minimal windows
+    # Status right: conditional windows (only show if more than one)
     set -g status-right-length 60
-    set -g status-right ""
+    set -g status-right "#{?#{>:#{session_windows},1},#W,}"
 
     # Pane borders
     setw -g pane-border-format ""
@@ -56,14 +56,14 @@ delib.rice {
     setw -g pane-border-style "bg=#{@cyberdream_bg},fg=#{@cyberdream_overlay}"
     setw -g pane-border-lines single
 
-    # Window status - minimal style with no backgrounds
-    set -g window-status-format "#I"
+    # Window status - minimal style with no backgrounds (only shown when multiple windows)
+    set -g window-status-format "#{?#{>:#{session_windows},1},#I,}"
     set -g window-status-style "fg=#{@cyberdream_grey}"
     set -g window-status-last-style "fg=#{@cyberdream_grey}"
     set -g window-status-activity-style "fg=#{@cyberdream_red}"
     set -g window-status-bell-style "fg=#{@cyberdream_red}"
     set -g window-status-separator " #[fg=#{@cyberdream_overlay}]│ "
-    set -g window-status-current-format "#I"
+    set -g window-status-current-format "#{?#{>:#{session_windows},1},#I,}"
     set -g window-status-current-style "fg=#{@cyberdream_cyan}"
   '';
 

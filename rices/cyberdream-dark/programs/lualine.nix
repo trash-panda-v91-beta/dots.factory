@@ -54,14 +54,14 @@ delib.rice {
                     ['nt'] = '◎',
                     ['ntT'] = '◎',
                     
-                    -- Visual/selection states: ■ (green)
-                    ['v'] = '■',
-                    ['vs'] = '■',
-                    ['V'] = '■',
-                    ['Vs'] = '■',
-                    ['CTRL-V'] = '■',
-                    ['\22'] = '■',
-                    ['\22s'] = '■',
+                    -- Visual/selection states: ▼ (yellow - matches tmux copy mode)
+                    ['v'] = '▼',
+                    ['vs'] = '▼',
+                    ['V'] = '▼',
+                    ['Vs'] = '▼',
+                    ['CTRL-V'] = '▼',
+                    ['\22'] = '▼',
+                    ['\22s'] = '▼',
                     
                     -- Insert/active editing states: ○ (red)
                     ['i'] = '○',
@@ -83,8 +83,8 @@ delib.rice {
                     ['r?'] = '○',
                     ['!'] = '○',
                     
-                    -- Terminal: ◎ (treat like normal)
-                    ['t'] = '◎',
+                    -- Terminal: ■ (rectangle for terminal mode)
+                    ['t'] = '■',
                   }
                   
                   return mode_map[mode] or '◎'
@@ -94,19 +94,24 @@ delib.rice {
                 function()
                   local mode = vim.fn.mode()
                   -- Cyan (#5ef1ff) for normal/stable states (◎)
-                  local normal_modes = { 'n', 'no', 'nov', 'noV', 'noCTRL-V', 'niI', 'niR', 'niV', 'nt', 'ntT', 't' }
+                  local normal_modes = { 'n', 'no', 'nov', 'noV', 'noCTRL-V', 'niI', 'niR', 'niV', 'nt', 'ntT' }
                   for _, m in ipairs(normal_modes) do
                     if mode == m then
                       return { fg = '#5ef1ff', gui = 'bold' }
                     end
                   end
                   
-                  -- Green (#5eff6c) for visual states (■)
+                  -- Yellow (#f1ff5e) for visual states (▼ - matches tmux copy mode)
                   local visual_modes = { 'v', 'vs', 'V', 'Vs', 'CTRL-V', '\22', '\22s' }
                   for _, m in ipairs(visual_modes) do
                     if mode == m then
-                      return { fg = '#5eff6c', gui = 'bold' }
+                      return { fg = '#f1ff5e', gui = 'bold' }
                     end
+                  end
+                  
+                  -- Green (#5eff6c) for terminal mode (■)
+                  if mode == 't' then
+                    return { fg = '#5eff6c', gui = 'bold' }
                   end
                   
                   -- Red (#ff6e5e) for insert/command/active states (○)
