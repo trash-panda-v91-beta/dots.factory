@@ -22,9 +22,13 @@ delib.module {
         # Set terminal colors
         set -g default-terminal "tmux-256color"
         set -as terminal-overrides ',xterm*:sitm=\E[3m'
+        set -as terminal-overrides ',*:RGB'  # RGB color support
+        set -as terminal-overrides ',*:Smulx=\E[4::%p1%dm'  # Undercurl support for LSP
+        set -as terminal-overrides ',*:Setulc=\E[58::2::::%p1%{65536}%/%d::%p1%{256}%/%{255}%&%d::%p1%{255}%&%d%;m'  # Underscore colors
 
         set-window-option -g pane-base-index 1
         set-option -g renumber-windows on
+        set-option -g detach-on-destroy off  # Switch to another session instead of detaching
         set -sg escape-time 0
 
         bind -n M-x kill-pane

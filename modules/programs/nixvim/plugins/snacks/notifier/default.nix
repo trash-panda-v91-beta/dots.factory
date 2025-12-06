@@ -8,7 +8,7 @@ delib.module {
     programs.nixvim = {
       plugins.snacks.settings.notifier = {
         enabled = true;
-        style = "fancy"; # "compact" | "fancy" | "minimal"
+        style = "minimal";
       };
 
       keymaps = [
