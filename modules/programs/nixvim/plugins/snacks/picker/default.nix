@@ -278,10 +278,10 @@ delib.module {
           "n"
           "x"
         ];
-        key = "<leader>sw";
+        key = "<leader>f*";
         action = ''<cmd>lua Snacks.picker.grep_word()<cr>'';
         options = {
-          desc = "Search Word (visual or cursor)";
+          desc = "Find word (cursor/visual)";
         };
       }
       {

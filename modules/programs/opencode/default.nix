@@ -24,17 +24,19 @@ delib.module {
       tavilyEnabled = serverEnabled "tavily";
 
       # Build environment variables list based on enabled servers
-      envVars =
-        lib.optionals hassEnabled [
-          "HASS_TOKEN: 'op://Private/HASS MCP/password'"
-        ]
-        ++ lib.optionals actualEnabled [
-          "ACTUAL_PASSWORD: 'op://NebularGrid/Actual/password'"
-          "ACTUAL_BUDGET_SYNC_ID: 'op://NebularGrid/Actual/sync id'"
-        ]
-        ++ lib.optionals tavilyEnabled [
-          "TAVILY_TOKEN: 'op://Private/op4p2ok4buizqra3jssnnoet3u/credential'"
-        ];
+      envVars = [
+        "SHELL: '${lib.getExe pkgs.bash}'"
+      ]
+      ++ lib.optionals hassEnabled [
+        "HASS_TOKEN: 'op://Private/HASS MCP/password'"
+      ]
+      ++ lib.optionals actualEnabled [
+        "ACTUAL_PASSWORD: 'op://NebularGrid/Actual/password'"
+        "ACTUAL_BUDGET_SYNC_ID: 'op://NebularGrid/Actual/sync id'"
+      ]
+      ++ lib.optionals tavilyEnabled [
+        "TAVILY_TOKEN: 'op://Private/op4p2ok4buizqra3jssnnoet3u/credential'"
+      ];
 
       opencodeExe = lib.getExe pkgs.local.opencode;
       sidekickCommand =
