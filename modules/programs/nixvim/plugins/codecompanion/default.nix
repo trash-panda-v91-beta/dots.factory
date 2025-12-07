@@ -145,13 +145,13 @@ delib.module {
           silent = true;
         };
       }
-      # Keep inline for quick prompts
+      # Inline prompt for quick AI queries
       {
         mode = [
           "n"
           "v"
         ];
-        key = "<A-i>";
+        key = "<leader>si";
         action = "<cmd>CodeCompanion<CR>";
         options = {
           desc = "CodeCompanion inline";

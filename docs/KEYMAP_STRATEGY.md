@@ -1,8 +1,84 @@
-# Neovim Keymap Strategy
+# Keymap Strategy
 
-This document defines the philosophy, structure, and conventions for organizing keymaps in this Neovim configuration.
+This document defines the keymap philosophy and structure across the entire system, from OS-level to application-specific bindings.
 
-## Philosophy
+---
+
+## Global Modifier Hierarchy
+
+### Philosophy
+
+Clear separation of concerns across modifier keys creates a consistent mental model:
+- **Super/Cmd** → System and window management
+- **Alt/Hyper** → Context switching and cross-application navigation  
+- **Ctrl** → Within-application operations
+- **Leader** → Neovim-specific namespace
+
+**Core Rule:** Ctrl is for operations within a single app's context. Alt is for cross-app context switching.
+
+---
+
+### Modifier Layers
+
+#### Super/Cmd (System Layer)
+- **Purpose:** OS and desktop-level operations
+- **Scope:** Global, works regardless of focused application
+- **Examples:** macOS system shortcuts (Cmd-C, Cmd-V, Cmd-Space)
+
+#### Alt/Hyper (Context-Switching Layer)
+- **Purpose:** Cross-application navigation and context switching
+- **Scope:** Moving between apps, sessions, panes, or switching contexts
+- **Pattern:** Use Alt or Hyper keys for this layer
+- **Key Examples:**
+  - `Alt-s` → Switch tmux sessions
+  - `Alt-i` → Open OpenCode from tmux (cross-app launch)
+  - `Alt-p` → Previous tmux session
+  - `Alt-hjkl` → Resize tmux panes
+  - `Alt-t` → Toggle tmux pane visibility
+  - `Alt-x` → Kill tmux pane
+  - `Alt-v` → Enter tmux copy mode (context switch)
+  - `Alt-w` → Last tmux window
+  - `Ctrl-Alt-Cmd-Shift-{t,b,g}` → Aerospace workspace switching (hyper keys)
+
+**Rule:** If the action crosses application boundaries or switches contexts, use Alt/Hyper.
+
+#### Ctrl (Application Layer)
+- **Purpose:** Operations within a single application's context
+- **Scope:** Commands that work only when the app has focus
+- **Examples:**
+  - OpenCode: `Ctrl-b` (sidebar), `Ctrl-l` (sessions), `Ctrl-p` (palette), etc.
+  - Neovim: `Ctrl-s` (CodeCompanion quick toggle)
+
+**Rule:** If the action is specific to one application's context, use Ctrl.
+
+#### Leader (Neovim Layer)
+- **Purpose:** Neovim command namespace
+- **Scope:** Only works within Neovim
+- **See detailed documentation below**
+
+---
+
+### Guidelines for New Keymaps
+
+1. **Determine scope:**
+   - System-wide → Super/Cmd
+   - Cross-app/context switching → Alt/Hyper
+   - Within-app operation → Ctrl
+   - Neovim-only → Leader
+
+2. **Check for conflicts** in the same layer
+
+3. **Modal TUIs** (Yazi, lazygit) can use modifier-less keys
+
+4. **Conflict priority:** System > Context-switching > Application > Neovim
+
+---
+
+## Neovim Keymap Strategy
+
+This section defines the philosophy, structure, and conventions for organizing keymaps in this Neovim configuration.
+
+### Neovim-Specific Philosophy
 
 **Core Principles:**
 1. **Mnemonic First** - Keys should match their function (c=code, g=git, s=sidekick/AI, etc.)
@@ -167,6 +243,7 @@ All AI-related tools are consolidated under this group.
 <C-s>         → Quick CodeCompanion toggle (works in n/v/i modes)
 <leader>ss    → CodeCompanion Chat toggle
 <leader>so    → Toggle OpenCode Sidekick panel
+<leader>si    → CodeCompanion inline prompt
 <leader>st    → Send "this" (context-aware: function/file/etc.)
 <leader>sf    → Send current file
 <leader>sv    → Send selection (visual mode only)
@@ -177,9 +254,6 @@ All AI-related tools are consolidated under this group.
 <leader>sg    → GitHub Copilot (sub-group)
   <leader>sgc → Toggle Copilot completions
 ```
-
-**Alternative keymaps** (kept for quick access):
-- `<A-i>` → CodeCompanion inline prompt
 
 ### `<leader>c` - Code
 
