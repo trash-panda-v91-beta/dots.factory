@@ -8,11 +8,41 @@ delib.module {
     enable = true;
 
     settings = {
+      preset = "helix";
+      delay = 300;
+      show_help = false;
+      show_keys = false;
+      notify = false;
+
+      layout = {
+        spacing = 3;
+        align = "center";
+      };
+
+      triggers = [
+        {
+          __unkeyed-1 = "<auto>";
+          mode = "nxso";
+        }
+        {
+          __unkeyed-1 = "<localleader>";
+          mode = "nxso";
+        }
+      ];
+
+      icons = {
+        rules = false;
+        breadcrumb = " ";
+        separator = "➜";
+        group = "";
+        mappings = false;
+      };
+
       spec = [
         {
           __unkeyed-1 = "<leader>s";
           group = "Sidekick";
-          icon = "";
+          icon = "🤖";
           mode = [
             "n"
             "v"
@@ -62,6 +92,11 @@ delib.module {
           icon = "";
         }
         {
+          __unkeyed-1 = "<leader>l";
+          group = "LSP";
+          icon = "💡";
+        }
+        {
           __unkeyed-1 = "<leader>n";
           group = "Notifications";
           icon = "";
@@ -72,9 +107,9 @@ delib.module {
           icon = "󰗼";
         }
         {
-          __unkeyed-1 = "<leader>s";
-          group = "Search";
-          icon = "";
+          __unkeyed-1 = "<leader>r";
+          group = "Replace/Refactor";
+          icon = "🔄";
         }
         {
           __unkeyed-1 = "<leader>t";
@@ -140,8 +175,23 @@ delib.module {
       };
 
       win = {
+        no_overlap = false;
+        width = {
+          min = 35;
+          max = 35;
+        };
+        height = {
+          max = 120;
+        };
         border = "single";
       };
+
+      sort = [
+        "alphanum"
+        "local"
+        "order"
+        "mod"
+      ];
     };
   };
 }

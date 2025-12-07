@@ -22,18 +22,6 @@ delib.module {
           };
         };
       };
-
-      which-key.settings.spec = [
-        {
-          __unkeyed-1 = "<leader>s";
-          group = "Sidekick";
-          icon = "🤖";
-          mode = [
-            "n"
-            "v"
-          ];
-        }
-      ];
     };
 
     keymaps = [
@@ -60,7 +48,7 @@ delib.module {
       }
       {
         mode = "n";
-        key = "<leader>ss";
+        key = "<leader>so";
         action.__raw = "function() require('sidekick.cli').toggle({ name = 'opencode', focus = true }) end";
         options.desc = "Toggle OpenCode";
       }

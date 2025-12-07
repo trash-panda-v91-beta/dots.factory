@@ -93,18 +93,59 @@ delib.module {
       };
     };
     keymaps = [
+      # Quick toggle with Ctrl+S (works in all modes)
+      {
+        mode = [
+          "n"
+          "v"
+          "i"
+        ];
+        key = "<C-s>";
+        action = "<cmd>CodeCompanionChat Toggle<CR>";
+        options = {
+          desc = "Quick CodeCompanion toggle";
+          silent = true;
+        };
+      }
+      # Leader keymaps for discoverability
       {
         mode = [
           "n"
           "v"
         ];
-        key = "<A-c>";
+        key = "<leader>ss";
         action = "<cmd>CodeCompanionChat Toggle<CR>";
         options = {
-          desc = "Trigger CodeCompanion chat";
+          desc = "CodeCompanion Chat";
           silent = true;
         };
       }
+      {
+        mode = [
+          "n"
+          "v"
+        ];
+        key = "<leader>sa";
+        action = "<cmd>CodeCompanionActions<CR>";
+        options = {
+          desc = "CodeCompanion Actions";
+          silent = true;
+        };
+      }
+      {
+        mode = "n";
+        key = "<leader>sh";
+        action.__raw = ''
+          function()
+            require("codecompanion").history()
+          end
+        '';
+        options = {
+          desc = "CodeCompanion History";
+          silent = true;
+        };
+      }
+      # Keep inline for quick prompts
       {
         mode = [
           "n"
@@ -113,19 +154,7 @@ delib.module {
         key = "<A-i>";
         action = "<cmd>CodeCompanion<CR>";
         options = {
-          desc = "Trigger CodeCompanion inline";
-          silent = true;
-        };
-      }
-      {
-        mode = [
-          "n"
-          "v"
-        ];
-        key = "<localleader>aa";
-        action = "<cmd>CodeCompanionActions<CR>";
-        options = {
-          desc = "Trigger CodeCompanion actions";
+          desc = "CodeCompanion inline";
           silent = true;
         };
       }
