@@ -15,6 +15,7 @@ delib.module {
         "yaml.ghaction" = [
           "actionlint"
           "zizmor"
+          "yamllint"
         ];
         "yaml.cloudformation" = [ "cfn_lint" ];
         "json.cloudformation" = [ "cfn_lint" ];
