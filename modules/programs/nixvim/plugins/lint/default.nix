@@ -33,7 +33,7 @@ delib.module {
 
     filetype.pattern = {
       # GitHub Actions workflows
-      ".*/\\.github/workflows/.*\\.ya?ml" = "yaml.ghaction";
+      ".*/%.github/workflows/.*%.ya?ml" = "yaml.ghaction";
 
       # CloudFormation templates (common patterns)
       ".*cloudformation.*%.ya?ml" = "yaml.cloudformation";
