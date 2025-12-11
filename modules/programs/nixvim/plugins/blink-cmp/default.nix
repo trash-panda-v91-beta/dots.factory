@@ -59,7 +59,7 @@ delib.module {
           };
 
           trigger = {
-            prefetch_on_insert = true;
+            prefetch_on_insert = false; # Disabled: marked as buggy/experimental, can cause crashes with autocmds
             show_on_backspace = true;
             show_on_insert_on_trigger_character = true;
             show_in_snippet = true;
