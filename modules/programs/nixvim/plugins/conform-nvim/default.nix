@@ -75,6 +75,7 @@ delib.module {
           };
           json = [ "jq" ];
           html = [ "prettierd" ];
+          just = [ "just" ];
           lua = [ "stylua" ];
           nix = [
             "nixfmt"
@@ -93,7 +94,6 @@ delib.module {
             "shfmt"
           ];
           swift = [ "swift_format" ];
-          toml = [ "taplo" ];
           typescript = {
             __unkeyed-1 = "prettierd";
             __unkeyed-2 = "biome";
@@ -120,6 +120,7 @@ delib.module {
             };
           };
           jq.command = pkgs.lib.getExe pkgs.jq;
+          just.command = pkgs.lib.getExe pkgs.just;
           nixfmt.command = pkgs.lib.getExe pkgs.nixfmt-rfc-style;
           prettierd.command = pkgs.lib.getExe pkgs.prettierd;
           ruff.command = pkgs.lib.getExe pkgs.ruff;
@@ -131,7 +132,6 @@ delib.module {
           stylelint.command = pkgs.lib.getExe pkgs.stylelint;
           stylua.command = pkgs.lib.getExe pkgs.stylua;
           swift_format.command = pkgs.lib.getExe pkgs.swift-format;
-          taplo.command = pkgs.lib.getExe pkgs.taplo;
           xmlformat.command = pkgs.lib.getExe pkgs.xmlformat;
           yamlfmt.command = pkgs.lib.getExe pkgs.yamlfmt;
           injected = {

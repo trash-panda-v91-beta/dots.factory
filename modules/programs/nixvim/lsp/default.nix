@@ -93,11 +93,12 @@ delib.module {
       };
       nushell.enable = true;
       ruff.enable = true;
+      rumdl.enable = true;
       sqls.enable = true;
       statix.enable = true;
       stylelint_lsp.enable = true;
       tailwindcss.enable = true;
-      taplo.enable = true;
+      tombi.enable = true;
       ts_ls.enable = true;
       yamlls = {
         enable = true;
