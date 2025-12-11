@@ -17,8 +17,10 @@ delib.module {
           "zizmor"
           "yamllint"
         ];
-        "yaml.cloudformation" = [ "cfn_lint" ];
-        "json.cloudformation" = [ "cfn_lint" ];
+        "yaml.cloudformation" = [
+          "cfn_lint"
+          "yamllint"
+        ];
         dockerfile = [ "hadolint" ];
         yaml = [ "yamllint" ];
       };
@@ -38,7 +40,6 @@ delib.module {
 
       # CloudFormation templates (common patterns)
       ".*cloudformation.*%.ya?ml" = "yaml.cloudformation";
-      ".*cloudformation.*%.json" = "json.cloudformation";
       ".*%-stack%.ya?ml" = "yaml.cloudformation";
       ".*template%.ya?ml" = "yaml.cloudformation";
     };
