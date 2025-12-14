@@ -40,6 +40,10 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    tiny-diagnostics-nvim = {
+      url = "github:rachartier/tiny-diagnostics.nvim";
+      flake = false;
+    };
     vault.url = "github:trash-panda-v91-beta/dots.vault";
   };
 
