@@ -1,4 +1,4 @@
-{ delib, pkgs, ... }:
+{ delib, pkgs, lib, ... }:
 delib.module {
   name = "programs.nixvim.plugins.tiny-diagnostics";
 
@@ -21,6 +21,7 @@ delib.module {
 
     # Override diagnostic settings to disable default virtual text
     # since tiny-diagnostics provides a better alternative
-    diagnostic.settings.virtual_text = false;
+    # Use mkForce to override the existing configuration
+    diagnostic.settings.virtual_text = lib.mkForce false;
   };
 }
