@@ -420,11 +420,11 @@
     },
     "vault": {
       "locked": {
-        "lastModified": 1765789764,
-        "narHash": "sha256-TGTGVtPjGJUekE6c6gvwKXN7QDEtANps/9LuwXM0pQ8=",
+        "lastModified": 1765824174,
+        "narHash": "sha256-4mxYZYOC3E4LLb7X45vp7ThqWSP2rd2y4rwDuZqcQd4=",
         "owner": "trash-panda-v91-beta",
         "repo": "dots.vault",
-        "rev": "c9b484fb2b8f876c19021d96849ddf04f40f7a02",
+        "rev": "e6ce6bdf84d90359d0fa17080c8baf6479e3ee75",
         "type": "github"
       },
       "original": {
