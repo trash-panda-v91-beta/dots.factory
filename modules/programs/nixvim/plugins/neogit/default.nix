@@ -42,6 +42,125 @@ delib.module {
               desc = "Open Neogit";
             };
           }
+          {
+            mode = [ "n" ];
+            key = "<leader>gn";
+            action.__raw = ''
+              function()
+                -- Quick git workflow: checkout main, pull, create new branch
+                local git = require('neogit.lib.git')
+                
+                -- Check for uncommitted changes first
+                local status_result = git.cli.status.args("--porcelain").call({ await = true })
+                if status_result.code == 0 and status_result.stdout and #status_result.stdout > 0 then
+                  local has_changes = false
+                  for _, line in ipairs(status_result.stdout) do
+                    if vim.trim(line) ~= "" then
+                      has_changes = true
+                      break
+                    end
+                  end
+                  if has_changes then
+                    vim.notify("Cannot create branch: you have uncommitted changes. Please commit or stash them first.", vim.log.levels.ERROR)
+                    return
+                  end
+                end
+                
+                -- Step 1: Detect and checkout main/master
+                vim.notify("Switching to main branch...", vim.log.levels.INFO)
+                
+                -- Get list of local branches using CLI
+                local branch_result = git.cli.branch.call({ await = true })
+                local branch_list = {}
+                if branch_result.code == 0 then
+                  for _, line in ipairs(branch_result.stdout) do
+                    local branch = line:match("^%*?%s*(.+)$")
+                    if branch then 
+                      table.insert(branch_list, branch)
+                    end
+                  end
+                end
+                
+                -- Try main first, fallback to master
+                local main_branch = "main"
+                local has_main = vim.tbl_contains(branch_list, "main")
+                local has_master = vim.tbl_contains(branch_list, "master")
+                
+                if not has_main and has_master then
+                  main_branch = "master"
+                elseif not has_main and not has_master then
+                  vim.notify("Neither 'main' nor 'master' branch found", vim.log.levels.ERROR)
+                  return
+                end
+                
+                local checkout_result = git.cli.checkout.branch(main_branch).call({ await = true })
+                if checkout_result.code ~= 0 then
+                  local error_msg = "Failed to checkout " .. main_branch
+                  if checkout_result.stderr and #checkout_result.stderr > 0 then
+                    error_msg = error_msg .. ": " .. table.concat(checkout_result.stderr, "\n")
+                  end
+                  vim.notify(error_msg, vim.log.levels.ERROR)
+                  return
+                end
+                
+                -- Step 2: Pull latest changes
+                vim.notify("Pulling latest changes...", vim.log.levels.INFO)
+                local pull_result = git.cli.pull.call({ await = true })
+                if pull_result.code ~= 0 then
+                  local error_msg = "Failed to pull"
+                  if pull_result.stderr and #pull_result.stderr > 0 then
+                    error_msg = error_msg .. ": " .. table.concat(pull_result.stderr, "\n")
+                  end
+                  vim.notify(error_msg, vim.log.levels.WARN)
+                  -- Continue anyway, user might want to create branch even if pull fails
+                end
+                
+                -- Step 3: Prompt for new branch name using Snacks.input
+                require('snacks').input({
+                  prompt = "New branch name: ",
+                  icon = " ",
+                }, function(branch_name)
+                  if not branch_name or branch_name == "" then
+                    vim.notify("Branch creation cancelled", vim.log.levels.INFO)
+                    return
+                  end
+                  
+                  -- Enhanced branch name validation
+                  if branch_name:match("[^%w/_.-]") or       -- Basic character check
+                     branch_name:match("^-") or              -- No leading dash
+                     branch_name:match("%.%.") or            -- No consecutive dots
+                     branch_name:match("@{") or              -- No reflog syntax
+                     branch_name:match("%.lock$") or         -- No .lock suffix
+                     branch_name:match("^%.") or             -- No leading dot
+                     branch_name:match("%.$") then           -- No trailing dot
+                    vim.notify("Invalid branch name. Use alphanumeric, dash, underscore, slash, and dots. Cannot start with dash or dot.", vim.log.levels.ERROR)
+                    return
+                  end
+                  
+                  -- Step 4: Create and checkout new branch
+                  vim.notify("Creating branch: " .. branch_name, vim.log.levels.INFO)
+                  local create_result = git.cli.checkout.args("-b").branch(branch_name).call({ await = true })
+                  
+                  if create_result.code == 0 then
+                    vim.notify("✓ Created and switched to branch: " .. branch_name, vim.log.levels.INFO)
+                    -- Refresh Neogit if it's open
+                    pcall(function()
+                      require('neogit').refresh()
+                    end)
+                  else
+                    local error_msg = "Failed to create branch"
+                    if create_result.stderr and #create_result.stderr > 0 then
+                      error_msg = error_msg .. ": " .. table.concat(create_result.stderr, "\n")
+                    end
+                    vim.notify(error_msg, vim.log.levels.ERROR)
+                  end
+                end)
+              end
+            '';
+            options = {
+              desc = "New branch (main→pull→create)";
+            };
+          }
         ];
 
         # Add autocommand to trigger OpenCode when entering commit buffer
