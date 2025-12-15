@@ -57,7 +57,7 @@ delib.module {
             severity.min = "warn";
             source = "if_many";
           };
-          update_in_insert = true;
+          update_in_insert = false;
         };
 
         filetype = {
