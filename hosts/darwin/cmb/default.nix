@@ -14,7 +14,7 @@ delib.host {
   rice = "cyberdream-dark";
   type = "desktop";
 
-  homeManagerUser = "CORPORATE_USER";
+  homeManagerUser = inputs.vault.constants.profiles.corporate;
 
   myconfig =
     {
@@ -22,7 +22,7 @@ delib.host {
       ...
     }:
     {
-      user.name = "CORPORATE_USER";
+      user.name = inputs.vault.constants.profiles.corporate;
       programs = {
         colima.enable = true;
         git.userEmail = myconfig.user.email;
@@ -35,7 +35,7 @@ delib.host {
             }
           ];
         };
-        nixvim.plugins.neogit.gitService = inputs.vault.constants.corporate.gitService;
+        nixvim.plugins.neogit.gitService = inputs.vault.constants.services.git.corporate;
         nushell.enable = true;
       };
     };
