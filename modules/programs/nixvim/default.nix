@@ -30,7 +30,7 @@ delib.module {
 
         diagnostic.settings = {
           float = {
-            border = "rounded";
+            border = "single";
           };
           jump = {
             severity.__raw = "vim.diagnostic.severity.WARN";
@@ -57,7 +57,7 @@ delib.module {
             severity.min = "warn";
             source = "if_many";
           };
-          update_in_insert = false;
+          update_in_insert = true;
         };
 
         filetype = {
