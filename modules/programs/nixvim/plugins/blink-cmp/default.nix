@@ -59,7 +59,7 @@ delib.module {
           };
 
           trigger = {
-            prefetch_on_insert = false; # Disabled: marked as buggy/experimental, can cause crashes with autocmds
+            prefetch_on_insert = true;
             show_on_backspace = true;
             show_on_insert_on_trigger_character = true;
             show_in_snippet = true;
@@ -93,54 +93,6 @@ delib.module {
 
           menu = {
             border = "single";
-            min_width = 35;
-            auto_show = true;
-            auto_show_delay_ms = 300;
-            direction_priority = [
-              "n"
-              "s"
-            ];
-            draw = {
-              snippet_indicator = "◦";
-              treesitter = [ "lsp" ];
-              columns.__raw = ''
-                function()
-                  return {
-                    { "kind_icon" },
-                    { "label", "label_description", gap = 1 }
-                  }
-                end
-              '';
-              components = {
-                item_idx = {
-                  text.__raw = ''
-                    function(ctx)
-                      return ctx.idx == 10 and '0' or ctx.idx >= 10 and ' ' or tostring(ctx.idx)
-                    end
-                  '';
-                  highlight = "BlinkCmpItemIdx";
-                };
-                kind_icon = {
-                  ellipsis = false;
-                  text.__raw = ''
-                    function(ctx)
-                      local kind_icon, _, _ = require('mini.icons').get('lsp', ctx.kind)
-                      -- Check for both nil and the default fallback icon
-                      if not kind_icon or kind_icon == '󰞋' then
-                        -- Use our configured kind_icons
-                        return require('blink.cmp.config').appearance.kind_icons[ctx.kind] or ""
-                      end
-                      return kind_icon
-                    end,
-                    -- Optionally, you may also use the highlights from mini.icons
-                    highlight = function(ctx)
-                      local _, hl, _ = require('mini.icons').get('lsp', ctx.kind)
-                      return hl
-                    end
-                  '';
-                };
-              };
-            };
           };
         };
 
