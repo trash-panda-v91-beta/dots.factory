@@ -58,14 +58,14 @@ delib.host {
         };
         perplexity = {
           disabled = false;
-          command = "docker";
+          command = "bunx";
           args = [
-            "run"
-            "--rm"
-            "-e"
-            "PERPLEXITY_API_KEY={env:PERPLEXITY_API_KEY}"
-            "perplexity-mcp-server"
+            "-y"
+            "@perplexity-ai/mcp-server"
           ];
+          env = {
+            PERPLEXITY_API_KEY = "{env:PERPLEXITY_API_KEY}";
+          };
         };
       };
       nushell.enable = true;
