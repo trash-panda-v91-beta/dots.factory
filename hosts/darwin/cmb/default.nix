@@ -43,8 +43,8 @@ delib.host {
               "${inputs.vault.constants.services.artifactory.corporate.namespace.putta}/server-jira@${inputs.vault.constants.services.artifactory.corporate.url}/api/npm/npm-sandbox-local/${inputs.vault.constants.services.artifactory.corporate.namespace.putta}/server-jira/-/${inputs.vault.constants.services.artifactory.corporate.namespace.putta}/server-jira-1.0.0.tgz"
             ];
             env = {
-              JIRA_URL = "{env:JIRA_URL}";
-              JIRA_TOKEN = "{env:JIRA_TOKEN}";
+              JIRA_URL = "op://Private/Jira token/website";
+              JIRA_TOKEN = "op://Private/Jira token/password";
             };
           };
         };
