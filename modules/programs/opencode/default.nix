@@ -10,36 +10,25 @@ delib.module {
   options.programs.opencode = {
     enable = delib.boolOption true;
     alias = delib.strOption "sidekick";
+
+    env = lib.mkOption {
+      type = lib.types.attrsOf lib.types.str;
+      default = { };
+      description = "Environment variables to pass to OpenCode (typically 1Password references)";
+      example = lib.literalExpression ''
+        {
+          HASS_TOKEN = "op://Private/HASS MCP/password";
+          ACTUAL_PASSWORD = "op://NebularGrid/Actual/password";
+          TAVILY_TOKEN = "op://Private/Tavily/credential";
+        }
+      '';
+    };
   };
 
   home.ifEnabled =
-    { cfg, myconfig, ... }:
+    { cfg, ... }:
     let
-      mcpConfig = myconfig.programs.mcp or { };
-
-      serverEnabled = serverName: !(mcpConfig.servers.${serverName}.disabled or true);
-
-      actualEnabled = serverEnabled "actualBudget";
-      homeAssistantEnabled = serverEnabled "home-assistant";
-      perplexityEnabled = serverEnabled "perplexity";
-      tavilyEnabled = serverEnabled "tavily";
-
-      # Build environment variables list based on enabled servers
-      envVars = [
-      ]
-      ++ lib.optionals homeAssistantEnabled [
-        "HASS_TOKEN: 'op://Private/HASS MCP/password'"
-      ]
-      ++ lib.optionals actualEnabled [
-        "ACTUAL_PASSWORD: 'op://NebularGrid/Actual/password'"
-        "ACTUAL_BUDGET_SYNC_ID: 'op://NebularGrid/Actual/sync id'"
-      ]
-      ++ lib.optionals tavilyEnabled [
-        "TAVILY_TOKEN: 'op://Private/op4p2ok4buizqra3jssnnoet3u/credential'"
-      ]
-      ++ lib.optionals perplexityEnabled [
-        "PERPLEXITY_API_KEY: 'op://Private/Perplexity API Key/password'"
-      ];
+      envVars = lib.mapAttrsToList (name: value: "${name}: '${value}'") cfg.env;
 
       opencodeExe = lib.getExe pkgs.local.opencode;
       sidekickCommand =

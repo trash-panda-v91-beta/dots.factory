@@ -31,6 +31,13 @@ delib.host {
       bun.enable = true;
       colima.enable = true;
       git.userEmail = "42897550+trash-panda-v91-beta@users.noreply.github.com";
+      opencode.env = {
+        ACTUAL_BUDGET_SYNC_ID = "op://NebularGrid/Actual/sync id";
+        ACTUAL_PASSWORD = "op://NebularGrid/Actual/password";
+        HASS_TOKEN = "op://Private/HASS MCP/password";
+        PERPLEXITY_API_KEY = "op://Private/Perplexity API Key/password";
+        TAVILY_TOKEN = "op://Private/op4p2ok4buizqra3jssnnoet3u/credential";
+      };
       mcp.servers = {
         actualBudget = {
           disabled = true;
