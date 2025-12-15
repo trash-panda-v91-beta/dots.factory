@@ -49,11 +49,22 @@ delib.host {
           ];
         };
         home-assistant = {
-          disabled = false;
+          disabled = true;
           url = "https://hass.nebular-grid.space/api/mcp";
           headers = {
             Authorization = "Bearer {env:HASS_TOKEN}";
           };
+        };
+        perplexity = {
+          disabled = false;
+          command = "docker";
+          args = [
+            "run"
+            "--rm"
+            "-e"
+            "PERPLEXITY_API_KEY={env:PERPLEXITY_API_KEY}"
+            "perplexity-mcp-server"
+          ];
         };
       };
       nushell.enable = true;

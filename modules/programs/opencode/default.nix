@@ -19,15 +19,15 @@ delib.module {
 
       serverEnabled = serverName: !(mcpConfig.servers.${serverName}.disabled or true);
 
-      hassEnabled = serverEnabled "hass";
       actualEnabled = serverEnabled "actualBudget";
+      homeAssistantEnabled = serverEnabled "home-assistant";
+      perplexityEnabled = serverEnabled "perplexity";
       tavilyEnabled = serverEnabled "tavily";
 
       # Build environment variables list based on enabled servers
       envVars = [
-        "SHELL: '${lib.getExe pkgs.bash}'"
       ]
-      ++ lib.optionals hassEnabled [
+      ++ lib.optionals homeAssistantEnabled [
         "HASS_TOKEN: 'op://Private/HASS MCP/password'"
       ]
       ++ lib.optionals actualEnabled [
@@ -36,6 +36,9 @@ delib.module {
       ]
       ++ lib.optionals tavilyEnabled [
         "TAVILY_TOKEN: 'op://Private/op4p2ok4buizqra3jssnnoet3u/credential'"
+      ]
+      ++ lib.optionals perplexityEnabled [
+        "PERPLEXITY_API_KEY: 'op://Private/perplexity-api-key'"
       ];
 
       opencodeExe = lib.getExe pkgs.local.opencode;
@@ -50,17 +53,6 @@ delib.module {
           ''with-env { ${envRecord} } { ${opExe} run --no-masking -- ${opencodeExe} }'';
     in
     {
-      assertions = [
-        {
-          assertion = hassEnabled -> (mcpConfig.servers.hass ? "url" || mcpConfig.servers.hass ? "command");
-          message = "OpenCode: HASS MCP server is enabled but has no url or command configured";
-        }
-        {
-          assertion = actualEnabled -> (mcpConfig.servers.actualBudget ? "command");
-          message = "OpenCode: Actual Budget MCP server is enabled but has no command configured";
-        }
-      ];
-
       programs.opencode = {
         enable = true;
         enableMcpIntegration = true;
