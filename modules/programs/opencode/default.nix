@@ -38,7 +38,7 @@ delib.module {
         "TAVILY_TOKEN: 'op://Private/op4p2ok4buizqra3jssnnoet3u/credential'"
       ]
       ++ lib.optionals perplexityEnabled [
-        "PERPLEXITY_API_KEY: 'op://Private/perplexity-api-key'"
+        "PERPLEXITY_API_KEY: 'op://Private/Perplexity API Key/password'"
       ];
 
       opencodeExe = lib.getExe pkgs.local.opencode;
