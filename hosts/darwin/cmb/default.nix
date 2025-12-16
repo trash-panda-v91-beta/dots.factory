@@ -37,10 +37,10 @@ delib.host {
           };
           jira = {
             disabled = false;
-            command = "bunx";
+            command = "bun";
             args = [
-              "-y"
-              "${inputs.vault.constants.services.artifactory.corporate.namespace.putta}/server-jira@${inputs.vault.constants.services.artifactory.corporate.url}/api/npm/npm-sandbox-local/${inputs.vault.constants.services.artifactory.corporate.namespace.putta}/server-jira/-/${inputs.vault.constants.services.artifactory.corporate.namespace.putta}/server-jira-1.0.0.tgz"
+              "~/repos/corporate/mcphub/servers/jira/index.js"
+
             ];
             env = {
               JIRA_URL = "op://Private/Jira token/website";
