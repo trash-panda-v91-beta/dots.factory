@@ -19,6 +19,7 @@ delib.host {
   myconfig =
     {
       myconfig,
+      config,
       ...
     }:
     {
@@ -39,7 +40,7 @@ delib.host {
             disabled = false;
             command = "bun";
             args = [
-              "~/repos/corporate/mcphub/servers/jira/index.js"
+              "${config.home.homeDirectory}/repos/corporate/mcphub/servers/jira/index.js"
 
             ];
             env = {
