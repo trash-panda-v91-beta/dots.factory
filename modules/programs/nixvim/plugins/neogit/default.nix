@@ -57,9 +57,11 @@ delib.module {
               };
               unmerged = {
                 folded = true;
+                hidden = false;
               };
               unpulled = {
                 folded = false;
+                hidden = false;
               };
               unstaged = {
                 folded = false;
