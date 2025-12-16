@@ -15,11 +15,35 @@ delib.module {
       formatters = {
         file = {
           filename_first = true;
-          truncate = 100;
+          truncate = "center";
+          min_width = 60;
         };
       };
 
-      layout = "vertical";
+      # Custom fullscreen-like layout
+      layout.__raw = ''
+        {
+          layout = {
+            box = "horizontal",
+            backdrop = true,
+            width = 0.95,
+            height = 0.95,
+            {
+              box = "vertical",
+              border = true,
+              title = "{title} {live} {flags}",
+              { win = "input", height = 1, border = "bottom" },
+              { win = "list", border = "none" },
+            },
+            {
+              win = "preview",
+              title = "{preview}",
+              border = true,
+              width = 0.55,
+            },
+          },
+        }
+      '';
 
       layouts = {
         select = {
