@@ -23,55 +23,7 @@ delib.module {
       programs.nixvim = {
         plugins.neogit = {
           enable = true;
-          settings = {
-            commit_popup = {
-              kind = "floating";
-            };
-            disable_builtin_notifications = true;
-            disable_commit_confirmation = true;
-            integrations = {
-              diffview = true;
-            };
-            kind = "floating";
-            mappings = {
-              status = {
-                a = "Stage";
-                l = "Toggle";
-              };
-            };
-            popup = {
-              kind = "floating";
-            };
-            preview_buffer = {
-              kind = "floating";
-            };
-            sections = {
-              recent = {
-                folded = true;
-              };
-              staged = {
-                folded = false;
-              };
-              stashes = {
-                folded = false;
-              };
-              unmerged = {
-                folded = true;
-                hidden = false;
-              };
-              unpulled = {
-                folded = false;
-                hidden = false;
-              };
-              unstaged = {
-                folded = false;
-              };
-              untracked = {
-                folded = false;
-              };
-            };
-          }
-          // (lib.optionalAttrs (cfg.gitService != null) {
+          settings = lib.mkIf (cfg.gitService != null) {
             git_services = {
               "${cfg.gitService}" = {
                 pull_request = "https://${cfg.gitService}/\${owner}/\${repository}/compare/\${branch_name}?expand=1";
@@ -79,7 +31,7 @@ delib.module {
                 tree = "https://${cfg.gitService}/\${owner}/\${repository}/tree/\${branch_name}";
               };
             };
-          });
+          };
         };
         keymaps = [
           {

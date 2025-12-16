@@ -47,14 +47,6 @@ delib.module {
               desc = "Diffview Current File History";
             };
           }
-          {
-            mode = [ "n" ];
-            key = "<leader>gq";
-            action = "<cmd>DiffviewClose<cr>";
-            options = {
-              desc = "Close Diffview";
-            };
-          }
         ];
       };
     };
