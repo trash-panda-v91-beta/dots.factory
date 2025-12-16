@@ -37,7 +37,7 @@ delib.host {
             url = inputs.vault.constants.services.mcp.perplexity.corporate;
           };
           jira = {
-            disabled = false;
+            disabled = true;
             command = "bun";
             args = [
               "${config.home.homeDirectory}/repos/corporate/mcphub/servers/jira/index.js"

@@ -32,7 +32,7 @@ delib.module {
     let
       builtinServers = {
         context7 = {
-          disabled = false;
+          disabled = true;
           url = "https://mcp.context7.com/mcp";
           headers = {
             CONTEXT7_API_KEY = "{env:CONTEXT7_API_KEY}";
@@ -40,7 +40,7 @@ delib.module {
         };
 
         tavily = {
-          disabled = false;
+          disabled = true;
           url = "https://mcp.tavily.com/mcp";
           headers = {
             Authorization = "Bearer {env:TAVILY_TOKEN}";
@@ -48,7 +48,7 @@ delib.module {
         };
 
         sequential-thinking = {
-          disabled = false;
+          disabled = true;
           command = "${pkgs.docker}/bin/docker";
           args = [
             "run"
