@@ -71,15 +71,33 @@ delib.module {
       programs.nixvim.keymaps =
         if isMiniFiles then
           [
-            (mkKeymap cfg.keymaps.toggle (lib.mkRaw "function() MiniFiles.open() end") "Open file explorer")
-
-            (mkKeymap cfg.keymaps.toggleCurrent (lib.mkRaw "function() ${miniFilesOpenCurrent} end")
-              "Open file explorer in current folder"
-            )
-
-            (mkKeymap cfg.keymaps.toggleCwd (lib.mkRaw "function() MiniFiles.open(vim.loop.cwd()) end")
-              "Open file explorer in cwd"
-            )
+            {
+              mode = "n";
+              key = cfg.keymaps.toggle;
+              action.__raw = "function() MiniFiles.open() end";
+              options = {
+                desc = "Open file explorer";
+                silent = true;
+              };
+            }
+            {
+              mode = "n";
+              key = cfg.keymaps.toggleCurrent;
+              action.__raw = "function() ${miniFilesOpenCurrent} end";
+              options = {
+                desc = "Open file explorer in current folder";
+                silent = true;
+              };
+            }
+            {
+              mode = "n";
+              key = cfg.keymaps.toggleCwd;
+              action.__raw = "function() MiniFiles.open(vim.loop.cwd()) end";
+              options = {
+                desc = "Open file explorer in cwd";
+                silent = true;
+              };
+            }
           ]
         else if isOil then
           [
@@ -87,9 +105,15 @@ delib.module {
 
             (mkKeymap cfg.keymaps.toggleCurrent ":Oil .<CR>" "Open file explorer in current folder")
 
-            (mkKeymap cfg.keymaps.toggleCwd (lib.mkRaw "function() require('oil').open(vim.loop.cwd()) end")
-              "Open file explorer in cwd"
-            )
+            {
+              mode = "n";
+              key = cfg.keymaps.toggleCwd;
+              action.__raw = "function() require('oil').open(vim.loop.cwd()) end";
+              options = {
+                desc = "Open file explorer in cwd";
+                silent = true;
+              };
+            }
           ]
         else if isYazi then
           [
