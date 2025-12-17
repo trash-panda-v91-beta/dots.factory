@@ -10,11 +10,29 @@ delib.module {
       };
     };
   home.ifEnabled.programs = {
-    tmux.plugins = with pkgs.tmuxPlugins; [
-      vim-tmux-navigator
-    ];
-    nixvim.plugins.tmux-navigator = {
-      enable = true;
+    nixvim = {
+      plugins.tmux-navigator = {
+        enable = true;
+        settings.no_mappings = 1;
+        keymaps = [
+          {
+            key = "<M-h>";
+            action = "left";
+          }
+          {
+            key = "<M-j>";
+            action = "down";
+          }
+          {
+            key = "<M-k>";
+            action = "up";
+          }
+          {
+            key = "<M-l>";
+            action = "right";
+          }
+        ];
+      };
     };
   };
 }
