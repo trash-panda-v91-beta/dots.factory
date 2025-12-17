@@ -74,6 +74,7 @@ delib.module {
           backend-architect = ./agents/backend-architect.md;
           cloud-architect = ./agents/cloud-architect.md;
           code-reviewer = ./agents/code-reviewer.md;
+          contributor = ./agents/contributor.md;
           data-scientist = ./agents/data-scientist.md;
           database-optimizer = ./agents/database-optimizer.md;
           debugger = ./agents/debugger.md;
