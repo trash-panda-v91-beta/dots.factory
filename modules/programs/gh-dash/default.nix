@@ -16,41 +16,42 @@ delib.module {
     {
       programs.gh-dash = {
         enable = cfg.enable;
-        settings = {
-          prSections = [
-            {
-              title = "My Pull Requests";
-              filters = "is:open author:@me";
-            }
-            {
-              title = "Needs My Review";
-              filters = "is:open review-requested:@me";
-            }
-            {
-              title = "Involved";
-              filters = "is:open involves:@me -author:@me";
-            }
-          ];
-          issuesSections = [
-            {
-              title = "My Issues";
-              filters = "is:open author:@me";
-            }
-            {
-              title = "Assigned";
-              filters = "is:open assignee:@me";
-            }
-          ];
-          defaults = {
-            preview = {
-              open = true;
-              width = 50;
+        settings = delib.lib.recursiveUpdate
+          {
+            prSections = [
+              {
+                title = "My Pull Requests";
+                filters = "is:open author:@me";
+              }
+              {
+                title = "Needs My Review";
+                filters = "is:open review-requested:@me";
+              }
+              {
+                title = "Involved";
+                filters = "is:open involves:@me -author:@me";
+              }
+            ];
+            issuesSections = [
+              {
+                title = "My Issues";
+                filters = "is:open author:@me";
+              }
+              {
+                title = "Assigned";
+                filters = "is:open assignee:@me";
+              }
+            ];
+            defaults = {
+              preview = {
+                open = true;
+                width = 50;
+              };
+              prsLimit = 20;
+              issuesLimit = 20;
             };
-            prsLimit = 20;
-            issuesLimit = 20;
-          };
-        }
-        // cfg.settings;
+          }
+          cfg.settings;
       };
     };
 }
