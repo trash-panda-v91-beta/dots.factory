@@ -28,14 +28,14 @@ delib.module {
         ];
       };
 
-      bashls = {
+      ruff = {
         command = [
-          (pkgs.lib.getExe pkgs.bash-language-server)
-          "start"
+          (pkgs.lib.getExe pkgs.ruff)
+          "server"
         ];
         extensions = [
-          ".sh"
-          ".bash"
+          ".py"
+          ".pyi"
         ];
       };
 
@@ -92,13 +92,20 @@ delib.module {
         ];
       };
 
-      taplo = {
+      tombi = {
         command = [
-          (pkgs.lib.getExe pkgs.taplo)
+          (pkgs.lib.getExe pkgs.tombi)
           "lsp"
-          "stdio"
         ];
         extensions = [ ".toml" ];
+      };
+
+      rumdl = {
+        command = [ (pkgs.lib.getExe pkgs.rumdl) ];
+        extensions = [
+          ".md"
+          ".markdown"
+        ];
       };
     };
   };
