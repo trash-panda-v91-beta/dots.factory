@@ -61,7 +61,9 @@ delib.module {
           modules.files = {
             mappings = {
               close = "<Esc>";
-              synchronize = "<CR>";
+              go_in = "l";
+              go_in_plus = "<CR>";
+              synchronize = "s";
             };
           };
         };
