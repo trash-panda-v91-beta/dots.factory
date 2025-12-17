@@ -11,8 +11,12 @@ delib.module {
     };
     plugins.snacks.settings.picker = {
       sources = {
-        gh_issues = { };
-        gh_pr = { };
+        gh_issue = {
+          preview = false;
+        };
+        gh_pr = {
+          preview = false;
+        };
       };
     };
     keymaps = [
