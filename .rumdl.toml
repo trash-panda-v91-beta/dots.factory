@@ -1,0 +1,7 @@
+#:schema https://raw.githubusercontent.com/rvben/rumdl/main/rumdl.schema.json
+
+[global]
+line-length = 100
+
+[MD013]
+reflow = true
