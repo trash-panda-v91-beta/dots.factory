@@ -92,6 +92,15 @@ delib.module {
         ];
       };
 
+      just-lsp = {
+        command = [ (pkgs.lib.getExe pkgs.just-lsp) ];
+        extensions = [
+          ".just"
+          "Justfile"
+          ".justfile"
+        ];
+      };
+
       tombi = {
         command = [
           (pkgs.lib.getExe pkgs.tombi)
