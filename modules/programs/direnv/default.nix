@@ -18,7 +18,6 @@ delib.module {
     };
     programs.git.ignores = [
       ".direnv"
-      ".envrc"
     ];
   };
 }
