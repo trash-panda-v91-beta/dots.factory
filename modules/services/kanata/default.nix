@@ -2,7 +2,6 @@
   delib,
   moduleSystem,
   pkgs,
-  config,
   ...
 }:
 delib.module {
@@ -13,8 +12,6 @@ delib.module {
   darwin.always.imports = [
     ../../../extra/services/kanata.nix
   ];
-
-  myconfig.ifEnabled.services.karabiner-dk.enable = true;
 
   darwin.ifEnabled = {
     # This way package is available in /run/current-system/sw/bin/
@@ -113,7 +110,8 @@ delib.module {
 
   home.ifEnabled = {
     programs.nushell.shellAliases = {
-      start-kanata = "sudo kanata --cfg ${config.services.kanata.keyboards.internal.configFile}";
+      restart-kanata = "launchctl kickstart -k system/org.nixos.kanata-internal";
+      kanata-logs = "tail -f /tmp/kanata-internal.err /tmp/kanata-internal.out";
     };
   };
 }
