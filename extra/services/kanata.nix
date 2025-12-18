@@ -1,3 +1,5 @@
+# Adapted from https://github.com/nix-darwin/nix-darwin/blob/7ebf95a73e3b54e0f9c48f50fde29e96257417ac/modules/services/karabiner-elements/default.nix
+# and PR https://github.com/nix-darwin/nix-darwin/pull/1561
 {
   config,
   lib,
@@ -13,15 +15,7 @@ let
     "See [the upstream documentation](https://github.com/jtroo/kanata/blob/main/docs/config.adoc)"
     + "and [example config files](https://github.com/jtroo/kanata/tree/main/cfg_samples) for more information.";
 
-  mkSudoersConfig =
-    name: keyboard:
-    pkgs.runCommand "sudoers-kanata-${name}" { } ''
-      KANATA_BIN=${kanataExec}
-      SHASUM=$(sha256sum "$KANATA_BIN" | cut -d' ' -f1)
-      cat <<EOF >"$out"
-      ${config.system.primaryUser} ALL=(root) SETENV: NOPASSWD: sha256:$SHASUM $KANATA_BIN --cfg ${keyboard.configFile}
-      EOF
-    '';
+  parentAppDir = "/Applications/.Nix-Karabiner";
 
   keyboard =
     { name, config, ... }:
@@ -131,22 +125,17 @@ let
   mkService =
     name: keyboard:
     lib.nameValuePair (mkName name) {
+      command =
+        "${kanataExec} --cfg ${keyboard.configFile}"
+        + lib.optionalString (keyboard.port != null) " --port ${toString keyboard.port}"
+        + lib.optionalString (keyboard.extraArgs != [ ]) " ${lib.concatStringsSep " " keyboard.extraArgs}";
       serviceConfig = {
-        ProgramArguments = [
-          "/usr/bin/sudo"
-          "-E"
-          "${kanataExec}"
-          "--cfg"
-          "${keyboard.configFile}"
-        ];
-        Label = "org.nixos.kanata";
+        ProcessType = "Interactive";
+        Label = "org.nixos.${mkName name}";
         KeepAlive = true;
         RunAtLoad = true;
-        StandardErrorPath = "/tmp/kanata.err";
-        StandardOutPath = "/tmp/kanata.out";
-        EnvironmentVariables = {
-          PATH = "/usr/bin/:/sbin:/bin:/usr/local/bin:" + lib.makeBinPath (with pkgs; [ cfg.package ]);
-        };
+        StandardErrorPath = "/tmp/${mkName name}.err";
+        StandardOutPath = "/tmp/${mkName name}.out";
       };
     };
 
@@ -183,11 +172,38 @@ in
         and using more than one services.kanata.keyboards may cause a race condition.
       '';
 
-    launchd.daemons = lib.mapAttrs' mkService cfg.keyboards;
-    security.sudo.extraConfig = lib.concatStringsSep "\n" (
-      lib.mapAttrsToList (name: keyboard: builtins.readFile (mkSudoersConfig name keyboard)) cfg.keyboards
-    );
+    environment.systemPackages = [ cfg.package ];
+
+    system.activationScripts.preActivation.text = ''
+      rm -rf ${parentAppDir}
+      mkdir -p ${parentAppDir}
+      # Kernel extensions must reside inside of /Applications, they cannot be symlinks
+      cp -r ${pkgs.karabiner-elements.driver}/Applications/.Karabiner-VirtualHIDDevice-Manager.app ${parentAppDir}
+    '';
+
+    # Activate extension
+    launchd.user.agents.activate_karabiner_system_ext = {
+      serviceConfig.ProgramArguments = [
+        "${parentAppDir}/.Karabiner-VirtualHIDDevice-Manager.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Manager"
+        "activate"
+      ];
+      serviceConfig.RunAtLoad = true;
+    };
+
+    # Start the DriverKit daemon and kanata services
+    launchd.daemons = {
+      Karabiner-DriverKit-VirtualHIDDevice-Daemon = {
+        command = "\"${cfg.package.passthru.darwinDriver}/Library/Application Support/org.pqrs/Karabiner-DriverKit-VirtualHIDDevice/Applications/Karabiner-VirtualHIDDevice-Daemon.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Daemon\"";
+        serviceConfig = {
+          ProcessType = "Interactive";
+          Label = "org.pqrs.Karabiner-DriverKit-VirtualHIDDevice-Daemon";
+          KeepAlive = true;
+          RunAtLoad = true;
+        };
+      };
+    }
+    // lib.mapAttrs' mkService cfg.keyboards;
   };
 
-  meta.maintainers = "maxrn";
+  meta.maintainers = [ "maxrn" ];
 }
