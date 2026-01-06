@@ -20,8 +20,11 @@ delib.module {
         };
       };
 
-      basedpyright = {
-        command = [ (pkgs.lib.getExe pkgs.basedpyright) ];
+      ty = {
+        command = [
+          (pkgs.lib.getExe pkgs.ty)
+          "server"
+        ];
         extensions = [
           ".py"
           ".pyi"

@@ -26,12 +26,6 @@ delib.module {
           ];
         };
       };
-      basedpyright = {
-        enable = true;
-        config = {
-          disableOrganizeImports = true;
-        };
-      };
       bashls.enable = true;
       biome.enable = true;
       dockerls.enable = true;
@@ -100,6 +94,7 @@ delib.module {
       tailwindcss.enable = true;
       tombi.enable = true;
       ts_ls.enable = true;
+      ty.enable = true;
       yamlls = {
         enable = true;
         config = {
