@@ -49,7 +49,6 @@ delib.module {
         settings = {
           autoshare = false;
           autoupdate = false;
-          instructions = [ ./rules/nushell.md ];
           keybinds = {
             session_new = "ctrl+n";
             session_timeline = "ctrl+g";
@@ -69,24 +68,55 @@ delib.module {
           };
         };
         agents = {
-          agent-organizer = ./agents/agent-organizer.md;
-          architect-review = ./agents/architect-review.md;
-          backend-architect = ./agents/backend-architect.md;
-          cloud-architect = ./agents/cloud-architect.md;
-          code-reviewer = ./agents/code-reviewer.md;
-          contributor = ./agents/contributor.md;
-          data-scientist = ./agents/data-scientist.md;
-          database-optimizer = ./agents/database-optimizer.md;
-          debugger = ./agents/debugger.md;
-          deployment-engineer = ./agents/deployment-engineer.md;
-          nix-expert = ./agents/nix-expert.md;
-          performance-engineer = ./agents/performance-engineer.md;
-          python-dev = ./agents/python-dev.md;
-          qa-expert = ./agents/qa-expert.md;
-          security-auditor = ./agents/security-auditor.md;
-          test-automator = ./agents/test-automator.md;
+          ink = ./agents/ink.md;
+          oracle = ./agents/oracle.md;
+          pixel = ./agents/pixel.md;
+          professor = ./agents/professor.md;
+          rocket = ./agents/rocket.md;
+          specter = ./agents/specter.md;
+          tracer = ./agents/tracer.md;
         };
       };
+
+      xdg.configFile = lib.listToAttrs (
+        lib.concatMap
+          (
+            skillName:
+            let
+              skillDir = ./skills + "/${skillName}";
+              skillFile = "${skillDir}/SKILL.md";
+            in
+            if builtins.pathExists skillFile then
+              [
+                {
+                  name = "opencode/skill/${skillName}/SKILL.md";
+                  value.source = skillFile;
+                }
+              ]
+            else
+              [ ]
+          )
+          [
+            "aws-development"
+            "codebase-assessment"
+            "data-and-sql"
+            "delivery-and-infra"
+            "frontend-delegation"
+            "git-workflow"
+            "nix-guidelines"
+            "oracle-consultation"
+            "parallel-exploration"
+            "performance-engineering"
+            "python-development"
+            "quality-engineering"
+            "review-architecture"
+            "review-code-quality"
+            "rust-development"
+            "systematic-debugging"
+            "test-driven-development"
+            "verification-checklist"
+          ]
+      );
 
       programs.nushell.shellAliases = {
         ${cfg.alias} = sidekickCommand;
