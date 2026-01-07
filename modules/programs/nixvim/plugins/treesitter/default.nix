@@ -7,17 +7,10 @@ delib.module {
   home.ifEnabled.programs.nixvim.plugins.treesitter = {
     enable = true;
 
-    settings = {
-      indent = {
-        enable = true;
-      };
-      highlight = {
-        enable = true;
-      };
-    };
-
-    folding = true;
-    nixvimInjections = true;
+    folding.enable = true;
     grammarPackages = pkgs.vimPlugins.nvim-treesitter.allGrammars;
+    highlight.enable = true;
+    indent.enable = true;
+    nixvimInjections = true;
   };
 }
