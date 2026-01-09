@@ -67,15 +67,6 @@ delib.module {
             history_next = "pagedown";
           };
         };
-        agents = {
-          ink = ./agents/ink.md;
-          oracle = ./agents/oracle.md;
-          pixel = ./agents/pixel.md;
-          professor = ./agents/professor.md;
-          rocket = ./agents/rocket.md;
-          specter = ./agents/specter.md;
-          tracer = ./agents/tracer.md;
-        };
       };
 
       xdg.configFile = lib.listToAttrs (
