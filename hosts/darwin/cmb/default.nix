@@ -74,7 +74,7 @@ delib.host {
           pixel = {
             model = "github-copilot/claude-sonnet-4";
           };
-          professor = {
+          architect = {
             model = "github-copilot/claude-sonnet-4.5";
           };
           rocket = {
