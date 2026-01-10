@@ -57,10 +57,10 @@ delib.module {
 
         **CURRENT YEAR CHECK**: Before ANY search, verify the current date
         from environment context.
-        - **NEVER search for 2024** - It is NOT 2024 anymore
-        - **ALWAYS use current year** (2025+) in search queries
-        - When searching: use "library-name topic 2025" NOT "2024"
-        - Filter out outdated 2024 results when they conflict with 2025
+        - **NEVER search for 2025** - It is NOT 2025 anymore
+        - **ALWAYS use current year** (2026+) in search queries
+        - When searching: use "library-name topic 2026" NOT "2025"
+        - Filter out outdated 2025 results when they conflict with 2026
           information
 
         ---

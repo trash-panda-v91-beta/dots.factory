@@ -7,7 +7,7 @@ delib.module {
   name = "programs.opencode.agents.ink";
 
   options.programs.opencode.agents.ink = with delib; {
-    enable = boolOption false;
+    enable = boolOption true;
     model = strOption "github-copilot/gemini-3-flash-preview";
     temperature = floatOption 0.3;
     mode = strOption "subagent";
