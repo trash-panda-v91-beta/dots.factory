@@ -7,7 +7,7 @@ delib.module {
   name = "programs.opencode.agents.ink";
 
   options.programs.opencode.agents.ink = with delib; {
-    enable = boolOption true;
+    enable = boolOption false;
     model = strOption "github-copilot/gemini-3-flash-preview";
     temperature = floatOption 0.3;
     mode = strOption "subagent";
@@ -30,7 +30,7 @@ delib.module {
       };
 
       yamlContent = lib.generators.toYAML { } yamlFields;
-      frontmatter = "---\n" + yamlContent + "---\n";
+      frontmatter = "---\n" + yamlContent + "\n---\n";
 
       content = ''
         <role>

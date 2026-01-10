@@ -36,7 +36,7 @@ delib.module {
 
       # Convert attrset to YAML format
       yamlContent = lib.generators.toYAML { } yamlFields;
-      frontmatter = "---\n" + yamlContent + "---\n";
+      frontmatter = "---\n" + yamlContent + "\n---\n";
 
       # Content after the original frontmatter
       content = ''

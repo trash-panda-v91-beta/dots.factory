@@ -8,7 +8,7 @@ delib.module {
 
   options.programs.opencode.agents.tracer = with delib; {
     enable = boolOption true;
-    model = strOption "opencode/grok-code";
+    model = strOption "github-copilot/grok-code-fast-1";
     temperature = floatOption 0.1;
     mode = strOption "subagent";
     disable = boolOption false;
@@ -40,10 +40,9 @@ delib.module {
 
       # Convert attrset to YAML format
       yamlContent = lib.generators.toYAML { } yamlFields;
-      frontmatter = "---\n" + yamlContent + "---\n";
+      frontmatter = "---\n" + yamlContent + "\n---\n";
 
       content = ''
-
         You are a codebase search specialist. Your job: find files and code, return actionable results.
 
         ## Your Mission
