@@ -27,9 +27,6 @@ delib.module {
         mode = cfg.mode;
         model = cfg.model;
         temperature = cfg.temperature;
-        tools = {
-          background_task = false;
-        };
       };
 
       yamlContent = lib.generators.toYAML { } yamlFields;
@@ -121,7 +118,7 @@ delib.module {
         </quality_standards>
 
         **CRITICAL**: You MUST BE USED when executing documentation tasks from ai-todo 
-        list plans. Documentation is not optional—it's a core engineering deliverable.
+        list plans. Documentation is not optional — it's a core engineering deliverable.
       '';
     in
     {

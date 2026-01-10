@@ -49,6 +49,7 @@ delib.module {
         settings = {
           autoshare = false;
           autoupdate = false;
+          default_agent = "architect";
           keybinds = {
             session_new = "ctrl+n";
             session_timeline = "ctrl+g";
