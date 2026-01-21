@@ -82,7 +82,7 @@ delib.module {
       {
         mode = "n";
         key = "<leader><space>";
-        action = ''<cmd>lua Snacks.picker.smart()<cr>'';
+        action = "<cmd>lua Snacks.picker.smart()<cr>";
         options = {
           desc = "Smart Files";
         };
@@ -90,7 +90,7 @@ delib.module {
       {
         mode = "n";
         key = "<leader>:";
-        action = ''<cmd>lua Snacks.picker.command_history()<cr>'';
+        action = "<cmd>lua Snacks.picker.command_history()<cr>";
         options = {
           desc = "Command History";
         };
@@ -99,7 +99,7 @@ delib.module {
       {
         mode = "n";
         key = "<leader>fa";
-        action = ''<cmd>lua Snacks.picker.autocmds()<cr>'';
+        action = "<cmd>lua Snacks.picker.autocmds()<cr>";
         options = {
           desc = "Find autocmds";
         };
@@ -107,7 +107,7 @@ delib.module {
       {
         mode = "n";
         key = "<leader>fb";
-        action = ''<cmd>lua Snacks.picker.buffers()<cr>'';
+        action = "<cmd>lua Snacks.picker.buffers()<cr>";
         options = {
           desc = "Find buffers";
         };
@@ -115,7 +115,7 @@ delib.module {
       {
         mode = "n";
         key = "<leader>fc";
-        action = ''<cmd>lua Snacks.picker.commands()<cr>'';
+        action = "<cmd>lua Snacks.picker.commands()<cr>";
         options = {
           desc = "Find commands";
         };
@@ -139,7 +139,7 @@ delib.module {
       {
         mode = "n";
         key = "<leader>fe";
-        action = ''<cmd>lua Snacks.explorer()<cr>'';
+        action = "<cmd>lua Snacks.explorer()<cr>";
         options = {
           desc = "File Explorer";
         };
@@ -147,7 +147,7 @@ delib.module {
       {
         mode = "n";
         key = "<leader>ff";
-        action = ''<cmd>lua Snacks.picker.files()<cr>'';
+        action = "<cmd>lua Snacks.picker.files()<cr>";
         options = {
           desc = "Find files";
         };
@@ -155,7 +155,7 @@ delib.module {
       {
         mode = "n";
         key = "<leader>fF";
-        action = ''<cmd>lua Snacks.picker.files({hidden = true, ignored = true})<cr>'';
+        action = "<cmd>lua Snacks.picker.files({hidden = true, ignored = true})<cr>";
         options = {
           desc = "Find files (All files)";
         };
@@ -163,7 +163,7 @@ delib.module {
       {
         mode = "n";
         key = "<leader>fh";
-        action = ''<cmd>lua Snacks.picker.help()<cr>'';
+        action = "<cmd>lua Snacks.picker.help()<cr>";
         options = {
           desc = "Find help tags";
         };
@@ -171,7 +171,7 @@ delib.module {
       {
         mode = "n";
         key = "<leader>fk";
-        action = ''<cmd>lua Snacks.picker.keymaps()<cr>'';
+        action = "<cmd>lua Snacks.picker.keymaps()<cr>";
         options = {
           desc = "Find keymaps";
         };
@@ -179,7 +179,7 @@ delib.module {
       {
         mode = "n";
         key = "<leader>fm";
-        action = ''<cmd>lua Snacks.picker.man()<cr>'';
+        action = "<cmd>lua Snacks.picker.man()<cr>";
         options = {
           desc = "Find man pages";
         };
@@ -187,7 +187,7 @@ delib.module {
       {
         mode = "n";
         key = "<leader>fo";
-        action = ''<cmd>lua Snacks.picker.recent()<cr>'';
+        action = "<cmd>lua Snacks.picker.recent()<cr>";
         options = {
           desc = "Find old files";
         };
@@ -195,7 +195,7 @@ delib.module {
       {
         mode = "n";
         key = "<leader>fO";
-        action = ''<cmd>lua Snacks.picker.smart()<cr>'';
+        action = "<cmd>lua Snacks.picker.smart()<cr>";
         options = {
           desc = "Find Smart (Frecency)";
         };
@@ -203,7 +203,7 @@ delib.module {
       {
         mode = "n";
         key = "<leader>fp";
-        action = ''<cmd>lua Snacks.picker.projects()<cr>'';
+        action = "<cmd>lua Snacks.picker.projects()<cr>";
         options = {
           desc = "Find projects";
         };
@@ -211,7 +211,7 @@ delib.module {
       {
         mode = "n";
         key = "<leader>fq";
-        action = ''<cmd>lua Snacks.picker.qflist()<cr>'';
+        action = "<cmd>lua Snacks.picker.qflist()<cr>";
         options = {
           desc = "Find quickfix";
         };
@@ -219,7 +219,7 @@ delib.module {
       {
         mode = "n";
         key = "<leader>fr";
-        action = ''<cmd>lua Snacks.picker.registers()<cr>'';
+        action = "<cmd>lua Snacks.picker.registers()<cr>";
         options = {
           desc = "Find registers";
         };
@@ -267,7 +267,7 @@ delib.module {
       {
         mode = "n";
         key = "<leader>f'";
-        action = ''<cmd>lua Snacks.picker.marks()<cr>'';
+        action = "<cmd>lua Snacks.picker.marks()<cr>";
         options = {
           desc = "Find marks";
         };
@@ -275,7 +275,7 @@ delib.module {
       {
         mode = "n";
         key = "<leader>f/";
-        action = ''<cmd>lua Snacks.picker.lines()<cr>'';
+        action = "<cmd>lua Snacks.picker.lines()<cr>";
         options = {
           desc = "Fuzzy find in current buffer";
         };
@@ -283,7 +283,7 @@ delib.module {
       {
         mode = "n";
         key = "<leader>f?";
-        action = ''<cmd>lua Snacks.picker.grep_buffers()<cr>'';
+        action = "<cmd>lua Snacks.picker.grep_buffers()<cr>";
         options = {
           desc = "Fuzzy find in open buffers";
         };
@@ -291,7 +291,7 @@ delib.module {
       {
         mode = "n";
         key = "<leader>f<CR>";
-        action = ''<cmd>lua Snacks.picker.resume()<cr>'';
+        action = "<cmd>lua Snacks.picker.resume()<cr>";
         options = {
           desc = "Resume find";
         };
@@ -303,7 +303,7 @@ delib.module {
           "x"
         ];
         key = "<leader>f*";
-        action = ''<cmd>lua Snacks.picker.grep_word()<cr>'';
+        action = "<cmd>lua Snacks.picker.grep_word()<cr>";
         options = {
           desc = "Find word (cursor/visual)";
         };
@@ -311,7 +311,7 @@ delib.module {
       {
         mode = "n";
         key = "<leader>fG";
-        action = ''<cmd>lua Snacks.picker.git_files()<cr>'';
+        action = "<cmd>lua Snacks.picker.git_files()<cr>";
         options = {
           desc = "Find Git Files";
         };
@@ -319,7 +319,7 @@ delib.module {
       {
         mode = "n";
         key = "<leader>gb";
-        action = ''<cmd>lua Snacks.picker.git_branches()<cr>'';
+        action = "<cmd>lua Snacks.picker.git_branches()<cr>";
         options = {
           desc = "Find git branches";
         };
@@ -327,7 +327,7 @@ delib.module {
       {
         mode = "n";
         key = "<leader>gC";
-        action = ''<cmd>lua Snacks.picker.git_log()<cr>'';
+        action = "<cmd>lua Snacks.picker.git_log()<cr>";
         options = {
           desc = "Find git commits";
         };
@@ -335,7 +335,7 @@ delib.module {
       {
         mode = "n";
         key = "<leader>gL";
-        action = ''<cmd>lua Snacks.picker.git_log_line()<cr>'';
+        action = "<cmd>lua Snacks.picker.git_log_line()<cr>";
         options = {
           desc = "Git Log Line";
         };
@@ -343,7 +343,7 @@ delib.module {
       {
         mode = "n";
         key = "<leader>gD";
-        action = ''<cmd>lua Snacks.picker.git_diff()<cr>'';
+        action = "<cmd>lua Snacks.picker.git_diff()<cr>";
         options = {
           desc = "Git Diff (Hunks)";
         };
@@ -351,7 +351,7 @@ delib.module {
       {
         mode = "n";
         key = "<leader>gf";
-        action = ''<cmd>lua Snacks.picker.git_log_file()<cr>'';
+        action = "<cmd>lua Snacks.picker.git_log_file()<cr>";
         options = {
           desc = "Git Log File";
         };
@@ -359,7 +359,7 @@ delib.module {
       {
         mode = "n";
         key = "<leader>fd";
-        action = ''<cmd>lua Snacks.picker.diagnostics_buffer()<cr>'';
+        action = "<cmd>lua Snacks.picker.diagnostics_buffer()<cr>";
         options = {
           desc = "Find buffer diagnostics";
         };
@@ -367,7 +367,7 @@ delib.module {
       {
         mode = "n";
         key = "<leader>fD";
-        action = ''<cmd>lua Snacks.picker.diagnostics()<cr>'';
+        action = "<cmd>lua Snacks.picker.diagnostics()<cr>";
         options = {
           desc = "Find workspace diagnostics";
         };
@@ -375,7 +375,7 @@ delib.module {
       {
         mode = "n";
         key = "<leader>fs";
-        action = ''<cmd>lua Snacks.picker.lsp_symbols()<cr>'';
+        action = "<cmd>lua Snacks.picker.lsp_symbols()<cr>";
         options = {
           desc = "Find lsp document symbols";
         };
@@ -384,7 +384,7 @@ delib.module {
       {
         mode = "n";
         key = "<leader>ca";
-        action = ''<cmd>lua Snacks.picker.lsp_code_actions()<cr>'';
+        action = "<cmd>lua Snacks.picker.lsp_code_actions()<cr>";
         options = {
           desc = "Code Action";
         };
@@ -392,7 +392,7 @@ delib.module {
       {
         mode = "n";
         key = "<leader>ld";
-        action = ''<cmd>lua Snacks.picker.lsp_definitions()<cr>'';
+        action = "<cmd>lua Snacks.picker.lsp_definitions()<cr>";
         options = {
           desc = "Goto Definition";
         };
@@ -400,7 +400,7 @@ delib.module {
       {
         mode = "n";
         key = "<leader>li";
-        action = ''<cmd>lua Snacks.picker.lsp_implementations()<cr>'';
+        action = "<cmd>lua Snacks.picker.lsp_implementations()<cr>";
         options = {
           desc = "Goto Implementation";
         };
@@ -408,7 +408,7 @@ delib.module {
       {
         mode = "n";
         key = "<leader>lD";
-        action = ''<cmd>lua Snacks.picker.lsp_references()<cr>'';
+        action = "<cmd>lua Snacks.picker.lsp_references()<cr>";
         options = {
           desc = "Find references";
         };
@@ -416,7 +416,7 @@ delib.module {
       {
         mode = "n";
         key = "<leader>lt";
-        action = ''<cmd>lua Snacks.picker.lsp_type_definitions()<cr>'';
+        action = "<cmd>lua Snacks.picker.lsp_type_definitions()<cr>";
         options = {
           desc = "Goto Type Definition";
         };
@@ -425,7 +425,7 @@ delib.module {
       {
         mode = "n";
         key = "gd";
-        action = ''<cmd>lua Snacks.picker.lsp_definitions()<cr>'';
+        action = "<cmd>lua Snacks.picker.lsp_definitions()<cr>";
         options = {
           desc = "Goto Definition";
         };
@@ -433,7 +433,7 @@ delib.module {
       {
         mode = "n";
         key = "gD";
-        action = ''<cmd>lua Snacks.picker.lsp_declarations()<cr>'';
+        action = "<cmd>lua Snacks.picker.lsp_declarations()<cr>";
         options = {
           desc = "Goto Declaration";
         };
@@ -441,7 +441,7 @@ delib.module {
       {
         mode = "n";
         key = "gR";
-        action = ''<cmd>lua Snacks.picker.lsp_references()<cr>'';
+        action = "<cmd>lua Snacks.picker.lsp_references()<cr>";
         options = {
           desc = "References";
           nowait = true;
@@ -450,7 +450,7 @@ delib.module {
       {
         mode = "n";
         key = "gI";
-        action = ''<cmd>lua Snacks.picker.lsp_implementations()<cr>'';
+        action = "<cmd>lua Snacks.picker.lsp_implementations()<cr>";
         options = {
           desc = "Goto Implementation";
         };
@@ -458,7 +458,7 @@ delib.module {
       {
         mode = "n";
         key = "gy";
-        action = ''<cmd>lua Snacks.picker.lsp_type_definitions()<cr>'';
+        action = "<cmd>lua Snacks.picker.lsp_type_definitions()<cr>";
         options = {
           desc = "Goto T[y]pe Definition";
         };

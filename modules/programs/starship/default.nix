@@ -10,7 +10,7 @@ delib.module {
 
   home.ifEnabled.programs = {
     nushell.environmentVariables = {
-      TRANSIENT_PROMPT_COMMAND = inputs.home-manager.lib.hm.nushell.mkNushellInline ''^${pkgs.lib.getExe pkgs.starship} module character'';
+      TRANSIENT_PROMPT_COMMAND = inputs.home-manager.lib.hm.nushell.mkNushellInline "^${pkgs.lib.getExe pkgs.starship} module character";
     };
     starship = {
       enable = true;

@@ -39,7 +39,7 @@ delib.module {
             envRecord = lib.concatStringsSep ", " envVars;
             opExe = lib.getExe pkgs._1password-cli;
           in
-          ''with-env { ${envRecord} } { ${opExe} run --no-masking -- ${opencodeExe} }'';
+          "with-env { ${envRecord} } { ${opExe} run --no-masking -- ${opencodeExe} }";
     in
     {
       programs.opencode = {
