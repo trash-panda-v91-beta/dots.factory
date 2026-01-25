@@ -1,6 +1,6 @@
 ---
 name: data-and-sql
-description: Use when writing SQL queries, optimizing database performance, or analyzing data
+description: Use when debugging slow queries, fixing N+1 problems, optimizing database indexes, analyzing query plans, or resolving table scan performance issues
 ---
 
 # Data & SQL
@@ -10,10 +10,18 @@ Guidelines for SQL optimization, database performance, and data analysis.
 ## When to Use
 
 - Writing or optimizing SQL queries
-- Database performance issues
+- Database performance issues (slow queries)
 - Schema design decisions
 - Data analysis and insights
 - Index strategy planning
+- N+1 query problems
+- Table scan performance issues
+
+## When NOT to Use
+
+- NoSQL database optimization (use specific DB docs)
+- Application-level caching (use performance-engineering)
+- ORM-specific patterns (consult ORM docs)
 
 ## Query Optimization
 

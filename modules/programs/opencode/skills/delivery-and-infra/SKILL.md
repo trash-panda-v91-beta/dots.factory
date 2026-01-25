@@ -1,6 +1,6 @@
 ---
 name: delivery-and-infra
-description: Use when designing multi-cloud infrastructure, CI/CD pipelines, or Kubernetes deployment strategies
+description: Use when debugging pod crashes, fixing deployment failures, implementing rollback strategies, setting up CI/CD pipelines, or resolving Kubernetes resource issues
 ---
 
 # Delivery & Infrastructure
@@ -14,6 +14,15 @@ Guidelines for cloud architecture, CI/CD, and deployment engineering.
 - Container orchestration (Kubernetes)
 - Infrastructure as Code (Terraform)
 - Deployment strategy selection
+- Pod crashes and restarts
+- Deployment failures and rollbacks
+- Kubernetes resource issues
+
+## When NOT to Use
+
+- AWS-specific serverless (use aws-development)
+- Application code deployment logic
+- Language-specific build tools
 
 ## Core Principles
 
@@ -231,3 +240,20 @@ kubectl rollout undo deployment/app -n production
 - Pods not starting: `kubectl logs -f deployment/app`
 - High errors: Check app logs and metrics
 ```
+
+## Quick Reference
+
+| Strategy | Use Case | Rollback Speed |
+|----------|----------|----------------|
+| Rolling | Default | Gradual (minutes) |
+| Blue-Green | Quick switch | Instant |
+| Canary | Risk mitigation | Gradual (hours) |
+
+## Common Issues
+
+| Symptom | Cause | Fix |
+|---------|-------|-----|
+| Pod CrashLoopBackOff | App error, missing config | Check logs, verify env vars |
+| ImagePullBackOff | Registry auth, wrong tag | Check image name, credentials |
+| 502 Bad Gateway | Pod not ready | Fix readiness probe |
+| OOMKilled | Memory limit too low | Increase memory limit |

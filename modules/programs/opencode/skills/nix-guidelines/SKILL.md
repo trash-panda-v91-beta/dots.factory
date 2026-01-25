@@ -1,6 +1,6 @@
 ---
 name: nix-guidelines
-description: Use when writing Nix code for flakes, modules, or packages
+description: Use when writing Nix flakes, fixing "attribute not found" errors, debugging infinite recursion, or avoiding `with` statements for IDE compatibility
 ---
 
 # Nix Guidelines
@@ -13,6 +13,14 @@ Guidelines for idiomatic Nix code with flakes and modules.
 - Creating NixOS/Home Manager modules
 - Writing Nix packages
 - Reviewing Nix code
+- Fixing "attribute not found" errors
+- Debugging infinite recursion issues
+
+## When NOT to Use
+
+- Bash scripting (use writeShellApplication)
+- Runtime configuration (use normal config files)
+- Non-reproducible workflows
 
 ## Critical Rule: No `with` Statements
 
@@ -221,20 +229,25 @@ nix eval .#packages.x86_64-linux.default
 nix flake show
 ```
 
-## Module Option Types
+## Quick Reference
 
-```nix
-lib.types.bool           # Boolean
-lib.types.str            # String
-lib.types.int            # Integer
-lib.types.path           # Path
-lib.types.package        # Nix package
-lib.types.listOf type    # List of type
-lib.types.attrsOf type   # Attribute set of type
-lib.types.nullOr type    # Type or null
-lib.types.enum ["a" "b"] # Enumeration
-lib.types.submodule { }  # Nested options
-```
+| Type | Syntax | Purpose |
+|------|--------|---------|
+| Bool | `lib.types.bool` | Boolean value |
+| String | `lib.types.str` | Text value |
+| Package | `lib.types.package` | Nix package |
+| List | `lib.types.listOf type` | Homogeneous list |
+| AttrSet | `lib.types.attrsOf type` | Key-value pairs |
+| Optional | `lib.types.nullOr type` | Nullable type |
+
+## Common Errors
+
+| Error | Cause | Fix |
+|-------|-------|-----|
+| "infinite recursion" | Circular dependency in `rec` | Use `let-in` instead |
+| "attribute not found" | Typo or missing import | Check spelling, add to inputs |
+| "cannot coerce to string" | Wrong type | Explicitly convert with `toString` |
+| "with is a bad pattern" | Using `with` statement | Use explicit paths |
 
 ## Remember
 

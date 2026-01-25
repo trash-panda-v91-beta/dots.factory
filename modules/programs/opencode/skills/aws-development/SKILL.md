@@ -1,6 +1,6 @@
 ---
 name: aws-development
-description: Use when developing applications for AWS cloud platform with best practices and cost optimization
+description: Use when building AWS serverless architectures, debugging Lambda issues, optimizing DynamoDB queries, implementing IAM policies, or resolving CloudFormation failures
 ---
 
 # AWS Development
@@ -9,11 +9,19 @@ Guidelines for building applications on AWS with security, performance, and cost
 
 ## When to Use
 
-- Designing AWS-native applications
-- Implementing serverless architectures
-- Setting up AWS infrastructure
-- Cost optimization reviews
-- Security assessments for AWS workloads
+- Lambda timeout issues or cold starts
+- DynamoDB query performance problems
+- IAM permission errors (Access Denied)
+- CloudFormation stack failures
+- API Gateway 502/504 errors
+- S3 bucket policy violations
+- EventBridge pattern matching issues
+
+## When NOT to Use
+
+- Multi-cloud abstractions (use delivery-and-infra)
+- Generic cloud architecture patterns
+- Kubernetes on AWS (use delivery-and-infra)
 
 ## Core AWS Principles
 
@@ -30,47 +38,14 @@ Guidelines for building applications on AWS with security, performance, and cost
 ```json
 {
   "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "s3:GetObject",
-        "s3:PutObject"
-      ],
-      "Resource": "arn:aws:s3:::my-app-bucket/user-uploads/*",
-      "Condition": {
-        "StringEquals": {
-          "s3:x-amz-acl": "private"
-        }
-      }
+  "Statement": [{
+    "Effect": "Allow",
+    "Action": ["s3:GetObject", "s3:PutObject"],
+    "Resource": "arn:aws:s3:::my-bucket/uploads/*",
+    "Condition": {
+      "StringEquals": {"s3:x-amz-acl": "private"}
     }
-  ]
-}
-```
-
-### IAM Roles for Services
-```yaml
-# Terraform example
-resource "aws_iam_role" "lambda_execution_role" {
-  name = "lambda-execution-role"
-
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = "sts:AssumeRole"
-        Effect = "Allow"
-        Principal = {
-          Service = "lambda.amazonaws.com"
-        }
-      }
-    ]
-  })
-}
-
-resource "aws_iam_role_policy_attachment" "lambda_basic" {
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
-  role       = aws_iam_role.lambda_execution_role.name
+  }]
 }
 ```
 
@@ -79,8 +54,6 @@ resource "aws_iam_role_policy_attachment" "lambda_basic" {
 - [ ] Use IAM roles instead of access keys
 - [ ] Rotate credentials regularly
 - [ ] Enable CloudTrail for audit logging
-- [ ] Use AWS Config for compliance
-- [ ] Implement VPC security groups properly
 - [ ] Enable encryption at rest and in transit
 - [ ] Use AWS Secrets Manager for sensitive data
 
@@ -88,14 +61,12 @@ resource "aws_iam_role_policy_attachment" "lambda_basic" {
 
 ### Lambda Best Practices
 ```python
-import json
-import os
-from typing import Dict, Any
-import boto3
 from aws_lambda_powertools import Logger, Tracer, Metrics
 from aws_lambda_powertools.utilities.typing import LambdaContext
+from typing import Dict, Any
+import boto3
+import os
 
-# Use Lambda Powertools for observability
 logger = Logger()
 tracer = Tracer()
 metrics = Metrics()
@@ -104,43 +75,26 @@ metrics = Metrics()
 @tracer.capture_lambda_handler
 @logger.inject_lambda_context
 def lambda_handler(event: Dict[str, Any], context: LambdaContext) -> Dict[str, Any]:
-    """
-    Process S3 events and update database.
-    """
+    """Process S3 events with observability."""
     try:
-        # Initialize clients outside handler for reuse
         dynamodb = boto3.resource('dynamodb')
         table = dynamodb.Table(os.environ['TABLE_NAME'])
         
         for record in event['Records']:
             bucket = record['s3']['bucket']['name']
             key = record['s3']['object']['key']
-            
-            # Add custom metrics
             metrics.add_metric(name="FilesProcessed", unit="Count", value=1)
-            
-            # Process the file
             process_file(bucket, key, table)
             
-        return {
-            'statusCode': 200,
-            'body': json.dumps('Success')
-        }
-        
+        return {'statusCode': 200, 'body': 'Success'}
     except Exception as e:
         logger.exception("Error processing event")
         metrics.add_metric(name="ProcessingErrors", unit="Count", value=1)
         raise
-
-def process_file(bucket: str, key: str, table) -> None:
-    """Process individual file and update database."""
-    # Implementation here
-    pass
 ```
 
-### API Gateway + Lambda
+### API Gateway + Lambda (SAM)
 ```yaml
-# SAM template
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 
@@ -159,7 +113,6 @@ Resources:
       StageName: prod
       Cors:
         AllowMethods: "'GET,POST,PUT,DELETE'"
-        AllowHeaders: "'Content-Type,X-Amz-Date,Authorization'"
         AllowOrigin: "'*'"
 
   GetUserFunction:
@@ -195,42 +148,35 @@ Resources:
 ```python
 import boto3
 from botocore.exceptions import ClientError
+from datetime import datetime
 
 class S3Service:
     def __init__(self):
         self.s3_client = boto3.client('s3')
     
-    def upload_file_with_lifecycle(self, file_path: str, bucket: str, key: str) -> bool:
-        """Upload file with proper metadata and lifecycle policies."""
+    def upload_with_metadata(self, file_path: str, bucket: str, key: str) -> bool:
+        """Upload with encryption and lifecycle policy."""
         try:
-            extra_args = {
-                'ServerSideEncryption': 'AES256',
-                'Metadata': {
-                    'uploaded_by': 'api',
-                    'timestamp': str(datetime.utcnow())
-                },
-                'StorageClass': 'STANDARD_IA'  # Cost optimization
-            }
-            
-            self.s3_client.upload_file(file_path, bucket, key, ExtraArgs=extra_args)
+            self.s3_client.upload_file(
+                file_path, bucket, key,
+                ExtraArgs={
+                    'ServerSideEncryption': 'AES256',
+                    'StorageClass': 'STANDARD_IA',
+                    'Metadata': {'uploaded_by': 'api', 'timestamp': str(datetime.utcnow())}
+                }
+            )
             return True
-            
         except ClientError as e:
             logger.error(f"Upload failed: {e}")
             return False
     
     def generate_presigned_url(self, bucket: str, key: str, expiration: int = 3600) -> str:
-        """Generate presigned URL for secure temporary access."""
-        try:
-            response = self.s3_client.generate_presigned_url(
-                'get_object',
-                Params={'Bucket': bucket, 'Key': key},
-                ExpiresIn=expiration
-            )
-            return response
-        except ClientError as e:
-            logger.error(f"Presigned URL generation failed: {e}")
-            raise
+        """Generate presigned URL for temporary access."""
+        return self.s3_client.generate_presigned_url(
+            'get_object',
+            Params={'Bucket': bucket, 'Key': key},
+            ExpiresIn=expiration
+        )
 ```
 
 ### DynamoDB Patterns
@@ -243,99 +189,54 @@ class UserRepository:
         dynamodb = boto3.resource('dynamodb')
         self.table = dynamodb.Table('Users')
     
-    def get_user_by_id(self, user_id: str) -> dict:
+    def get_user(self, user_id: str) -> dict:
         """Get user by partition key."""
-        try:
-            response = self.table.get_item(Key={'id': user_id})
-            return response.get('Item')
-        except ClientError as e:
-            logger.error(f"Get user failed: {e}")
-            raise
+        response = self.table.get_item(Key={'id': user_id})
+        return response.get('Item')
     
-    def query_users_by_status(self, status: str) -> list:
+    def query_by_status(self, status: str) -> list:
         """Query using GSI."""
-        try:
-            response = self.table.query(
-                IndexName='status-index',
-                KeyConditionExpression=Key('status').eq(status),
-                FilterExpression=Attr('active').eq(True),
-                Limit=100
-            )
-            return response['Items']
-        except ClientError as e:
-            logger.error(f"Query failed: {e}")
-            raise
+        response = self.table.query(
+            IndexName='status-index',
+            KeyConditionExpression=Key('status').eq(status),
+            FilterExpression=Attr('active').eq(True)
+        )
+        return response['Items']
     
-    def batch_write_users(self, users: list) -> bool:
+    def batch_write(self, users: list) -> bool:
         """Efficient batch writing."""
-        try:
-            with self.table.batch_writer() as batch:
-                for user in users:
-                    batch.put_item(Item=user)
-            return True
-        except ClientError as e:
-            logger.error(f"Batch write failed: {e}")
-            return False
+        with self.table.batch_writer() as batch:
+            for user in users:
+                batch.put_item(Item=user)
+        return True
 ```
 
 ## Event-Driven Architecture
 
-### SQS + Lambda Integration
+### SQS + Lambda with Partial Batch Failures
 ```python
-import json
 from typing import Dict, Any
-import boto3
+import json
 
 def sqs_handler(event: Dict[str, Any], context) -> Dict[str, Any]:
     """Process SQS messages with proper error handling."""
-    
-    successful_messages = []
     failed_messages = []
     
     for record in event['Records']:
         try:
-            # Parse message
-            message_body = json.loads(record['body'])
-            
-            # Process message
-            result = process_message(message_body)
-            
-            if result:
-                successful_messages.append(record['messageId'])
-            else:
-                failed_messages.append({
-                    'itemIdentifier': record['messageId']
-                })
-                
+            message = json.loads(record['body'])
+            if not process_message(message):
+                failed_messages.append({'itemIdentifier': record['messageId']})
         except Exception as e:
-            logger.exception(f"Failed to process message {record['messageId']}")
-            failed_messages.append({
-                'itemIdentifier': record['messageId']
-            })
+            logger.exception(f"Failed: {record['messageId']}")
+            failed_messages.append({'itemIdentifier': record['messageId']})
     
     # Return partial batch failures for retry
-    if failed_messages:
-        return {
-            'batchItemFailures': failed_messages
-        }
-    
-    return {'statusCode': 200}
-
-def process_message(message: Dict[str, Any]) -> bool:
-    """Process individual message."""
-    # Implementation here
-    return True
+    return {'batchItemFailures': failed_messages} if failed_messages else {'statusCode': 200}
 ```
 
-### EventBridge Patterns
+### EventBridge Pattern Matching
 ```yaml
-# Custom event bus
-CustomEventBus:
-  Type: AWS::Events::EventBus
-  Properties:
-    Name: myapp-events
-
-# Rule for user events
 UserEventRule:
   Type: AWS::Events::Rule
   Properties:
@@ -350,7 +251,7 @@ UserEventRule:
 
 ## Monitoring and Observability
 
-### CloudWatch Implementation
+### CloudWatch Custom Metrics
 ```python
 import boto3
 import time
@@ -361,60 +262,46 @@ class CloudWatchMetrics:
         self.cloudwatch = boto3.client('cloudwatch')
         self.namespace = namespace
     
-    def put_metric(self, metric_name: str, value: float, unit: str = 'Count', dimensions: dict = None):
+    def put_metric(self, name: str, value: float, unit: str = 'Count', dimensions: dict = None):
         """Put custom metric to CloudWatch."""
-        try:
-            metric_data = {
-                'MetricName': metric_name,
-                'Value': value,
-                'Unit': unit,
-                'Timestamp': time.time()
-            }
-            
-            if dimensions:
-                metric_data['Dimensions'] = [
-                    {'Name': k, 'Value': v} for k, v in dimensions.items()
-                ]
-            
-            self.cloudwatch.put_metric_data(
-                Namespace=self.namespace,
-                MetricData=[metric_data]
-            )
-            
-        except Exception as e:
-            logger.error(f"Failed to put metric: {e}")
+        metric_data = {
+            'MetricName': name,
+            'Value': value,
+            'Unit': unit,
+            'Timestamp': time.time()
+        }
+        if dimensions:
+            metric_data['Dimensions'] = [{'Name': k, 'Value': v} for k, v in dimensions.items()]
+        
+        self.cloudwatch.put_metric_data(Namespace=self.namespace, MetricData=[metric_data])
     
     @contextmanager
     def timer(self, metric_name: str, dimensions: dict = None):
-        """Context manager for timing operations."""
-        start_time = time.time()
+        """Time operations and emit metrics."""
+        start = time.time()
         try:
             yield
         finally:
-            duration = (time.time() - start_time) * 1000  # Convert to milliseconds
+            duration = (time.time() - start) * 1000
             self.put_metric(metric_name, duration, 'Milliseconds', dimensions)
 ```
 
-### X-Ray Tracing
+### X-Ray Distributed Tracing
 ```python
-from aws_xray_sdk.core import xray_recorder
-from aws_xray_sdk.core import patch_all
+from aws_xray_sdk.core import xray_recorder, patch_all
 
-# Patch AWS SDK calls
-patch_all()
+patch_all()  # Auto-instrument AWS SDK calls
 
-@xray_recorder.capture('database_operation')
+@xray_recorder.capture('database_query')
 def query_database(user_id: str) -> dict:
     """Database query with X-Ray tracing."""
     subsegment = xray_recorder.current_subsegment()
     subsegment.put_metadata('user_id', user_id)
     
     try:
-        # Database operation
         result = database.query(user_id)
         subsegment.put_annotation('success', True)
         return result
-        
     except Exception as e:
         subsegment.put_annotation('success', False)
         subsegment.add_exception(e)
@@ -423,32 +310,15 @@ def query_database(user_id: str) -> dict:
 
 ## Cost Optimization
 
-### Lambda Cost Optimization
-```python
-# Use appropriate memory settings
-# Monitor with AWS Lambda Power Tuning tool
+### Lambda Optimization
+- Use AWS Lambda Power Tuning for memory sizing
+- Implement connection pooling and reuse
+- Use provisioned concurrency for consistent traffic
+- Batch operations (DynamoDB limit: 25 items)
 
-def optimized_lambda_handler(event, context):
-    """Lambda with cost optimization considerations."""
-    
-    # Reuse connections (initialize outside handler in real code)
-    # Use connection pooling
-    # Optimize memory allocation
-    # Use provisioned concurrency for consistent traffic
-    
-    # Batch operations when possible
-    batch_size = 25  # DynamoDB batch limit
-    items = event.get('items', [])
-    
-    for i in range(0, len(items), batch_size):
-        batch = items[i:i + batch_size]
-        process_batch(batch)
-```
-
-### S3 Cost Optimization
+### S3 Lifecycle Policies
 ```yaml
-# Lifecycle policies
-S3BucketPolicy:
+S3Bucket:
   Type: AWS::S3::Bucket
   Properties:
     LifecycleConfiguration:
@@ -460,25 +330,19 @@ S3BucketPolicy:
               StorageClass: STANDARD_IA
             - TransitionInDays: 90
               StorageClass: GLACIER
-            - TransitionInDays: 365
-              StorageClass: DEEP_ARCHIVE
         - Id: DeleteOldLogs
           Status: Enabled
-          ExpirationInDays: 2555  # 7 years
+          ExpirationInDays: 2555
           Prefix: logs/
 ```
 
-## Infrastructure as Code
+## Infrastructure as Code (CDK)
 
-### CDK Example (Python)
 ```python
-from aws_cdk import (
-    Stack,
-    aws_lambda as _lambda,
-    aws_apigateway as apigw,
-    aws_dynamodb as dynamodb,
-    Duration
-)
+from aws_cdk import Stack, Duration, RemovalPolicy
+from aws_cdk import aws_lambda as _lambda
+from aws_cdk import aws_apigateway as apigw
+from aws_cdk import aws_dynamodb as dynamodb
 
 class ServerlessApiStack(Stack):
     def __init__(self, scope, construct_id, **kwargs):
@@ -487,102 +351,48 @@ class ServerlessApiStack(Stack):
         # DynamoDB table
         table = dynamodb.Table(
             self, "UserTable",
-            partition_key=dynamodb.Attribute(
-                name="id",
-                type=dynamodb.AttributeType.STRING
-            ),
+            partition_key=dynamodb.Attribute(name="id", type=dynamodb.AttributeType.STRING),
             billing_mode=dynamodb.BillingMode.PAY_PER_REQUEST,
             point_in_time_recovery=True,
-            removal_policy=RemovalPolicy.DESTROY  # For dev only
+            removal_policy=RemovalPolicy.DESTROY
         )
         
         # Lambda function
-        lambda_function = _lambda.Function(
+        fn = _lambda.Function(
             self, "UserHandler",
             runtime=_lambda.Runtime.PYTHON_3_11,
             code=_lambda.Code.from_asset("lambda"),
             handler="index.handler",
             timeout=Duration.seconds(30),
-            environment={
-                "TABLE_NAME": table.table_name
-            }
+            environment={"TABLE_NAME": table.table_name}
         )
-        
-        # Grant permissions
-        table.grant_read_write_data(lambda_function)
+        table.grant_read_write_data(fn)
         
         # API Gateway
-        api = apigw.RestApi(
-            self, "UserApi",
-            rest_api_name="User Service",
-            description="User management API"
-        )
-        
-        users_resource = api.root.add_resource("users")
-        users_resource.add_method(
-            "GET", 
-            apigw.LambdaIntegration(lambda_function)
-        )
+        api = apigw.RestApi(self, "UserApi", rest_api_name="User Service")
+        api.root.add_resource("users").add_method("GET", apigw.LambdaIntegration(fn))
 ```
 
-## Security Checklist
+## Quick Reference
 
-- [ ] Enable CloudTrail in all regions
-- [ ] Use AWS Config for compliance monitoring
-- [ ] Implement VPC Flow Logs
-- [ ] Enable GuardDuty for threat detection
-- [ ] Use AWS Security Hub for central management
-- [ ] Implement resource-based policies
-- [ ] Use AWS WAF for web applications
-- [ ] Enable EBS encryption by default
-- [ ] Use KMS for encryption key management
-- [ ] Implement network segmentation with VPCs
+| Service | Use Case | Key Consideration |
+|---------|----------|-------------------|
+| Lambda | Event processing, APIs | Cold starts, memory tuning |
+| DynamoDB | NoSQL, high throughput | Partition key design, GSI limits |
+| S3 | Object storage | Lifecycle policies, encryption |
+| SQS | Async messaging | Partial batch failures, DLQ |
+| EventBridge | Event routing | Pattern matching syntax |
+| API Gateway | REST APIs | Throttling, caching |
 
-## Performance Best Practices
+## Common Issues
 
-- [ ] Use CloudFront for global content delivery
-- [ ] Implement caching strategies (ElastiCache/DAX)
-- [ ] Optimize DynamoDB with proper partition keys
-- [ ] Use RDS read replicas for read-heavy workloads
-- [ ] Implement auto-scaling for variable loads
-- [ ] Monitor performance with CloudWatch Insights
-- [ ] Use Lambda provisioned concurrency for low latency
-- [ ] Optimize S3 transfer acceleration for large files
-
-## Common Anti-Patterns
-
-### Avoid Over-Provisioning
-```python
-# ❌ Fixed large instance when load varies
-instance_type = "m5.8xlarge"  # Always expensive
-
-# ✅ Auto-scaling with appropriate instances
-min_capacity = 2
-max_capacity = 50
-target_cpu_utilization = 70
-```
-
-### Don't Ignore Cost Monitoring
-```python
-# ✅ Implement cost alerts
-import boto3
-
-def create_cost_alert():
-    budgets_client = boto3.client('budgets')
-    
-    budgets_client.create_budget(
-        AccountId='123456789012',
-        Budget={
-            'BudgetName': 'Monthly Cost Alert',
-            'BudgetLimit': {
-                'Amount': '1000',
-                'Unit': 'USD'
-            },
-            'TimeUnit': 'MONTHLY',
-            'BudgetType': 'COST'
-        }
-    )
-```
+| Symptom | Likely Cause | Fix |
+|---------|--------------|-----|
+| Lambda timeout | Cold start, slow dependency | Increase timeout, use provisioned concurrency |
+| DynamoDB throttling | Hot partition | Redesign partition key, use on-demand |
+| S3 403 Forbidden | Bucket policy, IAM | Check both bucket policy AND IAM permissions |
+| API Gateway 502 | Lambda error/timeout | Check Lambda logs in CloudWatch |
+| CloudFormation rollback | Resource conflict, limits | Read stack events for specific error |
 
 ## Troubleshooting Commands
 

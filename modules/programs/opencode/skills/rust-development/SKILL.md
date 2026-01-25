@@ -1,6 +1,6 @@
 ---
 name: rust-development
-description: Use when writing Rust code for memory safety, performance, and systems programming
+description: Use when writing Rust code, fixing borrow checker errors, resolving lifetime issues, debugging trait bounds, or implementing fearless concurrency patterns
 ---
 
 # Rust Development
@@ -9,11 +9,18 @@ Guidelines for safe, performant, and idiomatic Rust code.
 
 ## When to Use
 
-- Writing new Rust modules or crates
-- Refactoring Rust code
+- Borrow checker errors ("cannot borrow as mutable")
+- Lifetime annotation issues
+- Trait bound compilation errors
+- Memory safety requirements
 - Systems programming tasks
-- Performance-critical components
-- Concurrent/parallel programming
+- High-performance concurrent code
+
+## When NOT to Use
+
+- Prototyping with frequent schema changes (use Python)
+- Simple scripts (use Bash/Python)
+- When compilation time is critical
 
 ## Core Principles
 
@@ -25,47 +32,45 @@ Guidelines for safe, performant, and idiomatic Rust code.
 
 ## Ownership and Borrowing
 
-### Basic Ownership Rules
+### Basic Rules
 ```rust
-// Rule 1: Each value has a single owner
+// Each value has a single owner
 let s1 = String::from("hello");
-let s2 = s1; // s1 is moved, no longer valid
+let s2 = s1; // s1 moved, no longer valid
 
-// Rule 2: Use references to borrow without taking ownership
-fn calculate_length(s: &String) -> usize {
-    s.len()
-} // s goes out of scope but doesn't own the data
+// Borrow without taking ownership
+fn length(s: &String) -> usize { s.len() }
 
-// Rule 3: Mutable references are exclusive
+// Mutable references are exclusive
 let mut s = String::from("hello");
 let r1 = &mut s;
-// let r2 = &mut s; // ❌ Cannot have two mutable references
+// let r2 = &mut s; // ❌ Cannot have two mutable refs
 ```
 
-### Borrowing Patterns
+### Common Patterns
 ```rust
-// Immutable borrows (multiple allowed)
+// Multiple immutable borrows OK
 let s = String::from("hello");
 let r1 = &s;
-let r2 = &s; // ✅ Multiple immutable borrows OK
+let r2 = &s; // ✅
 
-// Mutable borrow (exclusive access)
+// Scoping mutable borrow
 let mut s = String::from("hello");
 {
     let r1 = &mut s;
     r1.push_str(", world");
 } // r1 goes out of scope
-println!("{}", s); // ✅ Can use s again
+println!("{}", s); // ✅
 ```
 
 ## Error Handling
 
-### Result<T, E> Pattern
+### Result<T, E>
 ```rust
 use std::fs::File;
 use std::io::Read;
 
-// ❌ Don't use unwrap() in production
+// ❌ Don't unwrap() in production
 fn read_file_bad(path: &str) -> String {
     let mut file = File::open(path).unwrap(); // Panics on error
     let mut contents = String::new();
@@ -73,9 +78,9 @@ fn read_file_bad(path: &str) -> String {
     contents
 }
 
-// ✅ Proper error handling
-fn read_file_good(path: &str) -> Result<String, std::io::Error> {
-    let mut file = File::open(path)?; // ? operator for early return
+// ✅ Proper error handling with ? operator
+fn read_file(path: &str) -> Result<String, std::io::Error> {
+    let mut file = File::open(path)?;
     let mut contents = String::new();
     file.read_to_string(&mut contents)?;
     Ok(contents)
@@ -95,20 +100,18 @@ impl From<std::io::Error> for ConfigError {
 }
 ```
 
-### Option<T> Pattern
+### Option<T>
 ```rust
-// ✅ Safe option handling
-fn find_user(id: u32) -> Option<User> {
-    // Implementation
-}
+fn find_user(id: u32) -> Option<User> { /* ... */ }
 
+// Pattern matching
 match find_user(123) {
     Some(user) => println!("Found: {}", user.name),
     None => println!("User not found"),
 }
 
-// ✅ Combinators for transformation
-let user_name = find_user(123)
+// Combinators
+let name = find_user(123)
     .map(|user| user.name)
     .unwrap_or_else(|| "Unknown".to_string());
 ```
@@ -121,58 +124,50 @@ use std::rc::Rc;
 use std::sync::Arc;
 use std::cell::RefCell;
 
-// Reference counting for shared ownership
+// Reference counting (single-threaded)
 let data = Rc::new(vec![1, 2, 3]);
-let data_clone = Rc::clone(&data); // Increment reference count
+let data_clone = Rc::clone(&data);
 
 // Thread-safe reference counting
-let shared_data = Arc::new(vec![1, 2, 3]);
-let thread_data = Arc::clone(&shared_data);
+let shared = Arc::new(vec![1, 2, 3]);
+let thread_data = Arc::clone(&shared);
 
-// Interior mutability pattern
+// Interior mutability
 let data = RefCell::new(vec![1, 2, 3]);
-data.borrow_mut().push(4); // Runtime borrow checking
+data.borrow_mut().push(4);
 ```
 
 ### Lifetimes
 ```rust
-// ✅ Explicit lifetime annotations
+// Explicit lifetime annotations
 fn longest<'a>(x: &'a str, y: &'a str) -> &'a str {
-    if x.len() > y.len() {
-        x
-    } else {
-        y
-    }
+    if x.len() > y.len() { x } else { y }
 }
 
-// ✅ Struct with lifetime
-struct ImportantExcerpt<'a> {
+// Struct with lifetime
+struct Excerpt<'a> {
     part: &'a str,
 }
 
-impl<'a> ImportantExcerpt<'a> {
-    fn level(&self) -> i32 {
-        3
-    }
+impl<'a> Excerpt<'a> {
+    fn level(&self) -> i32 { 3 }
 }
 ```
 
-## Concurrency and Parallelism
+## Concurrency
 
-### Thread Safety
+### Thread Safety with Arc<Mutex<T>>
 ```rust
 use std::sync::{Arc, Mutex};
 use std::thread;
 
-// ✅ Shared mutable state with Arc<Mutex<T>>
 let counter = Arc::new(Mutex::new(0));
 let mut handles = vec![];
 
 for _ in 0..10 {
     let counter = Arc::clone(&counter);
     let handle = thread::spawn(move || {
-        let mut num = counter.lock().unwrap();
-        *num += 1;
+        *counter.lock().unwrap() += 1;
     });
     handles.push(handle);
 }
@@ -182,69 +177,52 @@ for handle in handles {
 }
 ```
 
-### Async/Await
+### Async/Await (Tokio)
 ```rust
 use tokio;
 
-// ✅ Async function
 async fn fetch_data(url: &str) -> Result<String, reqwest::Error> {
-    let response = reqwest::get(url).await?;
-    let body = response.text().await?;
+    let body = reqwest::get(url).await?.text().await?;
     Ok(body)
 }
 
-// ✅ Concurrent async operations
+// Concurrent async operations
 async fn fetch_multiple() -> Result<Vec<String>, Box<dyn std::error::Error>> {
     let urls = vec!["https://api1.com", "https://api2.com"];
-    
-    let futures: Vec<_> = urls
-        .iter()
-        .map(|&url| fetch_data(url))
-        .collect();
-    
+    let futures: Vec<_> = urls.iter().map(|&url| fetch_data(url)).collect();
     let results = futures::future::try_join_all(futures).await?;
     Ok(results)
 }
 ```
 
-## Performance Optimization
+## Performance
 
 ### Zero-Cost Abstractions
 ```rust
-// ✅ Iterator chains are zero-cost
+// Iterator chains compile to efficient loops
 let sum: i32 = (0..1_000_000)
     .filter(|x| x % 2 == 0)
     .map(|x| x * x)
     .sum();
 
-// ✅ Avoid unnecessary allocations
-fn process_data(data: &[u8]) -> Vec<u8> {
-    data.iter()
-        .copied()
-        .filter(|&b| b > 0)
-        .collect()
+// Use slices over Vec when possible
+fn analyze(data: &[f64]) -> f64 {
+    data.iter().sum::<f64>() / data.len() as f64
 }
 ```
 
 ### Memory Efficiency
 ```rust
-// ✅ Use slices instead of Vec when possible
-fn analyze_data(data: &[f64]) -> f64 {
-    data.iter().sum::<f64>() / data.len() as f64
-}
-
-// ✅ Use Box for large stack data
+// Box large stack allocations
 enum Message {
     Quit,
     Move { x: i32, y: i32 },
-    Write(String),
     ChangeColor(Box<[u8; 1024]>), // Box large arrays
 }
 ```
 
 ## Testing
 
-### Unit Tests
 ```rust
 #[cfg(test)]
 mod tests {
@@ -252,8 +230,7 @@ mod tests {
 
     #[test]
     fn test_calculation() {
-        let result = calculate(2, 2);
-        assert_eq!(result, 4);
+        assert_eq!(calculate(2, 2), 4);
     }
 
     #[test]
@@ -263,16 +240,14 @@ mod tests {
     }
 
     #[test]
-    fn test_result_handling() -> Result<(), Box<dyn std::error::Error>> {
+    fn test_result() -> Result<(), Box<dyn std::error::Error>> {
         let result = risky_operation()?;
         assert_eq!(result, "success");
         Ok(())
     }
 }
-```
 
-### Property-Based Testing
-```rust
+// Property-based testing
 use quickcheck::quickcheck;
 
 #[quickcheck]
@@ -313,11 +288,7 @@ pub struct ConfigBuilder {
 
 impl ConfigBuilder {
     pub fn new() -> Self {
-        Self {
-            host: None,
-            port: None,
-            timeout: None,
-        }
+        Self { host: None, port: None, timeout: None }
     }
 
     pub fn host(mut self, host: impl Into<String>) -> Self {
@@ -325,14 +296,9 @@ impl ConfigBuilder {
         self
     }
 
-    pub fn port(mut self, port: u16) -> Self {
-        self.port = Some(port);
-        self
-    }
-
     pub fn build(self) -> Result<Config, String> {
         Ok(Config {
-            host: self.host.ok_or("host is required")?,
+            host: self.host.ok_or("host required")?,
             port: self.port.unwrap_or(8080),
             timeout: self.timeout.unwrap_or(Duration::from_secs(30)),
         })
@@ -340,11 +306,10 @@ impl ConfigBuilder {
 }
 ```
 
-### State Machine with Types
+### Type-State Pattern
 ```rust
 pub struct Pending;
 pub struct Running;
-pub struct Completed;
 
 pub struct Task<State = Pending> {
     id: u32,
@@ -353,104 +318,56 @@ pub struct Task<State = Pending> {
 
 impl Task<Pending> {
     pub fn new(id: u32) -> Self {
-        Task {
-            id,
-            _state: PhantomData,
-        }
+        Task { id, _state: PhantomData }
     }
-
     pub fn start(self) -> Task<Running> {
-        Task {
-            id: self.id,
-            _state: PhantomData,
-        }
-    }
-}
-
-impl Task<Running> {
-    pub fn complete(self) -> Task<Completed> {
-        Task {
-            id: self.id,
-            _state: PhantomData,
-        }
+        Task { id: self.id, _state: PhantomData }
     }
 }
 ```
 
-## Anti-Patterns to Avoid
+## Anti-Patterns
 
-### Don't Fight the Borrow Checker
 ```rust
-// ❌ Over-using Clone to avoid borrowing issues
-fn bad_example(data: Vec<String>) -> Vec<String> {
+// ❌ Over-using Clone
+fn bad(data: Vec<String>) -> Vec<String> {
     data.clone() // Unnecessary allocation
 }
 
 // ✅ Work with borrowing
-fn good_example(data: &[String]) -> Vec<&str> {
+fn good(data: &[String]) -> Vec<&str> {
     data.iter().map(|s| s.as_str()).collect()
 }
-```
 
-### Don't Overuse unwrap()
-```rust
-// ❌ Panic-prone code
-let value = risky_operation().unwrap();
+// ❌ Panic-prone unwrap()
+let value = risky().unwrap();
 
 // ✅ Handle errors properly
-let value = risky_operation().unwrap_or_else(|e| {
-    eprintln!("Operation failed: {}", e);
+let value = risky().unwrap_or_else(|e| {
+    eprintln!("Failed: {}", e);
     default_value()
 });
 ```
 
-## Tooling Commands
+## Quick Reference
 
-```bash
-# Create new project
-cargo new myproject
-cargo new mylib --lib
+| Tool | Command | Purpose |
+|------|---------|---------|
+| Check | `cargo check` | Fast syntax/type check |
+| Lint | `cargo clippy` | Catch common mistakes |
+| Format | `cargo fmt` | Format code |
+| Test | `cargo test` | Run tests |
+| Docs | `cargo doc --open` | Generate docs |
+| Profile | `cargo flamegraph` | Performance analysis |
 
-# Check without building
-cargo check
+## Common Compiler Errors
 
-# Lint and fix
-cargo clippy
-cargo clippy -- -W clippy::pedantic
-
-# Format code
-cargo fmt
-
-# Run tests
-cargo test
-cargo test --release
-
-# Benchmark
-cargo bench
-
-# Documentation
-cargo doc --open
-
-# Profile
-cargo install flamegraph
-cargo flamegraph --bin mybin
-```
-
-## Performance Debugging
-
-```bash
-# Compile with optimizations
-cargo build --release
-
-# Profile binary size
-cargo bloat --release
-
-# Check assembly output
-cargo asm myfunction --release
-
-# Memory profiling
-valgrind ./target/release/mybin
-```
+| Error | Cause | Fix |
+|-------|-------|-----|
+| "cannot borrow as mutable" | Multiple mutable refs | Use scopes or refactor |
+| "does not live long enough" | Lifetime too short | Add lifetime annotation |
+| "trait bounds not satisfied" | Missing trait impl | Derive or implement trait |
+| "move occurs because..." | Value moved | Use reference or clone |
 
 ## Remember
 

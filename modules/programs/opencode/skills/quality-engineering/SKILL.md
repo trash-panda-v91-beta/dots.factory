@@ -1,6 +1,6 @@
 ---
 name: quality-engineering
-description: Use when designing test strategies, implementing test automation, or establishing QA processes
+description: Use when fixing flaky tests, improving test coverage, debugging integration test failures, or establishing CI/CD quality gates
 ---
 
 # Quality Engineering
@@ -14,6 +14,15 @@ Guidelines for QA processes, test automation, and performance engineering.
 - Performance testing and optimization
 - Capacity planning and load testing
 - Establishing quality metrics
+- Fixing flaky tests
+- Improving test coverage
+- Debugging integration test failures
+
+## When NOT to Use
+
+- Writing specific test cases (follow TDD patterns)
+- Language-specific testing (use language skills)
+- End-to-end test implementation details
 
 ## Quality Philosophy
 
@@ -154,3 +163,20 @@ stages:
 - Missing edge case coverage
 - Manual-only regression testing
 - No performance testing until production issues
+
+## Quick Reference
+
+| Test Type | Ratio | Tools | Speed |
+|-----------|-------|-------|-------|
+| Unit | 70% | Jest, Pytest | < 1s |
+| Integration | 20% | Testcontainers | < 5s |
+| E2E | 10% | Playwright | < 30s |
+
+## Common Issues
+
+| Symptom | Cause | Fix |
+|---------|-------|-----|
+| Flaky tests | Race conditions, timing | Use condition-based waiting |
+| Low coverage | Missing test cases | Add edge case tests |
+| Slow CI | Too many E2E tests | Shift left to unit tests |
+| Test pollution | Shared state | Isolate tests, clean fixtures |

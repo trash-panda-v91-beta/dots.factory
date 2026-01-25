@@ -64,29 +64,6 @@ delib.host {
           JIRA_URL = "{env:JIRA_URL}";
           JIRA_TOKEN = "{env:JIRA_TOKEN}";
         };
-        opencode.agents = {
-          ink = {
-            model = "github-copilot/claude-sonnet-4";
-          };
-          oracle = {
-            model = "github-copilot/claude-sonnet-4.5";
-          };
-          pixel = {
-            model = "github-copilot/claude-sonnet-4";
-          };
-          architect = {
-            model = "github-copilot/claude-sonnet-4.5";
-          };
-          rocket = {
-            model = "github-copilot/claude-sonnet-4";
-          };
-          specter = {
-            model = "github-copilot/claude-sonnet-4";
-          };
-          tracer = {
-            model = "github-copilot/claude-sonnet-4";
-          };
-        };
       };
     };
 }

@@ -1,6 +1,6 @@
 ---
 name: python-development
-description: Use when writing Python code for clean, performant, and idiomatic implementations
+description: Use when writing Python code, debugging type errors, fixing mypy issues, optimizing memory usage, or implementing async patterns
 ---
 
 # Python Development
@@ -11,8 +11,16 @@ Guidelines for clean, performant, and idiomatic Python code.
 
 - Writing new Python modules
 - Refactoring Python code
+- Type hint errors (mypy issues)
+- Memory optimization needs
 - Implementing Python best practices
 - Code review of Python files
+
+## When NOT to Use
+
+- Language-agnostic patterns (use general patterns)
+- Performance-critical systems code (use Rust)
+- Type-heavy domain modeling (consider Rust/Haskell)
 
 ## Core Principles
 
@@ -229,6 +237,25 @@ from module import *
 # ✅ Prefer
 from module import specific_function, SpecificClass
 ```
+
+## Quick Reference
+
+| Tool | Command | Purpose |
+|------|---------|---------|
+| Type check | `mypy --strict .` | Static type checking |
+| Lint | `ruff check .` | Fast linting |
+| Format | `ruff format .` | Code formatting |
+| Test | `pytest -v` | Run tests |
+| Coverage | `pytest --cov=src` | Test coverage |
+
+## Common Issues
+
+| Symptom | Cause | Fix |
+|---------|-------|-----|
+| "Argument has incompatible type" | Type mismatch | Add correct type hint |
+| High memory usage | Loading all data | Use generators |
+| Slow loops | Non-optimized iteration | Use list comprehensions |
+| Mutable default bug | Default evaluated once | Use None default |
 
 ## Decision Priority
 

@@ -40,6 +40,38 @@ delib.module {
             opExe = lib.getExe pkgs._1password-cli;
           in
           "with-env { ${envRecord} } { ${opExe} run --no-masking -- ${opencodeExe} }";
+
+      superpowers = pkgs.local.superpowers;
+
+      # Personal skills (domain-specific, not covered by superpowers)
+      personalSkills = [
+        "aws-development"
+        "data-and-sql"
+        "delivery-and-infra"
+        "nix-guidelines"
+        "performance-engineering"
+        "python-development"
+        "quality-engineering"
+        "rust-development"
+      ];
+
+      personalSkillFiles = lib.listToAttrs (
+        lib.concatMap (
+          skillName:
+          let
+            skillFile = ./skills + "/${skillName}/SKILL.md";
+          in
+          if builtins.pathExists skillFile then
+            [
+              {
+                name = "opencode/skills/${skillName}/SKILL.md";
+                value.source = skillFile;
+              }
+            ]
+          else
+            [ ]
+        ) personalSkills
+      );
     in
     {
       programs.opencode = {
@@ -49,7 +81,6 @@ delib.module {
         settings = {
           autoshare = false;
           autoupdate = false;
-          default_agent = "architect";
           keybinds = {
             session_new = "ctrl+n";
             session_timeline = "ctrl+g";
@@ -70,45 +101,14 @@ delib.module {
         };
       };
 
-      xdg.configFile = lib.listToAttrs (
-        lib.concatMap
-          (
-            skillName:
-            let
-              skillDir = ./skills + "/${skillName}";
-              skillFile = "${skillDir}/SKILL.md";
-            in
-            if builtins.pathExists skillFile then
-              [
-                {
-                  name = "opencode/skill/${skillName}/SKILL.md";
-                  value.source = skillFile;
-                }
-              ]
-            else
-              [ ]
-          )
-          [
-            "aws-development"
-            "codebase-assessment"
-            "data-and-sql"
-            "delivery-and-infra"
-            "frontend-delegation"
-            "git-workflow"
-            "nix-guidelines"
-            "oracle-consultation"
-            "parallel-exploration"
-            "performance-engineering"
-            "python-development"
-            "quality-engineering"
-            "review-architecture"
-            "review-code-quality"
-            "rust-development"
-            "systematic-debugging"
-            "test-driven-development"
-            "verification-checklist"
-          ]
-      );
+      # Superpowers plugin and skills + personal skills
+      xdg.configFile = {
+        # Symlink the plugin
+        "opencode/plugins/superpowers.js".source = "${superpowers}/.opencode/plugins/superpowers.js";
+        # Symlink the superpowers skills directory
+        "opencode/skills/superpowers".source = "${superpowers}/skills";
+      }
+      // personalSkillFiles;
 
       programs.nushell.shellAliases = {
         ${cfg.alias} = sidekickCommand;

@@ -1,6 +1,6 @@
 ---
 name: performance-engineering
-description: Use when optimizing performance, profiling bottlenecks, or architecting for scale
+description: Use when debugging high latency, memory leaks, CPU spikes, slow response times, or profiling performance bottlenecks in production systems
 ---
 
 # Performance Engineering
@@ -15,6 +15,14 @@ Guidelines for building high-performance systems and optimizing existing code.
 - Memory and CPU profiling
 - Load testing and benchmarking
 - Concurrent programming optimization
+- High latency debugging
+- Memory leak detection
+
+## When NOT to Use
+
+- Premature optimization (profile first)
+- Database-specific queries (use data-and-sql)
+- Language-specific idioms (use language skills)
 
 ## Core Principles
 
