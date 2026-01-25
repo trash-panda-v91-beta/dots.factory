@@ -6,7 +6,7 @@ delib.module {
   name = "programs.nixvim.plugins.diffview";
 
   options.programs.nixvim.plugins.diffview = with delib; {
-    enable = boolOption true;
+    enable = boolOption false;
   };
 
   home.ifEnabled =
