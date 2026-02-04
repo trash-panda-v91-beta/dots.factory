@@ -1,7 +1,7 @@
 { delib, pkgs, ... }:
 delib.module {
   name = "programs.nixvim.plugins.snacks.gh";
-  options = delib.singleEnableOption true;
+  options = delib.singleEnableOption false;
   home.ifEnabled.programs.nixvim = {
     extraPackages = [
       pkgs.gh

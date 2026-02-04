@@ -59,6 +59,17 @@ delib.host {
           ];
         };
         nixvim.plugins.neogit.gitService = inputs.vault.constants.services.git.corporate;
+        nixvim.keymapsOnEvents.octo_robocat = {
+          event = "FileType";
+          pattern = "octo";
+          mode = "n";
+          key = "<localleader>lr";
+          action = "<cmd>Octo label add approval/robocat<cr>";
+          options = {
+            buffer = true;
+            desc = "PR Add approval/robocat";
+          };
+        };
         nushell.enable = true;
         opencode.env = {
           JIRA_URL = "{env:JIRA_URL}";
