@@ -73,7 +73,7 @@ delib.module {
             timeout_ms = 2000;
             stop_after_first = true;
           };
-          json = [ "jq" ];
+          json = [ "biome-check" ];
           html = [ "prettierd" ];
           just = [ "just" ];
           lua = [ "stylua" ];
