@@ -35,6 +35,10 @@
     opencode = {
       url = "github:sst/opencode/dev";
     };
+    opencode-nvim = {
+      url = "github:sudo-tee/opencode.nvim";
+      flake = false;
+    };
 
     sops-nix = {
       url = "github:Mic92/sops-nix";
