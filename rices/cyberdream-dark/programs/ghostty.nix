@@ -6,13 +6,13 @@
 delib.rice {
   name = "cyberdream-dark";
   home.home.packages = with pkgs; [
-    victor-mono
+    jetbrains-mono
   ];
   home.programs.ghostty = {
     settings = {
       background-opacity = 0.95;
       background-blur-radius = 30;
-      font-family = "Victor Mono";
+      font-family = "JetBrains Mono";
       theme = "cyberdream-dark";
     };
     themes = {
