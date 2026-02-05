@@ -57,6 +57,17 @@ delib.module {
       };
 
       win = {
+        input = {
+          keys = {
+            "<c-.>" = {
+              __unkeyed-1 = "toggle_hidden";
+              mode = [
+                "n"
+                "i"
+              ];
+            };
+          };
+        };
         list = {
           on_buf.__raw = ''
             function(self)
