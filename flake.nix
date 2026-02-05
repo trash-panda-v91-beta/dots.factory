@@ -36,6 +36,11 @@
       flake = false;
     };
 
+    koda-nvim = {
+      url = "github:oskarnurm/koda.nvim";
+      flake = false;
+    };
+
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";

@@ -157,6 +157,22 @@
         "type": "github"
       }
     },
+    "koda-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1770246296,
+        "narHash": "sha256-S+WzSAsGwRdFMbpGRJS/p1Lk3Cre3NHinD0owx+kxXo=",
+        "owner": "oskarnurm",
+        "repo": "koda.nvim",
+        "rev": "dd293575fd9096d8fd0f15d1628d654b84b28682",
+        "type": "github"
+      },
+      "original": {
+        "owner": "oskarnurm",
+        "repo": "koda.nvim",
+        "type": "github"
+      }
+    },
     "nix-darwin": {
       "inputs": {
         "nixpkgs": [
@@ -372,6 +388,7 @@
         "home-manager": "home-manager",
         "homebrew-cask": "homebrew-cask",
         "homebrew-core": "homebrew-core",
+        "koda-nvim": "koda-nvim",
         "nix-darwin": "nix-darwin",
         "nix-homebrew": "nix-homebrew",
         "nixpkgs": "nixpkgs_2",
