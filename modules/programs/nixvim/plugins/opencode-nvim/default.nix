@@ -73,8 +73,11 @@ delib.module {
           local opencode_setup_done = false
           local function setup_opencode()
             if opencode_setup_done then return end
-            -- Force load blink.cmp first
-            require('blink.cmp')
+            -- Force load blink.cmp via lz.n (it's lazy-loaded on InsertEnter)
+            local lzn_ok, lzn = pcall(require, 'lz.n')
+            if lzn_ok and lzn.trigger_load then
+              lzn.trigger_load('blink.cmp')
+            end
             opencode_setup_done = true
             require("opencode").setup(${lib.generators.toLua { multiline = true; } settings})
           end
