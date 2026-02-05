@@ -59,6 +59,7 @@ delib.host {
           ];
         };
         nixvim.plugins.neogit.gitService = inputs.vault.constants.services.git.corporate;
+        nixvim.plugins.octo.defaultToProjectsV2 = false;
         nixvim.plugins.octo.extraKeymaps = [
           {
             mode = "n";

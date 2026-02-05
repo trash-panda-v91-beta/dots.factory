@@ -2,7 +2,6 @@
   delib,
   pkgs,
   lib,
-  host,
   ...
 }:
 delib.module {
@@ -10,6 +9,7 @@ delib.module {
 
   options.programs.nixvim.plugins.octo = with delib; {
     enable = boolOption true;
+    defaultToProjectsV2 = boolOption true;
     extraKeymaps = lib.mkOption {
       type = lib.types.listOf lib.types.attrs;
       default = [ ];
@@ -28,7 +28,7 @@ delib.module {
           enable = true;
           settings = {
             enable_builtin = true;
-            default_to_projects_v2 = true;
+            default_to_projects_v2 = cfg.defaultToProjectsV2;
             default_merge_method = "squash";
             picker = "snacks";
           };
