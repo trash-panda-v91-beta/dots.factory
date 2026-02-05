@@ -116,6 +116,67 @@ delib.module {
                 '';
               };
             };
+            # Remap builtin keymaps to match our structure
+            mappings = {
+              issue = {
+                open_in_browser = {
+                  lhs = "<localleader>gb";
+                  desc = "go to browser";
+                };
+                copy_url = {
+                  lhs = "<localleader>yu";
+                  desc = "yank URL";
+                };
+              };
+              pull_request = {
+                open_in_browser = {
+                  lhs = "<localleader>gb";
+                  desc = "go to browser";
+                };
+                copy_url = {
+                  lhs = "<localleader>yu";
+                  desc = "yank URL";
+                };
+                checkout_pr = {
+                  lhs = "<localleader>gc";
+                  desc = "go checkout";
+                };
+                merge_pr = {
+                  lhs = "<localleader>mm";
+                  desc = "merge";
+                };
+                squash_and_merge_pr = {
+                  lhs = "<localleader>ms";
+                  desc = "squash and merge";
+                };
+                rebase_and_merge_pr = {
+                  lhs = "<localleader>mr";
+                  desc = "rebase and merge";
+                };
+              };
+              review_thread = {
+                goto_issue = {
+                  lhs = "<localleader>gi";
+                  desc = "go to issue";
+                };
+              };
+              review_diff = {
+                goto_file = {
+                  lhs = "<localleader>gf";
+                  desc = "go to file";
+                };
+              };
+              repo = {
+                open_in_browser = {
+                  lhs = "<localleader>gb";
+                  desc = "go to browser";
+                };
+                copy_url = {
+                  lhs = "<localleader>yu";
+                  desc = "yank URL";
+                };
+              };
+            };
           };
         };
         # Global keymap for opening PR picker
@@ -150,10 +211,10 @@ delib.module {
                   { localleader .. 'g', group = 'Goto', buffer = event.buf },
                   { localleader .. 'i', group = 'Issue', buffer = event.buf },
                   { localleader .. 'l', group = 'Label', buffer = event.buf },
-                  { localleader .. 'p', group = 'Pull Request', buffer = event.buf },
+                  { localleader .. 'm', group = 'Merge', buffer = event.buf },
                   { localleader .. 'r', group = 'React', buffer = event.buf },
                   { localleader .. 'v', group = 'Review', buffer = event.buf },
-                  { localleader .. 'y', group = 'Yank/Copy', buffer = event.buf },
+                  { localleader .. 'y', group = 'Yank', buffer = event.buf },
                   
                   -- Hide unwanted global groups/keymaps that conflict with octo keymaps
                   -- Hide LSP group (conflicts with Label)
@@ -164,61 +225,34 @@ delib.module {
                   -- Hide Code group (conflicts with Comment)
                   { localleader .. 'ca', hidden = true, buffer = event.buf },
                   -- Hide Git group items that aren't octo-related
-                  { localleader .. 'gb', hidden = true, buffer = event.buf },
-                  { localleader .. 'gc', hidden = true, buffer = event.buf },
-                  { localleader .. 'gC', hidden = true, buffer = event.buf },
                   { localleader .. 'gd', hidden = true, buffer = event.buf },
                   { localleader .. 'gD', hidden = true, buffer = event.buf },
-                  { localleader .. 'gf', hidden = true, buffer = event.buf },
                   { localleader .. 'gh', hidden = true, buffer = event.buf },
                   { localleader .. 'gH', hidden = true, buffer = event.buf },
                   { localleader .. 'gL', hidden = true, buffer = event.buf },
                   { localleader .. 'gn', hidden = true, buffer = event.buf },
                 })
                 
-                -- Auto-merge keymap
-                vim.keymap.set('n', localleader .. 'pA', '<cmd>Octo pr auto<cr>', {
+                -- Custom commands (not in octo builtins)
+                -- Merge: auto-merge
+                vim.keymap.set('n', localleader .. 'ma', '<cmd>Octo pr auto<cr>', {
                   buffer = event.buf,
-                  desc = 'Auto-merge PR'
+                  desc = 'Auto-merge'
                 })
                 
-                -- Update branch with rebase keymap
-                vim.keymap.set('n', localleader .. 'pu', '<cmd>Octo pr update<cr>', {
+                -- Update branch with rebase (single key)
+                vim.keymap.set('n', localleader .. 'u', '<cmd>Octo pr update<cr>', {
                   buffer = event.buf,
                   desc = 'Update branch (rebase)'
                 })
                 
-                -- Approve PR directly keymap
-                vim.keymap.set('n', localleader .. 'pa', '<cmd>Octo pr approve<cr>', {
+                -- Review: approve PR
+                vim.keymap.set('n', localleader .. 'vp', '<cmd>Octo pr approve<cr>', {
                   buffer = event.buf,
                   desc = 'Approve PR'
                 })
                 
-                -- Open in browser keymap (mirrors <C-b>)
-                vim.keymap.set('n', localleader .. 'b', function()
-                  local utils = require('octo.utils')
-                  local buffer = utils.get_current_buffer()
-                  if buffer then
-                    utils.open_in_browser(buffer)
-                  end
-                end, {
-                  buffer = event.buf,
-                  desc = 'Open in browser'
-                })
-                
-                -- Copy URL keymap (mirrors <C-y>)
-                vim.keymap.set('n', localleader .. 'yu', function()
-                  local utils = require('octo.utils')
-                  local buffer = utils.get_current_buffer()
-                  if buffer then
-                    utils.copy_url(buffer)
-                  end
-                end, {
-                  buffer = event.buf,
-                  desc = 'Copy URL'
-                })
-                
-                -- Copy SHA keymap (mirrors <C-e>)
+                -- Yank: copy SHA (not in octo builtins)
                 vim.keymap.set('n', localleader .. 'ys', function()
                   local utils = require('octo.utils')
                   local buffer = utils.get_current_buffer()
@@ -228,7 +262,7 @@ delib.module {
                   end
                 end, {
                   buffer = event.buf,
-                  desc = 'Copy SHA'
+                  desc = 'Yank SHA'
                 })
                 
                 -- Add extra keymaps from configuration
