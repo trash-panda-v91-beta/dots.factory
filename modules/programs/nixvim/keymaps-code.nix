@@ -188,6 +188,30 @@ delib.module {
         options.desc = "Code action (range)";
       }
 
+      # Override built-in gra to use fastaction (like <leader>ca)
+      {
+        mode = "n";
+        key = "gra";
+        action.__raw = ''
+          function()
+            require('fastaction').code_action()
+          end
+        '';
+        options.desc = "Code action";
+      }
+
+      # Override built-in gra in visual mode to use fastaction
+      {
+        mode = "v";
+        key = "gra";
+        action.__raw = ''
+          function()
+            require('fastaction').range_code_action()
+          end
+        '';
+        options.desc = "Code action (range)";
+      }
+
       # Hover actions (has fallback to generic LSP hover)
       {
         mode = "n";
