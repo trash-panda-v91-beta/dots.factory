@@ -7,7 +7,7 @@
 delib.module {
   name = "programs.nixvim.plugins.codecompanion";
 
-  options = delib.singleEnableOption true;
+  options = delib.singleEnableOption false;
 
   home.ifEnabled.programs.nixvim = {
 
