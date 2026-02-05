@@ -13,25 +13,6 @@ delib.module {
     nixvim = {
       plugins.tmux-navigator = {
         enable = true;
-        settings.no_mappings = 1;
-        keymaps = [
-          {
-            key = "<M-h>";
-            action = "left";
-          }
-          {
-            key = "<M-j>";
-            action = "down";
-          }
-          {
-            key = "<M-k>";
-            action = "up";
-          }
-          {
-            key = "<M-l>";
-            action = "right";
-          }
-        ];
       };
     };
   };
