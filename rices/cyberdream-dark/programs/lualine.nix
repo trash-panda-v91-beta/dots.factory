@@ -241,45 +241,28 @@ delib.rice {
             {
               __unkeyed-1.__raw = ''
                 function()
-                  -- Check for git status via vim-fugitive or gitsigns
                   local status_dict = vim.b.gitsigns_status_dict
                   if not status_dict then
                     return ""
                   end
-                  
-                  local changed = status_dict.changed or 0
                   local added = status_dict.added or 0
+                  local changed = status_dict.changed or 0
                   local removed = status_dict.removed or 0
-                  
-                  -- Check if there are staged changes (approximation via git status)
-                  local has_staged = false
-                  local has_unstaged = (changed > 0 or added > 0 or removed > 0)
-                  
-                  -- Try to detect staged changes
-                  local git_status = vim.fn.system("git status --porcelain 2>/dev/null")
-                  if git_status then
-                    has_staged = git_status:match("^[MADRCU]") ~= nil
-                    -- Check for unstaged changes (second column)
-                    has_unstaged = git_status:match("^.[MADRCU]") ~= nil or has_unstaged
-                  end
-                  
-                  if not has_staged and not has_unstaged then
+                  if (added + changed + removed) == 0 then
                     return ""
                   end
-                  
                   local result = {}
                   table.insert(result, '%#LualineGitSeparator#⎪')
-                  
-                  if has_staged then
+                  if added > 0 then
                     table.insert(result, '%#LualineGitStaged#●◦')
                   end
-                  
-                  if has_unstaged then
+                  if changed > 0 then
                     table.insert(result, '%#LualineGitUnstaged#◌◦')
                   end
-                  
+                  if removed > 0 then
+                    table.insert(result, '%#LualineGitSeparator#▿')
+                  end
                   table.insert(result, '%#LualineGitSeparator#⎪')
-                  
                   return table.concat(result, "")
                 end
               '';
