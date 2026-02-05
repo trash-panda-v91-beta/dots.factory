@@ -62,7 +62,7 @@ delib.module {
               "n"
               "i"
             ];
-            key = "<A-o>";
+            key = "<C-s>";
             action.__raw = "function() _G._opencode_toggle() end";
             options.desc = "Toggle OpenCode";
           }
