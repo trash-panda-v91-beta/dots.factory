@@ -45,13 +45,26 @@ delib.module {
         }
       '';
 
+      sources = {
+        select = {
+          preview = false;
+          layout = {
+            preset = "select";
+            preview = false;
+          };
+        };
+      };
+
       layouts = {
         select = {
+          preview = false;
           layout = {
             relative = "cursor";
             width = 70;
             min_width = 0;
             row = 1;
+            border = true;
+            title = "{title}";
           };
         };
       };
