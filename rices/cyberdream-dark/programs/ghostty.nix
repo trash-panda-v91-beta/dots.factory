@@ -1,11 +1,20 @@
 {
   delib,
+  pkgs,
   ...
 }:
 delib.rice {
   name = "cyberdream-dark";
+  home.home.packages = with pkgs; [
+    victor-mono
+  ];
   home.programs.ghostty = {
-    settings.theme = "cyberdream-dark";
+    settings = {
+      background-opacity = 0.95;
+      background-blur-radius = 30;
+      font-family = "Victor Mono";
+      theme = "cyberdream-dark";
+    };
     themes = {
       "cyberdream-dark" = {
         palette = [

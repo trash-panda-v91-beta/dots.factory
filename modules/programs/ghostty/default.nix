@@ -27,11 +27,8 @@ delib.module {
           "${shaders/cursor_tail.glsl}"
           "${shaders/ripple_cursor.glsl}"
         ];
-        background-opacity = 0.95;
-        background-blur-radius = 30;
         copy-on-select = true;
         cursor-style = "block";
-        font-family = "JetBrains Mono";
         font-size = 16;
         font-thicken = true;
         mouse-hide-while-typing = true;

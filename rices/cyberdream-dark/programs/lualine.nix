@@ -8,8 +8,6 @@ delib.rice {
     plugins.lualine = {
       settings = {
         options = {
-          # theme = "auto";
-
           component_separators = {
             left = "";
             right = "";
