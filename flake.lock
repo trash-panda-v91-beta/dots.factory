@@ -17,22 +17,6 @@
         "type": "github"
       }
     },
-    "codecompanion-gitcommit-nvim": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1767506740,
-        "narHash": "sha256-YokxcPlK6HxS6kzMYFFMax4Cnlg8Ax6GsBaH3DCs1Qw=",
-        "owner": "jinzhongjia",
-        "repo": "codecompanion-gitcommit.nvim",
-        "rev": "fcb13947f6fd1c8ff88413821a5915ad43232823",
-        "type": "github"
-      },
-      "original": {
-        "owner": "jinzhongjia",
-        "repo": "codecompanion-gitcommit.nvim",
-        "type": "github"
-      }
-    },
     "denix": {
       "inputs": {
         "home-manager": [
@@ -384,7 +368,6 @@
     },
     "root": {
       "inputs": {
-        "codecompanion-gitcommit-nvim": "codecompanion-gitcommit-nvim",
         "denix": "denix",
         "home-manager": "home-manager",
         "homebrew-cask": "homebrew-cask",

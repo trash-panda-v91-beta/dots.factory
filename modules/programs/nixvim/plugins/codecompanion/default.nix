@@ -13,7 +13,6 @@ delib.module {
 
     extraPlugins = [
       pkgs.vimPlugins.codecompanion-history-nvim
-      pkgs.local.codecompanion-gitcommit-nvim
     ];
     plugins = {
       blink-cmp.settings.sources = {
@@ -35,7 +34,7 @@ delib.module {
             "CodeCompanionActions"
             "CodeCompanionAdd"
           ];
-          ft = [ "gitcommit" ];
+          ft = [ ];
         };
         settings = {
           adapters.http = {
@@ -65,12 +64,6 @@ delib.module {
             };
           };
           extensions = {
-            gitcommit = {
-              callback = "codecompanion._extensions.gitcommit";
-              opts = {
-                languages = [ "English" ];
-              };
-            };
             history = {
               enabled = true;
               opts = {

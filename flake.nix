@@ -2,10 +2,6 @@
   description = "dot.factory";
 
   inputs = {
-    codecompanion-gitcommit-nvim = {
-      url = "github:jinzhongjia/codecompanion-gitcommit.nvim";
-      flake = false;
-    };
     denix = {
       url = "github:yunfachi/denix";
       inputs.nixpkgs.follows = "nixpkgs";
