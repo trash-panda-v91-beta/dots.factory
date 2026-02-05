@@ -121,7 +121,7 @@ delib.module {
           };
           jq.command = pkgs.lib.getExe pkgs.jq;
           just.command = pkgs.lib.getExe pkgs.just;
-          nixfmt.command = pkgs.lib.getExe pkgs.nixfmt-rfc-style;
+          nixfmt.command = pkgs.lib.getExe pkgs.nixfmt;
           prettierd.command = pkgs.lib.getExe pkgs.prettierd;
           ruff.command = pkgs.lib.getExe pkgs.ruff;
           rustfmt.command = pkgs.lib.getExe pkgs.rustfmt;

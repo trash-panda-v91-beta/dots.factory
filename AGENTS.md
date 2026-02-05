@@ -10,7 +10,7 @@ NixOS/Darwin configuration using Denix modular system. Supports multiple hosts, 
 
 ## Code Style
 
-**Nix**: 2-space indentation, `nixfmt-rfc-style` formatter, use `delib.module`/`delib.host`/`delib.rice` patterns
+**Nix**: 2-space indentation, `pkgs.nixfmt` formatter, use `delib.module`/`delib.host`/`delib.rice` patterns
 **Naming**: Modules match option path (`programs.direnv`), hosts use hostname, rices use theme names
 **Imports**: Use delib option helpers (`boolOption`, `strOption`) instead of `lib.mkOption`
 **Error Handling**: Use `ifEnabled`/`ifDisabled`/`always` blocks, avoid manual `mkIf`

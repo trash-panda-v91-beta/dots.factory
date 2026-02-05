@@ -44,7 +44,7 @@ meta = { license = lib.licenses.mit; };
 1. **Explicit over Implicit** - Always use explicit attribute paths
 2. **Declarative Design** - Think in systems, not scripts
 3. **Pure Functions** - Leverage Nix's functional nature
-4. **nixfmt-rfc-style** - Standard formatter
+4. **pkgs.nixfmt** - Standard formatter
 
 ## Flake Structure
 
@@ -118,7 +118,7 @@ in
 
 - [ ] No `with` statements
 - [ ] Explicit destructuring in function signatures
-- [ ] nixfmt-rfc-style formatting
+- [ ] pkgs.nixfmt formatting
 - [ ] Options properly namespaced
 - [ ] Input follows optimized (for flakes)
 - [ ] Prefer let-in over rec
@@ -220,7 +220,7 @@ args: with args; stdenv.mkDerivation { ... }
 nix flake check
 
 # Format code
-nixfmt-rfc-style .
+pkgs.pkgs.nixfmt .
 
 # Evaluate without building
 nix eval .#packages.x86_64-linux.default
