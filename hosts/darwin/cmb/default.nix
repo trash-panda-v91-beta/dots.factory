@@ -64,7 +64,7 @@ delib.host {
           {
             mode = "n";
             key = "<localleader>lr";
-            action.__raw = ''
+            action = ''
               function()
                 vim.cmd('Octo label add approval/robocat')
                 vim.defer_fn(function()

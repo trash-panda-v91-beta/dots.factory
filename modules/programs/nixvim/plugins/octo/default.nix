@@ -201,7 +201,7 @@ delib.module {
             event = "FileType";
             pattern = "octo";
             group = "octo_which_key";
-            callback.__raw = ''
+            callback = ''
               function(event)
                 -- Add octo-specific which-key groups
                 local localleader = vim.g.maplocalleader or ' '
