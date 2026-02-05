@@ -87,6 +87,33 @@ delib.module {
                     end
                   end
                 '';
+                approve.__raw = ''
+                  function()
+                    local gh = require("octo.gh")
+                    local picker = require("octo.picker")
+                    local utils = require("octo.utils")
+
+                    local buffer = utils.get_current_buffer()
+
+                    local approve_pr = function(number)
+                      local cb = function()
+                        utils.info("PR approved")
+                      end
+                      local opts = { cb = cb }
+                      gh.pr.review({ number, approve = true, opts = opts })
+                    end
+
+                    if not buffer or not buffer:isPullRequest() then
+                      picker.prs({
+                        cb = function(selected)
+                          approve_pr(selected.obj.number)
+                        end,
+                      })
+                    elseif buffer:isPullRequest() then
+                      approve_pr(buffer.node.number)
+                    end
+                  end
+                '';
               };
             };
           };
@@ -150,7 +177,7 @@ delib.module {
                 })
                 
                 -- Auto-merge keymap
-                vim.keymap.set('n', localleader .. 'pa', '<cmd>Octo pr auto<cr>', {
+                vim.keymap.set('n', localleader .. 'pA', '<cmd>Octo pr auto<cr>', {
                   buffer = event.buf,
                   desc = 'Auto-merge PR'
                 })
@@ -159,6 +186,12 @@ delib.module {
                 vim.keymap.set('n', localleader .. 'pu', '<cmd>Octo pr update<cr>', {
                   buffer = event.buf,
                   desc = 'Update branch (rebase)'
+                })
+                
+                -- Approve PR directly keymap
+                vim.keymap.set('n', localleader .. 'pa', '<cmd>Octo pr approve<cr>', {
+                  buffer = event.buf,
+                  desc = 'Approve PR'
                 })
                 
                 -- Open in browser keymap (mirrors <C-b>)
