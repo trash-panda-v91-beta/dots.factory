@@ -44,6 +44,101 @@ delib.module {
           }
           {
             mode = [ "n" ];
+            key = "<leader>gm";
+            action.__raw = ''
+              function()
+                local git = require('neogit.lib.git')
+                
+                -- Check for uncommitted changes first
+                local status_result = git.cli.status.args("--porcelain").call({ await = true })
+                if status_result.code == 0 and status_result.stdout and #status_result.stdout > 0 then
+                  local has_changes = false
+                  for _, line in ipairs(status_result.stdout) do
+                    if vim.trim(line) ~= "" then
+                      has_changes = true
+                      break
+                    end
+                  end
+                  if has_changes then
+                    vim.notify("Cannot switch: you have uncommitted changes. Please commit or stash them first.", vim.log.levels.ERROR)
+                    return
+                  end
+                end
+                
+                -- Step 1: Detect and checkout main/master
+                vim.notify("Switching to main branch...", vim.log.levels.INFO)
+                
+                -- Get list of local branches using CLI
+                local branch_result = git.cli.branch.call({ await = true })
+                local branch_list = {}
+                if branch_result.code == 0 then
+                  for _, line in ipairs(branch_result.stdout) do
+                    local branch = line:match("^%*?%s*(.+)$")
+                    if branch then 
+                      table.insert(branch_list, branch)
+                    end
+                  end
+                end
+                
+                -- Try main first, fallback to master
+                local main_branch = "main"
+                local has_main = vim.tbl_contains(branch_list, "main")
+                local has_master = vim.tbl_contains(branch_list, "master")
+                
+                if not has_main and has_master then
+                  main_branch = "master"
+                elseif not has_main and not has_master then
+                  vim.notify("Neither 'main' nor 'master' branch found", vim.log.levels.ERROR)
+                  return
+                end
+                
+                local checkout_result = git.cli.checkout.branch(main_branch).call({ await = true })
+                if checkout_result.code ~= 0 then
+                  local error_msg = "Failed to checkout " .. main_branch
+                  if checkout_result.stderr and #checkout_result.stderr > 0 then
+                    error_msg = error_msg .. ": " .. table.concat(checkout_result.stderr, "\n")
+                  end
+                  vim.notify(error_msg, vim.log.levels.ERROR)
+                  return
+                end
+                
+                -- Step 2: Fetch from remote
+                vim.notify("Fetching from remote...", vim.log.levels.INFO)
+                local fetch_result = git.cli.fetch.call({ await = true })
+                if fetch_result.code ~= 0 then
+                  local error_msg = "Failed to fetch"
+                  if fetch_result.stderr and #fetch_result.stderr > 0 then
+                    error_msg = error_msg .. ": " .. table.concat(fetch_result.stderr, "\n")
+                  end
+                  vim.notify(error_msg, vim.log.levels.WARN)
+                end
+                
+                -- Step 3: Pull latest changes
+                vim.notify("Pulling latest changes...", vim.log.levels.INFO)
+                local pull_result = git.cli.pull.call({ await = true })
+                if pull_result.code ~= 0 then
+                  local error_msg = "Failed to pull"
+                  if pull_result.stderr and #pull_result.stderr > 0 then
+                    error_msg = error_msg .. ": " .. table.concat(pull_result.stderr, "\n")
+                  end
+                  vim.notify(error_msg, vim.log.levels.ERROR)
+                  return
+                end
+                
+                vim.notify("✓ Synced with " .. main_branch, vim.log.levels.INFO)
+                
+                -- Refresh Neogit if it's open
+                pcall(function()
+                  require('neogit').refresh()
+                end)
+              end
+            '';
+            options = {
+              desc = "Sync main (checkout→fetch→pull)";
+            };
+          }
+          {
+            mode = [ "n" ];
             key = "<leader>gn";
             action.__raw = ''
               function()
