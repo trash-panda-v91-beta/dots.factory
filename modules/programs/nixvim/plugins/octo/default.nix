@@ -31,6 +31,37 @@ delib.module {
             default_to_projects_v2 = cfg.defaultToProjectsV2;
             default_merge_method = "squash";
             picker = "snacks";
+            commands = {
+              pr = {
+                auto.__raw = ''
+                  function()
+                    local gh = require("octo.gh")
+                    local picker = require("octo.picker")
+                    local utils = require("octo.utils")
+
+                    local buffer = utils.get_current_buffer()
+
+                    local auto_merge = function(number)
+                      local cb = function()
+                        utils.info("This PR will be auto-merged")
+                      end
+                      local opts = { cb = cb }
+                      gh.pr.merge({ number, auto = true, squash = true, opts = opts })
+                    end
+
+                    if not buffer or not buffer:isPullRequest() then
+                      picker.prs({
+                        cb = function(selected)
+                          auto_merge(selected.obj.number)
+                        end,
+                      })
+                    elseif buffer:isPullRequest() then
+                      auto_merge(buffer.node.number)
+                    end
+                  end
+                '';
+              };
+            };
           };
         };
         # Global keymap for opening PR picker
@@ -88,6 +119,12 @@ delib.module {
                   { localleader .. 'gH', hidden = true, buffer = event.buf },
                   { localleader .. 'gL', hidden = true, buffer = event.buf },
                   { localleader .. 'gn', hidden = true, buffer = event.buf },
+                })
+                
+                -- Auto-merge keymap
+                vim.keymap.set('n', localleader .. 'pa', '<cmd>Octo pr auto<cr>', {
+                  buffer = event.buf,
+                  desc = 'Auto-merge PR'
                 })
                 
                 -- Add extra keymaps from configuration
