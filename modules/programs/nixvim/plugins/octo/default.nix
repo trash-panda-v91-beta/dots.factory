@@ -201,7 +201,7 @@ delib.module {
             event = "FileType";
             pattern = "octo";
             group = "octo_which_key";
-            callback = ''
+            callback.__raw = ''
               function(event)
                 -- Add octo-specific which-key groups
                 local localleader = vim.g.maplocalleader or ' '
@@ -296,12 +296,18 @@ delib.module {
                 vim.keymap.set('n', localleader .. 'crc', '<cmd>Octo reaction confused<cr>', { buffer = event.buf, desc = 'React :confused:' })
 
                 -- Add extra keymaps from configuration
-                ${lib.concatMapStringsSep "\n" (keymap: ''
-                  vim.keymap.set('${keymap.mode or "n"}', '${keymap.key}', '${keymap.action}', {
-                    buffer = event.buf,
-                    desc = '${keymap.desc or ""}'
-                  })
-                '') cfg.extraKeymaps}
+                ${lib.concatMapStringsSep "\n" (
+                  keymap:
+                  let
+                    action = if builtins.isAttrs keymap.action then keymap.action.__raw else keymap.action;
+                  in
+                  ''
+                    vim.keymap.set('${keymap.mode or "n"}', '${keymap.key}', ${action}, {
+                      buffer = event.buf,
+                      desc = '${keymap.desc or ""}'
+                    })
+                  ''
+                ) cfg.extraKeymaps}
               end
             '';
           }
