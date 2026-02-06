@@ -52,6 +52,7 @@ delib.module {
         "performance-engineering"
         "python-development"
         "quality-engineering"
+        "release-please-pr"
         "rust-development"
       ];
 
