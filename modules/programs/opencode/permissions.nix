@@ -1,6 +1,5 @@
 {
   delib,
-  pkgs,
   ...
 }:
 delib.module {
@@ -10,7 +9,7 @@ delib.module {
 
   home.ifEnabled = {
     programs.opencode.settings.permission = {
-      edit = "ask";
+      edit = "allow";
       bash = {
         "git status*" = "allow";
         "git log*" = "allow";
@@ -137,8 +136,8 @@ delib.module {
       list = "allow";
       glob = "allow";
       grep = "allow";
-      webfetch = "ask";
-      write = "ask";
+      webfetch = "allow";
+      write = "allow";
       task = "allow";
       todowrite = "allow";
       todoread = "allow";
