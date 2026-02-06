@@ -95,6 +95,16 @@ delib.module {
             end,
             once = true,
           })
+
+          -- Override Ctrl-S in neogit status buffer to use opencode toggle
+          vim.api.nvim_create_autocmd("FileType", {
+            pattern = "NeogitStatus",
+            callback = function()
+              vim.keymap.set('n', '<C-s>', function()
+                _G._opencode_toggle()
+              end, { buffer = true, desc = "Toggle OpenCode" })
+            end,
+          })
         '';
       };
     };
