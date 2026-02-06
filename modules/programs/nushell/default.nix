@@ -29,7 +29,8 @@ delib.module {
         };
         shellAliases = {
           nu-open = "open";
-          open = "^open";
+          # Alias for macOS graphical open; avoids shadowing Nushell open
+          macopen = "open";
           sync-dots = "with-env { NIX_CONFIG: $\"access-tokens = github.com=(op read 'op://Private/dots.vault Read Access/password')\" } { nh darwin switch 'github:trash-panda-v91-beta/dots.factory' --hostname ${myconfig.host.name} }";
         };
 
