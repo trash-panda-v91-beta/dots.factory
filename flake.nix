@@ -75,6 +75,7 @@
               args.enable = true;
               hosts.features = {
                 features = [
+                  "aws"
                   "coding"
                   "githubCopilot"
                   "kubernetes"

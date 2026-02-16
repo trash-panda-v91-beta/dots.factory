@@ -8,6 +8,7 @@ delib.host {
   name = "cmb";
 
   features = [
+    "aws"
     "coding"
     "githubCopilot"
     "python"
