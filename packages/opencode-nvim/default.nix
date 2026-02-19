@@ -42,5 +42,6 @@ vimUtils.buildVimPlugin {
     "opencode.core"
     "opencode.api_client"
     "opencode.event_manager"
+    "opencode.log"
   ];
 }
