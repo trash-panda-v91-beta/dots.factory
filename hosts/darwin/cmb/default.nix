@@ -29,7 +29,10 @@ delib.host {
         bun.enable = true;
         colima.enable = true;
         git.userEmail = myconfig.user.email;
-        jira-cli.enable = true;
+        jira-cli = {
+          enable = true;
+          tokenReference = "op://Private/Jira token/password";
+        };
         mcp.servers = {
           perplexity = {
             autoApprove = [ ];
