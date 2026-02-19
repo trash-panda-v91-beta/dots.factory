@@ -46,6 +46,7 @@ delib.module {
       # Personal skills (domain-specific, not covered by superpowers)
       personalSkills = [
         "aws-development"
+        "jira-cli"
         "data-and-sql"
         "delivery-and-infra"
         "nix-guidelines"
