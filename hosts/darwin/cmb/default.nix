@@ -85,6 +85,11 @@ delib.host {
           JIRA_URL = "{env:JIRA_URL}";
           JIRA_TOKEN = "{env:JIRA_TOKEN}";
         };
+        opencode.providerSettings = {
+          anthropic.options.baseURL = "http://localhost:6655/anthropic/v1";
+          openai.options.baseURL = "http://localhost:6655/openai/v1";
+          google.options.baseURL = "http://localhost:6655/gemini";
+        };
       };
     };
 }

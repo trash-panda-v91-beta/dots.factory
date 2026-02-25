@@ -23,6 +23,19 @@ delib.module {
         }
       '';
     };
+
+    providerSettings = lib.mkOption {
+      type = lib.types.attrs;
+      default = { };
+      description = "Additional provider settings to merge into opencode.json";
+      example = lib.literalExpression ''
+        {
+          anthropic.options.baseURL = "http://localhost:6655/anthropic/v1";
+          openai.options.baseURL = "http://localhost:6655/openai/v1";
+          google.options.baseURL = "http://localhost:6655/gemini";
+        }
+      '';
+    };
   };
 
   home.ifEnabled =
@@ -74,27 +87,34 @@ delib.module {
         enable = true;
         enableMcpIntegration = true;
         package = pkgs.local.opencode;
-        settings = {
-          autoshare = false;
-          autoupdate = false;
-          keybinds = {
-            session_new = "ctrl+n";
-            session_timeline = "ctrl+g";
-            messages_half_page_up = "up";
-            messages_half_page_down = "down";
-            messages_copy = "ctrl+y";
-            messages_undo = "ctrl+z";
+        settings =
+          lib.recursiveUpdate
+            {
+              autoshare = false;
+              autoupdate = false;
+              keybinds = {
+                session_new = "ctrl+n";
+                session_timeline = "ctrl+g";
+                messages_half_page_up = "up";
+                messages_half_page_down = "down";
+                messages_copy = "ctrl+y";
+                messages_undo = "ctrl+z";
 
-            command_list = "ctrl+p";
-            agent_list = "ctrl+a";
-            editor_open = "ctrl+e";
+                command_list = "ctrl+p";
+                agent_list = "ctrl+a";
+                editor_open = "ctrl+e";
 
-            status_view = "ctrl+s";
+                status_view = "ctrl+s";
 
-            history_previous = "pageup";
-            history_next = "pagedown";
-          };
-        };
+                history_previous = "pageup";
+                history_next = "pagedown";
+              };
+            }
+            (
+              lib.optionalAttrs (cfg.providerSettings != { }) {
+                provider = cfg.providerSettings;
+              }
+            );
       };
 
       # Superpowers plugin and skills + personal skills
