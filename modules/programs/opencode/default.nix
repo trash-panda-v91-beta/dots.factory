@@ -2,6 +2,7 @@
   delib,
   lib,
   pkgs,
+  inputs,
   ...
 }:
 delib.module {
@@ -9,7 +10,6 @@ delib.module {
 
   options.programs.opencode = {
     enable = delib.boolOption true;
-    alias = delib.strOption "sidekick";
 
     env = lib.mkOption {
       type = lib.types.attrsOf lib.types.str;
@@ -28,18 +28,12 @@ delib.module {
   home.ifEnabled =
     { cfg, ... }:
     let
-      envVars = lib.mapAttrsToList (name: value: "${name}: '${value}'") cfg.env;
-
-      opencodeExe = lib.getExe pkgs.local.opencode;
-      sidekickCommand =
-        if envVars == [ ] then
-          opencodeExe
-        else
-          let
-            envRecord = lib.concatStringsSep ", " envVars;
-            opExe = lib.getExe pkgs._1password-cli;
-          in
-          "with-env { ${envRecord} } { ${opExe} run --no-masking -- ${opencodeExe} }";
+      # Wrapper script for CLI and Neovim (uses op run with env var injection)
+      # This is built as a proper package from packages/opencode-wrapped
+      opencodeWrapper = pkgs.callPackage ../../../packages/opencode-wrapped {
+        inherit inputs;
+        envVars = cfg.env;
+      };
 
       superpowers = pkgs.local.superpowers;
 
@@ -112,18 +106,7 @@ delib.module {
       }
       // personalSkillFiles;
 
-      programs.nushell.shellAliases = {
-        ${cfg.alias} = sidekickCommand;
-      };
-      programs.tmux.extraConfig = ''
-        bind -n M-i new-window -n "opencode" "${lib.getExe pkgs.nushell} -l -c '${cfg.alias}'"
-      '';
-
-      programs.sesh.settings.windows = [
-        {
-          name = cfg.alias;
-          startup_script = cfg.alias;
-        }
-      ];
+      # Make the wrapper available in PATH for CLI and Neovim
+      home.packages = lib.optional (cfg.env != { }) opencodeWrapper;
     };
 }

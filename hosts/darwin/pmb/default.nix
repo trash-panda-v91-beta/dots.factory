@@ -56,15 +56,19 @@ delib.host {
             "--enable-write"
           ];
         };
-        home-assistant = {
+        hass = {
           disabled = true;
-          url = "https://hass.nebular-grid.space/api/mcp";
-          headers = {
-            Authorization = "Bearer {env:HASS_TOKEN}";
+          command = "uvx";
+          args = [
+            "ha-mcp@latest"
+          ];
+          env = {
+            HOMEASSISTANT_URL = "https://hass.nebular-grid.space";
+            HOMEASSISTANT_TOKEN = "{env:HASS_TOKEN}";
           };
         };
         perplexity = {
-          disabled = false;
+          disabled = true;
           command = "bunx";
           args = [
             "-y"

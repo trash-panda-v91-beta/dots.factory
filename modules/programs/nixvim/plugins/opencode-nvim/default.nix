@@ -3,6 +3,7 @@
   pkgs,
   lib,
   host,
+  inputs,
   ...
 }:
 delib.module {
@@ -18,12 +19,26 @@ delib.module {
   };
 
   home.ifEnabled =
-    { cfg, ... }:
+    { cfg, myconfig, ... }:
     let
-      # Merge user settings with defaults
+      # Check if opencode module has env vars configured
+      opencodeConfig = myconfig.programs.opencode or { };
+      hasEnvVars = (opencodeConfig.enable or false) && (opencodeConfig.env or { }) != { };
+
+      # Build wrapper with env vars if needed
+      opencodeWrapper = pkgs.callPackage ../../../../../packages/opencode-wrapped {
+        inherit inputs;
+        envVars = opencodeConfig.env or { };
+      };
+
+      # Use getExe for proper /nix/store path
+      opencodeExecutable =
+        if hasEnvVars then lib.getExe opencodeWrapper else lib.getExe pkgs.local.opencode;
+
       settings = lib.recursiveUpdate {
         preferred_picker = "snacks";
         preferred_completion = "blink";
+        opencode_executable = opencodeExecutable;
         ui = {
           position = "current";
         };
@@ -39,9 +54,6 @@ delib.module {
           pkgs.vimPlugins.plenary-nvim
         ];
 
-        # Configure blink-cmp for opencode
-        # Note: Do NOT register opencode_mentions provider here - opencode.nvim does it via add_source_provider
-        # We only configure the kind display
         plugins.blink-cmp.settings = {
           completion.menu.draw.components.kind = {
             text.__raw = ''
