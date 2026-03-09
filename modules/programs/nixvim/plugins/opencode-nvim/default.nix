@@ -37,7 +37,6 @@ delib.module {
 
       settings = lib.recursiveUpdate {
         preferred_picker = "snacks";
-        preferred_completion = "blink";
         opencode_executable = opencodeExecutable;
         ui = {
           position = "current";
@@ -53,19 +52,6 @@ delib.module {
           pkgs.local.opencode-nvim
           pkgs.vimPlugins.plenary-nvim
         ];
-
-        plugins.blink-cmp.settings = {
-          completion.menu.draw.components.kind = {
-            text.__raw = ''
-              function(ctx)
-                if ctx.item and ctx.item.source_id == "opencode_mentions" then
-                  return "Mentions"
-                end
-                return ctx.kind
-              end
-            '';
-          };
-        };
 
         # Quick toggle keymaps (Alt for context-switching per KEYMAP_STRATEGY.md)
         keymaps = [
