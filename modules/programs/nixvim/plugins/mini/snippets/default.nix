@@ -4,7 +4,6 @@ delib.module {
   options = delib.singleEnableOption true;
   home.ifEnabled.programs.nixvim = {
     extraFiles = {
-      "snippets/markdown.json".source = ./snippets/markdown.json;
       "snippets/nix.json".source = ./snippets/nix.json;
     };
     plugins.mini = {
