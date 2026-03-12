@@ -41,8 +41,6 @@ delib.module {
   home.ifEnabled =
     { cfg, ... }:
     let
-      # Wrapper script for CLI and Neovim (uses op run with env var injection)
-      # This is built as a proper package from packages/opencode-wrapped
       opencodeWrapper = pkgs.callPackage ../../../packages/opencode-wrapped {
         inherit inputs;
         envVars = cfg.env;
@@ -50,7 +48,6 @@ delib.module {
 
       superpowers = pkgs.local.superpowers;
 
-      # Personal skills (domain-specific, not covered by superpowers)
       personalSkills = [
         "aws-development"
         "jira-cli"
@@ -117,16 +114,12 @@ delib.module {
             );
       };
 
-      # Superpowers plugin and skills + personal skills
       xdg.configFile = {
-        # Symlink the plugin
         "opencode/plugins/superpowers.js".source = "${superpowers}/.opencode/plugins/superpowers.js";
-        # Symlink the superpowers skills directory
         "opencode/skills/superpowers".source = "${superpowers}/skills";
       }
       // personalSkillFiles;
 
-      # Make the wrapper available in PATH for CLI and Neovim
       home.packages = lib.optional (cfg.env != { }) opencodeWrapper;
     };
 }
