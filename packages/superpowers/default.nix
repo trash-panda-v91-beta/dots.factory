@@ -5,6 +5,6 @@
 fetchFromGitHub {
   owner = "obra";
   repo = "superpowers";
-  rev = "469a6d81ebb8b827e284d4afb090c6c622d97747";
+  rev = "v5.0.2";
   hash = "sha256-qccVXJuYR4HCHKmcozFxmWtvP4SK7tbVrnoNIpUB/6g=";
 }
