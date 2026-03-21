@@ -1,14 +1,14 @@
 {
   delib,
-  host,
   lib,
+  pkgs,
   ...
 }:
 delib.module {
   name = "programs.claude-code";
 
   options.programs.claude-code = {
-    enable = delib.boolOption host.codingFeatured;
+    enable = true;
 
     env = lib.mkOption {
       type = lib.types.attrsOf lib.types.str;
@@ -26,24 +26,35 @@ delib.module {
     "claude-code"
   ];
 
-  home.ifEnabled = {
-    programs.claude-code = {
-      enable = true;
-      enableMcpIntegration = true;
+  home.ifEnabled =
+    { cfg, ... }:
+    let
+      claudeCodeWrapper = pkgs.callPackage ../../../packages/claude-code-wrapped {
+        envVars = cfg.env;
+      };
+    in
+    {
+      programs.claude-code = {
+        enable = true;
+        enableMcpIntegration = true;
 
-      settings = {
-        theme = "dark";
-        includeCoAuthoredBy = false;
+        settings = {
+          theme = "dark";
+          includeCoAuthoredBy = false;
+          alwaysThinkingEnabled = false;
+          gitAttribution = false;
+        };
+
+        memory = {
+          text = ''
+            # Agent Guidelines
+
+            - Default shell is Nushell (nu), not bash
+            - For POSIX shell compatibility, use: `bash -c "command"`
+          '';
+        };
       };
 
-      memory = {
-        text = ''
-          # Agent Guidelines
-
-          - Default shell is Nushell (nu), not bash
-          - For POSIX shell compatibility, use: `bash -c "command"`
-        '';
-      };
+      home.packages = lib.optional (cfg.env != { }) claudeCodeWrapper;
     };
-  };
 }

@@ -89,6 +89,15 @@ delib.host {
           openai.options.baseURL = "http://localhost:6655/openai/v1";
           google.options.baseURL = "http://localhost:6655/gemini";
         };
+        claude-code.env = {
+          ANTHROPIC_AUTH_TOKEN = "op://Private/Hyperspace AI/credential";
+          ANTHROPIC_BASE_URL = "http://localhost:6655/anthropic/";
+          CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC = "1";
+          ANTHROPIC_MODEL = "anthropic--claude-sonnet-latest";
+          ANTHROPIC_DEFAULT_SONNET_MODEL = "anthropic--claude-sonnet-latest";
+          ANTHROPIC_DEFAULT_HAIKU_MODEL = "anthropic--claude-haiku-latest";
+          ANTHROPIC_DEFAULT_OPUS_MODEL = "anthropic--claude-opus-latest";
+        };
       };
     };
 }
