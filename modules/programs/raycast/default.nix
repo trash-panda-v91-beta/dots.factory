@@ -28,6 +28,7 @@ delib.module {
       xdg.configFile = {
         "${scriptsFolder}/dismiss-notifications.js".source = scripts/dismiss-notifications.js;
         "${scriptsFolder}/open-notifications.js".source = scripts/open-notifications.js;
+        "${scriptsFolder}/fix-grammar.sh".source = scripts/fix-grammar.sh;
         "${scriptsFolder}/update-dots-factory.sh".text = ''
           #!/bin/bash
 
