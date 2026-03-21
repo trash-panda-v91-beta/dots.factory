@@ -25,6 +25,26 @@ delib.host {
     }:
     {
       user.name = inputs.vault.constants.profiles.corporate;
+      ai.mcp.servers = {
+        perplexity = {
+          autoApprove = [ ];
+          disabled = false;
+          timeout = 60;
+          type = "sse";
+          url = inputs.vault.constants.services.mcp.perplexity.corporate;
+        };
+        jira = {
+          disabled = true;
+          command = "bun";
+          args = [
+            "${homeconfig.home.homeDirectory}/repos/corporate/mcphub/servers/jira/index.js"
+          ];
+          env = {
+            JIRA_URL = "op://Private/Jira token/website";
+            JIRA_TOKEN = "op://Private/Jira token/password";
+          };
+        };
+      };
       programs = {
         bun.enable = true;
         colima.enable = true;
@@ -32,27 +52,6 @@ delib.host {
         jira-cli = {
           enable = true;
           tokenReference = "op://Private/Jira token/password";
-        };
-        mcp.servers = {
-          perplexity = {
-            autoApprove = [ ];
-            disabled = false;
-            timeout = 60;
-            type = "sse";
-            url = inputs.vault.constants.services.mcp.perplexity.corporate;
-          };
-          jira = {
-            disabled = true;
-            command = "bun";
-            args = [
-              "${homeconfig.home.homeDirectory}/repos/corporate/mcphub/servers/jira/index.js"
-
-            ];
-            env = {
-              JIRA_URL = "op://Private/Jira token/website";
-              JIRA_TOKEN = "op://Private/Jira token/password";
-            };
-          };
         };
         nixvim.plugins.obsidian = {
           enable = true;

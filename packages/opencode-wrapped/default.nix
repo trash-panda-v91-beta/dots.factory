@@ -1,12 +1,14 @@
 {
   lib,
+  pkgs,
   writeShellScriptBin,
   inputs,
   _1password-cli,
   envVars ? { },
 }:
 let
-  opencode = inputs.opencode.packages.aarch64-darwin.default;
+  # opencode = inputs.opencode.packages.aarch64-darwin.default;
+  opencode = pkgs.opencode;
   opencodeExe = lib.getExe opencode;
   opExe = lib.getExe _1password-cli;
 in

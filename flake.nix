@@ -58,6 +58,7 @@
           homeManagerUser = "trash-panda-v91-beta";
 
           paths = [
+            ./ai
             ./modules
             ./overlays
             ./rices

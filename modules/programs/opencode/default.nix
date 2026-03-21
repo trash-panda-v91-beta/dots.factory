@@ -47,37 +47,6 @@ delib.module {
       };
 
       superpowers = pkgs.local.superpowers;
-
-      personalSkills = [
-        "aws-development"
-        "jira-cli"
-        "data-and-sql"
-        "delivery-and-infra"
-        "nix-guidelines"
-        "performance-engineering"
-        "python-development"
-        "quality-engineering"
-        "release-please-pr"
-        "rust-development"
-      ];
-
-      personalSkillFiles = lib.listToAttrs (
-        lib.concatMap (
-          skillName:
-          let
-            skillFile = ./skills + "/${skillName}/SKILL.md";
-          in
-          if builtins.pathExists skillFile then
-            [
-              {
-                name = "opencode/skills/${skillName}/SKILL.md";
-                value.source = skillFile;
-              }
-            ]
-          else
-            [ ]
-        ) personalSkills
-      );
     in
     {
       programs.opencode = {
@@ -117,8 +86,7 @@ delib.module {
       xdg.configFile = {
         "opencode/plugins/superpowers.js".source = "${superpowers}/.opencode/plugins/superpowers.js";
         "opencode/skills/superpowers".source = "${superpowers}/skills";
-      }
-      // personalSkillFiles;
+      };
 
       home.packages = lib.optional (cfg.env != { }) opencodeWrapper;
     };

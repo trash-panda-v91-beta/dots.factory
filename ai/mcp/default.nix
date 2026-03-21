@@ -6,9 +6,9 @@
   ...
 }:
 delib.module {
-  name = "programs.mcp";
+  name = "ai.mcp";
 
-  options.programs.mcp = with delib; {
+  options.ai.mcp = with delib; {
     enable = boolOption true;
     servers = lib.mkOption {
       type = lib.types.attrsOf lib.types.attrs;
