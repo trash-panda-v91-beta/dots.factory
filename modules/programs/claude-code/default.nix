@@ -7,8 +7,8 @@
 delib.module {
   name = "programs.claude-code";
 
-  options.programs.claude-code = {
-    enable = true;
+  options.programs.claude-code = with delib; {
+    enable = boolOption true;
 
     env = lib.mkOption {
       type = lib.types.attrsOf lib.types.str;

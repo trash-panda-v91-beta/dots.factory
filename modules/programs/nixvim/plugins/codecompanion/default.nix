@@ -6,7 +6,7 @@
 delib.module {
   name = "programs.nixvim.plugins.codecompanion";
 
-  options = delib.singleEnableOption false;
+  options = delib.singleEnableOption true;
 
   home.ifEnabled.programs.nixvim = {
 
@@ -29,6 +29,7 @@ delib.module {
             "CodeCompanionChat"
             "CodeCompanionActions"
             "CodeCompanionAdd"
+            "CodeCompanionCLI"
           ];
           ft = [ ];
         };
