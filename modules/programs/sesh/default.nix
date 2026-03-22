@@ -35,13 +35,15 @@ delib.module {
 
           enableAlias = false;
           enableTmuxIntegration = false;
+          package = pkgs.sesh;
           settings = {
+            cache = true;
             session = defaultSessions ++ cfg.sessions;
           };
         };
         tmux.extraConfig = ''
           bind -n M-p run-shell "sesh last"
-          bind -n M-s run-shell "sesh connect $(sesh list -i | fzf --ansi --tmux bottom,70%,40% --style minimal)"
+          bind-key -n M-s display-popup -h 50% -w 50% -E "sesh picker -idH"
 
           set -g detach-on-destroy off
         '';
