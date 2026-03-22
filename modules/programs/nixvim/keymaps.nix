@@ -94,6 +94,15 @@ delib.module {
           desc = "Clear search";
         };
       }
+      # Exit terminal mode with Esc
+      {
+        mode = "t";
+        key = "<Esc>";
+        action = "<C-\\><C-n>";
+        options = {
+          desc = "Exit terminal mode";
+        };
+      }
       # Yank absolute path
       {
         mode = "n";
