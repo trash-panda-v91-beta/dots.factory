@@ -58,7 +58,7 @@ delib.host {
           workspaces = [
             {
               name = "notes";
-              path = "~/notes";
+              path = "~/SAPDevelop/notes";
             }
           ];
         };
