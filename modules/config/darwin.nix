@@ -45,6 +45,7 @@ delib.module {
           casks
           masApps
           ;
+        greedyCasks = true;
         onActivation = {
           cleanup = "zap";
           autoUpdate = false;
