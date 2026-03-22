@@ -71,6 +71,10 @@ delib.host {
     programs = {
       actual.enable = true;
       bun.enable = true;
+      obsidian = {
+        enable = true;
+        vaults.personal.target = "notes";
+      };
       colima.enable = true;
       git.userEmail = "42897550+trash-panda-v91-beta@users.noreply.github.com";
       opencode.env = {

@@ -47,6 +47,10 @@ delib.host {
       };
       programs = {
         bun.enable = true;
+        obsidian = {
+          enable = true;
+          vaults.notes.target = "SAPDevelop/notes";
+        };
         colima.enable = true;
         git.userEmail = myconfig.user.email;
         jira-cli = {
