@@ -48,18 +48,9 @@ delib.module {
 
         settings = {
           display.chat = {
-            window.layout = "float";
+            window.layout = "buffer";
             floating_window = {
-              width.__raw = ''
-                function()
-                  return vim.o.columns - 1
-                end
-              '';
-              height.__raw = ''
-                function()
-                  return vim.o.lines - 1
-                end
-              '';
+              width = 0.9;
               row = "center";
               col = "center";
               relative = "editor";
