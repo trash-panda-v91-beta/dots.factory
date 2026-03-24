@@ -20,14 +20,6 @@ delib.module {
       }
       {
         mode = "t";
-        key = "<leader>e";
-        action = "<cmd>lua Snacks.terminal.toggle()<CR>";
-        options = {
-          desc = "Toggle Terminal";
-        };
-      }
-      {
-        mode = "t";
         key = "<C-\\>";
         action = "<cmd>lua Snacks.terminal.toggle()<CR>";
         options = {

@@ -103,15 +103,6 @@ delib.module {
           desc = "Exit terminal mode";
         };
       }
-      # Pass space through immediately in terminal mode (prevents leader timeout lag)
-      {
-        mode = "t";
-        key = "<Space>";
-        action = "<Space>";
-        options = {
-          desc = "Pass space through in terminal mode";
-        };
-      }
       # Yank absolute path
       {
         mode = "n";
