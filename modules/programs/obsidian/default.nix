@@ -28,6 +28,10 @@ delib.module {
     };
   };
 
+  myconfig.ifEnabled.unfreePackages.allow = [
+    "obsidian"
+  ];
+
   home.ifEnabled =
     { cfg, ... }:
     {
