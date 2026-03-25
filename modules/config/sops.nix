@@ -7,7 +7,7 @@
 }:
 delib.module {
   name = "sops";
-  options = delib.singleEnableOption false;
+  options = delib.singleEnableOption true;
 
   home.always.imports = [
     inputs.sops-nix.homeManagerModules.sops
