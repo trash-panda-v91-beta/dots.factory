@@ -2,7 +2,6 @@
   delib,
   lib,
   pkgs,
-  inputs,
   ...
 }:
 delib.module {
@@ -41,23 +40,18 @@ delib.module {
   home.ifEnabled =
     { cfg, ... }:
     let
-      opencodeWrapper = pkgs.callPackage ../../../packages/opencode-wrapped {
-        inherit inputs;
-        envVars = cfg.env;
-      };
-
       superpowers = pkgs.local.superpowers;
     in
     {
       programs.opencode = {
         enable = true;
         enableMcpIntegration = true;
-        package = pkgs.local.opencode;
         settings =
           lib.recursiveUpdate
             {
               autoshare = false;
               autoupdate = false;
+              share = "disable";
               keybinds = {
                 session_new = "ctrl+n";
                 session_timeline = "ctrl+g";
@@ -88,6 +82,5 @@ delib.module {
         "opencode/skills/superpowers".source = "${superpowers}/skills";
       };
 
-      home.packages = lib.optional (cfg.env != { }) opencodeWrapper;
     };
 }

@@ -3,7 +3,6 @@
   pkgs,
   lib,
   host,
-  inputs,
   ...
 }:
 delib.module {
@@ -19,25 +18,11 @@ delib.module {
   };
 
   home.ifEnabled =
-    { cfg, myconfig, ... }:
+    { cfg, ... }:
     let
-      # Check if opencode module has env vars configured
-      opencodeConfig = myconfig.programs.opencode or { };
-      hasEnvVars = (opencodeConfig.enable or false) && (opencodeConfig.env or { }) != { };
-
-      # Build wrapper with env vars if needed
-      opencodeWrapper = pkgs.callPackage ../../../../../packages/opencode-wrapped {
-        inherit inputs;
-        envVars = opencodeConfig.env or { };
-      };
-
-      # Use getExe for proper /nix/store path
-      opencodeExecutable =
-        if hasEnvVars then lib.getExe opencodeWrapper else lib.getExe pkgs.local.opencode;
 
       settings = lib.recursiveUpdate {
         preferred_picker = "snacks";
-        opencode_executable = opencodeExecutable;
         ui = {
           position = "current";
         };
@@ -46,14 +31,13 @@ delib.module {
     {
       programs.nixvim = {
         extraPackages = [
-          pkgs.local.opencode
+          pkgs.opencode
         ];
         extraPlugins = [
           pkgs.local.opencode-nvim
           pkgs.vimPlugins.plenary-nvim
         ];
 
-        # Quick toggle keymaps (Alt for context-switching per KEYMAP_STRATEGY.md)
         keymaps = [
           {
             mode = [
