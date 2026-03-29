@@ -26,35 +26,26 @@ delib.module {
     "claude-code"
   ];
 
-  home.ifEnabled =
-    { cfg, ... }:
-    let
-      claudeCodeWrapper = pkgs.callPackage ../../../packages/claude-code-wrapped {
-        envVars = cfg.env;
-      };
-    in
-    {
-      programs.claude-code = {
-        enable = true;
-        enableMcpIntegration = true;
+  home.ifEnabled = {
+    programs.claude-code = {
+      enable = true;
+      enableMcpIntegration = true;
 
-        settings = {
-          theme = "dark";
-          includeCoAuthoredBy = false;
-          alwaysThinkingEnabled = false;
-          gitAttribution = false;
-        };
-
-        memory = {
-          text = ''
-            # Agent Guidelines
-
-            - Default shell is Nushell (nu), not bash
-            - For POSIX shell compatibility, use: `bash -c "command"`
-          '';
-        };
+      settings = {
+        theme = "dark";
+        includeCoAuthoredBy = false;
+        alwaysThinkingEnabled = false;
+        gitAttribution = false;
       };
 
-      home.packages = lib.optional (cfg.env != { }) claudeCodeWrapper;
+      memory = {
+        text = ''
+          # Agent Guidelines
+
+          - Default shell is Nushell (nu), not bash
+          - For POSIX shell compatibility, use: `bash -c "command"`
+        '';
+      };
     };
+  };
 }
