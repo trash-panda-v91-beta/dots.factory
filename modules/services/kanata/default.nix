@@ -111,7 +111,7 @@ delib.module {
   home.ifEnabled = {
     programs.nushell.shellAliases = {
       restart-kanata = "sudo launchctl kickstart -k system/org.nixos.kanata-internal";
-      kanata-logs = "tail -f /tmp/kanata-internal.err /tmp/kanata-internal.out";
+      kanata-logs = "tail -f /var/log/kanata-internal.err.log /var/log/kanata-internal.out.log";
     };
   };
 }
