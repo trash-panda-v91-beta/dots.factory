@@ -43,7 +43,7 @@ delib.module {
         };
         tmux.extraConfig = ''
           bind -n M-p run-shell "sesh last"
-          bind-key -n M-s display-popup -h 50% -w 50% -E "sesh picker -idH"
+          bind -n M-s run-shell "sesh connect $(sesh list -i | fzf --ansi --tmux bottom,70%,40% --style minimal)"
 
           set -g detach-on-destroy off
         '';
