@@ -1,5 +1,7 @@
 # Adapted from https://github.com/nix-darwin/nix-darwin/blob/7ebf95a73e3b54e0f9c48f50fde29e96257417ac/modules/services/karabiner-elements/default.nix
 # and PR https://github.com/nix-darwin/nix-darwin/pull/1561
+# with improvements from https://github.com/ryoppippi/kanata-darwin-nix
+# and https://github.com/jtroo/kanata/discussions/1972
 {
   config,
   lib,
@@ -9,11 +11,9 @@
 let
   cfg = config.services.kanata;
 
-  kanataExec = lib.getExe cfg.package;
-
   upstreamDoc =
     "See [the upstream documentation](https://github.com/jtroo/kanata/blob/main/docs/config.adoc)"
-    + "and [example config files](https://github.com/jtroo/kanata/tree/main/cfg_samples) for more information.";
+    + " and [example config files](https://github.com/jtroo/kanata/tree/main/cfg_samples) for more information.";
 
   parentAppDir = "/Applications/.Nix-Karabiner";
 
@@ -122,11 +122,13 @@ let
       '';
     };
 
+  # Use `command` instead of `ProgramArguments` so nix-darwin wraps it
+  # with a script that waits for /nix/store to be available at boot.
   mkService =
     name: keyboard:
     lib.nameValuePair (mkName name) {
       command =
-        "${kanataExec} --cfg ${keyboard.configFile}"
+        "/Applications/kanata --cfg ${keyboard.configFile}"
         + lib.optionalString (keyboard.port != null) " --port ${toString keyboard.port}"
         + lib.optionalString (keyboard.extraArgs != [ ]) " ${lib.concatStringsSep " " keyboard.extraArgs}";
       serviceConfig = {
@@ -134,10 +136,13 @@ let
         Label = "org.nixos.${mkName name}";
         KeepAlive = true;
         RunAtLoad = true;
-        StandardErrorPath = "/tmp/${mkName name}.err";
-        StandardOutPath = "/tmp/${mkName name}.out";
+        StandardErrorPath = "/var/log/${mkName name}.err.log";
+        StandardOutPath = "/var/log/${mkName name}.out.log";
       };
     };
+
+  driverKitPkg = cfg.karabinerDriverKitPackage;
+  driverDaemonPath = "${driverKitPkg}/Library/Application Support/org.pqrs/Karabiner-DriverKit-VirtualHIDDevice/Applications/Karabiner-VirtualHIDDevice-Daemon.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Daemon";
 
 in
 {
@@ -152,6 +157,11 @@ in
         :::
       '';
     };
+    karabinerDriverKitPackage = lib.mkOption {
+      type = lib.types.package;
+      default = pkgs.karabiner-dk;
+      description = "The Karabiner-DriverKit-VirtualHIDDevice package to use.";
+    };
     keyboards = lib.mkOption {
       type = lib.types.attrsOf (lib.types.submodule keyboard);
       default = { };
@@ -162,7 +172,9 @@ in
   config = lib.mkIf cfg.enable {
     warnings =
       let
-        keyboardsWithEmptyDevices = lib.filterAttrs (name: keyboard: keyboard.devices == [ ]) cfg.keyboards;
+        keyboardsWithEmptyDevices = lib.filterAttrs (
+          _name: keyboard: keyboard.devices == [ ]
+        ) cfg.keyboards;
         existEmptyDevices = lib.length (lib.attrNames keyboardsWithEmptyDevices) > 0;
         moreThanOneKeyboard = lib.length (lib.attrNames cfg.keyboards) > 1;
       in
@@ -178,22 +190,66 @@ in
       rm -rf ${parentAppDir}
       mkdir -p ${parentAppDir}
       # Kernel extensions must reside inside of /Applications, they cannot be symlinks
-      cp -r ${pkgs.karabiner-elements.driver}/Applications/.Karabiner-VirtualHIDDevice-Manager.app ${parentAppDir}
+      cp -r ${driverKitPkg}/Applications/.Karabiner-VirtualHIDDevice-Manager.app ${parentAppDir}
     '';
 
-    # Activate extension
-    launchd.user.agents.activate_karabiner_system_ext = {
-      serviceConfig.ProgramArguments = [
-        "${parentAppDir}/.Karabiner-VirtualHIDDevice-Manager.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Manager"
-        "activate"
-      ];
-      serviceConfig.RunAtLoad = true;
-    };
+    system.activationScripts.postActivation.text = ''
+      # Validate kanata configuration files
+      echo "Validating kanata configuration files..."
+      ${lib.concatStringsSep "\n" (
+        lib.mapAttrsToList (name: kb: ''
+          echo "  Checking ${name}..."
+          if ${lib.getExe cfg.package} --check --cfg ${toString kb.configFile} 2>&1; then
+            echo "  ${name} configuration valid"
+          else
+            echo "  ${name} configuration invalid" >&2
+            exit 1
+          fi
+        '') cfg.keyboards
+      )}
+      echo "All kanata configurations valid"
 
-    # Start the DriverKit daemon and kanata services
+      # Activate the DriverKit extension if present
+      if [ -e "${parentAppDir}/.Karabiner-VirtualHIDDevice-Manager.app" ]; then
+        echo "Activating Karabiner-VirtualHIDDevice driver..."
+        ${parentAppDir}/.Karabiner-VirtualHIDDevice-Manager.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Manager activate 2>/dev/null || true
+      fi
+
+      # Create symlink in /Applications for input monitoring permission persistence
+      echo "Creating kanata symlink in /Applications..."
+      ln -sf ${cfg.package}/bin/kanata /Applications/kanata
+
+      # Bootstrap and restart kanata services
+      echo "Starting kanata services..."
+      ${lib.concatStringsSep "\n" (
+        lib.mapAttrsToList (name: _kb: ''
+          /bin/launchctl bootstrap system /Library/LaunchDaemons/org.nixos.${mkName name}.plist 2>/dev/null || true
+        '') cfg.keyboards
+      )}
+
+      sleep 1
+
+      ${lib.concatStringsSep "\n" (
+        lib.mapAttrsToList (name: _kb: ''
+          /bin/launchctl kickstart -k system/org.nixos.${mkName name} 2>/dev/null || true
+        '') cfg.keyboards
+      )}
+    '';
+
+    # Start the DriverKit activation, daemon, and kanata services.
+    # Uses `command` so nix-darwin wraps each in a script that waits for
+    # /nix/store to be available at boot (ProgramArguments does not).
     launchd.daemons = {
+      # Activate the DriverKit extension at boot before the daemon starts
+      activate-karabiner-driverkit = {
+        command = "${parentAppDir}/.Karabiner-VirtualHIDDevice-Manager.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Manager activate";
+        serviceConfig = {
+          Label = "org.nixos.activate-karabiner-driverkit";
+          RunAtLoad = true;
+        };
+      };
       Karabiner-DriverKit-VirtualHIDDevice-Daemon = {
-        command = "\"${cfg.package.passthru.darwinDriver}/Library/Application Support/org.pqrs/Karabiner-DriverKit-VirtualHIDDevice/Applications/Karabiner-VirtualHIDDevice-Daemon.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Daemon\"";
+        command = "\"${driverDaemonPath}\"";
         serviceConfig = {
           ProcessType = "Interactive";
           Label = "org.pqrs.Karabiner-DriverKit-VirtualHIDDevice-Daemon";
