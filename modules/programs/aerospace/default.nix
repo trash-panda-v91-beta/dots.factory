@@ -18,7 +18,12 @@ delib.module {
       notesScript = pkgs.writeShellScript "aerospace-notes" ''
         count=$(${aerospace} list-windows --workspace y --app-bundle-id com.mitchellh.ghostty --count)
         if [ "$count" = "0" ]; then
-          /usr/bin/open -na Ghostty.app --args -e ${sesh} connect notes
+          /usr/bin/osascript -e "
+            tell application \"Ghostty\"
+              set cfg to new surface configuration
+              set command of cfg to \"${sesh} connect notes\"
+              new window with configuration cfg
+            end tell"
         fi
       '';
     in
