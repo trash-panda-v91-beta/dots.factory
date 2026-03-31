@@ -22,9 +22,14 @@ delib.module {
             tell application \"Ghostty\"
               set cfg to new surface configuration
               set command of cfg to \"${tmux} new-session -As notes\"
-              set title of cfg to \"notes\"
               new window with configuration cfg
             end tell"
+          sleep 1
+          window_id=$(${aerospace} list-windows --workspace t --app-bundle-id com.mitchellh.ghostty --json \
+            | /usr/bin/jq -r 'sort_by(."window-id") | last | ."window-id"')
+          if [ -n "$window_id" ]; then
+            ${aerospace} move-node-to-workspace --window-id "$window_id" y
+          fi
         fi
       '';
     in
@@ -50,15 +55,6 @@ delib.module {
             ctrl-alt-cmd-shift-g = "workspace-back-and-forth";
           };
           on-window-detected = [
-            {
-              "if" = {
-                app-id = "com.mitchellh.ghostty";
-                window-title-regex-substring = "notes";
-              };
-              run = [
-                "move-node-to-workspace y"
-              ];
-            }
             {
               "if" = {
                 app-id = "com.mitchellh.ghostty";
