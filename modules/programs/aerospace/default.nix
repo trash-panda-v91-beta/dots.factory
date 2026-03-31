@@ -64,6 +64,13 @@ delib.module {
             {
               "if" = {
                 app-id = "com.mitchellh.ghostty";
+                workspace = "y";
+              };
+              run = [ ];
+            }
+            {
+              "if" = {
+                app-id = "com.mitchellh.ghostty";
               };
               run = [
                 "move-node-to-workspace t"
