@@ -14,6 +14,7 @@ delib.module {
     { ... }:
     let
       aerospace = pkgs.lib.getExe pkgs.aerospace;
+      sesh = pkgs.lib.getExe pkgs.sesh;
       tmux = pkgs.lib.getExe pkgs.tmux;
       notesScript = pkgs.writeShellScript "aerospace-notes" ''
         count=$(${aerospace} list-windows --workspace y --app-bundle-id com.mitchellh.ghostty --count)
@@ -23,7 +24,7 @@ delib.module {
           /usr/bin/osascript -e "
             tell application \"Ghostty\"
               set cfg to new surface configuration
-              set command of cfg to \"${tmux} new-session -As notes\"
+              set command of cfg to \"${sesh} connect notes\"
               new window with configuration cfg
             end tell"
           for i in $(seq 1 20); do
