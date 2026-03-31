@@ -86,6 +86,21 @@ delib.module {
               "workspace y"
               "mode main"
             ];
+            m = [
+              "exec-and-forget /usr/bin/open -a Mail"
+              "workspace m"
+              "mode main"
+            ];
+            f = [
+              "exec-and-forget /usr/bin/open -a \"Actual Budget\""
+              "workspace f"
+              "mode main"
+            ];
+            e = [
+              "exec-and-forget /usr/bin/open -a Finder"
+              "workspace e"
+              "mode main"
+            ];
             esc = "mode main";
             ctrl-alt-cmd-shift-p = "mode main";
           };
@@ -101,25 +116,31 @@ delib.module {
               "if" = {
                 app-id = "com.mitchellh.ghostty";
               };
-              run = [
-                "move-node-to-workspace t"
-              ];
+              run = [ "move-node-to-workspace t" ];
             }
             {
               "if" = {
                 app-id = "com.apple.Safari";
               };
-              run = [
-                "move-node-to-workspace b"
-              ];
+              run = [ "move-node-to-workspace b" ];
             }
             {
               "if" = {
                 app-id = "md.obsidian";
               };
-              run = [
-                "move-node-to-workspace o"
-              ];
+              run = [ "move-node-to-workspace o" ];
+            }
+            {
+              "if" = {
+                app-id = "com.apple.mail";
+              };
+              run = [ "move-node-to-workspace m" ];
+            }
+            {
+              "if" = {
+                app-id = "com.apple.finder";
+              };
+              run = [ "move-node-to-workspace e" ];
             }
           ];
         };
