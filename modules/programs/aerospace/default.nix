@@ -101,6 +101,10 @@ delib.module {
               "workspace e"
               "mode main"
             ];
+            h = [
+              "workspace h"
+              "mode main"
+            ];
             esc = "mode main";
             ctrl-alt-cmd-shift-p = "mode main";
           };
@@ -141,6 +145,10 @@ delib.module {
                 app-id = "com.apple.finder";
               };
               run = [ "move-node-to-workspace e" ];
+            }
+            {
+              "if" = { };
+              run = [ "move-node-to-workspace h" ];
             }
           ];
         };
