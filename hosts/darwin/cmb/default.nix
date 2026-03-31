@@ -84,6 +84,14 @@ delib.host {
           }
         ];
         nushell.enable = true;
+        sesh.sessions = [
+          {
+            name = "notes";
+            path = "~/SAPDevelop/notes";
+            startup_command = "nvim";
+            windows = [ "sidekick" ];
+          }
+        ];
         opencode.env = {
           JIRA_URL = "{env:JIRA_URL}";
           JIRA_TOKEN = "{env:JIRA_TOKEN}";

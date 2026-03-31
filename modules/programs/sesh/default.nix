@@ -26,8 +26,13 @@ delib.module {
           path = "~";
         }
       ];
+      allSessions = defaultSessions ++ cfg.sessions;
+      notesSession = lib.findFirst (s: s.name == "notes") null allSessions;
     in
     {
+      home.sessionVariables = lib.mkIf (notesSession != null) {
+        NOTES_PATH = notesSession.path;
+      };
       programs = {
         ghostty.settings.command = "env PATH=\"${lib.concatStringsSep ":" myconfig.constants.path}:$PATH\" ${pkgs.lib.getExe pkgs.sesh} connect hack";
         sesh = {
