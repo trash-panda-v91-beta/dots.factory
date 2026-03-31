@@ -9,52 +9,56 @@ delib.module {
     enable = boolOption true;
   };
 
-  home.ifEnabled.programs.aerospace = {
-    enable = true;
-    launchd.enable = true;
-    settings = {
-      gaps = {
-        outer.left = 20;
-        outer.bottom = 20;
-        outer.top = 20;
-        outer.right = 20;
+  home.ifEnabled =
+    { myconfig, ... }:
+    {
+      programs.aerospace = {
+        enable = true;
+        launchd.enable = true;
+        settings = {
+          gaps = {
+            outer.left = 20;
+            outer.bottom = 20;
+            outer.top = 20;
+            outer.right = 20;
+          };
+          mode.main.binding = {
+            ctrl-alt-cmd-shift-t = "workspace t";
+            ctrl-alt-cmd-shift-b = "workspace b";
+            ctrl-alt-cmd-shift-o = "workspace o";
+            ctrl-alt-cmd-shift-y = [
+              "exec-and-forget /Applications/Ghostty.app/Contents/MacOS/ghostty +new-window -e /etc/profiles/per-user/${myconfig.user.name}/bin/sesh connect notes"
+              "workspace y"
+            ];
+            ctrl-alt-cmd-shift-g = "workspace-back-and-forth";
+          };
+          on-window-detected = [
+            {
+              "if" = {
+                app-id = "com.mitchellh.ghostty";
+              };
+              run = [
+                "move-node-to-workspace t"
+              ];
+            }
+            {
+              "if" = {
+                app-id = "com.apple.Safari";
+              };
+              run = [
+                "move-node-to-workspace b"
+              ];
+            }
+            {
+              "if" = {
+                app-id = "md.obsidian";
+              };
+              run = [
+                "move-node-to-workspace o"
+              ];
+            }
+          ];
+        };
       };
-      mode.main.binding = {
-        ctrl-alt-cmd-shift-t = "workspace t";
-        ctrl-alt-cmd-shift-b = "workspace b";
-        ctrl-alt-cmd-shift-o = "workspace o";
-        ctrl-alt-cmd-shift-y = [
-          "exec-and-forget sesh connect notes"
-          "workspace y"
-        ];
-        ctrl-alt-cmd-shift-g = "workspace-back-and-forth";
-      };
-      on-window-detected = [
-        {
-          "if" = {
-            app-id = "com.mitchellh.ghostty";
-          };
-          run = [
-            "move-node-to-workspace t"
-          ];
-        }
-        {
-          "if" = {
-            app-id = "com.apple.Safari";
-          };
-          run = [
-            "move-node-to-workspace b"
-          ];
-        }
-        {
-          "if" = {
-            app-id = "md.obsidian";
-          };
-          run = [
-            "move-node-to-workspace o"
-          ];
-        }
-      ];
     };
-  };
 }
