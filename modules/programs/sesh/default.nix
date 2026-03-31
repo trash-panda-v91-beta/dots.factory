@@ -43,6 +43,7 @@ delib.module {
           package = pkgs.sesh;
           settings = {
             cache = true;
+            tmux_path = pkgs.lib.getExe pkgs.tmux;
             session = defaultSessions ++ cfg.sessions;
           };
         };
