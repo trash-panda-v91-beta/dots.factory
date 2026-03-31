@@ -65,6 +65,29 @@ delib.module {
               "workspace y"
             ];
             ctrl-alt-cmd-shift-g = "workspace-back-and-forth";
+            ctrl-alt-cmd-shift-p = "mode launcher";
+          };
+          mode.launcher.binding = {
+            t = [
+              "workspace t"
+              "mode main"
+            ];
+            b = [
+              "workspace b"
+              "mode main"
+            ];
+            o = [
+              "exec-and-forget /usr/bin/open -a Obsidian"
+              "workspace o"
+              "mode main"
+            ];
+            y = [
+              "exec-and-forget ${notesScript}"
+              "workspace y"
+              "mode main"
+            ];
+            esc = "mode main";
+            ctrl-alt-cmd-shift-p = "mode main";
           };
           on-window-detected = [
             {
