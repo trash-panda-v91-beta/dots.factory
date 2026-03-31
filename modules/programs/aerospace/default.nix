@@ -69,14 +69,13 @@ delib.module {
                 app-id = "com.mitchellh.ghostty";
                 workspace = "y";
               };
-              run = [ "layout tiling" ];
+              run = [ ];
             }
             {
               "if" = {
                 app-id = "com.mitchellh.ghostty";
               };
               run = [
-                "layout tiling"
                 "move-node-to-workspace t"
               ];
             }
