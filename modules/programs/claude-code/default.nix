@@ -1,7 +1,6 @@
 {
   delib,
   lib,
-  pkgs,
   ...
 }:
 delib.module {
@@ -13,12 +12,7 @@ delib.module {
     env = lib.mkOption {
       type = lib.types.attrsOf lib.types.str;
       default = { };
-      description = "Environment variables to pass to Claude Code (typically 1Password references)";
-      example = lib.literalExpression ''
-        {
-          ANTHROPIC_API_KEY = "op://Private/Anthropic/credential";
-        }
-      '';
+      description = "Extra environment variables to set via home.sessionVariables when claude-code is enabled.";
     };
   };
 
@@ -26,26 +20,23 @@ delib.module {
     "claude-code"
   ];
 
-  home.ifEnabled = {
-    programs.claude-code = {
-      enable = true;
-      enableMcpIntegration = true;
+  home.ifEnabled =
+    { cfg, ... }:
+    {
+      home.sessionVariables = {
+        CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC = 1;
+      }
+      // cfg.env;
+      programs.claude-code = {
+        enable = true;
+        enableMcpIntegration = true;
 
-      settings = {
-        theme = "dark";
-        includeCoAuthoredBy = false;
-        alwaysThinkingEnabled = false;
-        gitAttribution = false;
-      };
-
-      memory = {
-        text = ''
-          # Agent Guidelines
-
-          - Default shell is Nushell (nu), not bash
-          - For POSIX shell compatibility, use: `bash -c "command"`
-        '';
+        settings = {
+          alwaysThinkingEnabled = false;
+          gitAttribution = false;
+          includeCoAuthoredBy = false;
+          theme = "dark";
+        };
       };
     };
-  };
 }

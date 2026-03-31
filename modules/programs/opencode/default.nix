@@ -51,7 +51,7 @@ delib.module {
             {
               autoshare = false;
               autoupdate = false;
-              share = "disable";
+              share = "disabled";
               keybinds = {
                 session_new = "ctrl+n";
                 session_timeline = "ctrl+g";

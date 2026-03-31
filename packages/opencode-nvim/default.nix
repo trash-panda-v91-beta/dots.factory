@@ -44,6 +44,8 @@ vimUtils.buildVimPlugin {
     "opencode.ui.prompt_guard_indicator"
     "opencode.ui.reference_picker"
     "opencode.ui.renderer"
+    "opencode.ui.renderer.events"
+    "opencode.ui.renderer.buffer"
     "opencode.ui.session_picker"
     "opencode.ui.timeline_picker"
     "opencode.ui.topbar"
