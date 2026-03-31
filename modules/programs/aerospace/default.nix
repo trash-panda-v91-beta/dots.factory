@@ -32,7 +32,10 @@ delib.module {
               | /usr/bin/jq -r '.[]["window-id"]')
             new_id=$(comm -13 <(echo "$before" | sort) <(echo "$after" | sort) | head -1)
             if [ -n "$new_id" ]; then
-              ${aerospace} move-node-to-workspace --window-id "$new_id" y
+              focused=$(${aerospace} list-workspaces --focused)
+              if [ "$focused" = "y" ]; then
+                ${aerospace} move-node-to-workspace --window-id "$new_id" y
+              fi
               break
             fi
           done
