@@ -19,7 +19,7 @@ delib.module {
         count=$(${aerospace} list-windows --workspace y --app-bundle-id com.mitchellh.ghostty --count)
         if [ "$count" = "0" ]; then
           before=$(${aerospace} list-windows --workspace t --app-bundle-id com.mitchellh.ghostty --json \
-            | /usr/bin/jq -r '.[].\"window-id\"')
+            | /usr/bin/jq -r '.[]["window-id"]')
           /usr/bin/osascript -e "
             tell application \"Ghostty\"
               set cfg to new surface configuration
@@ -29,7 +29,7 @@ delib.module {
           for i in $(seq 1 20); do
             sleep 0.2
             after=$(${aerospace} list-windows --workspace t --app-bundle-id com.mitchellh.ghostty --json \
-              | /usr/bin/jq -r '.[].\"window-id\"')
+              | /usr/bin/jq -r '.[]["window-id"]')
             new_id=$(comm -13 <(echo "$before" | sort) <(echo "$after" | sort) | head -1)
             if [ -n "$new_id" ]; then
               ${aerospace} move-node-to-workspace --window-id "$new_id" y
