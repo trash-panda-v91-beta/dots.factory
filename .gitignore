@@ -3,4 +3,5 @@
 result
 references/
 .env
+.mise.local.toml
 

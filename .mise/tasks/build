@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+#MISE description="Build darwin configuration for specified hostname"
+
+set -euo pipefail
+
+: "${GH_TOKEN:?GH_TOKEN is not set.}"
+
+hostname="${1:-${MISE_HOST:-$(hostname -s)}}"
+
+echo "Building configuration for '$hostname' ..."
+NIX_CONFIG="access-tokens = github.com=$GH_TOKEN" nh darwin build . --hostname "$hostname"

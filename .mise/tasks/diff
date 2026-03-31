@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+#MISE description="Show diff between current and new configuration"
+
+set -euo pipefail
+
+: "${GH_TOKEN:?GH_TOKEN is not set.}"
+
+hostname="${1:-${MISE_HOST:-$(hostname -s)}}"
+
+echo "Calculating diff for '$hostname' ..."
+NIX_CONFIG="access-tokens = github.com=$GH_TOKEN" nh darwin build . --hostname "$hostname" --dry

@@ -1,0 +1,6 @@
+# Copy to .mise.local.toml and set your host name (git-ignored)
+# Available host names: cmb, pmb
+# Only needed when hostname -s doesn't match the nix host name
+
+[env]
+MISE_HOST = "cmb"

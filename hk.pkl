@@ -1,0 +1,57 @@
+amends "package://github.com/jdx/hk/releases/download/v1.36.0/hk@1.36.0#/Config.pkl"
+import "package://github.com/jdx/hk/releases/download/v1.36.0/hk@1.36.0#/Builtins.pkl"
+
+// Run all linters even if some fail (instead of aborting on first failure)
+fail_fast = false
+
+local linters = new Mapping<String, Step> {
+    // Security & Safety
+    ["check-merge-conflict"] = Builtins.check_merge_conflict
+
+    // GitHub Actions: actionlint for workflow linting
+    ["actionlint"] = Builtins.actionlint
+
+    // Nix: nixfmt for formatting, deadnix for dead code detection
+    ["nix-fmt"] = Builtins.nix_fmt
+    ["deadnix"] = Builtins.deadnix
+
+    // YAML: yamllint for linting, yamlfmt for formatting
+    ["yamllint"] = Builtins.yamllint
+    ["yamlfmt"] = Builtins.yamlfmt
+
+    // TOML: tombi for linting and formatting
+    ["tombi"] = Builtins.tombi
+    ["tombi-format"] = Builtins.tombi_format
+
+    // Markdown: rumdl for linting and formatting
+    ["rumdl"] = Builtins.rumdl
+
+    // Shell: shellcheck for linting, shfmt for formatting
+    ["shellcheck"] = Builtins.shellcheck
+    ["shfmt"] = Builtins.shfmt
+
+    // Pkl: format pkl config files
+    ["pkl-format"] = Builtins.pkl_format
+}
+
+hooks {
+    // "check" hook - runs all checks without modifying files
+    ["check"] {
+        fix = false
+        steps = linters
+    }
+
+    // "fix" hook - runs all formatters and fixers
+    ["fix"] {
+        fix = true
+        stash = "none"
+        steps = linters
+    }
+
+    // Git pre-commit hook (install with `mise run hooks:install`)
+    ["pre-commit"] {
+        fix = true
+        stash = "git"
+        steps = linters
+    }
+}

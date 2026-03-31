@@ -1,0 +1,22 @@
+[env]
+_.fnox-env = { tools = true }
+
+[plugins]
+fnox-env = "https://github.com/jdx/mise-env-fnox"
+
+[tools]
+actionlint = "1.7.11"
+fnox = "1.19.0"
+hk = "1.36.0"
+pkl = "0.30.2"
+tombi = "0.7.22"
+yamlfmt = "0.21.0"
+"github:rvben/rumdl" = "0.0.224"
+"pipx:yamllint" = "1.38.0"
+
+[settings.pipx]
+uvx = true
+
+[tasks.check]
+description = "Validate flake configuration"
+run = "nix flake check"

@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+#MISE description="Update all flake inputs (or a specific input)"
+
+set -euo pipefail
+
+: "${GH_TOKEN:?GH_TOKEN is not set.}"
+
+input="${1:-}"
+
+NIX_CONFIG="access-tokens = github.com=$GH_TOKEN" nix flake update $input
