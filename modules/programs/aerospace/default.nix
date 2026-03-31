@@ -11,10 +11,10 @@ delib.module {
   };
 
   home.ifEnabled =
-    { myconfig, ... }:
+    { ... }:
     let
-      aerospace = "/etc/profiles/per-user/${myconfig.user.name}/bin/aerospace";
-      sesh = "/etc/profiles/per-user/${myconfig.user.name}/bin/sesh";
+      aerospace = pkgs.lib.getExe pkgs.aerospace;
+      sesh = pkgs.lib.getExe pkgs.sesh;
       notesScript = pkgs.writeShellScript "aerospace-notes" ''
         count=$(${aerospace} list-windows --workspace y --app-bundle-id com.mitchellh.ghostty --count)
         if [ "$count" = "0" ]; then
