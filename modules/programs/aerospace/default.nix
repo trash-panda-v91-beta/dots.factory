@@ -1,5 +1,6 @@
 {
   delib,
+  pkgs,
   ...
 }:
 delib.module {
@@ -11,6 +12,16 @@ delib.module {
 
   home.ifEnabled =
     { myconfig, ... }:
+    let
+      aerospace = "/etc/profiles/per-user/${myconfig.user.name}/bin/aerospace";
+      sesh = "/etc/profiles/per-user/${myconfig.user.name}/bin/sesh";
+      notesScript = pkgs.writeShellScript "aerospace-notes" ''
+        count=$(${aerospace} list-windows --workspace y --app-bundle-id com.mitchellh.ghostty --count)
+        if [ "$count" = "0" ]; then
+          /usr/bin/open -na Ghostty.app --args -e ${sesh} connect notes
+        fi
+      '';
+    in
     {
       programs.aerospace = {
         enable = true;
@@ -27,7 +38,7 @@ delib.module {
             ctrl-alt-cmd-shift-b = "workspace b";
             ctrl-alt-cmd-shift-o = "workspace o";
             ctrl-alt-cmd-shift-y = [
-              "exec-and-forget /usr/bin/open -na Ghostty.app --args -e /etc/profiles/per-user/${myconfig.user.name}/bin/sesh connect notes"
+              "exec-and-forget ${notesScript}"
               "workspace y"
             ];
             ctrl-alt-cmd-shift-g = "workspace-back-and-forth";
