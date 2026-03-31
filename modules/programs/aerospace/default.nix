@@ -27,7 +27,7 @@ delib.module {
             ctrl-alt-cmd-shift-b = "workspace b";
             ctrl-alt-cmd-shift-o = "workspace o";
             ctrl-alt-cmd-shift-y = [
-              "exec-and-forget /Applications/Ghostty.app/Contents/MacOS/ghostty +new-window -e /etc/profiles/per-user/${myconfig.user.name}/bin/sesh connect notes"
+              "exec-and-forget /usr/bin/open -na Ghostty.app --args -e /etc/profiles/per-user/${myconfig.user.name}/bin/sesh connect notes"
               "workspace y"
             ];
             ctrl-alt-cmd-shift-g = "workspace-back-and-forth";
