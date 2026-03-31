@@ -14,14 +14,15 @@ delib.module {
     { ... }:
     let
       aerospace = pkgs.lib.getExe pkgs.aerospace;
-      sesh = pkgs.lib.getExe pkgs.sesh;
+      tmux = pkgs.lib.getExe pkgs.tmux;
       notesScript = pkgs.writeShellScript "aerospace-notes" ''
         count=$(${aerospace} list-windows --workspace y --app-bundle-id com.mitchellh.ghostty --count)
         if [ "$count" = "0" ]; then
           /usr/bin/osascript -e "
             tell application \"Ghostty\"
               set cfg to new surface configuration
-              set command of cfg to \"${sesh} connect notes\"
+              set command of cfg to \"${tmux} new-session -As notes\"
+              set title of cfg to \"notes\"
               new window with configuration cfg
             end tell"
         fi
@@ -49,6 +50,15 @@ delib.module {
             ctrl-alt-cmd-shift-g = "workspace-back-and-forth";
           };
           on-window-detected = [
+            {
+              "if" = {
+                app-id = "com.mitchellh.ghostty";
+                window-title-regex-substring = "notes";
+              };
+              run = [
+                "move-node-to-workspace y"
+              ];
+            }
             {
               "if" = {
                 app-id = "com.mitchellh.ghostty";
