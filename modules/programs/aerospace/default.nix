@@ -56,7 +56,10 @@ delib.module {
           mode.main.binding = {
             ctrl-alt-cmd-shift-t = "workspace t";
             ctrl-alt-cmd-shift-b = "workspace b";
-            ctrl-alt-cmd-shift-o = "workspace o";
+            ctrl-alt-cmd-shift-o = [
+              "exec-and-forget /usr/bin/open -a Obsidian"
+              "workspace o"
+            ];
             ctrl-alt-cmd-shift-y = [
               "exec-and-forget ${notesScript}"
               "workspace y"
