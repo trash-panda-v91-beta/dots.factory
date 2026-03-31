@@ -22,6 +22,11 @@ delib.module {
       mode.main.binding = {
         ctrl-alt-cmd-shift-t = "workspace t";
         ctrl-alt-cmd-shift-b = "workspace b";
+        ctrl-alt-cmd-shift-o = "workspace o";
+        ctrl-alt-cmd-shift-y = [
+          "exec-and-forget sesh connect notes"
+          "workspace y"
+        ];
         ctrl-alt-cmd-shift-g = "workspace-back-and-forth";
       };
       on-window-detected = [
@@ -39,6 +44,14 @@ delib.module {
           };
           run = [
             "move-node-to-workspace b"
+          ];
+        }
+        {
+          "if" = {
+            app-id = "md.obsidian";
+          };
+          run = [
+            "move-node-to-workspace o"
           ];
         }
       ];
