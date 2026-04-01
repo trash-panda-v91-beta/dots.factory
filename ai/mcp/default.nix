@@ -1,6 +1,5 @@
 {
   delib,
-  homeconfig,
   lib,
   pkgs,
   ...
@@ -32,45 +31,7 @@ delib.module {
     let
       builtinServers = {
         context7 = {
-          disabled = true;
-          url = "https://mcp.context7.com/mcp";
-          headers = {
-            CONTEXT7_API_KEY = "{env:CONTEXT7_API_KEY}";
-          };
-        };
-
-        tavily = {
-          disabled = true;
-          url = "https://mcp.tavily.com/mcp";
-          headers = {
-            Authorization = "Bearer {env:TAVILY_TOKEN}";
-          };
-        };
-
-        sequential-thinking = {
-          disabled = true;
-          command = "${pkgs.docker}/bin/docker";
-          args = [
-            "run"
-            "-i"
-            "--rm"
-            "mcp/sequentialthinking"
-          ];
-        };
-
-        filesystem = {
-          disabled = true;
-          command = "${pkgs.docker}/bin/docker";
-          args = [
-            "run"
-            "-i"
-            "--rm"
-            "-v"
-            "${homeconfig.home.homeDirectory}/repos:/workspace"
-            "-e"
-            "ALLOWED_DIRECTORIES=/workspace"
-            "mcp/filesystem"
-          ];
+          command = lib.getExe pkgs.context7-mcp;
         };
       };
     in

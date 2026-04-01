@@ -33,23 +33,12 @@ delib.host {
           type = "sse";
           url = inputs.vault.constants.services.mcp.perplexity.corporate;
         };
-        jira = {
-          disabled = true;
-          command = "bun";
-          args = [
-            "${homeconfig.home.homeDirectory}/repos/corporate/mcphub/servers/jira/index.js"
-          ];
-          env = {
-            JIRA_URL = "op://Private/Jira token/website";
-            JIRA_TOKEN = "op://Private/Jira token/password";
-          };
-        };
       };
       programs = {
-        bun.enable = true;
+        bun.enable = false;
         obsidian = {
           enable = true;
-          vaults.notes.target = "SAPDevelop/notes";
+          vaults.notes.target = "SAPDevelop/notes/corpo";
         };
         colima.enable = true;
         git.userEmail = myconfig.user.email;
@@ -62,7 +51,7 @@ delib.host {
           workspaces = [
             {
               name = "notes";
-              path = "~/SAPDevelop/notes";
+              path = "~/SAPDevelop/notes/corpo";
             }
           ];
         };

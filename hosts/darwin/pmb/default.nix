@@ -1,5 +1,7 @@
 {
   delib,
+  lib,
+  pkgs,
   ...
 }:
 delib.host {
@@ -27,29 +29,9 @@ delib.host {
     };
 
     ai.mcp.servers = {
-      actualBudget = {
-        disabled = true;
-        command = "docker";
-        args = [
-          "run"
-          "-i"
-          "--rm"
-          "-e"
-          "ACTUAL_PASSWORD={env:ACTUAL_PASSWORD}"
-          "-e"
-          "ACTUAL_SERVER_URL=https://actual.nebular-grid.space"
-          "-e"
-          "ACTUAL_BUDGET_SYNC_ID={env:ACTUAL_BUDGET_SYNC_ID}"
-          "sstefanov/actual-mcp:latest"
-          "--enable-write"
-        ];
-      };
       hass = {
         disabled = true;
-        command = "uvx";
-        args = [
-          "ha-mcp@latest"
-        ];
+        command = lib.getExe pkgs.ha-mcp;
         env = {
           HOMEASSISTANT_URL = "https://hass.nebular-grid.space";
           HOMEASSISTANT_TOKEN = "{env:HASS_TOKEN}";
@@ -57,11 +39,7 @@ delib.host {
       };
       perplexity = {
         disabled = true;
-        command = "bunx";
-        args = [
-          "-y"
-          "@perplexity-ai/mcp-server"
-        ];
+        command = lib.getExe pkgs.perplexity-mcp;
         env = {
           PERPLEXITY_API_KEY = "{env:PERPLEXITY_API_KEY}";
         };
