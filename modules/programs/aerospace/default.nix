@@ -15,8 +15,8 @@ delib.module {
     let
       aerospace = pkgs.lib.getExe pkgs.aerospace;
       sesh = pkgs.lib.getExe pkgs.sesh;
-      tmux = pkgs.lib.getExe pkgs.tmux;
       notesScript = pkgs.writeShellScript "aerospace-notes" ''
+        export PATH="${pkgs.tmux}/bin:${pkgs.sesh}/bin:$PATH"
         count=$(${aerospace} list-windows --workspace y --app-bundle-id com.mitchellh.ghostty --count)
         if [ "$count" = "0" ]; then
           before=$(${aerospace} list-windows --all --app-bundle-id com.mitchellh.ghostty --json \
