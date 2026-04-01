@@ -34,6 +34,7 @@ delib.module {
       lazyLoad.settings.event = [
         "InsertEnter"
         "CmdlineEnter"
+        "BufReadPre"
       ];
 
       settings = {
@@ -143,7 +144,33 @@ delib.module {
             "ripgrep"
           ];
 
+          per_filetype.markdown = [
+            "lsp"
+            "buffer"
+            "path"
+            "snippets"
+            "ripgrep"
+            "obsidian"
+            "obsidian_tags"
+            "obsidian_new"
+          ];
+
           providers = {
+            obsidian = {
+              name = "obsidian";
+              module = "obsidian.completion.sources.blink.refs";
+              async = true;
+            };
+            obsidian_tags = {
+              name = "obsidian_tags";
+              module = "obsidian.completion.sources.blink.tags";
+              async = true;
+            };
+            obsidian_new = {
+              name = "obsidian_new";
+              module = "obsidian.completion.sources.blink.new";
+              async = true;
+            };
             buffer = {
               score_offset = 45;
               min_keyword_length = 2;
