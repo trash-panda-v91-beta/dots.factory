@@ -2,4 +2,4 @@
 onepass = { type = "1password", vault = "Private" }
 
 [secrets]
-GH_TOKEN = { provider = "onepass", value = "dots.vault Read Access" }
+GH_TOKEN = { provider = "onepass", value = "GH CLI" }
