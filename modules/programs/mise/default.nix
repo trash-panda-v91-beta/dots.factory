@@ -13,8 +13,10 @@ delib.module {
       enable = true;
       enableNushellIntegration = true;
       globalConfig = {
-        env_cache = true;
-        env_cache_ttl = "8h";
+        settings = {
+          env_cache = true;
+          env_cache_ttl = "8h";
+        };
       };
     };
   };
