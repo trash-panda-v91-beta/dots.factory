@@ -51,7 +51,7 @@ delib.host {
       bun.enable = true;
       obsidian = {
         enable = true;
-        vaults.mist.target = "SAPDevelop/vaults/mist";
+        vaults.mist.target = "vaults/mist";
       };
       colima.enable = true;
       git.userEmail = "42897550+trash-panda-v91-beta@users.noreply.github.com";
@@ -68,7 +68,7 @@ delib.host {
         workspaces = [
           {
             name = "mist";
-            path = "~/SAPDevelop/vaults/mist";
+            path = "~/vaults/mist";
           }
         ];
       };
@@ -77,7 +77,7 @@ delib.host {
         vaults = [
           {
             name = "mist";
-            path = "SAPDevelop/vaults/mist";
+            path = "vaults/mist";
           }
         ];
       };
@@ -92,19 +92,16 @@ delib.host {
             name = "dots";
             path = "~/repos/personal/dots.factory";
             startup_command = "nvim";
-            windows = [ "sidekick" ];
           }
           {
             name = "nebular grid";
             path = "~/repos/personal/nebular-grid";
             startup_command = "nvim";
-            windows = [ "sidekick" ];
           }
           {
             name = "mist";
-            path = "~/SAPDevelop/vaults/mist";
+            path = "~/vaults/mist";
             startup_command = "nvim";
-            windows = [ "sidekick" ];
           }
           {
             name = "psb";
