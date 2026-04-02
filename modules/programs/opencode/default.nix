@@ -52,23 +52,6 @@ delib.module {
               autoshare = false;
               autoupdate = false;
               share = "disabled";
-              keybinds = {
-                session_new = "ctrl+n";
-                session_timeline = "ctrl+g";
-                messages_half_page_up = "up";
-                messages_half_page_down = "down";
-                messages_copy = "ctrl+y";
-                messages_undo = "ctrl+z";
-
-                command_list = "ctrl+p";
-                agent_list = "ctrl+a";
-                editor_open = "ctrl+e";
-
-                status_view = "ctrl+s";
-
-                history_previous = "pageup";
-                history_next = "pagedown";
-              };
             }
             (
               lib.optionalAttrs (cfg.providerSettings != { }) {

@@ -291,22 +291,6 @@
         "type": "github"
       }
     },
-    "nixpkgs_4": {
-      "locked": {
-        "lastModified": 1773909469,
-        "narHash": "sha256-vglVrLfHjFIzIdV9A27Ugul6rh3I1qHbbitGW7dk420=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "7149c06513f335be57f26fcbbbe34afda923882b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "nixpkgs-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "nixvim": {
       "inputs": {
         "flake-parts": "flake-parts",
@@ -327,22 +311,19 @@
         "type": "github"
       }
     },
-    "opencode": {
-      "inputs": {
-        "nixpkgs": "nixpkgs_4"
-      },
+    "obsidian-bases-nvim": {
+      "flake": false,
       "locked": {
-        "lastModified": 1774861894,
-        "narHash": "sha256-yvsVJoUEqf2bHr5mvS0PtQz5gZ7lSsgm8D2MxCYjhBc=",
-        "owner": "sst",
-        "repo": "opencode",
-        "rev": "3c32013eb122d794089e011d2ec7077395d6f1c4",
+        "lastModified": 1775073805,
+        "narHash": "sha256-X1sJ6nwC7poJ9suHPU5WBhlRN1Lju/1ck1dR/gkPAIw=",
+        "owner": "trash-panda-v91-beta",
+        "repo": "obsidian-bases.nvim",
+        "rev": "e3d34f5cdc23d0cb8dd95c7832f96e73b4fc7436",
         "type": "github"
       },
       "original": {
-        "owner": "sst",
-        "ref": "dev",
-        "repo": "opencode",
+        "owner": "trash-panda-v91-beta",
+        "repo": "obsidian-bases.nvim",
         "type": "github"
       }
     },
@@ -394,7 +375,7 @@
         "nixpkgs": "nixpkgs_2",
         "nixpkgs-master": "nixpkgs-master",
         "nixvim": "nixvim",
-        "opencode": "opencode",
+        "obsidian-bases-nvim": "obsidian-bases-nvim",
         "opencode-nvim": "opencode-nvim",
         "sops-nix": "sops-nix",
         "vault": "vault"
