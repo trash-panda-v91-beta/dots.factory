@@ -15,33 +15,39 @@ delib.module {
     let
       aerospace = pkgs.lib.getExe pkgs.aerospace;
       sesh = pkgs.lib.getExe pkgs.sesh;
-      notesScript = pkgs.writeShellScript "aerospace-notes" ''
-        export PATH="${pkgs.tmux}/bin:${pkgs.sesh}/bin:$PATH"
-        count=$(${aerospace} list-windows --workspace y --app-bundle-id com.mitchellh.ghostty --count)
-        if [ "$count" = "0" ]; then
-          before=$(${aerospace} list-windows --all --app-bundle-id com.mitchellh.ghostty --json \
-            | /usr/bin/jq -r '.[]["window-id"]')
-          /usr/bin/osascript -e "
-            tell application \"Ghostty\"
-              set cfg to new surface configuration
-              set command of cfg to \"${sesh} connect notes\"
-              new window with configuration cfg
-            end tell"
-          for i in $(seq 1 20); do
-            sleep 0.2
-            after=$(${aerospace} list-windows --all --app-bundle-id com.mitchellh.ghostty --json \
+      mkNotesScript =
+        session: workspace:
+        pkgs.writeShellScript "aerospace-notes-${session}" ''
+          export PATH="${pkgs.tmux}/bin:${pkgs.sesh}/bin:$PATH"
+          count=$(${aerospace} list-windows --workspace ${workspace} --app-bundle-id com.mitchellh.ghostty --count)
+          if [ "$count" = "0" ]; then
+            before=$(${aerospace} list-windows --all --app-bundle-id com.mitchellh.ghostty --json \
               | /usr/bin/jq -r '.[]["window-id"]')
-            new_id=$(comm -13 <(echo "$before" | sort) <(echo "$after" | sort) | head -1)
-            if [ -n "$new_id" ]; then
-              focused=$(${aerospace} list-workspaces --focused)
-              if [ "$focused" = "y" ]; then
-                ${aerospace} move-node-to-workspace --window-id "$new_id" y
+            /usr/bin/osascript -e "
+              tell application \"Ghostty\"
+                set cfg to new surface configuration
+                set command of cfg to \"env PATH=${pkgs.tmux}/bin:${pkgs.sesh}/bin:\$PATH ${sesh} connect ${session}\"
+                new window with configuration cfg
+              end tell"
+            for i in $(seq 1 20); do
+              sleep 0.2
+              after=$(${aerospace} list-windows --all --app-bundle-id com.mitchellh.ghostty --json \
+                | /usr/bin/jq -r '.[]["window-id"]')
+              new_id=$(comm -13 <(echo "$before" | sort) <(echo "$after" | sort) | head -1)
+              if [ -n "$new_id" ]; then
+                focused=$(${aerospace} list-workspaces --focused)
+                if [ "$focused" = "${workspace}" ]; then
+                  ${aerospace} move-node-to-workspace --window-id "$new_id" ${workspace}
+                fi
+                break
               fi
-              break
-            fi
-          done
-        fi
-      '';
+            done
+          else
+            ${sesh} connect ${session}
+          fi
+        '';
+      nilScript = mkNotesScript "nil" "n";
+      mistScript = mkNotesScript "mist" "m";
     in
     {
       programs.aerospace = {
@@ -61,9 +67,13 @@ delib.module {
               "exec-and-forget /usr/bin/open -a Obsidian"
               "workspace o"
             ];
-            ctrl-alt-cmd-shift-y = [
-              "exec-and-forget ${notesScript}"
-              "workspace y"
+            ctrl-alt-cmd-shift-n = [
+              "exec-and-forget ${nilScript}"
+              "workspace n"
+            ];
+            ctrl-alt-cmd-shift-m = [
+              "exec-and-forget ${mistScript}"
+              "workspace m"
             ];
             ctrl-alt-cmd-shift-g = "workspace-back-and-forth";
             ctrl-alt-cmd-shift-p = "mode launcher";
@@ -82,14 +92,24 @@ delib.module {
               "workspace o"
               "mode main"
             ];
-            y = [
-              "exec-and-forget ${notesScript}"
-              "workspace y"
+            n = [
+              "exec-and-forget ${nilScript}"
+              "workspace n"
               "mode main"
             ];
             m = [
-              "exec-and-forget /usr/bin/open -a Mail"
+              "exec-and-forget ${mistScript}"
               "workspace m"
+              "mode main"
+            ];
+            c = [
+              "exec-and-forget /usr/bin/open -a Slack"
+              "workspace c"
+              "mode main"
+            ];
+            i = [
+              "exec-and-forget /usr/bin/open -a Mail"
+              "workspace i"
               "mode main"
             ];
             f = [
@@ -112,8 +132,21 @@ delib.module {
           on-window-detected = [
             {
               "if" = {
+                app-id = "com.1password.1password";
+              };
+              run = [ "layout floating" ];
+            }
+            {
+              "if" = {
                 app-id = "com.mitchellh.ghostty";
-                workspace = "y";
+                workspace = "n";
+              };
+              run = [ ];
+            }
+            {
+              "if" = {
+                app-id = "com.mitchellh.ghostty";
+                workspace = "m";
               };
               run = [ ];
             }
@@ -137,9 +170,21 @@ delib.module {
             }
             {
               "if" = {
+                app-id = "com.tinyspeck.slackmacgap";
+              };
+              run = [ "move-node-to-workspace c" ];
+            }
+            {
+              "if" = {
+                app-id = "com.microsoft.teams2";
+              };
+              run = [ "move-node-to-workspace c" ];
+            }
+            {
+              "if" = {
                 app-id = "com.apple.mail";
               };
-              run = [ "move-node-to-workspace m" ];
+              run = [ "move-node-to-workspace i" ];
             }
             {
               "if" = {

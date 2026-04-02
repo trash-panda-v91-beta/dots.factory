@@ -11,10 +11,20 @@ delib.module {
     { cfg, ... }:
     {
       programs.nixvim = {
+        keymaps = [
+          {
+            mode = "n";
+            key = "<leader>nn";
+            action = "<cmd>ObsidianNewFromTemplate<CR>";
+            options.desc = "New note from template";
+          }
+        ];
+
         plugins.obsidian = {
           enable = true;
           lazyLoad.settings = {
             ft = "markdown";
+            cmd = [ "ObsidianNewFromTemplate" ];
             after = [ "blink.cmp" ];
           };
           settings = {
@@ -48,17 +58,18 @@ delib.module {
               enabled = true;
               func.__raw = ''
                 function(note)
+                  local title = note.title
+                  if title ~= nil and title ~= note.id then
+                    if not note:has_alias(title) then
+                      note:add_alias(title)
+                    end
+                  end
                   local out = {
                     id = note.id,
+                    title = title,
                     aliases = note.aliases,
                     tags = note.tags,
                   }
-                  if note.title ~= nil and note.title ~= note.id then
-                    if not note:has_alias(note.title) then
-                      note:add_alias(note.title)
-                      out.aliases = note.aliases
-                    end
-                  end
                   if note.metadata ~= nil and not vim.tbl_isempty(note.metadata) then
                     for k, v in pairs(note.metadata) do
                       if out[k] == nil then

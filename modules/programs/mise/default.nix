@@ -12,6 +12,10 @@ delib.module {
     programs.mise = {
       enable = true;
       enableNushellIntegration = true;
+      globalConfig = {
+        env_cache = true;
+        env_cache_ttl = "8h";
+      };
     };
   };
 }

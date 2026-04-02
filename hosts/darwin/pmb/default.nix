@@ -51,7 +51,7 @@ delib.host {
       bun.enable = true;
       obsidian = {
         enable = true;
-        vaults.personal.target = "notes";
+        vaults.mist.target = "SAPDevelop/vaults/mist";
       };
       colima.enable = true;
       git.userEmail = "42897550+trash-panda-v91-beta@users.noreply.github.com";
@@ -67,8 +67,17 @@ delib.host {
         enable = true;
         workspaces = [
           {
-            name = "personal";
-            path = "~/notes";
+            name = "mist";
+            path = "~/SAPDevelop/vaults/mist";
+          }
+        ];
+      };
+      nixvim.plugins.obsidian-bases-nvim = {
+        enable = true;
+        vaults = [
+          {
+            name = "mist";
+            path = "~/SAPDevelop/vaults/mist";
           }
         ];
       };
@@ -92,8 +101,8 @@ delib.host {
             windows = [ "sidekick" ];
           }
           {
-            name = "notes";
-            path = "~/notes";
+            name = "mist";
+            path = "~/SAPDevelop/vaults/mist";
             startup_command = "nvim";
             windows = [ "sidekick" ];
           }

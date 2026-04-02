@@ -98,6 +98,19 @@ delib.module {
         }
         {
           __unkeyed-1 = "<leader>n";
+          group = "Notes";
+          icon = "";
+        }
+        {
+          __unkeyed-1 = "<leader>ob";
+          desc = "Render base embed";
+        }
+        {
+          __unkeyed-1 = "<leader>oo";
+          desc = "Open file from base embed";
+        }
+        {
+          __unkeyed-1 = "<leader>un";
           group = "Notifications";
           icon = "";
         }

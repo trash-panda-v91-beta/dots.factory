@@ -27,7 +27,7 @@ delib.module {
         }
       ];
       allSessions = defaultSessions ++ cfg.sessions;
-      notesSession = lib.findFirst (s: s.name == "notes") null allSessions;
+      notesSession = lib.findFirst (s: s.name == "nil" || s.name == "mist") null allSessions;
     in
     {
       home.sessionVariables = lib.mkIf (notesSession != null) {

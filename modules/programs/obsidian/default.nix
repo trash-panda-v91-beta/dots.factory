@@ -38,21 +38,16 @@ delib.module {
     {
       programs.obsidian = {
 
-        # Enable Obsidian CLI (sets `cli: true` in obsidian.json)
+        enable = true;
         cli.enable = true;
 
-        # Default settings applied to all vaults — follows stephango.com/vault conventions
         defaultSettings = {
-          # Matches stephango's app.json exactly, plus vim mode
           app = {
             attachmentFolderPath = "Attachments";
             alwaysUpdateLinks = true;
             vimMode = true;
           };
 
-          # Core plugins — matches stephango's core-plugins.json
-          # Strings are coerced to { name = p; enable = true; settings = null; }
-          # Plugin configs are written to .obsidian/<name>.json via settings = { ... }
           corePlugins = [
             "audio-recorder"
             "backlink"
@@ -96,98 +91,98 @@ delib.module {
             }
           ];
 
-          # Minimal theme by @kepano
           themes = [ pkgs.local.obsidian-minimal-theme ];
 
           communityPlugins = [
             {
               pkg = pkgs.local.obsidian-tasknotes-plugin;
-              # Task-per-note, stored in Tasks/ — follows stephango.com/vault folder conventions
-              # zettel filename format keeps YYYY-MM-DD HHmm prefix, matching his unique note style
               settings = {
                 tasksFolder = "Tasks";
                 archiveFolder = "Tasks/Archive";
                 taskTag = "task";
                 taskIdentificationMethod = "tag";
-                taskFilenameFormat = "zettel";
-                storeTitleInFilename = true;
+                taskFilenameFormat = "custom";
+                customFilenameTemplate = "{{date}} {{hour}}{{minute}} {{title}}";
+                storeTitleInFilename = false;
                 moveArchivedTasks = true;
                 autoCreateDefaultBasesFiles = true;
                 enableBases = true;
-                # Task body template — file lives in Templates/ alongside other vault templates
-                # Variables: {{title}}, {{date}}, {{priority}}, {{status}}, {{contexts}}, {{projects}}
                 taskCreationDefaults = {
                   useBodyTemplate = true;
                   bodyTemplate = "Templates/Task Template";
                 };
                 commandFileMapping = {
-                  "open-calendar-view" = "Tasks/Views/mini-calendar-default.base";
-                  "open-kanban-view" = "Tasks/Views/kanban-default.base";
-                  "open-tasks-view" = "Tasks/Views/tasks-default.base";
-                  "open-advanced-calendar-view" = "Tasks/Views/calendar-default.base";
-                  "open-agenda-view" = "Tasks/Views/agenda-default.base";
-                  "relationships" = "Tasks/Views/relationships.base";
+                  "open-calendar-view" = "Templates/Bases/MiniCalendar.base";
+                  "open-kanban-view" = "Templates/Bases/Kanban.base";
+                  "open-tasks-view" = "Templates/Bases/Tasks.base";
+                  "open-advanced-calendar-view" = "Templates/Bases/Calendar.base";
+                  "open-agenda-view" = "Templates/Bases/Agenda.base";
+                  "relationships" = "Templates/Bases/Relationships.base";
+                };
+                fieldMapping = {
+                  dateCreated = "created";
+                  dateModified = "modified";
+                  completedDate = "completed";
                 };
               };
             }
             pkgs.local.obsidian-minimal-settings-plugin
           ];
 
-          # Property type definitions — matches stephango's types.json
           extraFiles."types" = {
             target = "types.json";
             text = builtins.toJSON {
               types = {
+                "monthly-uses" = "number";
+                acquired = "date";
+                address = "text";
                 aliases = "aliases";
-                cssclasses = "multitext";
-                tags = "tags";
+                author = "multitext";
+                birthday = "date";
                 categories = "multitext";
-                created = "date";
-                genre = "multitext";
-                director = "multitext";
-                last = "date";
-                date = "date";
-                topics = "multitext";
-                rating = "number";
-                year = "number";
+                conference = "text";
                 coordinates = "multitext";
-                model = "text";
-                isbn13 = "number";
-                isbn = "number";
-                ingredients = "multitext";
+                created = "date";
+                cssclasses = "multitext";
+                cuisine = "multitext";
+                date = "date";
+                director = "multitext";
+                end = "date";
+                genre = "multitext";
+                guests = "multitext";
                 imdbId = "text";
-                system = "text";
-                sqft = "number";
-                speaker = "multitext";
+                ingredients = "multitext";
+                isbn = "number";
+                isbn13 = "number";
+                last = "date";
+                loc = "multitext";
+                model = "text";
+                pages = "number";
+                phone = "text";
+                price = "number";
+                process = "text";
+                producer = "multitext";
+                published = "date";
+                purchased = "date";
+                rating = "number";
+                role = "text";
+                runtime = "number";
                 season = "number";
                 series = "multitext";
-                source = "text";
-                status = "multitext";
-                twitter = "text";
-                trade = "text";
-                purchased = "date";
-                producer = "multitext";
-                process = "text";
-                phone = "text";
-                role = "text";
-                birthday = "date";
-                guests = "multitext";
-                cuisine = "multitext";
-                conference = "text";
-                end = "date";
-                address = "text";
-                start = "date";
                 shares = "number";
+                source = "text";
+                speaker = "multitext";
+                sqft = "number";
+                start = "date";
+                status = "multitext";
+                system = "text";
+                tags = "tags";
+                topics = "multitext";
+                trade = "text";
+                twitter = "text";
                 variety = "text";
-                price = "number";
-                author = "multitext";
-                published = "date";
                 where = "multitext";
-                loc = "multitext";
-                "monthly-uses" = "number";
-                runtime = "number";
-                pages = "number";
-                acquired = "date";
+                year = "number";
               };
             };
           };

@@ -8,9 +8,9 @@
 
 (deflayer navigation
   M-1  M-2  M-3  M-4  M-5  lrld M-6  M-7  M-8  M-9  M-0
-  @pad @cls bck  fwd  @trl      @nts pgdn pgup end  @swh
+  @pad @cls bck  fwd  @trl      @mist pgdn pgup end  @swh
   @all @sav S-tab tab @run        lft  down up   rght @fun
-  @ndo @cut @cpy @pst @brr    _   @mwl @mwd @mwu @mwr @obs
+  @ndo @cut @cpy @pst @brr    _   @nil @mist @mwu @mwr @obs
             del             _               bspc
 )
 
@@ -36,7 +36,8 @@
   trl M-S-C-A-t
   brr M-S-C-A-b
   obs M-S-C-A-o
-  nts M-S-C-A-y
+  nil M-S-C-A-n
+  mist M-S-C-A-m
   run M-S-C-A-p
   swh M-S-C-A-g
   launcher M-S-C-A-b

@@ -327,6 +327,22 @@
         "type": "github"
       }
     },
+    "obsidian-bases-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1775073805,
+        "narHash": "sha256-X1sJ6nwC7poJ9suHPU5WBhlRN1Lju/1ck1dR/gkPAIw=",
+        "owner": "trash-panda-v91-beta",
+        "repo": "obsidian-bases.nvim",
+        "rev": "e3d34f5cdc23d0cb8dd95c7832f96e73b4fc7436",
+        "type": "github"
+      },
+      "original": {
+        "owner": "trash-panda-v91-beta",
+        "repo": "obsidian-bases.nvim",
+        "type": "github"
+      }
+    },
     "opencode": {
       "inputs": {
         "nixpkgs": "nixpkgs_4"
@@ -394,6 +410,7 @@
         "nixpkgs": "nixpkgs_2",
         "nixpkgs-master": "nixpkgs-master",
         "nixvim": "nixvim",
+        "obsidian-bases-nvim": "obsidian-bases-nvim",
         "opencode": "opencode",
         "opencode-nvim": "opencode-nvim",
         "sops-nix": "sops-nix",

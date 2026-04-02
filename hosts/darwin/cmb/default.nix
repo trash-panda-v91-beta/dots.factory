@@ -1,6 +1,5 @@
 {
   delib,
-  homeconfig,
   inputs,
   ...
 }:
@@ -38,7 +37,8 @@ delib.host {
         bun.enable = false;
         obsidian = {
           enable = true;
-          vaults.notes.target = "SAPDevelop/notes/corpo";
+          vaults.nil.target = "SAPDevelop/vaults/nil";
+          vaults.mist.target = "SAPDevelop/vaults/mist";
         };
         colima.enable = true;
         git.userEmail = myconfig.user.email;
@@ -50,10 +50,28 @@ delib.host {
           enable = true;
           workspaces = [
             {
-              name = "notes";
-              path = "~/SAPDevelop/notes/corpo";
+              name = "nil";
+              path = "~/SAPDevelop/vaults/nil";
+            }
+            {
+              name = "mist";
+              path = "~/SAPDevelop/vaults/mist";
             }
           ];
+        };
+        nixvim.plugins.obsidian-bases-nvim = {
+          enable = true;
+          vaults = [
+            {
+              name = "nil";
+              path = "~/SAPDevelop/vaults/nil";
+            }
+            {
+              name = "mist";
+              path = "~/SAPDevelop/vaults/mist";
+            }
+          ];
+          obsidianBin = "/nix/store/0a8g67cy6hk1v31vbhkajh2gqszz61k4-obsidian-1.12.4/Applications/Obsidian.app/Contents/MacOS/Obsidian";
         };
         nixvim.plugins.neogit.gitService = inputs.vault.constants.services.git.corporate;
         nixvim.plugins.octo.defaultToProjectsV2 = false;
@@ -75,10 +93,14 @@ delib.host {
         nushell.enable = true;
         sesh.sessions = [
           {
-            name = "notes";
-            path = "~/SAPDevelop/notes";
+            name = "nil";
+            path = "~/SAPDevelop/vaults/nil";
             startup_command = "nvim";
-            windows = [ "sidekick" ];
+          }
+          {
+            name = "mist";
+            path = "~/SAPDevelop/vaults/mist";
+            startup_command = "nvim";
           }
         ];
         opencode.env = {

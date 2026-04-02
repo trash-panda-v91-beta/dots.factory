@@ -23,6 +23,20 @@ delib.module {
         };
         file_types = filetypes;
         render_modes = true;
+        link = {
+          wiki = {
+            body.__raw = ''
+              function(ctx)
+                -- Suppress icon for .base embeds — handled by obsidian-bases.nvim
+                if ctx.destination and ctx.destination:match("%.base$") then
+                  return ""
+                end
+                return nil
+              end
+            '';
+          };
+        };
+        custom_handlers = { };
       };
     };
 }
