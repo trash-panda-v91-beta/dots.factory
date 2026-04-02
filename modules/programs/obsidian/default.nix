@@ -20,6 +20,23 @@ delib.module {
                 default = name;
                 description = "Path to the vault relative to the user's HOME directory.";
               };
+              extraCorePlugins = lib.mkOption {
+                type = lib.types.listOf (
+                  lib.types.coercedTo lib.types.str (p: { name = p; }) (
+                    lib.types.submodule {
+                      options = {
+                        name = lib.mkOption { type = lib.types.str; };
+                        settings = lib.mkOption {
+                          type = lib.types.nullOr (lib.types.attrsOf lib.types.anything);
+                          default = null;
+                        };
+                      };
+                    }
+                  )
+                );
+                default = [ ];
+                description = "Extra core plugins to enable for this vault, merged with the defaults.";
+              };
             };
           }
         )
@@ -35,6 +52,50 @@ delib.module {
 
   home.ifEnabled =
     { cfg, ... }:
+    let
+      defaultCorePlugins = [
+        "audio-recorder"
+        "backlink"
+        "bases"
+        "bookmarks"
+        "canvas"
+        "command-palette"
+        {
+          name = "daily-notes";
+          settings = {
+            folder = "Daily";
+            template = "Templates/Daily Note Template";
+          };
+        }
+        "editor-status"
+        "file-explorer"
+        "file-recovery"
+        "global-search"
+        "graph"
+        "markdown-importer"
+        "note-composer"
+        "outline"
+        "page-preview"
+        "random-note"
+        "switcher"
+        "tag-pane"
+        {
+          name = "templates";
+          settings = {
+            folder = "Templates";
+          };
+        }
+        "workspaces"
+        {
+          name = "zk-prefixer";
+          settings = {
+            format = "YYYY-MM-DD HHmm";
+            folder = "/";
+            template = "Templates/Journal Template";
+          };
+        }
+      ];
+    in
     {
       programs.obsidian = {
 
@@ -48,48 +109,7 @@ delib.module {
             vimMode = true;
           };
 
-          corePlugins = [
-            "audio-recorder"
-            "backlink"
-            "bases"
-            "bookmarks"
-            "canvas"
-            "command-palette"
-            {
-              name = "daily-notes";
-              settings = {
-                folder = "Daily";
-                template = "Templates/Daily Note Template";
-              };
-            }
-            "editor-status"
-            "file-explorer"
-            "file-recovery"
-            "global-search"
-            "graph"
-            "markdown-importer"
-            "note-composer"
-            "outline"
-            "page-preview"
-            "random-note"
-            "switcher"
-            "tag-pane"
-            {
-              name = "templates";
-              settings = {
-                folder = "Templates";
-              };
-            }
-            "workspaces"
-            {
-              name = "zk-prefixer";
-              settings = {
-                format = "YYYY-MM-DD HHmm";
-                folder = "/";
-                template = "Templates/Journal Template";
-              };
-            }
-          ];
+          corePlugins = defaultCorePlugins;
 
           themes = [ pkgs.local.obsidian-minimal-theme ];
 
@@ -188,7 +208,15 @@ delib.module {
           };
         };
 
-        vaults = cfg.vaults;
+        vaults = lib.mapAttrs (
+          _: vault:
+          {
+            inherit (vault) target;
+          }
+          // lib.optionalAttrs (vault.extraCorePlugins != [ ]) {
+            settings.corePlugins = defaultCorePlugins ++ vault.extraCorePlugins;
+          }
+        ) cfg.vaults;
       };
     };
 }

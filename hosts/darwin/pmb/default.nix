@@ -51,7 +51,18 @@ delib.host {
       bun.enable = true;
       obsidian = {
         enable = true;
-        vaults.mist.target = "vaults/mist";
+        vaults.mist = {
+          target = "vaults/mist";
+          extraCorePlugins = [
+            {
+              name = "sync";
+              settings = {
+                deviceName = "pmb";
+                syncPluginSettings = true;
+              };
+            }
+          ];
+        };
       };
       colima.enable = true;
       git.userEmail = "42897550+trash-panda-v91-beta@users.noreply.github.com";

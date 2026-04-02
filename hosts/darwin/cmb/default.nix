@@ -38,7 +38,18 @@ delib.host {
         obsidian = {
           enable = true;
           vaults.nil.target = "SAPDevelop/vaults/nil";
-          vaults.mist.target = "SAPDevelop/vaults/mist";
+          vaults.mist = {
+            target = "SAPDevelop/vaults/mist";
+            extraCorePlugins = [
+              {
+                name = "sync";
+                settings = {
+                  deviceName = "cmb";
+                  syncPluginSettings = true;
+                };
+              }
+            ];
+          };
         };
         colima.enable = true;
         git.userEmail = myconfig.user.email;
