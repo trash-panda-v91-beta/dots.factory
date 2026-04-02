@@ -59,6 +59,19 @@ delib.host {
             }
           ];
         };
+        nixvim.plugins.obsidian-bases-nvim = {
+          enable = true;
+          vaults = [
+            {
+              name = "nil";
+              path = "SAPDevelop/vaults/nil";
+            }
+            {
+              name = "mist";
+              path = "SAPDevelop/vaults/mist";
+            }
+          ];
+        };
         nixvim.plugins.neogit.gitService = inputs.vault.constants.services.git.corporate;
         nixvim.plugins.octo.defaultToProjectsV2 = false;
         nixvim.plugins.octo.extraKeymaps = [

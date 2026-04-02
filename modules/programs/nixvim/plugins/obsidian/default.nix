@@ -25,7 +25,6 @@ delib.module {
           lazyLoad.settings = {
             ft = "markdown";
             cmd = [ "ObsidianNewFromTemplate" ];
-            after = [ "blink.cmp" ];
           };
           settings = {
             legacy_commands = false;
