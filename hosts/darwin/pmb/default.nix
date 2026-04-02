@@ -72,15 +72,6 @@ delib.host {
           }
         ];
       };
-      nixvim.plugins.obsidian-bases-nvim = {
-        enable = true;
-        vaults = [
-          {
-            name = "mist";
-            path = "~/SAPDevelop/vaults/mist";
-          }
-        ];
-      };
       sesh = {
         sessions = [
           {

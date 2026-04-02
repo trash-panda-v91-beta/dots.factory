@@ -41,11 +41,6 @@
       flake = false;
     };
 
-    obsidian-bases-nvim = {
-      url = "github:trash-panda-v91-beta/obsidian-bases.nvim";
-      flake = false;
-    };
-
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
