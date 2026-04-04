@@ -71,9 +71,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
-      - name: Install mise
-        uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4
-
       - name: Install Nix
         uses: cachix/install-nix-action@1ca7d21a94afc7c957383a2d217460d980de4934 # v31
         with:
@@ -99,5 +96,5 @@ jobs:
 
       - name: Build ${{ matrix.host }}
         env:
-          GH_TOKEN: ${{ secrets.VAULT_READ_TOKEN }}
-        run: mise run build ${{ matrix.host }}
+          NIX_CONFIG: "access-tokens = github.com=${{ secrets.VAULT_READ_TOKEN }}"
+        run: nix build .#darwinConfigurations.${{ matrix.host }}.system
