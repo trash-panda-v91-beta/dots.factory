@@ -24,7 +24,7 @@ uvx = true
 description = "Run all checks"
 run = [
   "hk check",
-  "NIX_CONFIG='access-tokens = github.com=$GH_TOKEN' nix flake check",
+  "NIX_CONFIG=\"access-tokens = github.com=$GH_TOKEN\" nix flake check",
 ]
 
 [tasks.fix]
