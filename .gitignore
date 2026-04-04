@@ -1,7 +1,7 @@
 .claude/
 .direnv/
-result
-references/
 .env
 .mise.local.toml
+references/
+result
 

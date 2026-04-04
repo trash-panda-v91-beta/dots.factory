@@ -9,15 +9,24 @@ on:
   workflow_dispatch:
 
 jobs:
-  flake-check:
-    name: "Check Flake"
-    runs-on: ubuntu-latest
+  check:
+    name: "Check (${{ matrix.runner }})"
+    runs-on: ${{ matrix.runner }}
     permissions:
       actions: write
       contents: read
+    strategy:
+      matrix:
+        runner:
+          - ubuntu-latest
+          - macos-latest
+      fail-fast: false
     steps:
       - name: Checkout repository
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+
+      - name: Install mise
+        uses: jdx/mise-action@v2
 
       - name: Install Nix
         uses: cachix/install-nix-action@1ca7d21a94afc7c957383a2d217460d980de4934 # v31
@@ -29,48 +38,18 @@ jobs:
       - name: Cache Nix store
         uses: nix-community/cache-nix-action@7df957e333c1e5da7721f60227dbba6d06080569 # v7
         with:
-          primary-key: nix-${{ runner.os }}-flake-check-${{ hashFiles('**/*.nix', '**/flake.lock') }}
-          restore-prefixes-first-match: nix-${{ runner.os }}-flake-check-
+          primary-key: nix-${{ runner.os }}-check-${{ hashFiles('**/*.nix', '**/flake.lock') }}
+          restore-prefixes-first-match: nix-${{ runner.os }}-check-
           gc-max-store-size-linux: 5G
+          gc-max-store-size-macos: 5G
           purge: true
-          purge-prefixes: nix-${{ runner.os }}-flake-check-
+          purge-prefixes: nix-${{ runner.os }}-check-
           purge-created: 604800
 
-      - name: Check flake
+      - name: Run checks
         env:
-          NIX_CONFIG: "access-tokens = github.com=${{ secrets.VAULT_READ_TOKEN }}"
-        run: nix flake check
-
-  format-check:
-    name: "Check Formatting"
-    runs-on: ubuntu-latest
-    permissions:
-      actions: write
-      contents: read
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
-
-      - name: Install Nix
-        uses: cachix/install-nix-action@1ca7d21a94afc7c957383a2d217460d980de4934 # v31
-        with:
-          extra_nix_config: |
-            experimental-features = nix-command flakes
-            accept-flake-config = true
-
-      - name: Cache Nix store
-        uses: nix-community/cache-nix-action@7df957e333c1e5da7721f60227dbba6d06080569 # v7
-        with:
-          primary-key: nix-${{ runner.os }}-format-${{ hashFiles('**/*.nix', '**/flake.lock') }}
-          restore-prefixes-first-match: nix-${{ runner.os }}-format-
-          gc-max-store-size-linux: 5G
-          purge: true
-          purge-prefixes: nix-${{ runner.os }}-format-
-          purge-created: 604800
-
-      - name: Check formatting
-        run: |
-          nix fmt -- --fail-on-change .
+          GH_TOKEN: ${{ secrets.VAULT_READ_TOKEN }}
+        run: mise run check
 
   validate:
     name: "Validate (${{ matrix.system }}/${{ matrix.host }})"
@@ -131,6 +110,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
+      - name: Install mise
+        uses: jdx/mise-action@v2
+
       - name: Install Nix
         uses: cachix/install-nix-action@1ca7d21a94afc7c957383a2d217460d980de4934 # v31
         with:
@@ -152,12 +134,9 @@ jobs:
         uses: cachix/cachix-action@1eb2ef646ac0255473d23a5907ad7b04ce94065c # v17
         with:
           name: dots-factory
-          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
 
       - name: Build ${{ matrix.host }} configuration
         env:
-          NIX_CONFIG: "access-tokens = github.com=${{ secrets.VAULT_READ_TOKEN }}"
-        run: |-
-          echo "Building configuration for ${{ matrix.host }} (${{ matrix.system }})..."
-          nix build .#${{ matrix.system }}Configurations.${{ matrix.host }}.system --print-out-paths
-          echo "✓ Build successful, pushed to Cachix"
+          GH_TOKEN: ${{ secrets.VAULT_READ_TOKEN }}
+        run: mise run build ${{ matrix.host }}
