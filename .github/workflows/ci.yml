@@ -60,9 +60,6 @@ jobs:
     strategy:
       matrix:
         include:
-          - host: cmb
-            system: darwin
-            runner: macos-latest
           - host: pmb
             system: darwin
             runner: macos-latest
