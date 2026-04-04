@@ -11,7 +11,7 @@ hk = "1.36.0"
 pkl = "0.30.2"
 tombi = "0.7.22"
 yamlfmt = "0.21.0"
-"github:rvben/rumdl" = "0.0.224"
+"github:rvben/rumdl" = "0.1.66"
 "pipx:yamllint" = "1.38.0"
 
 [settings.pipx]
