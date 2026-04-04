@@ -1,5 +1,5 @@
 ---
-name: "Check & Build"
+name: CI
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
 
 jobs:
   check:
-    name: "Check (${{ matrix.runner }})"
+    name: Check (${{ matrix.runner }})
     runs-on: ${{ matrix.runner }}
     permissions:
       actions: write
@@ -22,7 +22,7 @@ jobs:
           - macos-latest
       fail-fast: false
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
       - name: Install mise
@@ -51,8 +51,8 @@ jobs:
           GH_TOKEN: ${{ secrets.VAULT_READ_TOKEN }}
         run: mise run check
 
-  validate:
-    name: "Validate (${{ matrix.system }}/${{ matrix.host }})"
+  build:
+    name: Build (${{ matrix.system }}/${{ matrix.host }})
     runs-on: ${{ matrix.runner }}
     permissions:
       actions: write
@@ -63,51 +63,12 @@ jobs:
           - host: cmb
             system: darwin
             runner: macos-latest
-      fail-fast: false
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
-
-      - name: Install Nix
-        uses: cachix/install-nix-action@1ca7d21a94afc7c957383a2d217460d980de4934 # v31
-        with:
-          extra_nix_config: |
-            experimental-features = nix-command flakes
-            accept-flake-config = true
-
-      - name: Cache Nix store
-        uses: nix-community/cache-nix-action@7df957e333c1e5da7721f60227dbba6d06080569 # v7
-        with:
-          primary-key: nix-${{ runner.os }}-validate-${{ matrix.host }}-${{ hashFiles('**/*.nix', '**/flake.lock') }}
-          restore-prefixes-first-match: nix-${{ runner.os }}-validate-${{ matrix.host }}-
-          gc-max-store-size-macos: 5G
-          purge: true
-          purge-prefixes: nix-${{ runner.os }}-validate-${{ matrix.host }}-
-          purge-created: 604800
-
-      - name: Evaluate ${{ matrix.host }} configuration
-        env:
-          NIX_CONFIG: "access-tokens = github.com=${{ secrets.VAULT_READ_TOKEN }}"
-        run: |-
-          echo "Evaluating configuration for ${{ matrix.host }} (${{ matrix.system }})..."
-          nix eval .#${{ matrix.system }}Configurations.${{ matrix.host }}.system --apply 'x: "Configuration evaluates successfully"'
-          echo "✓ Configuration evaluation successful"
-
-  build:
-    name: "Build (${{ matrix.system }}/${{ matrix.host }})"
-    runs-on: ${{ matrix.runner }}
-    permissions:
-      actions: write
-      contents: read
-    strategy:
-      matrix:
-        include:
           - host: pmb
             system: darwin
             runner: macos-latest
       fail-fast: false
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
       - name: Install mise
@@ -130,13 +91,13 @@ jobs:
           purge-prefixes: nix-${{ runner.os }}-build-${{ matrix.host }}-
           purge-created: 604800
 
-      - name: Setup Cachix (with push)
+      - name: Setup Cachix
         uses: cachix/cachix-action@1eb2ef646ac0255473d23a5907ad7b04ce94065c # v17
         with:
           name: dots-factory
           authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
 
-      - name: Build ${{ matrix.host }} configuration
+      - name: Build ${{ matrix.host }}
         env:
           GH_TOKEN: ${{ secrets.VAULT_READ_TOKEN }}
         run: mise run build ${{ matrix.host }}
