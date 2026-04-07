@@ -37,11 +37,13 @@ delib.module {
           keys = [
             {
               __unkeyed-1 = "<leader>aa";
-              desc = "Toggle CodeCompanion";
+              __unkeyed-2.__raw = "function() require('codecompanion').toggle_cli() end";
+              desc = "Toggle CodeCompanion CLI";
             }
             {
               __unkeyed-1 = "<C-a>";
-              desc = "Toggle CodeCompanion";
+              __unkeyed-2.__raw = "function() require('codecompanion').toggle_cli() end";
+              desc = "Toggle CodeCompanion CLI";
             }
           ];
         };
@@ -86,20 +88,5 @@ delib.module {
         };
       };
     };
-
-    keymaps = [
-      {
-        mode = "n";
-        key = "<leader>aa";
-        action.__raw = "function() require('codecompanion').toggle() end";
-        options.desc = "Toggle CodeCompanion";
-      }
-      {
-        mode = "n";
-        key = "<C-a>";
-        action.__raw = "function() require('codecompanion').toggle() end";
-        options.desc = "Toggle CodeCompanion";
-      }
-    ];
   };
 }
