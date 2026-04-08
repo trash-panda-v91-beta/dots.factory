@@ -55,7 +55,6 @@ delib.host {
         git.userEmail = myconfig.user.email;
         jira-cli = {
           enable = true;
-          tokenReference = "op://Private/Jira token/password";
         };
         nixvim.plugins.obsidian = {
           enable = true;
