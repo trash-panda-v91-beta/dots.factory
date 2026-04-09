@@ -41,7 +41,6 @@ delib.module {
 
       codecompanion = {
         enable = true;
-        package = pkgs.vimPlugins.codecompanion-nvim;
         lazyLoad.settings = {
           cmd = [
             "CodeCompanion"
