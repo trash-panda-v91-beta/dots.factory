@@ -41,7 +41,10 @@ delib.module {
             email = cfg.userEmail;
           };
         };
-        signing.key = cfg.userSigningKey;
+        signing = {
+          format = "openpgp";
+          key = cfg.userSigningKey;
+        };
       };
     };
 }

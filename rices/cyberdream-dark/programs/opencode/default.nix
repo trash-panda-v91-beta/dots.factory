@@ -6,7 +6,7 @@ delib.rice {
       themes = {
         cyberdream = ./cyberdream.json;
       };
-      settings.theme = "cyberdream";
+      tui.theme = "cyberdream";
     };
   };
 }
