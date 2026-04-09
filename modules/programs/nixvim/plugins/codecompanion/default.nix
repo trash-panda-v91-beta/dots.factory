@@ -12,6 +12,23 @@ delib.module {
   home.ifEnabled.programs.nixvim = {
 
     plugins = {
+      which-key.settings.spec = [
+        {
+          __unkeyed-1 = "<leader>a";
+          group = "Agent";
+          icon = "";
+          mode = [
+            "n"
+            "v"
+          ];
+        }
+        {
+          __unkeyed-1 = "<leader>af";
+          group = "Fix";
+          icon = "";
+        }
+      ];
+
       blink-cmp.settings.sources = {
         per_filetype.codecompanion = lib.mkAfter [ "codecompanion" ];
         per_filetype.codecompanion_terminal = lib.mkAfter [ "codecompanion" ];
@@ -38,12 +55,49 @@ delib.module {
             {
               __unkeyed-1 = "<leader>aa";
               __unkeyed-2.__raw = "function() require('codecompanion').toggle_cli() end";
-              desc = "Toggle CodeCompanion CLI";
+              mode = [
+                "n"
+                "v"
+              ];
+              desc = "[A]gent toggle";
             }
             {
               __unkeyed-1 = "<C-a>";
               __unkeyed-2.__raw = "function() require('codecompanion').toggle_cli() end";
               desc = "Toggle CodeCompanion CLI";
+            }
+            {
+              __unkeyed-1 = "<leader>ap";
+              __unkeyed-2.__raw = "function() require('codecompanion').cli({ prompt = true }) end";
+              mode = [
+                "n"
+                "v"
+              ];
+              desc = "[A]gent [P]rompt";
+            }
+            {
+              __unkeyed-1 = "<leader>at";
+              __unkeyed-2.__raw = "function() require('codecompanion').cli('#{this}', { focus = false }) end";
+              mode = [
+                "n"
+                "v"
+              ];
+              desc = "[A]gent add con[T]ext";
+            }
+            {
+              __unkeyed-1 = "<leader>afd";
+              __unkeyed-2.__raw = "function() require('codecompanion').cli('#{diagnostics} Can you fix these?', { focus = false, submit = true }) end";
+              desc = "[A]gent [F]ix [D]iagnostics";
+            }
+            {
+              __unkeyed-1 = "<leader>afe";
+              __unkeyed-2.__raw = "function() require('codecompanion').cli('#{quickfix} Can you fix these errors?', { focus = false, submit = true }) end";
+              desc = "[A]gent [F]ix [E]rrors (quickfix)";
+            }
+            {
+              __unkeyed-1 = "<leader>aft";
+              __unkeyed-2.__raw = "function() require('codecompanion').cli('#{terminal} Sharing the output from the terminal. Can you fix it?', { focus = false, submit = true }) end";
+              desc = "[A]gent [F]ix [T]ests";
             }
           ];
         };

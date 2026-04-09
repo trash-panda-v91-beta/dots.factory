@@ -103,6 +103,15 @@ delib.module {
           desc = "Exit terminal mode";
         };
       }
+      # Send literal Esc to terminal with C-Esc
+      {
+        mode = "t";
+        key = "<C-Esc>";
+        action = "<Esc>";
+        options = {
+          desc = "Send Esc to terminal";
+        };
+      }
       # Yank absolute path
       {
         mode = "n";
