@@ -1,6 +1,7 @@
 .claude/
 .direnv/
 .env
+.fnox.local.toml
 .mise.local.toml
 references/
 result
