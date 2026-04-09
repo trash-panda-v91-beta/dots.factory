@@ -1,2 +1,2 @@
 [secrets]
-GH_TOKEN = { provider = "onepass", value = "GH CLI/credential" }
+GH_TOKEN = { provider = "onepass", value = "op://NebularGrid/GH CLI/credential" }
