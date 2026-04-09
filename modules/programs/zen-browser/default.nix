@@ -7,15 +7,23 @@
 delib.module {
   name = "programs.zen-browser";
 
-  options = delib.singleEnableOption false;
+  options = delib.singleEnableOption true;
 
   home.always.imports = [
-    # ../../../extra/zen-browser.nix {inhert inputs.home-manager;}
+    inputs.zen-browser.homeModules.default
   ];
+
+  darwin.ifEnabled.homebrew.casks = [ "zen-browser" ];
 
   home.ifEnabled = {
     programs.zen-browser = {
       enable = true;
+
+      # On darwin we skip Nix-managed package
+      # (package = null) and install via homebrew cask instead, so macOS code-signing
+      # requirements are satisfied (see: github.com/0xc000022070/zen-browser-flake/issues/82).
+      package = pkgs.lib.mkIf pkgs.stdenv.isDarwin null;
+
       policies =
         let
           mkLockedAttrs = builtins.mapAttrs (
@@ -52,8 +60,9 @@ delib.module {
             "{74145f27-f039-47ce-a470-a662b129930a}" = "clearurls";
             "jid1-BoFifL9Vbdl2zQ@jetpack" = "decentraleyes";
             "uBlock0@raymondhill.net" = "ublock-origin";
-            "{d634138d-c276-4fc8-924b-40a0ea21d284}" = "1password";
-            # "" = "vimium";
+            "{d634138d-c276-4fc8-924b-40a0ea21d284}" = "1password-x-password-manager";
+            "{d7742d87-e61d-4b78-b8a1-b469842139fa}" = "vimium-ff";
+            "clipper@obsidian.md" = "web-clipper-obsidian";
           };
           Preferences = mkLockedAttrs {
             "browser.aboutConfig.showWarning" = false;
@@ -66,19 +75,25 @@ delib.module {
             "browser.topsites.contile.enabled" = false;
 
             "privacy.resistFingerprinting" = true;
-            "privacy.firstparty.isolate" = true;
+            # cookieBehavior = 5 (Total Cookie Protection) is the modern replacement
+            # for firstparty.isolate — enabling both causes SSO/login breakage.
             "network.cookie.cookieBehavior" = 5;
             "dom.battery.enabled" = false;
 
             "gfx.webrender.all" = true;
             "network.http.http3.enabled" = true;
+
+            # Prevent keystrokes in the URL bar from being sent to the search engine
+            "browser.search.suggest.enabled" = false;
+            "browser.urlbar.suggest.searches" = false;
+            "browser.urlbar.speculativeConnect.enabled" = false;
           };
         };
 
       profiles.default =
         let
           containers = {
-            Work = {
+            Corpo = {
               color = "blue";
               icon = "briefcase";
               id = 1;
@@ -96,7 +111,7 @@ delib.module {
             "zen.workspaces.natural-scroll" = true;
             "zen.view.compact.hide-tabbar" = true;
             "zen.view.compact.hide-toolbar" = true;
-            "zen.view.compact.animate-sidebar" = false;
+            "zen.view.compact.animate-sidebar" = true;
           };
 
           bookmarks = {
@@ -124,12 +139,26 @@ delib.module {
 
           search = {
             force = true;
-            default = "google";
+            default = "startpage";
             engines =
               let
                 nixSnowflakeIcon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
               in
               {
+                "Startpage" = {
+                  urls = [
+                    {
+                      template = "https://www.startpage.com/sp/search";
+                      params = [
+                        {
+                          name = "query";
+                          value = "{searchTerms}";
+                        }
+                      ];
+                    }
+                  ];
+                  definedAliases = [ "sp" ];
+                };
                 "Nix Packages" = {
                   urls = [
                     {
@@ -183,7 +212,7 @@ delib.module {
                         }
                         {
                           name = "release";
-                          value = "master"; # unstable
+                          value = "master";
                         }
                       ];
                     }
@@ -192,6 +221,7 @@ delib.module {
                   definedAliases = [ "hmop" ];
                 };
                 bing.metaData.hidden = "true";
+                google.metaData.hidden = "true";
               };
           };
         };
