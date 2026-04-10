@@ -32,6 +32,7 @@ delib.module {
       blink-cmp.settings.sources = {
         per_filetype.codecompanion = lib.mkAfter [ "codecompanion" ];
         per_filetype.codecompanion_terminal = lib.mkAfter [ "codecompanion" ];
+        per_filetype.codecompanion_input = lib.mkAfter [ "codecompanion" ];
         providers.codecompanion = {
           async = true;
           module = "codecompanion.providers.completion.blink";
