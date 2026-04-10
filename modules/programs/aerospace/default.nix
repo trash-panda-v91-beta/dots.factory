@@ -62,7 +62,10 @@ delib.module {
           };
           mode.main.binding = {
             ctrl-alt-cmd-shift-t = "workspace t";
-            ctrl-alt-cmd-shift-b = "workspace b";
+            ctrl-alt-cmd-shift-b = [
+              "exec-and-forget /usr/bin/open -a \"Zen Browser\""
+              "workspace b"
+            ];
             ctrl-alt-cmd-shift-o = [
               "exec-and-forget /usr/bin/open -a Obsidian"
               "workspace o"
@@ -84,6 +87,7 @@ delib.module {
               "mode main"
             ];
             b = [
+              "exec-and-forget /usr/bin/open -a \"Zen Browser\""
               "workspace b"
               "mode main"
             ];
@@ -155,6 +159,12 @@ delib.module {
                 app-id = "com.mitchellh.ghostty";
               };
               run = [ "move-node-to-workspace t" ];
+            }
+            {
+              "if" = {
+                app-id = "app.zen-browser.zen";
+              };
+              run = [ "move-node-to-workspace b" ];
             }
             {
               "if" = {
