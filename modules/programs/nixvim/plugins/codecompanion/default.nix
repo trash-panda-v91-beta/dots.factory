@@ -27,6 +27,11 @@ delib.module {
           group = "Fix";
           icon = "";
         }
+        {
+          __unkeyed-1 = "<leader>ag";
+          group = "Git";
+          icon = "";
+        }
       ];
 
       blink-cmp.settings.sources = {
@@ -99,6 +104,20 @@ delib.module {
               __unkeyed-1 = "<leader>aft";
               __unkeyed-2.__raw = "function() require('codecompanion').cli('#{terminal} Sharing the output from the terminal. Can you fix it?', { focus = false, submit = true }) end";
               desc = "[A]gent [F]ix [T]ests";
+            }
+            {
+              __unkeyed-1 = "<leader>agc";
+              __unkeyed-2.__raw = ''
+                function()
+                  local diff = vim.fn.system('git diff --cached --no-ext-diff')
+                  if diff == "" then
+                    vim.notify("No staged changes", vim.log.levels.WARN)
+                    return
+                  end
+                  require('codecompanion').cli('Staged diff:\n```diff\n' .. diff .. '\n```\nWrite a conventional commit message for these changes and commit them.', { focus = false, submit = true })
+                end
+              '';
+              desc = "[A]gent [G]it [C]ommit staged";
             }
           ];
         };
