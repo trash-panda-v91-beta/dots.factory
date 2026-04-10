@@ -1,0 +1,17 @@
+# Vimium Custom Search Engines
+
+# Default search
+s: https://www.startpage.com/search?q=%s Startpage
+
+# General
+w: https://www.wikipedia.org/w/index.php?title=Special:Search&search=%s Wikipedia
+
+# GitHub
+gh: https://github.com/search?q=%s GitHub
+ghc: https://github.concur.com/search?q=%s GitHub Concur
+
+# Nix
+np: https://search.nixos.org/packages?query=%s NixOS Packages
+no: https://search.nixos.org/options?query=%s NixOS Options
+hm: https://mipmip.github.io/home-manager-option-search/?query=%s Home Manager Options
+nv: https://nix-community.github.io/nixvim/?search=%s NixVim Options

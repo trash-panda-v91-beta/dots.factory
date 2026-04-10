@@ -1,0 +1,213 @@
+/* Cyberdream Dark Palette */
+
+:root {
+  --vimium-bg:           #16181a;
+  --vimium-bg-alt:       #1e2124;
+  --vimium-bg-highlight: #3c4048;
+  --vimium-fg:           #ffffff;
+  --vimium-grey:         #7b8496;
+  --vimium-blue:         #5ea1ff;
+  --vimium-green:        #5eff6c;
+  --vimium-cyan:         #5ef1ff;
+  --vimium-red:          #ff6e5e;
+  --vimium-yellow:       #f1ff5e;
+  --vimium-magenta:      #ff5ef1;
+  --vimium-pink:         #ff5ea0;
+  --vimium-orange:       #ffbd5e;
+  --vimium-purple:       #bd5eff;
+
+  --vimium-foreground-text-color: var(--vimium-fg);
+  --vimium-background-text-color: var(--vimium-fg);
+  --vimium-foreground-color: var(--vimium-bg);
+}
+
+/* link hints */
+
+#vimium-hint-marker-container div.internal-vimium-hint-marker,
+#vimium-hint-marker-container div.vimiumHintMarker {
+    padding: 3px 4px;
+    background: var(--vimium-green);
+    border: 1;
+    border-color: var(--vimium-bg);
+    box-shadow: none;
+}
+
+#vimium-hint-marker-container div span {
+    color: var(--vimium-bg);
+    text-shadow: none;
+}
+
+#vimium-hint-marker-container div span.matchingCharacter {
+    color: var(--vimium-bg-highlight);
+}
+
+/* vomnibar */
+
+#vomnibar {
+    background: var(--vimium-bg);
+    border: 2px solid var(--vimium-cyan);
+    animation: show 200ms cubic-bezier(0, 0, 0.2, 1) forwards;
+    max-height: calc(100vh - 70px);
+    overflow: hidden;
+}
+
+@keyframes show {
+  0% {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+#vomnibar input {
+    color: var(--vimium-fg);
+    background: var(--vimium-bg);
+    border: none;
+    box-shadow: none;
+    height: unset;
+    padding: 16px 30px;
+}
+
+#vomnibar #vomnibar-search-area {
+    border: none;
+    padding: unset;
+    background: var(--vimium-bg);
+}
+
+#vomnibar ul {
+    padding: 0;
+    margin: 0;
+    background: var(--vimium-bg);
+    border-top: 1px solid var(--vimium-bg-highlight);
+}
+
+#vomnibar li {
+    padding: 10px;
+    border-bottom: 1px solid var(--vimium-bg-highlight);
+}
+
+#vomnibar li .top-half,
+#vomnibar li .bottom-half {
+    padding: 3px 0;
+}
+
+#vomnibar li .source {
+    color: var(--vimium-orange);
+}
+
+#vomnibar li em,
+#vomnibar li .title {
+    color: var(--vimium-blue);
+    font-weight: bold;
+}
+
+#vomnibar li .url {
+    color: var(--vimium-cyan);
+}
+
+#vomnibar li .match {
+    color: var(--vimium-green);
+    font-weight: bold;
+}
+
+#vomnibar li .title .match {
+    color: var(--vimium-blue);
+}
+
+#vomnibar li.selected {
+    background-color: var(--vimium-bg-alt);
+}
+
+/* search/find hud */
+
+div#hud-container {
+    background: var(--vimium-bg);
+    border: 1px solid var(--vimium-fg);
+    box-shadow: none;
+}
+
+div#hud-container span#hud-find-input,
+div#hud-container div#hud {
+    color: var(--vimium-fg);
+}
+
+div#hud-container .hud-find,
+div#hud-container #search-area {
+    background-color: var(--vimium-bg);
+}
+
+::selection {
+    background-color: var(--vimium-pink) !important;
+    color: var(--vimium-bg) !important;
+}
+
+/* vimium settings */
+
+body.vimium-body header,
+body.vimium-body label,
+body.vimium-body {
+    color: var(--vimium-fg);
+    background-color: var(--vimium-bg);
+}
+
+body.vimium-body button,
+body.vimium-body footer,
+body.vimium-body textarea,
+body.vimium-body input {
+    scrollbar-color: var(--vimium-bg-highlight) var(--vimium-bg-alt);
+    background-color: var(--vimium-bg-alt);
+}
+
+body.vimium-body #wrapper .example {
+    color: var(--vimium-grey);
+}
+
+body.vimium-body a {
+    color: var(--vimium-purple);
+}
+
+body.vimium-body input,
+body.vimium-body button {
+    border-color: var(--vimium-bg-highlight);
+}
+
+body.vimium-body button:focus {
+    border-color: var(--vimium-blue);
+}
+
+/* help dialog */
+
+#dialog {
+    color: var(--vimium-fg);
+    background: var(--vimium-bg-alt);
+}
+
+#dialog .divider {
+    background: var(--vimium-fg);
+}
+
+#dialog a,
+#dialog span.vim {
+    color: var(--vimium-blue);
+}
+
+#dialog div.help-description,
+#dialog h2,
+#dialog h1,
+#dialog a#close {
+    color: var(--vimium-fg);
+}
+
+#dialog a#close:hover {
+    color: var(--vimium-bg-highlight);
+}
+
+#dialog .key,
+body.vimium-body .key {
+    color: var(--vimium-fg);
+    background: var(--vimium-bg-alt);
+    border-color: var(--vimium-bg-highlight);
+}
