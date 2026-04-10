@@ -17,6 +17,18 @@ delib.module {
         }
         {
           mode = "n";
+          key = "<leader>bd";
+          action = "<cmd>lua Snacks.bufdelete.delete()<cr>";
+          options.desc = "Delete buffer";
+        }
+        {
+          mode = "n";
+          key = "<leader>bb";
+          action = "<cmd>e #<cr>";
+          options.desc = "Switch to last buffer";
+        }
+        {
+          mode = "n";
           key = "<leader>bc";
           action = "<cmd>lua Snacks.bufdelete.other()<cr>";
           options.desc = "Close all buffers but current";
