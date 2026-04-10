@@ -13,7 +13,7 @@ delib.module {
     inputs.zen-browser.homeModules.default
   ];
 
-  darwin.ifEnabled.homebrew.casks = [ "zen-browser" ];
+  darwin.ifEnabled.homebrew.casks = [ "zen" ];
 
   home.ifEnabled = {
     programs.zen-browser = {
