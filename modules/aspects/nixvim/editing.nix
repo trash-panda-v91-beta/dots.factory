@@ -14,6 +14,10 @@
       highlight.enable = true;
       indent.enable = true;
       nixvimInjections = true;
+      # Exclude angular grammar — upstream hash is broken in nixpkgs
+      grammarPackages = lib.filter
+        (g: !(lib.hasSuffix "-angular" (g.pname or "")))
+        pkgs.vimPlugins.nvim-treesitter.passthru.allGrammars;
     };
 
     # Auto-save
