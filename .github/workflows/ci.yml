@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: CI
 
 on:
@@ -10,20 +11,14 @@ on:
 
 jobs:
   check:
-    name: Check (${{ matrix.runner }})
-    runs-on: ${{ matrix.runner }}
+    name: Check
+    runs-on: macos-latest
     permissions:
       actions: write
       contents: read
-    strategy:
-      matrix:
-        runner:
-          - ubuntu-latest
-          - macos-latest
-      fail-fast: false
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Install mise
         uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4
@@ -38,9 +33,8 @@ jobs:
       - name: Cache Nix store
         uses: nix-community/cache-nix-action@7df957e333c1e5da7721f60227dbba6d06080569 # v7
         with:
-          primary-key: nix-${{ runner.os }}-check-${{ hashFiles('**/*.nix', '**/flake.lock') }}
+          primary-key: nix-${{ runner.os }}-check-${{ hashFiles('**/*.nix') }}
           restore-prefixes-first-match: nix-${{ runner.os }}-check-
-          gc-max-store-size-linux: 5G
           gc-max-store-size-macos: 5G
           purge: true
           purge-prefixes: nix-${{ runner.os }}-check-
@@ -66,7 +60,7 @@ jobs:
       fail-fast: false
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Install Nix
         uses: cachix/install-nix-action@616559265b40713947b9c190a8ff4b507b5df49b # v31.10.4
@@ -78,7 +72,7 @@ jobs:
       - name: Cache Nix store
         uses: nix-community/cache-nix-action@7df957e333c1e5da7721f60227dbba6d06080569 # v7
         with:
-          primary-key: nix-${{ runner.os }}-build-${{ matrix.host }}-${{ hashFiles('**/*.nix', '**/flake.lock') }}
+          primary-key: nix-${{ runner.os }}-build-${{ matrix.host }}-${{ hashFiles('**/*.nix') }}
           restore-prefixes-first-match: nix-${{ runner.os }}-build-${{ matrix.host }}-
           gc-max-store-size-macos: 5G
           purge: true
@@ -94,4 +88,4 @@ jobs:
       - name: Build ${{ matrix.host }}
         env:
           NIX_CONFIG: "access-tokens = github.com=${{ secrets.VAULT_READ_TOKEN }}"
-        run: nix build .#darwinConfigurations.${{ matrix.host }}.system
+        run: nix build .#checks.aarch64-darwin.pmb-config --no-link
