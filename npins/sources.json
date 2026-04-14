@@ -26,6 +26,19 @@
       "url": "https://github.com/hercules-ci/flake-parts/archive/3107b77cd68437b9a76194f0f7f9c55f2329ca5b.tar.gz",
       "hash": "sha256-91qqW8lhL7TLwgQWijoGBbiD4t7/q75KTi8NxjVmSmA="
     },
+    "darwin": {
+      "type": "Git",
+      "repository": {
+        "type": "GitHub",
+        "owner": "nix-darwin",
+        "repo": "nix-darwin"
+      },
+      "branch": "master",
+      "submodules": false,
+      "revision": "06648f4902343228ce2de79f291dd5a58ee12146",
+      "url": "https://github.com/nix-darwin/nix-darwin/archive/06648f4902343228ce2de79f291dd5a58ee12146.tar.gz",
+      "hash": "sha256-KM2WYj6EA7M/FVZVCl3rqWY+TFV5QzSyyGE2gQxeODU="
+    },
     "den": {
       "type": "GitRelease",
       "repository": {
@@ -90,9 +103,9 @@
       },
       "branch": "main",
       "submodules": false,
-      "revision": "5ec2c5ad53f4270b5f6db213c4f9829efcbc4f63",
-      "url": "https://github.com/homebrew/homebrew-core/archive/5ec2c5ad53f4270b5f6db213c4f9829efcbc4f63.tar.gz",
-      "hash": "sha256-0KdX4FBmcatEHpf5rJK/5k0p1F07tCylubk/ZaTaSS8="
+      "revision": "ea4dedac7c7338f74470cde57f9faf10c66432dc",
+      "url": "https://github.com/homebrew/homebrew-core/archive/ea4dedac7c7338f74470cde57f9faf10c66432dc.tar.gz",
+      "hash": "sha256-CWRkedEqymp8e/TTpqKMu233E2inc6PTWABEwZxwsMI="
     },
     "import-tree": {
       "type": "Git",
@@ -119,19 +132,6 @@
       "revision": "18a21bcef1b6746d1aaeaae2d1ca54b46f6aa8fe",
       "url": "https://github.com/oskarnurm/koda.nvim/archive/18a21bcef1b6746d1aaeaae2d1ca54b46f6aa8fe.tar.gz",
       "hash": "sha256-seEy2hVQ2/ib1K9xVTMusQzTafSmyj1dB0VRdI0SHD8="
-    },
-    "darwin": {
-      "type": "Git",
-      "repository": {
-        "type": "GitHub",
-        "owner": "nix-darwin",
-        "repo": "nix-darwin"
-      },
-      "branch": "master",
-      "submodules": false,
-      "revision": "06648f4902343228ce2de79f291dd5a58ee12146",
-      "url": "https://github.com/nix-darwin/nix-darwin/archive/06648f4902343228ce2de79f291dd5a58ee12146.tar.gz",
-      "hash": "sha256-KM2WYj6EA7M/FVZVCl3rqWY+TFV5QzSyyGE2gQxeODU="
     },
     "nix-homebrew": {
       "type": "Git",
