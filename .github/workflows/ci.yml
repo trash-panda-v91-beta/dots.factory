@@ -88,4 +88,4 @@ jobs:
       - name: Build ${{ matrix.host }}
         env:
           NIX_CONFIG: "access-tokens = github.com=${{ secrets.VAULT_READ_TOKEN }}"
-        run: nix build .#checks.aarch64-darwin.pmb-config --no-link
+        run: nix-build --no-link -A darwinConfigurations.pmb.system
