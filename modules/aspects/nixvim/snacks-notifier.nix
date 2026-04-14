@@ -1,0 +1,27 @@
+{ dots, ... }:
+{
+  dots.nixvim.includes = [ dots.nixvim._."snacks-notifier" ];
+  dots.nixvim._."snacks-notifier".homeManager = { ... }: {
+  programs.nixvim = {
+    plugins.snacks.settings.notifier = {
+      enabled = true;
+      style = "minimal";
+    };
+
+    keymaps = [
+      {
+        mode = "n";
+        key = "<leader>un";
+        action = "<cmd>lua Snacks.notifier.hide()<CR>";
+        options.desc = "Dismiss All Notifications";
+      }
+      {
+        mode = "n";
+        key = "<leader>uN";
+        action = "<cmd>lua Snacks.notifier.show_history()<CR>";
+        options.desc = "Show Notification History";
+      }
+    ];
+  };
+  };
+}

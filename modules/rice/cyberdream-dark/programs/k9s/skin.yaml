@@ -1,0 +1,81 @@
+# Cyberdream Dark skin for k9s
+k9s:
+  body:
+    fgColor: white
+    bgColor: default
+    logoColor: '#5ef1ff'
+  prompt:
+    fgColor: white
+    bgColor: '#1e2124'
+    suggestColor: '#5ef1ff'
+  info:
+    fgColor: '#5ea1ff'
+    sectionColor: white
+  dialog:
+    fgColor: white
+    bgColor: '#1e2124'
+    buttonFgColor: white
+    buttonBgColor: '#5ea1ff'
+    buttonFocusFgColor: '#1e2124'
+    buttonFocusBgColor: '#5ef1ff'
+    labelFgColor: '#f1ff5e'
+    fieldFgColor: white
+  frame:
+    border:
+      fgColor: '#7b8496'
+      focusColor: '#5ef1ff'
+    menu:
+      fgColor: white
+      keyColor: '#5ef1ff'
+      numKeyColor: '#ffbd5e'
+    crumbs:
+      fgColor: '#1e2124'
+      bgColor: '#5ef1ff'
+      activeColor: '#bd5eff'
+    status:
+      newColor: '#5eff6c'
+      modifyColor: '#5ea1ff'
+      addColor: '#5eff6c'
+      pendingColor: '#f1ff5e'
+      errorColor: '#ff6e5e'
+      highlightColor: '#5ef1ff'
+      killColor: '#ff5ef1'
+      completedColor: '#7b8496'
+    title:
+      fgColor: '#5ef1ff'
+      bgColor: '#1e2124'
+      highlightColor: '#ffbd5e'
+      counterColor: '#5ea1ff'
+      filterColor: '#5eff6c'
+  views:
+    charts:
+      bgColor: default
+      defaultDialColors:
+        - '#5ea1ff'
+        - '#ff6e5e'
+      defaultChartColors:
+        - '#5ea1ff'
+        - '#ff6e5e'
+    table:
+      fgColor: white
+      bgColor: default
+      markColor: '#5eff6c'
+      header:
+        fgColor: '#5ef1ff'
+        bgColor: default
+        sorterColor: '#ffbd5e'
+      cursor:
+        fgColor: '#1e2124'
+        bgColor: '#5ea1ff'
+    yaml:
+      keyColor: '#5ea1ff'
+      colonColor: '#7b8496'
+      valueColor: white
+    logs:
+      fgColor: white
+      bgColor: default
+      indicator:
+        fgColor: '#5ef1ff'
+        bgColor: '#1e2124'
+        toggleOnColor: '#5eff6c'
+        toggleOffColor: '#ff6e5e'

@@ -1,0 +1,14 @@
+{
+  "Nixvim Plugin": {
+    "prefix": "nixvim plugin",
+    "body": [
+      "{ ... }:",
+      "{",
+      "  programs.nixvim.plugins.${1:plugin-name} = {",
+      "    enable = true;",
+      "  };",
+      "}"
+    ],
+    "description": "Template for adding a Nixvim plugin module."
+  }
+}

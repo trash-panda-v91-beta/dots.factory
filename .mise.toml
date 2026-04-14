@@ -1,0 +1,33 @@
+[env]
+_.fnox-env = { tools = true }
+
+[plugins]
+fnox-env = "https://github.com/jdx/mise-env-fnox"
+
+[tools]
+actionlint = "1.7.12"
+fnox = "1.19.0"
+hk = "1.40.0"
+pkl = "0.31.1"
+tombi = "0.7.22"
+yamlfmt = "0.21.0"
+rumdl = "0.1.66"
+yamllint = "1.38.0"
+
+[settings]
+env_shell_expand = true
+
+[settings.pipx]
+uvx = true
+
+[tasks.check]
+description = "Run all checks"
+run = [
+  "hk check",
+  "nix flake check",
+  "nix build .#checks.aarch64-darwin.pmb-config --no-link",
+]
+
+[tasks.fix]
+description = "Run all fixers and formatters"
+run = "hk fix"

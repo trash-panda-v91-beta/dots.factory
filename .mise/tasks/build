@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+#MISE description="Build darwin configuration for the current host (dry run)"
+
+set -euo pipefail
+
+host="${HOST_ALIAS:-$(hostname -s)}"
+
+echo "Building configuration for '$host' ..."
+if [ "$host" = "cmb" ]; then
+  NPINS_OVERRIDE_corpo="../dots.corpo" \
+    nix-build default.nix -A "darwinConfigurations.$host.system" \
+    --no-out-link --dry-run --impure
+else
+  nix-build default.nix -A "darwinConfigurations.$host.system" --no-out-link --dry-run
+fi

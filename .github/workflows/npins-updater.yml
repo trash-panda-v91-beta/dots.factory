@@ -1,0 +1,255 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: npins updater
+
+on:
+  schedule:
+    - cron: 0 3 * * 1
+  workflow_dispatch:
+    inputs:
+      pin:
+        description: "Pin name to update (leave empty for all)"
+        type: string
+        required: false
+        default: ""
+      dryRun:
+        description: "Dry run (no PRs created)"
+        type: boolean
+        required: false
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  generate-matrix:
+    name: Generate matrix
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.pins.outputs.matrix }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Get pin names
+        id: pins
+        run: |
+          matrix=$(jq -c '[.pins | keys | .[]]' npins/sources.json)
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+
+  update:
+    name: Update ${{ matrix.pin }}
+    needs: generate-matrix
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        pin: ${{ fromJson(needs.generate-matrix.outputs.matrix) }}
+    steps:
+      - name: Skip if pin filter doesn't match
+        id: filter
+        env:
+          INPUT_PIN: ${{ inputs.pin }}
+          MATRIX_PIN: ${{ matrix.pin }}
+        run: |
+          if [[ -n "$INPUT_PIN" && "$INPUT_PIN" != "$MATRIX_PIN" ]]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Generate token
+        if: steps.filter.outputs.skip == 'false'
+        uses: actions/create-github-app-token@f8d387b68d61c58ab83c6c016672934102569859 # v3.0.0
+        id: app-token
+        with:
+          app-id: ${{ vars.CI_APP_ID }}
+          private-key: ${{ secrets.CI_APP_PRIVATE_KEY }}
+
+      - name: Checkout
+        if: steps.filter.outputs.skip == 'false'
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          persist-credentials: true
+
+      - name: Install Nix
+        if: steps.filter.outputs.skip == 'false'
+        uses: cachix/install-nix-action@616559265b40713947b9c190a8ff4b507b5df49b # v31.10.4
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+            access-tokens = github.com=${{ steps.app-token.outputs.token }}
+
+      - name: Capture pre-update state
+        if: steps.filter.outputs.skip == 'false'
+        id: before
+        env:
+          PIN: ${{ matrix.pin }}
+        run: |
+          {
+            echo "owner=$(jq -r --arg p "$PIN" '.pins[$p].repository.owner' npins/sources.json)"
+            echo "repo=$(jq -r --arg p "$PIN" '.pins[$p].repository.repo' npins/sources.json)"
+            echo "type=$(jq -r --arg p "$PIN" '.pins[$p].type' npins/sources.json)"
+            echo "revision=$(jq -r --arg p "$PIN" '.pins[$p].revision' npins/sources.json)"
+            echo "version=$(jq -r --arg p "$PIN" '.pins[$p].version // ""' npins/sources.json)"
+            echo "branch=$(jq -r --arg p "$PIN" '.pins[$p].branch // ""' npins/sources.json)"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Run npins update
+        if: steps.filter.outputs.skip == 'false'
+        env:
+          PIN: ${{ matrix.pin }}
+          NIX_CONFIG: "access-tokens = github.com=${{ steps.app-token.outputs.token }}"
+        run: nix run nixpkgs#npins -- update "$PIN"
+
+      - name: Check for changes
+        if: steps.filter.outputs.skip == 'false'
+        id: changed
+        run: |
+          if git diff --quiet npins/sources.json; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Capture post-update state
+        if: steps.filter.outputs.skip == 'false' && steps.changed.outputs.changed == 'true'
+        id: after
+        env:
+          PIN: ${{ matrix.pin }}
+        run: |
+          {
+            echo "revision=$(jq -r --arg p "$PIN" '.pins[$p].revision' npins/sources.json)"
+            echo "version=$(jq -r --arg p "$PIN" '.pins[$p].version // ""' npins/sources.json)"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Build PR title
+        if: steps.filter.outputs.skip == 'false' && steps.changed.outputs.changed == 'true'
+        id: title
+        env:
+          PIN: ${{ matrix.pin }}
+          TYPE: ${{ steps.before.outputs.type }}
+          BEFORE_VERSION: ${{ steps.before.outputs.version }}
+          AFTER_VERSION: ${{ steps.after.outputs.version }}
+          BEFORE_REVISION: ${{ steps.before.outputs.revision }}
+          AFTER_REVISION: ${{ steps.after.outputs.revision }}
+        run: |
+          if [[ "$TYPE" == "GitRelease" ]]; then
+            old="$BEFORE_VERSION"
+            new="$AFTER_VERSION"
+          else
+            old="${BEFORE_REVISION:0:7}"
+            new="${AFTER_REVISION:0:7}"
+          fi
+          {
+            echo "title=chore(npins): update ${PIN} ${old} → ${new}"
+            echo "old=$old"
+            echo "new=$new"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Build PR body
+        if: steps.filter.outputs.skip == 'false' && steps.changed.outputs.changed == 'true'
+        id: body
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          PIN: ${{ matrix.pin }}
+          OWNER: ${{ steps.before.outputs.owner }}
+          REPO: ${{ steps.before.outputs.repo }}
+          TYPE: ${{ steps.before.outputs.type }}
+          OLD_REV: ${{ steps.before.outputs.revision }}
+          NEW_REV: ${{ steps.after.outputs.revision }}
+          OLD: ${{ steps.title.outputs.old }}
+          NEW: ${{ steps.title.outputs.new }}
+          AFTER_VERSION: ${{ steps.after.outputs.version }}
+        run: |
+          body="## npins update: \`${PIN}\`"$'\n\n'
+          body+="**\`${OLD}\` → \`${NEW}\`**"$'\n\n'
+
+          # Release notes (GitRelease only)
+          if [[ "$TYPE" == "GitRelease" ]]; then
+            release_body=$(gh release view "$AFTER_VERSION" \
+              --repo "${OWNER}/${REPO}" --json body --jq '.body' 2>/dev/null || true)
+            if [[ -n "$release_body" ]]; then
+              body+="### Release notes"$'\n\n'
+              body+="${release_body}"$'\n\n'
+            fi
+          fi
+
+          # Commit log between old and new revision
+          commits=$(gh api "repos/${OWNER}/${REPO}/compare/${OLD_REV}...${NEW_REV}" \
+            --jq '.commits | reverse | .[:20] | .[] | "- [`\(.sha[:7])`](\(.html_url)) \(.commit.message | split("\n") | .[0]) (\(.commit.author.name))"' \
+            2>/dev/null || true)
+          if [[ -n "$commits" ]]; then
+            body+="### Commits"$'\n\n'
+            body+="${commits}"$'\n'
+          fi
+
+          printf '%s' "$body" > /tmp/pr-body.md
+
+      - name: Create or update PR
+        if: steps.filter.outputs.skip == 'false' && steps.changed.outputs.changed == 'true' && inputs.dryRun != true
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          PIN: ${{ matrix.pin }}
+          TITLE: ${{ steps.title.outputs.title }}
+          NIX_CONFIG: "access-tokens = github.com=${{ steps.app-token.outputs.token }}"
+        run: |
+          branch="npins/update-${PIN}"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          if git ls-remote --exit-code origin "refs/heads/${branch}" > /dev/null 2>&1; then
+            # Branch exists — reset to main, re-apply update, force-push
+            git fetch origin "${branch}"
+            git checkout -b "${branch}" "origin/${branch}"
+            git checkout main -- npins/sources.json
+            nix run nixpkgs#npins -- update "${PIN}"
+            git add npins/sources.json
+            git commit --allow-empty -m "${TITLE}"
+            git push --force-with-lease origin "${branch}"
+            # Update existing PR
+            pr_number=$(gh pr list --head "${branch}" --json number --jq '.[0].number')
+            if [[ -n "$pr_number" ]]; then
+              gh pr edit "$pr_number" --title "${TITLE}" --body-file /tmp/pr-body.md
+            fi
+          else
+            # No existing branch — create fresh
+            git checkout -b "${branch}"
+            git add npins/sources.json
+            git commit -m "${TITLE}"
+            git push origin "${branch}"
+            gh pr create \
+              --title "${TITLE}" \
+              --body-file /tmp/pr-body.md \
+              --base main \
+              --label "npins" \
+              || true
+          fi
+
+      - name: Dry run summary
+        if: steps.filter.outputs.skip == 'false' && steps.changed.outputs.changed == 'true' && inputs.dryRun == true
+        env:
+          TITLE: ${{ steps.title.outputs.title }}
+          PIN: ${{ matrix.pin }}
+        run: |
+          {
+            echo "### Dry run: ${PIN}"
+            echo ""
+            echo "**Title:** ${TITLE}"
+            echo ""
+            cat /tmp/pr-body.md
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: No update needed
+        if: steps.filter.outputs.skip == 'false' && steps.changed.outputs.changed == 'false'
+        env:
+          PIN: ${{ matrix.pin }}
+        run: echo "$PIN is already up to date"

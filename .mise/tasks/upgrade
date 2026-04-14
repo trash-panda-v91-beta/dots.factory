@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+#MISE description="Update flake inputs and sync configuration"
+
+set -euo pipefail
+
+hostname="${1:-${MISE_HOST:-$(hostname -s)}}"
+
+echo "Updating flake inputs and syncing for '$hostname' ..."
+mise run update
+mise run sync "$hostname"

@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+#MISE description="Bootstrap system (setup SSH keys and sync configuration)"
+
+set -euo pipefail
+
+username="${1:-$(whoami)}"
+
+echo "Bootstrapping system for user '$username'..."
+mkdir -p ~/.ssh
+op read "op://Private/SSH Private Key/private key" > ~/.ssh/"$username"
+chmod 600 ~/.ssh/"$username"
+echo "SSH key created at ~/.ssh/$username"
+mise run sync

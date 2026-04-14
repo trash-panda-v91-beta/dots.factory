@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+#MISE description="Run garbage collection keeping specified number of generations"
+
+set -euo pipefail
+
+keep="${1:-3}"
+
+sudo NIX_CONFIG="extra-experimental-features = nix-command flakes" nh clean all --keep "$keep"
