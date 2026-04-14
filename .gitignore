@@ -1,0 +1,10 @@
+.claude/
+!.claude/skills/
+!.claude/skills/**
+.direnv/
+.env
+.fnox.local.toml
+.mise.local.toml
+references/
+result
+

@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+#MISE description="Update all npins sources (or a specific pin)"
+
+set -euo pipefail
+
+pin="${1:-}"
+
+if [ -n "$pin" ]; then
+  npins update "$pin"
+else
+  npins update
+fi

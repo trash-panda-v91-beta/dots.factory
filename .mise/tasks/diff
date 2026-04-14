@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+#MISE description="Show diff between current and new configuration"
+
+set -euo pipefail
+
+host="${HOST_ALIAS:-$(hostname -s)}"
+
+echo "Building for diff '$host' ..."
+if [ "$host" = "cmb" ]; then
+  result=$(NPINS_OVERRIDE_corpo="../dots.corpo" \
+    nix-build default.nix -A "darwinConfigurations.$host.system" \
+    --no-out-link --impure)
+else
+  result=$(nix-build default.nix -A "darwinConfigurations.$host.system" --no-out-link)
+fi
+
+nix store diff-closures /run/current-system "$result"
