@@ -1,17 +1,20 @@
 {
   "pins": {
     "brew-src": {
-      "type": "Git",
+      "type": "GitRelease",
       "repository": {
         "type": "GitHub",
         "owner": "Homebrew",
         "repo": "brew"
       },
-      "branch": "5.1.1",
+      "pre_releases": false,
+      "version_upper_bound": null,
+      "release_prefix": null,
       "submodules": false,
-      "revision": "894a3d23ac0c8aaf561b9874b528b9cb2e839201",
-      "url": "https://github.com/Homebrew/brew/archive/894a3d23ac0c8aaf561b9874b528b9cb2e839201.tar.gz",
-      "hash": "sha256-0ryNYmzDAeRlrzPTAgmzGH/Cgc8iv/LBN6jWGUANvIk="
+      "version": "5.1.6",
+      "revision": "299ab19496df6fc76e8356c0b87100ff91ef827e",
+      "url": "https://api.github.com/repos/Homebrew/brew/tarball/refs/tags/5.1.6",
+      "hash": "sha256-Y1Nrm5Csi/Bd0O6zQkAC+Wdq4Mh/QHrmiUf2EwjYYto="
     },
     "corpo": {
       "type": "Git",
