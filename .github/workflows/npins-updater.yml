@@ -224,7 +224,9 @@ jobs:
             fi
           else
             # No existing branch — create fresh
+            git restore npins/sources.json  # discard update; re-apply cleanly on new branch
             git checkout -b "${branch}"
+            nix run nixpkgs#npins -- update "${PIN}"
             git add npins/sources.json
             git commit -m "${TITLE}"
             git push origin "${branch}"
