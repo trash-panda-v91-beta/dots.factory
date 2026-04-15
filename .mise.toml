@@ -24,7 +24,7 @@ uvx = true
 description = "Run all checks"
 run = [
   "hk check",
-  "nix-build --no-link -A checks.aarch64-darwin.pmb-config",
+  "nix-instantiate -A darwinConfigurations.pmb.system",
 ]
 
 [tasks.fix]
