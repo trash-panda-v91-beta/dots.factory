@@ -1,7 +1,6 @@
 # PMB — personal MacBook (aarch64-darwin)
 {
   lib,
-  pkgs,
   __findFile,
   ...
 }:
@@ -85,14 +84,6 @@
                 path = "vaults/mist";
               }
             ];
-          };
-
-          programs.opencode.settings.env = {
-            ACTUAL_BUDGET_SYNC_ID = "op://NebularGrid/Actual/sync id";
-            ACTUAL_PASSWORD = "op://NebularGrid/Actual/password";
-            HASS_TOKEN = "op://Private/HASS MCP/password";
-            PERPLEXITY_API_KEY = "op://Private/Perplexity API Key/password";
-            TAVILY_TOKEN = "op://Private/op4p2ok4buizqra3jssnnoet3u/credential";
           };
 
           programs.sesh.settings.session = [
