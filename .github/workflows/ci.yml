@@ -84,5 +84,6 @@ jobs:
 
       - name: Build ${{ matrix.host }}
         env:
+          HOST_ALIAS: ${{ matrix.host }}
           NIX_CONFIG: "access-tokens = github.com=${{ secrets.VAULT_READ_TOKEN }}"
         run: mise run build

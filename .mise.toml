@@ -27,10 +27,6 @@ run = [
   "nix-build --no-link -A checks.aarch64-darwin.pmb-config",
 ]
 
-[tasks.build]
-description = "Build darwin system for current host"
-run = "nix-build --no-link -A darwinConfigurations.pmb.system"
-
 [tasks.fix]
 description = "Run all fixers and formatters"
 run = "hk fix"
