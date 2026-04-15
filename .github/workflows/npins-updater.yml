@@ -38,7 +38,8 @@ jobs:
       - name: Get pin names
         id: pins
         run: |
-          matrix=$(jq -c '[.pins | keys | .[]]' npins/sources.json)
+          # Exclude pins that are local overrides or private repos not accessible from CI
+          matrix=$(jq -c '[.pins | keys | .[] | select(. != "corpo")]' npins/sources.json)
           echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
 
   update:
@@ -209,6 +210,7 @@ jobs:
           if git ls-remote --exit-code origin "refs/heads/${branch}" > /dev/null 2>&1; then
             # Branch exists — reset to main, re-apply update, force-push
             git fetch origin "${branch}"
+            git restore npins/sources.json  # discard the update from the earlier step
             git checkout -b "${branch}" "origin/${branch}"
             git checkout main -- npins/sources.json
             nix run nixpkgs#npins -- update "${PIN}"
