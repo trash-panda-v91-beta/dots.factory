@@ -79,7 +79,10 @@ jobs:
           purge-prefixes: nix-${{ runner.os }}-build-${{ matrix.host }}-
           purge-created: 604800
 
+      - name: Install mise
+        uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4
+
       - name: Build ${{ matrix.host }}
         env:
           NIX_CONFIG: "access-tokens = github.com=${{ secrets.VAULT_READ_TOKEN }}"
-        run: nix-build --no-link -A darwinConfigurations.pmb.system
+        run: mise run build
