@@ -1,17 +1,20 @@
 {
   "pins": {
     "brew-src": {
-      "type": "Git",
+      "type": "GitRelease",
       "repository": {
         "type": "GitHub",
         "owner": "Homebrew",
         "repo": "brew"
       },
-      "branch": "5.1.1",
+      "pre_releases": false,
+      "version_upper_bound": null,
+      "release_prefix": null,
       "submodules": false,
-      "revision": "894a3d23ac0c8aaf561b9874b528b9cb2e839201",
-      "url": "https://github.com/Homebrew/brew/archive/894a3d23ac0c8aaf561b9874b528b9cb2e839201.tar.gz",
-      "hash": "sha256-0ryNYmzDAeRlrzPTAgmzGH/Cgc8iv/LBN6jWGUANvIk="
+      "version": "5.1.6",
+      "revision": "299ab19496df6fc76e8356c0b87100ff91ef827e",
+      "url": "https://api.github.com/repos/Homebrew/brew/tarball/refs/tags/5.1.6",
+      "hash": "sha256-Y1Nrm5Csi/Bd0O6zQkAC+Wdq4Mh/QHrmiUf2EwjYYto="
     },
     "corpo": {
       "type": "Git",
@@ -103,9 +106,9 @@
       },
       "branch": "main",
       "submodules": false,
-      "revision": "ea4dedac7c7338f74470cde57f9faf10c66432dc",
-      "url": "https://github.com/homebrew/homebrew-core/archive/ea4dedac7c7338f74470cde57f9faf10c66432dc.tar.gz",
-      "hash": "sha256-CWRkedEqymp8e/TTpqKMu233E2inc6PTWABEwZxwsMI="
+      "revision": "99010ceb85b511266c13c323afb49ecbf38d6e08",
+      "url": "https://github.com/homebrew/homebrew-core/archive/99010ceb85b511266c13c323afb49ecbf38d6e08.tar.gz",
+      "hash": "sha256-n0jOAhqZaT5aQf9NzQE1xQSTfU6jdBwykkRyilbgBp8="
     },
     "import-tree": {
       "type": "Git",
