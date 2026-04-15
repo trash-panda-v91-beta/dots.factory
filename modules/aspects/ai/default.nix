@@ -8,9 +8,9 @@ let
 in
 {
   dots.ai =
-    { user, ... }:
+    { ... }:
     {
-      description = "AI coding assistants: Claude Code, OpenCode, MCP, skills, copilot-lua";
+      description = "AI coding assistants";
       includes = [ (den._.unfree [ "claude-code" ]) ];
 
       homeManager =
