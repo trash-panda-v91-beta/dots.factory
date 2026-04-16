@@ -134,6 +134,10 @@
                   run = [ "layout floating" ];
                 }
                 {
+                  "if".app-id = "com.okta.mobile";
+                  run = [ "layout floating" ];
+                }
+                {
                   "if" = {
                     app-id = "com.mitchellh.ghostty";
                     workspace = "n";
