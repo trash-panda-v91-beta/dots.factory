@@ -13,6 +13,14 @@
     <den/hostname>
     # Auto-create the user account on the host
     <den/define-user>
+    # Forward home.sessionVariables into nushell when enabled
+    {
+      homeManager =
+        { config, lib, ... }:
+        lib.mkIf config.programs.nushell.enable {
+          programs.nushell.environmentVariables = config.home.sessionVariables;
+        };
+    }
   ];
 
   # Formatters for nix fmt
