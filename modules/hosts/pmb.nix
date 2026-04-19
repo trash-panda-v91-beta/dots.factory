@@ -56,15 +56,12 @@
 
           programs.obsidian.vaults.mist.target = "vaults/mist";
 
-          programs.nixvim.plugins.obsidian = {
-            enable = true;
-            workspaces = [
-              {
-                name = "mist";
-                path = "~/vaults/mist";
-              }
-            ];
-          };
+          programs.nixvim.plugins.obsidian.settings.workspaces = [
+            {
+              name = "mist";
+              path = "~/vaults/mist";
+            }
+          ];
           programs.nixvim.plugins.obsidian-bases-nvim = {
             enable = true;
             vaults = [
