@@ -1,0 +1,35 @@
+/* Cyberdream Dark — Minimal theme color overrides */
+.theme-dark {
+  /* Base palette */
+  --color-red:        #ff6e5e; --color-red-rgb:    255, 110, 94;
+  --color-orange:     #ffbd5e; --color-orange-rgb: 255, 189, 94;
+  --color-yellow:     #f1ff5e; --color-yellow-rgb: 241, 255, 94;
+  --color-green:      #5eff6c; --color-green-rgb:  94, 255, 108;
+  --color-cyan:       #5ef1ff; --color-cyan-rgb:   94, 241, 255;
+  --color-blue:       #5ea1ff; --color-blue-rgb:   94, 161, 255;
+  --color-purple:     #bd5eff; --color-purple-rgb: 189, 94, 255;
+  --color-pink:       #ff5ef1; --color-pink-rgb:   255, 94, 241;
+
+  /* Backgrounds */
+  --bg1: #16181a;   /* primary bg */
+  --bg2: #1e2124;   /* secondary bg (sidebars, modals) */
+
+  /* UI chrome */
+  --ui1: #3c4048;   /* borders, dividers */
+  --ui2: #4a5060;   /* hover states */
+  --ui3: #7b8496;   /* muted icons */
+
+  /* Text */
+  --tx1: #ffffff;   /* primary text */
+  --tx2: #c8d0e0;   /* secondary text */
+  --tx3: #7b8496;   /* muted/placeholder text */
+
+  /* Highlights */
+  --hl1: rgba(94, 161, 255, 0.15);  /* selection */
+  --hl2: rgba(94, 161, 255, 0.08);  /* subtle highlight */
+
+  /* Accent (blue) — HSL for --base-* */
+  --accent-h: 218;
+  --accent-s: 100%;
+  --accent-l: 68%;
+}

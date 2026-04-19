@@ -54,18 +54,7 @@
             };
           };
 
-          programs.obsidian.vaults.mist = {
-            target = "vaults/mist";
-            settings.corePlugins = [
-              {
-                name = "sync";
-                settings = {
-                  deviceName = "pmb";
-                  syncPluginSettings = true;
-                };
-              }
-            ];
-          };
+          programs.obsidian.vaults.mist.target = "vaults/mist";
 
           programs.nixvim.plugins.obsidian = {
             enable = true;
