@@ -52,6 +52,10 @@
                 }
                 "workspaces"
                 {
+                  name = "sync";
+                  settings.syncPluginSettings = false;
+                }
+                {
                   name = "zk-prefixer";
                   settings = {
                     format = "YYYY-MM-DD HHmm";
@@ -94,7 +98,20 @@
                     };
                   };
                 }
-                pkgs.local.obsidian-minimal-settings-plugin
+                {
+                  pkg = pkgs.local.obsidian-minimal-settings-plugin;
+                  settings = {
+                    # Dark background: black variant matches cyberdream's dark bg
+                    darkStyle = "minimal-dark-black";
+                    # Accent color applied to active states and headings
+                    colorfulHeadings = true;
+                    colorfulActiveStates = true;
+                    # Line numbers in code blocks
+                    lineNumbers = true;
+                    # Disable settings that conflict with Nix-owned appearance.json
+                    # (darkScheme/lightScheme left at default — accent is set via appearance.accentColor)
+                  };
+                }
               ];
             };
           };
