@@ -11,8 +11,9 @@ in
 
       nixpkgs.overlays = [
         (final: prev: {
-          # duckdb 1.5.1 test suite crashes on macOS (SIGTRAP/BPT trap) — skip tests
-          duckdb = prev.duckdb.overrideAttrs (_: { doCheck = false; });
+          # duckdb 1.5.1 install-check phase crashes on macOS (SIGTRAP/BPT trap: 5)
+          # Tests run via doInstallCheck, not doCheck — must disable both
+          duckdb = prev.duckdb.overrideAttrs (_: { doCheck = false; doInstallCheck = false; });
           local = {
             koda-nvim = prev.callPackage "${pkgsDir}/koda-nvim" { inherit inputs; };
             obsidian-bases-nvim = prev.callPackage "${pkgsDir}/obsidian-bases-nvim" { inherit inputs; };
