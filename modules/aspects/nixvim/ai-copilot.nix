@@ -1,6 +1,6 @@
-{ dots, ... }:
+{ dots, den, ... }:
 {
-  dots.ai.includes = [ dots.ai._."ai-copilot" ];
+  dots.ai.includes = [ dots.ai._."ai-copilot" (den._.unfree [ "copilot-language-server" ]) ];
   dots.ai._."ai-copilot".homeManager = { lib, ... }: {
     programs.nixvim = {
       plugins = {

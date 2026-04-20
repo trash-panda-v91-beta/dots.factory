@@ -62,7 +62,9 @@
           };
 
           luaLoader.enable = true;
-          nixpkgs.config.allowUnfree = true;
+          # useGlobalPackages: use system pkgs so overlays (e.g. nushell/duckdb fixes) apply here
+          # allowUnfree must be on the global nixpkgs instance (see config/overlays.nix)
+          nixpkgs.useGlobalPackages = true;
 
           performance = {
             byteCompileLua = { enable = true; configs = true; luaLib = true; nvimRuntime = true; plugins = true; };
