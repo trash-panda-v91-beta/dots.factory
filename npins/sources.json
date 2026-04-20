@@ -53,10 +53,10 @@
       "version_upper_bound": null,
       "release_prefix": null,
       "submodules": false,
-      "version": "v0.15.0",
-      "revision": "8101ec865c0bf4027d40b9fd8951e3e435a86d64",
-      "url": "https://api.github.com/repos/vic/den/tarball/refs/tags/v0.15.0",
-      "hash": "sha256-8ICGLVOpuXc8b1YirfsAQcPEW5sV4bpGHHDny8Pww0I="
+      "version": "v0.16.0",
+      "revision": "927f4d8e2be40d05c976a91bbec66238c622bbf5",
+      "url": "https://api.github.com/repos/vic/den/tarball/refs/tags/v0.16.0",
+      "hash": "sha256-RNbDvS6voiq2GalVHRt6w2EpdlEmmCjUAb6fvPO9PnE="
     },
     "flake-parts": {
       "type": "Git",
