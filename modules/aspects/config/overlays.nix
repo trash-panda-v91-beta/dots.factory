@@ -14,6 +14,13 @@ in
           # duckdb 1.5.1 install-check phase crashes on macOS (SIGTRAP/BPT trap: 5)
           # Tests run via doInstallCheck, not doCheck — must disable both
           duckdb = prev.duckdb.overrideAttrs (_: { doCheck = false; doInstallCheck = false; });
+          # nushell env_shlvl tests require exec(2) which is blocked by the Nix sandbox on macOS
+          nushell = prev.nushell.overrideAttrs (old: {
+            checkFlags = (old.checkFlags or [ ]) ++ [
+              "--skip=shell::environment::env::env_shlvl_in_repl"
+              "--skip=shell::environment::env::env_shlvl_in_exec_repl"
+            ];
+          });
           local = {
             koda-nvim = prev.callPackage "${pkgsDir}/koda-nvim" { inherit inputs; };
             obsidian-bases-nvim = prev.callPackage "${pkgsDir}/obsidian-bases-nvim" { inherit inputs; };
