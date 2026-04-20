@@ -93,9 +93,9 @@
       },
       "branch": "main",
       "submodules": false,
-      "revision": "3b6cd793b628cc286e45d6c67d267f8829f8f2d6",
-      "url": "https://github.com/homebrew/homebrew-cask/archive/3b6cd793b628cc286e45d6c67d267f8829f8f2d6.tar.gz",
-      "hash": "sha256-TlYmGWnvpjgSnpjPRsemt45X8BeJWkaMLJJef9H1vws="
+      "revision": "9c502682e2e6797773e6b4ef24fac7d09d3fd168",
+      "url": "https://github.com/homebrew/homebrew-cask/archive/9c502682e2e6797773e6b4ef24fac7d09d3fd168.tar.gz",
+      "hash": "sha256-QPviU6DLdWBnRDUx3Ho25iuORhqW4ld8ml8fkiV2pZs="
     },
     "homebrew-core": {
       "type": "Git",
