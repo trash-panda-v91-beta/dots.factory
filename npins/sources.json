@@ -132,9 +132,9 @@
       },
       "branch": "main",
       "submodules": false,
-      "revision": "649b22865bacc481d381237e0a6fb1de6ee055b4",
-      "url": "https://github.com/oskarnurm/koda.nvim/archive/649b22865bacc481d381237e0a6fb1de6ee055b4.tar.gz",
-      "hash": "sha256-KSDtodNiup4wzumfJbfcm5LYAqcOW8ZZSbbBHozVJow="
+      "revision": "4668e307f2f3a1e38bd627b14d13368ebf5b8d9f",
+      "url": "https://github.com/oskarnurm/koda.nvim/archive/4668e307f2f3a1e38bd627b14d13368ebf5b8d9f.tar.gz",
+      "hash": "sha256-qUMAudof+WhyBuHJ0O8LcBOPybJAEVXYAmdIcHK2gP4="
     },
     "nix-homebrew": {
       "type": "Git",
