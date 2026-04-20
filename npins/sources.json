@@ -80,9 +80,9 @@
       },
       "branch": "master",
       "submodules": false,
-      "revision": "3c7524c68348ef79ce48308e0978611a050089b2",
-      "url": "https://github.com/nix-community/home-manager/archive/3c7524c68348ef79ce48308e0978611a050089b2.tar.gz",
-      "hash": "sha256-No6QGBmIv5ChiwKCcbkxjdEQ/RO2ZS1gD7SFy6EZ7rc="
+      "revision": "29f355a7338f30f32142f4ff44e805d47d0086b1",
+      "url": "https://github.com/nix-community/home-manager/archive/29f355a7338f30f32142f4ff44e805d47d0086b1.tar.gz",
+      "hash": "sha256-tqTMK+nr4kXUrErteg/1hrQ816Ss7+2RsPNYZiVpf0I="
     },
     "homebrew-cask": {
       "type": "Git",
