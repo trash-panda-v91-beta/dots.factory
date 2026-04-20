@@ -6,7 +6,7 @@ set -euo pipefail
 pin="${1:-}"
 
 if [ -n "$pin" ]; then
-  npins update "$pin"
+  nix run nixpkgs#npins -- update "$pin"
 else
-  npins update
+  nix run nixpkgs#npins -- update
 fi
