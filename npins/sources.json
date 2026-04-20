@@ -184,9 +184,9 @@
       },
       "branch": "main",
       "submodules": false,
-      "revision": "0a12693297d23f1b3af04ba6112b5936e2eba41b",
-      "url": "https://github.com/nix-community/nixvim/archive/0a12693297d23f1b3af04ba6112b5936e2eba41b.tar.gz",
-      "hash": "sha256-spZM5zll0cBPHHSZPioZREArzCsllurKQsJME08nnXY="
+      "revision": "698d17490e19e2e360a6ce49b1af9134d1c6eacd",
+      "url": "https://github.com/nix-community/nixvim/archive/698d17490e19e2e360a6ce49b1af9134d1c6eacd.tar.gz",
+      "hash": "sha256-tpCsY9kIEfcitiV3JwUqYTmxwewwZKQlZSNUBqb9kF0="
     },
     "opencode.nvim": {
       "type": "Git",
