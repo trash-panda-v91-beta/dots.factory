@@ -19,28 +19,30 @@ nix-darwin + home-manager.
 
 See `docs/restructure-design.md` for full rationale and migration plan.
 
-## Bootstrap (noflake)
+## Bootstrap (flake)
 
-This repo uses **npins + with-inputs** instead of flakes. Key files:
+This repo uses **flake.nix + flake.lock** for input management. Key files:
 
-- `default.nix` — entry point: loads npins sources, calls with-inputs, then flake-parts +
-  import-tree
-- `npins/sources.json` — pinned inputs (run `npins update <name>` to update a pin)
-- `follows.nix` — input aliases and sub-input follows (replaces `flake.nix` inputs block)
+- `flake.nix` — single source of truth for all flake inputs
+- `flake.lock` — pinned revisions (updated by Renovate weekly, or manually via `nix flake update`)
+
+To add or change an input: edit `flake.nix`, then run `nix flake lock` to update `flake.lock`.
 
 ## Hosts
 
-- **PMB** — Defined here.
+- **PMB** — Defined here. Build with `nix build .#darwinConfigurations.pmb.system`.
 - **CMB** — Defined in dots.corpo (`../dots.corpo`). Built via
-  `NPINS_OVERRIDE_corpo=../dots.corpo nix-build ...` (handled automatically by mise tasks).
+  `nix build .#darwinConfigurations.cmb.system --override-input corpo path:../dots.corpo`.
 
 ## Common Tasks
 
 ```bash
 mise run build    # dry-run build for current host
-mise run switch   # build and activate (nix-build + darwin-rebuild activate)
+mise run switch   # build and activate (darwin-rebuild switch)
 mise run diff     # show pending changes
-mise run update   # update npins inputs
+mise run update   # update all flake inputs (flake.lock)
+mise run check    # run linters + dry-run build
+mise run fix      # run formatters
 ```
 
 ## Den Conventions

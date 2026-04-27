@@ -24,9 +24,25 @@ uvx = true
 description = "Run all checks"
 run = [
   "hk check",
-  "nix-instantiate -A darwinConfigurations.pmb.system",
+  "nix build .#darwinConfigurations.pmb.system --dry-run",
 ]
 
 [tasks.fix]
 description = "Run all fixers and formatters"
 run = "hk fix"
+
+[tasks.build]
+description = "Dry-run build for current host"
+run = "nh darwin build . -n"
+
+[tasks.switch]
+description = "Build and activate current host"
+run = "nh darwin switch . --ask"
+
+[tasks.diff]
+description = "Show pending changes (diff against current)"
+run = "nh darwin build . -n -d always"
+
+[tasks.update]
+description = "Update all flake inputs and build"
+run = "nh darwin build . -u"

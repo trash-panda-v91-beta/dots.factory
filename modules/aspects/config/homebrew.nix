@@ -1,10 +1,4 @@
 { inputs, lib, ... }:
-let
-  nixHomebrewTaps = {
-    "homebrew/homebrew-core" = inputs.homebrew-core;
-    "homebrew/homebrew-cask" = inputs.homebrew-cask;
-  };
-in
 {
   dots.homebrew = {
     description = "Homebrew management via nix-homebrew";
@@ -13,6 +7,12 @@ in
 
     darwin =
       { host, config, ... }:
+      let
+        nixHomebrewTaps = {
+          "homebrew/homebrew-core" = inputs.homebrew-core;
+          "homebrew/homebrew-cask" = inputs.homebrew-cask;
+        };
+      in
       {
         nix-homebrew = {
           enable = true;
