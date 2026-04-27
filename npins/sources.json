@@ -145,9 +145,9 @@
       },
       "branch": "main",
       "submodules": false,
-      "revision": "a7760a3a83f7609f742861afb5732210fdc437ed",
-      "url": "https://github.com/zhaofengli/nix-homebrew/archive/a7760a3a83f7609f742861afb5732210fdc437ed.tar.gz",
-      "hash": "sha256-YYftFe8jyfpQI649yfr0E+dqEXE2jznZNcYvy/lKV1U="
+      "revision": "aeb2069920742d0d6570089e8b3b8620050bacf2",
+      "url": "https://github.com/zhaofengli/nix-homebrew/archive/aeb2069920742d0d6570089e8b3b8620050bacf2.tar.gz",
+      "hash": "sha256-WynkkG0hdZ5niYPJUbVg7oMfu8MVwGGzKZ6lKmfa+O8="
     },
     "nixpkgs": {
       "type": "Git",
