@@ -9,5 +9,13 @@
   "lockFileMaintenance": {
     "enabled": true,
     "schedule": ["after 2am and before 3am on monday"]
-  }
+  },
+  "packageRules": [
+    {
+      "description": "Group all mise tool updates into a single PR",
+      "groupName": "mise tools",
+      "matchManagers": ["mise"],
+      "schedule": ["every weekend"]
+    }
+  ]
 }
