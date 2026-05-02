@@ -6,7 +6,7 @@ fnox-env = "https://github.com/jdx/mise-env-fnox"
 
 [tools]
 actionlint = "1.7.12"
-fnox = "1.19.0"
+fnox = "1.23.0"
 hk = "1.40.0"
 pkl = "0.31.1"
 tombi = "0.7.22"
