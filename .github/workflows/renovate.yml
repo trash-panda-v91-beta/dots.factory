@@ -11,7 +11,7 @@ on:
       - .github/workflows/renovate.yml
       - flake.lock
   schedule:
-    - cron: 0 * * * *
+    - cron: 37 6 * * *
   workflow_dispatch:
     inputs:
       dryRun:
