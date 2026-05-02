@@ -6,12 +6,12 @@ fnox-env = "https://github.com/jdx/mise-env-fnox"
 
 [tools]
 actionlint = "1.7.12"
-fnox = "1.19.0"
-hk = "1.40.0"
+fnox = "1.23.0"
+hk = "1.44.2"
 pkl = "0.31.1"
-tombi = "0.7.22"
+tombi = "0.9.26"
 yamlfmt = "0.21.0"
-rumdl = "0.1.66"
+rumdl = "0.1.84"
 yamllint = "1.38.0"
 
 [settings]
