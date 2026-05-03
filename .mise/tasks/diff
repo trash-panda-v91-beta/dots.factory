@@ -7,7 +7,7 @@ host="${HOST_ALIAS:-$(hostname -s)}"
 
 echo "Building for diff '$host' ..."
 if [ "$host" = "cmb" ]; then
-	nh darwin build . -n -d always --override-input corpo path:../dots.corpo
+	nh darwin build . -n -d always -- --override-input corpo path:../dots.corpo
 else
 	nh darwin build . -n -d always
 fi

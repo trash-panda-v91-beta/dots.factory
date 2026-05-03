@@ -7,7 +7,7 @@ host="${HOST_ALIAS:-$(hostname -s)}"
 
 echo "Building configuration for '$host' ..."
 if [ "$host" = "cmb" ]; then
-	nh darwin switch . --ask --override-input corpo path:../dots.corpo
+	nh darwin switch . --ask -- --override-input corpo path:../dots.corpo
 else
 	nh darwin switch . --ask
 fi
