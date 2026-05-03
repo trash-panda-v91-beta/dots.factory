@@ -7,12 +7,7 @@ host="${HOST_ALIAS:-$(hostname -s)}"
 
 echo "Building configuration for '$host' ..."
 if [ "$host" = "cmb" ]; then
-	result=$(NPINS_OVERRIDE_corpo="../dots.corpo" \
-		nix-build default.nix -A "darwinConfigurations.$host.system" \
-		--no-out-link --impure)
+	nh darwin switch . --ask --override-input corpo path:../dots.corpo
 else
-	result=$(nix-build default.nix -A "darwinConfigurations.$host.system" --no-out-link)
+	nh darwin switch . --ask
 fi
-
-echo "Activating ..."
-sudo "$result/sw/bin/darwin-rebuild" activate

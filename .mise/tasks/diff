@@ -7,11 +7,7 @@ host="${HOST_ALIAS:-$(hostname -s)}"
 
 echo "Building for diff '$host' ..."
 if [ "$host" = "cmb" ]; then
-  result=$(NPINS_OVERRIDE_corpo="../dots.corpo" \
-    nix-build default.nix -A "darwinConfigurations.$host.system" \
-    --no-out-link --impure)
+	nh darwin build . -n -d always --override-input corpo path:../dots.corpo
 else
-  result=$(nix-build default.nix -A "darwinConfigurations.$host.system" --no-out-link)
+	nh darwin build . -n -d always
 fi
-
-nix store diff-closures /run/current-system "$result"
