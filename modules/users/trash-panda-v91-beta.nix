@@ -29,7 +29,7 @@
     homeManager = {
       home.file.".ssh/trash-panda-v91-beta.pub".text =
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIH8dDAhRO1eLXGEVLQYi/btYHQtrfWkemcJRIXYEhv/o";
-      programs.git.userEmail = "42897550+trash-panda-v91-beta@users.noreply.github.com";
+      programs.git.settings.user.email = "42897550+trash-panda-v91-beta@users.noreply.github.com";
     };
 
     # den._.user-shell doesn't support nushell on darwin (no programs.nushell option),
