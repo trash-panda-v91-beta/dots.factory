@@ -18,6 +18,13 @@ in
           # on Hydra due to env_shlvl tests requiring exec(2) which is blocked by Nix sandbox on macOS
           # — no binary cache hit exists, forces local compile with tests disabled)
           nushell = prev.nushell.overrideAttrs (_: { doCheck = false; });
+          # luajit_2_0 source in nixpkgs c6d65881 incorrectly omits aarch64-darwin from meta.platforms,
+          # causing ha-mcp → fastmcp → lupa → luajit_2_0 to fail on Apple Silicon (nixpkgs bug)
+          luajit_2_0 = prev.luajit_2_0.overrideAttrs (old: {
+            meta = (old.meta or { }) // {
+              platforms = old.meta.platforms ++ [ "aarch64-darwin" ];
+            };
+          });
           local = {
             koda-nvim = prev.callPackage "${pkgsDir}/koda-nvim" { inherit inputs; };
             obsidian-bases-nvim = prev.callPackage "${pkgsDir}/obsidian-bases-nvim" { inherit inputs; };
