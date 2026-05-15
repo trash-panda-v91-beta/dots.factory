@@ -17,9 +17,19 @@
           programs.mise = {
             enable = true;
             enableNushellIntegration = true;
-            globalConfig.settings = {
-              env_cache = true;
-              env_cache_ttl = "8h";
+            globalConfig = {
+              env = {
+                "_.fnox-env" = {
+                  tools = true;
+                };
+              };
+              plugins = {
+                fnox-env = "https://github.com/jdx/mise-env-fnox";
+              };
+              settings = {
+                env_cache = true;
+                env_cache_ttl = "8h";
+              };
             };
           };
 
