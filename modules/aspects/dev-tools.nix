@@ -29,7 +29,7 @@
             fnox-env = "https://github.com/jdx/mise-env-fnox"
 
             [tools]
-            fnox = "1.23.0"
+            fnox = "1.25.0"
 
             [settings]
             env_cache = true
