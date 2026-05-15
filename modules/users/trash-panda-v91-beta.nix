@@ -23,7 +23,7 @@
       <dots/obsidian>
       <dots/git>
       <dots/runtimes>
-      <dots/k8s>
+      <dots/k8s-homelab>
     ];
 
     homeManager = {
