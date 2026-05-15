@@ -28,6 +28,9 @@
             [plugins]
             fnox-env = "https://github.com/jdx/mise-env-fnox"
 
+            [tools]
+            fnox = "latest"
+
             [settings]
             env_cache = true
             env_cache_ttl = "8h"
