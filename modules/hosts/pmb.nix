@@ -35,7 +35,7 @@
             user = "trash-panda-v91-beta";
             identityFile = "~/.ssh/trash-panda-v91-beta.pub";
             identitiesOnly = true;
-            extraOptions.IdentityAgent = "'~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock'";
+            identityAgent = "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock";
           };
 
           programs.mcp.servers = {
@@ -43,7 +43,7 @@
               disabled = true;
               command = lib.getExe pkgs.ha-mcp;
               env = {
-                HOMEASSISTANT_URL = "https://hass.example.com";
+                HOMEASSISTANT_URL = "{env:HASS_URL}";
                 HOMEASSISTANT_TOKEN = "{env:HASS_TOKEN}";
               };
             };
