@@ -36,7 +36,7 @@
             User = "trash-panda-v91-beta";
             IdentityFile = "~/.ssh/trash-panda-v91-beta.pub";
             IdentitiesOnly = true;
-            IdentityAgent = "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock";
+            IdentityAgent = ''"~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"'';
           };
 
           programs.mcp.servers = {
