@@ -17,11 +17,12 @@
         programs.ssh = {
           enable = true;
           enableDefaultConfig = false;
-          matchBlocks."github.com" = {
-            user = "git";
-            identityFile = "${config.home.homeDirectory}/.ssh/${config.home.username}.pub";
-            identitiesOnly = true;
-            identityAgent = "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock";
+          settings."github.com" = {
+            header = "Host github.com";
+            User = "git";
+            IdentityFile = "${config.home.homeDirectory}/.ssh/${config.home.username}.pub";
+            IdentitiesOnly = true;
+            IdentityAgent = "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock";
           };
         };
       };
