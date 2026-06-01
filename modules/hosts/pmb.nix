@@ -31,11 +31,12 @@
         {
           programs.bun.enable = false;
 
-          programs.ssh.matchBlocks."asc.internal" = {
-            user = "trash-panda-v91-beta";
-            identityFile = "~/.ssh/trash-panda-v91-beta.pub";
-            identitiesOnly = true;
-            identityAgent = "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock";
+          programs.ssh.settings."asc.internal" = {
+            header = "Host asc.internal";
+            User = "trash-panda-v91-beta";
+            IdentityFile = "~/.ssh/trash-panda-v91-beta.pub";
+            IdentitiesOnly = true;
+            IdentityAgent = "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock";
           };
 
           programs.mcp.servers = {
