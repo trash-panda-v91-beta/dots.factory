@@ -57,6 +57,7 @@
           environmentVariables = {
             PROMPT_INDICATOR_VI_INSERT = lib.mkForce "";
             PROMPT_INDICATOR_VI_NORMAL = lib.mkForce "";
+            DOCKER_HOST = "unix://${config.home.homeDirectory}/.colima/default/docker.sock";
           };
           extraLogin = ''
             use std/util "path add"
