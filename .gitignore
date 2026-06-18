@@ -1,6 +1,8 @@
-.claude/
-!.claude/skills/
-!.claude/skills/**
+.claude/*
+!.claude/skills
+.agents/*
+!.agents/skills/
+!.agents/skills/**
 .direnv/
 .env
 .fnox.local.toml
