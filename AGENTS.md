@@ -52,3 +52,7 @@ Use den skill.
 ## Adding packages or new software
 
 Use add-aspect skill.
+
+## Agent skills
+
+This repo's metadata (CONTEXT, ADRs, ticket notes) lives in the **mist vault** under `Coding/dots.factory`. Use the `vault-mist` skill to read or update them. Do not create `docs/adr/` or `CONTEXT.md` in this repo.
