@@ -1,3 +1,8 @@
+---
+name: den
+description: Use when writing den aspects, debugging den framework issues, or working with the aspect-oriented Nix configuration in this repo
+---
+
 # Den — Aspect-Oriented Nix Framework
 
 > Source: <https://den.oeiuwq.com> | <https://github.com/vic/den>

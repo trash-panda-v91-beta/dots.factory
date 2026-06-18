@@ -67,7 +67,8 @@ in
               enableAnalytics = false;
               defaultProvider = lib.mkDefault "anthropic";
               extensions = [ "${piWebAccess}/index.js" "${context7Pi}/context7.js" "${piMcpAdapter}/index.js" ];
-              skills = [ "${piWebAccess}/skills" "${context7Pi}/skills" ];
+              skills = [ "${piWebAccess}/skills" "${context7Pi}/skills" ]
+                ++ map (name: toString (skillsDir + "/${name}.md")) skillNames;
             };
           };
 
