@@ -14,7 +14,7 @@ in
       includes = [ (den._.unfree [ "claude-code" ]) ];
 
       homeManager =
-        { pkgs, ... }:
+        { config, pkgs, ... }:
         let
           superpowers = pkgs.local.superpowers;
           piWebAccess = pkgs.local.pi-web-access;
@@ -61,6 +61,7 @@ in
 
           programs.pi-coding-agent = {
             enable = true;
+            context = ./pi/AGENTS.md;
             settings = {
               theme = "dark";
               enableInstallTelemetry = false;
@@ -76,6 +77,8 @@ in
             enable = true;
             servers.context7.command = lib.getExe pkgs.context7-mcp;
           };
+
+          home.file."${config.programs.pi-coding-agent.configDir}/APPEND_SYSTEM.md".source = ./pi/APPEND_SYSTEM.md;
         };
     };
 }
