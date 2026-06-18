@@ -27,6 +27,7 @@ in
           });
           local = {
             koda-nvim = prev.callPackage "${pkgsDir}/koda-nvim" { inherit inputs; };
+            context7-pi = prev.callPackage "${pkgsDir}/context7-pi" { inherit inputs; };
             obsidian-bases-nvim = prev.callPackage "${pkgsDir}/obsidian-bases-nvim" { inherit inputs; };
             obsidian-minimal-settings-plugin = prev.callPackage "${pkgsDir}/obsidian-minimal-settings-plugin" {
               inherit inputs;
@@ -36,6 +37,8 @@ in
               inherit inputs;
             };
             opencode-nvim = prev.callPackage "${pkgsDir}/opencode-nvim" { inherit inputs; };
+            pi-mcp-adapter = prev.callPackage "${pkgsDir}/pi-mcp-adapter" { inherit inputs; };
+            pi-web-access = prev.callPackage "${pkgsDir}/pi-web-access" { inherit inputs; };
             superpowers = prev.callPackage "${pkgsDir}/superpowers" { inherit inputs; };
             tmux-pane-toggler = prev.callPackage "${pkgsDir}/tmux-pane-toggler" { inherit inputs; };
           };

@@ -17,9 +17,13 @@ in
         { pkgs, ... }:
         let
           superpowers = pkgs.local.superpowers;
+          piWebAccess = pkgs.local.pi-web-access;
+          piMcpAdapter = pkgs.local.pi-mcp-adapter;
+          context7Pi = pkgs.local.context7-pi;
         in
         {
           home.sessionVariables.CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC = 1;
+          home.sessionVariables.PI_SKIP_VERSION_CHECK = 1;
           programs.claude-code = {
             enable = true;
             enableMcpIntegration = true;
@@ -54,6 +58,18 @@ in
               source = skillsDir + "/${name}.md";
             }
           );
+
+          programs.pi-coding-agent = {
+            enable = true;
+            settings = {
+              theme = "dark";
+              enableInstallTelemetry = false;
+              enableAnalytics = false;
+              defaultProvider = lib.mkDefault "anthropic";
+              extensions = [ "${piWebAccess}/index.js" "${context7Pi}/context7.js" "${piMcpAdapter}/index.js" ];
+              skills = [ "${piWebAccess}/skills" "${context7Pi}/skills" ];
+            };
+          };
 
           programs.mcp = {
             enable = true;

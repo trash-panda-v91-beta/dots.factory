@@ -4,9 +4,25 @@
   dots.nixvim._."nixvim-ai".homeManager = { pkgs, lib, ... }: {
     programs.nixvim.plugins = {
       which-key.settings.spec = [
-        { __unkeyed-1 = "<leader>a"; group = "Agent"; icon = ""; mode = [ "n" "v" ]; }
-        { __unkeyed-1 = "<leader>af"; group = "Fix"; icon = ""; }
-        { __unkeyed-1 = "<leader>ag"; group = "Git"; icon = ""; }
+        {
+          __unkeyed-1 = "<leader>a";
+          group = "Agent";
+          icon = "";
+          mode = [
+            "n"
+            "v"
+          ];
+        }
+        {
+          __unkeyed-1 = "<leader>af";
+          group = "Fix";
+          icon = "";
+        }
+        {
+          __unkeyed-1 = "<leader>ag";
+          group = "Git";
+          icon = "";
+        }
       ];
 
       blink-cmp.settings.sources = {
@@ -24,13 +40,47 @@
         enable = true;
         package = pkgs.vimPlugins.codecompanion-nvim;
         lazyLoad.settings = {
-          cmd = [ "CodeCompanion" "CodeCompanionChat" "CodeCompanionActions" "CodeCompanionAdd" "CodeCompanionCLI" ];
+          cmd = [
+            "CodeCompanion"
+            "CodeCompanionChat"
+            "CodeCompanionActions"
+            "CodeCompanionAdd"
+            "CodeCompanionCLI"
+          ];
           ft = [ ];
           keys = [
-            { __unkeyed-1 = "<leader>aa"; __unkeyed-2.__raw = "function() require('codecompanion').toggle_cli() end"; mode = [ "n" "v" ]; desc = "[A]gent toggle"; }
-            { __unkeyed-1 = "<C-a>"; __unkeyed-2.__raw = "function() require('codecompanion').toggle_cli() end"; desc = "Toggle CodeCompanion CLI"; }
-            { __unkeyed-1 = "<leader>ap"; __unkeyed-2.__raw = "function() require('codecompanion').cli({ prompt = true }) end"; mode = [ "n" "v" ]; desc = "[A]gent [P]rompt"; }
-            { __unkeyed-1 = "<leader>at"; __unkeyed-2.__raw = "function() require('codecompanion').cli('#{this}', { focus = false }) end"; mode = [ "n" "v" ]; desc = "[A]gent add con[T]ext"; }
+            {
+              __unkeyed-1 = "<leader>aa";
+              __unkeyed-2.__raw = "function() require('codecompanion').toggle_cli() end";
+              mode = [
+                "n"
+                "v"
+              ];
+              desc = "[A]gent toggle";
+            }
+            {
+              __unkeyed-1 = "<C-a>";
+              __unkeyed-2.__raw = "function() require('codecompanion').toggle_cli() end";
+              desc = "Toggle CodeCompanion CLI";
+            }
+            {
+              __unkeyed-1 = "<leader>ap";
+              __unkeyed-2.__raw = "function() require('codecompanion').cli({ prompt = true }) end";
+              mode = [
+                "n"
+                "v"
+              ];
+              desc = "[A]gent [P]rompt";
+            }
+            {
+              __unkeyed-1 = "<leader>at";
+              __unkeyed-2.__raw = "function() require('codecompanion').cli('#{this}', { focus = false }) end";
+              mode = [
+                "n"
+                "v"
+              ];
+              desc = "[A]gent add con[T]ext";
+            }
             {
               __unkeyed-1 = "<leader>as";
               __unkeyed-2.__raw = ''
@@ -53,9 +103,21 @@
               '';
               desc = "[A]gent [S]witch";
             }
-            { __unkeyed-1 = "<leader>afd"; __unkeyed-2.__raw = "function() require('codecompanion').cli('#{diagnostics} Can you fix these?', { focus = false, submit = true }) end"; desc = "[A]gent [F]ix [D]iagnostics"; }
-            { __unkeyed-1 = "<leader>afe"; __unkeyed-2.__raw = "function() require('codecompanion').cli('#{quickfix} Can you fix these errors?', { focus = false, submit = true }) end"; desc = "[A]gent [F]ix [E]rrors (quickfix)"; }
-            { __unkeyed-1 = "<leader>aft"; __unkeyed-2.__raw = "function() require('codecompanion').cli('#{terminal} Sharing the output from the terminal. Can you fix it?', { focus = false, submit = true }) end"; desc = "[A]gent [F]ix [T]ests"; }
+            {
+              __unkeyed-1 = "<leader>afd";
+              __unkeyed-2.__raw = "function() require('codecompanion').cli('#{diagnostics} Can you fix these?', { focus = false, submit = true }) end";
+              desc = "[A]gent [F]ix [D]iagnostics";
+            }
+            {
+              __unkeyed-1 = "<leader>afe";
+              __unkeyed-2.__raw = "function() require('codecompanion').cli('#{quickfix} Can you fix these errors?', { focus = false, submit = true }) end";
+              desc = "[A]gent [F]ix [E]rrors (quickfix)";
+            }
+            {
+              __unkeyed-1 = "<leader>aft";
+              __unkeyed-2.__raw = "function() require('codecompanion').cli('#{terminal} Sharing the output from the terminal. Can you fix it?', { focus = false, submit = true }) end";
+              desc = "[A]gent [F]ix [T]ests";
+            }
             {
               __unkeyed-1 = "<leader>agc";
               __unkeyed-2.__raw = ''
@@ -76,15 +138,49 @@
         settings = {
           display.chat = {
             window.layout = "buffer";
-            floating_window = { width = 0.9; row = "center"; col = "center"; relative = "editor"; opts = { wrap = false; number = false; relativenumber = false; }; };
+            floating_window = {
+              width = 0.9;
+              row = "center";
+              col = "center";
+              relative = "editor";
+              opts = {
+                wrap = false;
+                number = false;
+                relativenumber = false;
+              };
+            };
           };
           interactions.cli = {
-            agent = "claude_code";
-            agents.claude_code = { cmd = "claude"; args = [ ]; description = "Claude Code CLI"; provider = "terminal"; };
-            agents.opencode = { cmd = "opencode"; args = [ ]; description = "OpenCode CLI"; provider = "terminal"; };
+            agent = "pi";
+            agents.claude_code = {
+              cmd = "claude";
+              args = [ ];
+              description = "Claude Code CLI";
+              provider = "terminal";
+            };
+            agents.opencode = {
+              cmd = "opencode";
+              args = [ ];
+              description = "OpenCode CLI";
+              provider = "terminal";
+            };
+            agents.pi = {
+              cmd = "pi";
+              args = [ ];
+              description = "Pi";
+              provider = "terminal";
+            };
             keymaps = {
-              next_chat = { modes.n = "}"; callback = "keymaps.next_chat"; description = "[Nav] Next interaction"; };
-              previous_chat = { modes.n = "{"; callback = "keymaps.previous_chat"; description = "[Nav] Previous interaction"; };
+              next_chat = {
+                modes.n = "}";
+                callback = "keymaps.next_chat";
+                description = "[Nav] Next interaction";
+              };
+              previous_chat = {
+                modes.n = "{";
+                callback = "keymaps.previous_chat";
+                description = "[Nav] Previous interaction";
+              };
             };
           };
         };
