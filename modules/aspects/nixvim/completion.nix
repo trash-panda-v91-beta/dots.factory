@@ -152,10 +152,10 @@
 
           providers = {
             obsidian = {
-              name = "obsidian";
-              module = "obsidian.completion.sources.blink.refs";
-              async = true;
-            };
+                name = "obsidian";
+                module = "obsidian.completion.sources.blink.refs";
+                async = true;
+              };
             obsidian_tags = {
               name = "obsidian_tags";
               module = "obsidian.completion.sources.blink.tags";
