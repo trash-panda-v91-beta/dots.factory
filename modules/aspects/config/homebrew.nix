@@ -24,7 +24,7 @@
           enable = true;
           greedyCasks = true;
           onActivation = {
-            cleanup = "zap";
+            # cleanup = "zap";
             autoUpdate = false;
             upgrade = true;
           };
