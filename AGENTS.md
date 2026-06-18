@@ -30,9 +30,4 @@ mise run fix      # formatters
 - **Adding a package or new software** → use the `add-aspect` skill
 - **Den / aspect authoring** → use the `den` skill
 - **Nixvim plugin with an external counterpart** → goes in that concern's aspect (e.g. gitsigns → `git.nix`), not in `nixvim/`
-- **Don't** create `docs/adr/` or `CONTEXT.md` here — see Agent skills below
-
-## Agent skills
-
-Repo metadata (CONTEXT, ADRs, ticket notes) lives in the **mist vault** under
-`Coding/dots.factory`. Use the `vault-mist` skill to read or update them.
+- **Don't** create `docs/adr/` or `CONTEXT.md` here — repo metadata (CONTEXT, ADRs, ticket notes) is kept out-of-tree by the maintainer's personal workflow
