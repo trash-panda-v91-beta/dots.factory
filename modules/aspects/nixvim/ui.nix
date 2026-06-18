@@ -7,7 +7,7 @@
       programs.nixvim.plugins = {
         web-devicons.enable = true;
 
-        tiny-glimmer-nvim = {
+        tiny-glimmer = {
           enable = true;
           lazyLoad.settings.event = "DeferredUIEnter";
           settings = {
