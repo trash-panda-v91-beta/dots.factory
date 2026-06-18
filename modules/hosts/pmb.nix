@@ -63,15 +63,6 @@
               path = "~/vaults/mist";
             }
           ];
-          programs.nixvim.plugins.obsidian-bases-nvim = {
-            enable = true;
-            vaults = [
-              {
-                name = "mist";
-                path = "vaults/mist";
-              }
-            ];
-          };
 
           programs.sesh.settings.session = [
             {
