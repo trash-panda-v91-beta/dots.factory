@@ -1,0 +1,83 @@
+{
+  "$schema": "https://raw.githubusercontent.com/earendil-works/pi/main/packages/coding-agent/src/modes/interactive/theme/theme-schema.json",
+  "name": "cyberdream",
+  "vars": {
+    "bg":       "#16181a",
+    "bgAlt":    "#1e2124",
+    "bgSelect": "#3c4048",
+    "fg":       "#ffffff",
+    "comment":  "#7b8496",
+    "red":      "#ff6e5e",
+    "green":    "#5eff6c",
+    "yellow":   "#f1ff5e",
+    "blue":     "#5ea1ff",
+    "magenta":  "#bd5eff",
+    "cyan":     "#5ef1ff",
+    "orange":   "#ffbd5e",
+    "pink":     "#ff5ef1"
+  },
+  "colors": {
+    "accent":             "cyan",
+    "border":             "blue",
+    "borderAccent":       "cyan",
+    "borderMuted":        "bgSelect",
+    "success":            "green",
+    "error":              "red",
+    "warning":            "yellow",
+    "muted":              "comment",
+    "dim":                "bgSelect",
+    "text":               "fg",
+    "thinkingText":       "comment",
+
+    "selectedBg":         "bgSelect",
+    "userMessageBg":      "bgAlt",
+    "userMessageText":    "fg",
+    "customMessageBg":    "bgAlt",
+    "customMessageText":  "fg",
+    "customMessageLabel": "magenta",
+    "toolPendingBg":      "bg",
+    "toolSuccessBg":      "#1a2420",
+    "toolErrorBg":        "#241a1a",
+    "toolTitle":          "fg",
+    "toolOutput":         "comment",
+
+    "mdHeading":          "orange",
+    "mdLink":             "blue",
+    "mdLinkUrl":          "comment",
+    "mdCode":             "cyan",
+    "mdCodeBlock":        "",
+    "mdCodeBlockBorder":  "comment",
+    "mdQuote":            "comment",
+    "mdQuoteBorder":      "comment",
+    "mdHr":               "bgSelect",
+    "mdListBullet":       "cyan",
+
+    "toolDiffAdded":      "green",
+    "toolDiffRemoved":    "red",
+    "toolDiffContext":    "comment",
+
+    "syntaxComment":      "comment",
+    "syntaxKeyword":      "magenta",
+    "syntaxFunction":     "blue",
+    "syntaxVariable":     "cyan",
+    "syntaxString":       "green",
+    "syntaxNumber":       "orange",
+    "syntaxType":         "yellow",
+    "syntaxOperator":     "fg",
+    "syntaxPunctuation":  "comment",
+
+    "thinkingOff":        "bgSelect",
+    "thinkingMinimal":    "comment",
+    "thinkingLow":        "blue",
+    "thinkingMedium":     "cyan",
+    "thinkingHigh":       "magenta",
+    "thinkingXhigh":      "pink",
+
+    "bashMode":           "green"
+  },
+  "export": {
+    "pageBg": "#16181a",
+    "cardBg": "#1e2124",
+    "infoBg":  "#3c4048"
+  }
+}
