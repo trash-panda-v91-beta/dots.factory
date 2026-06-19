@@ -1,3 +1,7 @@
+---
+description: Add a package or new software concern (aspect) to dots.factory. Use when installing new software, adding a CLI tool, creating a new Nix aspect file, or wiring up home-manager packages in this repo.
+---
+
 # Add Aspect — dots.factory
 
 Add a package or new software concern to dots.factory.

@@ -90,6 +90,7 @@
             set -as terminal-overrides ',*:Smulx=\E[4::%p1%dm'
             set -as terminal-overrides ',*:Setulc=\E[58::2::::%p1%{65536}%/%d::%p1%{256}%/%{255}%&%d::%p1%{255}%&%d%;m'
             set -g extended-keys on
+            set -g extended-keys-format csi-u
             set-window-option -g pane-base-index 1
             set-option -g renumber-windows on
             set-option -g detach-on-destroy off
