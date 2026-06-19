@@ -9,7 +9,7 @@ in
       description = "Cyberdream Dark color scheme for all programs";
 
       homeManager =
-        { pkgs, ... }:
+        { config, pkgs, lib, ... }:
         {
           home.packages = [ pkgs.jetbrains-mono ];
 
@@ -341,6 +341,10 @@ in
             themes.cyberdream = riceDir + "/programs/opencode/cyberdream.json";
             tui.theme = "cyberdream";
           };
+
+          programs.pi-coding-agent.settings.theme = lib.mkForce "cyberdream";
+          home.file."${config.programs.pi-coding-agent.configDir}/themes/cyberdream.json".source =
+            riceDir + "/programs/pi/cyberdream.json";
 
           programs.yazi.theme = {
             manager = {
