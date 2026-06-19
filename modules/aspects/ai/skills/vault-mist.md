@@ -1,137 +1,148 @@
 ---
 name: vault-mist
-description: Search, create, and manage personal repo notes (CONTEXT, ADRs, tasks/issues) in the mist Obsidian vault. Use for personal repos like dots.factory, nebular-grid. Works through obsidian-cli — Obsidian must be running.
+description: Search, create, and manage personal notes in the mist Obsidian vault. Use for personal repos (dots.factory, nebular-grid), journal entries, evergreen notes, references, and clippings. Works through obsidian-cli — Obsidian must be running.
 ---
 
-# Mist Vault — Personal Coding
+# Mist Vault — Personal
 
-The mist vault is the **canonical store for per-repo metadata** of personal projects: CONTEXT, ADRs, tasks, investigation notes. The repo itself stays clean — no `docs/adr/` clutter.
+The mist vault follows [Steph Ango's vault approach](https://stephango.com/vault): bottom-up, minimal folders, emergent structure through links and properties rather than hierarchy.
 
 ## Vault location
 
-`~/vaults/mist`
+`$VAULTS_DIR/mist`
 
-## Structure
+## Personal rules
 
-Two folders at vault root:
+- **Avoid folders for organisation** — most notes live in the vault root
+- **Avoid nested sub-folders** entirely
+- **Use internal links profusely** — link the first mention of everything; unresolved links are fine (they're breadcrumbs)
+- **Always pluralise tags** — never `book`, always `books`
+- **Use `YYYY-MM-DD` dates** everywhere (properties, filenames, note titles)
+- **Use the 7-point rating scale** for anything rated (see below)
+- **Categories as a property**, not folders — Bases views surface them
+
+## Folder structure
 
 ```
-Coding/
-  dots.factory.md                              # main repo note (CONTEXT lives here)
-  dots.factory - ADR 001 - use den.md          # ADRs as standalone notes
-  dots.factory - ADR 002 - aspect placement.md
-  nebular-grid.md
-  nebular-grid - ADR 001 - tauri.md
-
-Tasks/
-  2026-06-19 1430 dots.factory - add pi agent.md   # task/feature/bug notes
-  2026-06-19 1445 dots.factory - fix zsh startup.md
+$VAULTS_DIR/mist/
+  <most notes>.md          # root: personal writing, journal, evergreen, coding notes
+  References/              # things outside your world: books, movies, places, people
+  Clippings/               # things others wrote: essays, articles (via Web Clipper)
+  Attachments/             # images, PDFs, audio, video — admin, not navigated
+  Daily/                   # daily notes YYYY-MM-DD.md — linked to, not written in
+  Templates/               # templates — admin
 ```
 
-- **`Coding/`** — CONTEXT and ADR notes. Organisation comes from frontmatter, not subfolders.
-- **`Tasks/`** — one note per task/issue/feature, managed by the TaskNotes plugin. Filename pattern: `YYYY-MM-DD HHmm <project> - <slug>.md`.
+Two optional organisational folders (notes here would normally live in root):
+- **Categories/** — top-level Bases overviews per category (Books, Movies, etc.)
+- **Notes/** — example or onboarding notes
 
-## Frontmatter convention
+## Root vs References vs Clippings
 
-### Coding/ notes (CONTEXT and ADRs)
+| Note type | Where |
+|---|---|
+| Personal journal, journal fragments | root |
+| Evergreen notes, essays, ideas | root |
+| Coding: CONTEXT, ADRs, project notes | root |
+| Book, movie, place, person, podcast | `References/` — named after the title/name |
+| Article or essay written by someone else | `Clippings/` |
+| Web-clipped page | `Clippings/` |
+
+## Coding notes (CONTEXT, ADRs, issues)
+
+Project metadata lives in root, not in a `Coding/` subfolder. The main note name equals the repo name.
+
+```
+dots.factory.md            # CONTEXT note
+dots.factory - ADR 001 - use den.md
+dots.factory - add pi agent.md
+nebular-grid.md
+```
+
+### Frontmatter for coding notes
 
 ```yaml
 ---
-project: dots.factory          # repo name (required)
-type: context | adr            # what kind of note (required)
-adr-number: 001                # for type=adr only
+project: dots.factory
+type: context | adr | issue
+adr-number: 001            # type=adr only
+issue: 42                  # type=issue only, GitHub issue number
 status: active | archived
-tags: [coding, project/dots.factory]
+tags: [coding, projects]
+date: 2025-06-19
 ---
 ```
 
-### Tasks/ notes (TaskNotes plugin)
+## Properties convention
 
-```yaml
----
-title: dots.factory - Add pi agent
-aliases:
-  - dots.factory - Add pi agent
-tags:
-  - task
-  - project/dots.factory
-type: Task | Feature | Bug
-status: open | in-progress | done | cancelled
-priority: 1 - Critical | 2 - High | 3 - Medium | 4 - Low
-created: 2026-06-19
-due:
-scheduled:
-contexts:
-  - "[[dots.factory]]"
-projects: []
-project: "[[dots.factory]]"    # wikilink to project CONTEXT note
-issue:                         # GitHub issue number if linked
-id: 2026-06-19 1430 dots.factory - add pi agent
----
-```
+- Short names: `start` not `start-date`, `rating` not `my-rating`
+- Default to `list` type if a property might ever hold more than one value
+- Reuse property names across categories (`genre` works for books, movies, shows)
+- Templates should be composable (e.g. `Person` + `Author` on the same note)
 
-Key rules:
-- `tags` must include `task` (TaskNotes detection) and `project/<name>` (for filtering)
-- `title` and `aliases` are identical — both required for TaskNotes to display correctly
-- `project` is a wikilink to the project's CONTEXT note in `Coding/` — enables backlinks and Bases queries
-- `contexts` mirrors the same link for TaskNotes' own context filtering
+## 7-point rating scale
 
-## Authority
+Used on any note with a `rating` property (integer 1–7):
 
-- **mist vault `Tasks/`** is authoritative for: task status, priority, scheduling (vault-native tracking)
-- **mist vault `Coding/`** is authoritative for: CONTEXT, ADRs, decisions
-- **GitHub Issues** (optional): link via `issue:` frontmatter field if a task has a corresponding GH issue
+| Rating | Label | Meaning |
+|---|---|---|
+| 7 | Perfect | Life-changing, go out of your way |
+| 6 | Excellent | Worth repeating |
+| 5 | Good | Enjoyable, no extra effort needed |
+| 4 | Passable | Works in a pinch |
+| 3 | Bad | Avoid if you can |
+| 2 | Atrocious | Actively avoid |
+| 1 | Evil | Life-changing in a bad way |
+
+## Daily notes
+
+Stored in `Daily/YYYY-MM-DD.md`. Used as anchor points linked from other notes — not written in directly. Journal fragments are individual notes in root, named `YYYY-MM-DD HHmm optional-title.md`, created with Obsidian's unique note hotkey.
 
 ## Prerequisite
 
 `obsidian-cli` requires Obsidian to be running. If commands fail with "unable to find Obsidian", remind the user to open Obsidian first.
 
+Always target the mist vault explicitly when nil might also be open:
+
+```bash
+obsidian vault="mist" <command>
+```
+
 ## Workflows
 
-### Find the project's main note (CONTEXT)
-
-The main note name equals the repo name (e.g. `dots.factory`):
+### Find the CONTEXT note for a repo
 
 ```bash
-obsidian-cli vault=mist read file="dots.factory"
+obsidian vault="mist" read file="dots.factory"
 ```
 
-### List all tasks for a project
+Or by searching:
 
 ```bash
-obsidian-cli vault=mist search query="project/dots.factory" path=Tasks
-# or by filename pattern:
-ls ~/vaults/mist/Tasks/ | grep "dots.factory"
-```
-
-### List open tasks for a project
-
-```bash
-obsidian-cli vault=mist search query="project/dots.factory status: open" path=Tasks
+obsidian vault="mist" search query="project: dots.factory"
 ```
 
 ### List all ADRs for a repo
 
 ```bash
-obsidian-cli search:context query='project: dots.factory' path=Coding | grep "type: adr"
-# Or by name pattern (faster):
-ls ~/vaults/mist/Coding/ | grep "^dots.factory - ADR"
+ls $VAULTS_DIR/mist/ | grep "^dots.factory - ADR"
 ```
 
 ### Create a new ADR
 
 ```bash
-# Next ADR number
-ls ~/vaults/mist/Coding/ | grep "^dots.factory - ADR" | sort -V | tail -1
+# Check next ADR number
+ls $VAULTS_DIR/mist/ | grep "^dots.factory - ADR" | sort -V | tail -1
 
 # Create the file
-cat > "$HOME/vaults/mist/Coding/dots.factory - ADR 003 - flake-parts.md" <<'EOF'
+cat > "$VAULTS_DIR/mist/dots.factory - ADR 003 - flake-parts.md" <<'EOF'
 ---
 project: dots.factory
 type: adr
 adr-number: 003
 status: active
-tags: [coding, project/dots.factory, adr]
+tags: [coding, projects, adrs]
+date: YYYY-MM-DD
 ---
 
 # ADR 003 — Flake Parts
@@ -153,66 +164,53 @@ tags: [coding, project/dots.factory, adr]
 EOF
 ```
 
-### Create a new task
-
-Filename: `YYYY-MM-DD HHmm <project> - <slug>.md` under `Tasks/`.
-
-```bash
-DATESTAMP=$(date +"%Y-%m-%d %H%M")
-cat > "$HOME/vaults/mist/Tasks/${DATESTAMP} dots.factory - add-pi-agent.md" <<'EOF'
----
-title: dots.factory - Add pi agent
-aliases:
-  - dots.factory - Add pi agent
-tags:
-  - task
-  - project/dots.factory
-type: Feature
-status: open
-priority: 3 - Medium
-created: 2026-06-19
-due:
-scheduled:
-contexts:
-  - "[[dots.factory]]"
-projects: []
-project: "[[dots.factory]]"
-issue:
-id: 2026-06-19 1430 dots.factory - add-pi-agent
----
-
-## Description
-
-...
-
-## Acceptance Criteria
-
-- [ ] ...
-EOF
-```
-
-If there's a linked GitHub issue, fetch it first and populate `issue:` and the description:
+### Start notes for a GitHub issue
 
 ```bash
 gh issue view 42 --repo trash-panda-v91-beta/dots.factory
 ```
 
-### Find related notes (backlinks)
+Then create `$VAULTS_DIR/mist/dots.factory - <issue-slug>.md`:
 
-```bash
-obsidian-cli backlinks file="dots.factory"
+```markdown
+---
+project: dots.factory
+type: issue
+issue: 42
+status: active
+tags: [coding, projects, issues]
+date: YYYY-MM-DD
+---
+
+# dots.factory#42 — <title>
+
+**GitHub**: [#42](https://github.com/trash-panda-v91-beta/dots.factory/issues/42)
+
+## Investigation
+...
 ```
 
-### Search tasks by keyword
+### Search investigation notes for a keyword
 
 ```bash
-obsidian-cli vault=mist search query='pi agent' path=Tasks
+obsidian vault="mist" search query="deadlock"
+```
+
+### Find backlinks to a note
+
+```bash
+obsidian vault="mist" backlinks file="dots.factory"
 ```
 
 ### When a skill asks for ADRs / CONTEXT for the current repo
 
-1. Identify the repo from `git remote -v` or `basename "$(git rev-parse --show-toplevel)"`
-2. Read `Coding/<repo-name>.md` for CONTEXT
-3. Search `Coding/` for files matching `<repo-name> - ADR ` for the ADR set
+1. Identify the repo: `basename "$(git rev-parse --show-toplevel)"`
+2. Read `$VAULTS_DIR/mist/<repo-name>.md` for CONTEXT
+3. Check `ls $VAULTS_DIR/mist/ | grep "^<repo-name> - ADR"` for ADRs
 
-If neither exists, the project hasn't been onboarded — offer to create the CONTEXT note.
+If neither exists, the project hasn't been onboarded — offer to create the CONTEXT note in root.
+
+## Authority
+
+- **GitHub Issues** — authoritative for: status, assignee, labels, milestones
+- **mist vault** — authoritative for: CONTEXT, ADRs, investigation notes, decisions, links, personal notes

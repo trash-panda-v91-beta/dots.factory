@@ -31,8 +31,8 @@ basename "$(git rev-parse --show-toplevel)"
 ```
 
 Decision rule:
-- Remote contains `github.concur.com` (or any internal SAP host) → **nil vault** (`~/SAPDevelop/vaults/nil`). See `vault-nil` skill.
-- Otherwise (personal `github.com`, no remote, etc.) → **mist vault** (`~/vaults/mist`). See `vault-mist` skill.
+- Remote contains `github.concur.com` (or any internal SAP host) → **nil vault** (`$VAULTS_DIR/nil`). See `vault-nil` skill.
+- Otherwise (personal `github.com`, no remote, etc.) → **mist vault** (`$VAULTS_DIR/mist`). See `vault-mist` skill.
 
 The user can override the choice.
 
