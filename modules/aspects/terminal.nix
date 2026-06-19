@@ -115,7 +115,7 @@
 
             # sesh integration
             bind -n M-p run-shell "sesh last"
-            bind -n M-s run-shell "sesh connect $(sesh list -i | fzf --ansi --tmux bottom,70%,40% --style minimal)"
+            bind -n M-s display-popup -h 60% -w 35% -T " 󱘲 Sessions " -E "sesh picker -i"
             set -g detach-on-destroy off
           '';
         };
