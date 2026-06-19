@@ -1,11 +1,11 @@
 ---
 name: vault-mist
-description: Search, create, and manage personal repo notes (CONTEXT, ADRs, issues, investigations) in the mist Obsidian vault. Use for personal repos like dots.factory, nebular-grid. Works through obsidian-cli — Obsidian must be running.
+description: Search, create, and manage personal repo notes (CONTEXT, ADRs, tasks/issues) in the mist Obsidian vault. Use for personal repos like dots.factory, nebular-grid. Works through obsidian-cli — Obsidian must be running.
 ---
 
 # Mist Vault — Personal Coding
 
-The mist vault is the **canonical store for per-repo metadata** of personal projects: CONTEXT, ADRs, ticket enrichment, investigation notes. The repo itself stays clean — no `docs/adr/` clutter.
+The mist vault is the **canonical store for per-repo metadata** of personal projects: CONTEXT, ADRs, tasks, investigation notes. The repo itself stays clean — no `docs/adr/` clutter.
 
 ## Vault location
 
@@ -13,39 +13,74 @@ The mist vault is the **canonical store for per-repo metadata** of personal proj
 
 ## Structure
 
-All coding-related notes live in **`Coding/`** at the vault root, flat:
+Two folders at vault root:
 
 ```
 Coding/
   dots.factory.md                              # main repo note (CONTEXT lives here)
   dots.factory - ADR 001 - use den.md          # ADRs as standalone notes
   dots.factory - ADR 002 - aspect placement.md
-  dots.factory - add pi agent.md               # issue/feature notes
   nebular-grid.md
   nebular-grid - ADR 001 - tauri.md
+
+Tasks/
+  2026-06-19 1430 dots.factory - add pi agent.md   # task/feature/bug notes
+  2026-06-19 1445 dots.factory - fix zsh startup.md
 ```
 
-Organization comes from **frontmatter**, not folders.
+- **`Coding/`** — CONTEXT and ADR notes. Organisation comes from frontmatter, not subfolders.
+- **`Tasks/`** — one note per task/issue/feature, managed by the TaskNotes plugin. Filename pattern: `YYYY-MM-DD HHmm <project> - <slug>.md`.
 
 ## Frontmatter convention
 
-Every note in `Coding/` has:
+### Coding/ notes (CONTEXT and ADRs)
 
 ```yaml
 ---
 project: dots.factory          # repo name (required)
-type: context | adr | issue    # what kind of note (required)
+type: context | adr            # what kind of note (required)
 adr-number: 001                # for type=adr only
-issue: 42                      # GitHub issue number, for type=issue
-status: active | archived      # optional
+status: active | archived
 tags: [coding, project/dots.factory]
 ---
 ```
 
+### Tasks/ notes (TaskNotes plugin)
+
+```yaml
+---
+title: dots.factory - Add pi agent
+aliases:
+  - dots.factory - Add pi agent
+tags:
+  - task
+  - project/dots.factory
+type: Task | Feature | Bug
+status: open | in-progress | done | cancelled
+priority: 1 - Critical | 2 - High | 3 - Medium | 4 - Low
+created: 2026-06-19
+due:
+scheduled:
+contexts:
+  - "[[dots.factory]]"
+projects: []
+project: "[[dots.factory]]"    # wikilink to project CONTEXT note
+issue:                         # GitHub issue number if linked
+id: 2026-06-19 1430 dots.factory - add pi agent
+---
+```
+
+Key rules:
+- `tags` must include `task` (TaskNotes detection) and `project/<name>` (for filtering)
+- `title` and `aliases` are identical — both required for TaskNotes to display correctly
+- `project` is a wikilink to the project's CONTEXT note in `Coding/` — enables backlinks and Bases queries
+- `contexts` mirrors the same link for TaskNotes' own context filtering
+
 ## Authority
 
-- **GitHub Issues** is authoritative for: status, assignee, labels, milestones
-- **mist vault** is authoritative for: CONTEXT, ADRs, investigation notes, decisions, links
+- **mist vault `Tasks/`** is authoritative for: task status, priority, scheduling (vault-native tracking)
+- **mist vault `Coding/`** is authoritative for: CONTEXT, ADRs, decisions
+- **GitHub Issues** (optional): link via `issue:` frontmatter field if a task has a corresponding GH issue
 
 ## Prerequisite
 
@@ -58,9 +93,21 @@ tags: [coding, project/dots.factory]
 The main note name equals the repo name (e.g. `dots.factory`):
 
 ```bash
-# Read the CONTEXT note
-obsidian-cli property:read name=type file="dots.factory"
-obsidian-cli search query="project: dots.factory" path=Coding
+obsidian-cli vault=mist read file="dots.factory"
+```
+
+### List all tasks for a project
+
+```bash
+obsidian-cli vault=mist search query="project/dots.factory" path=Tasks
+# or by filename pattern:
+ls ~/vaults/mist/Tasks/ | grep "dots.factory"
+```
+
+### List open tasks for a project
+
+```bash
+obsidian-cli vault=mist search query="project/dots.factory status: open" path=Tasks
 ```
 
 ### List all ADRs for a repo
@@ -106,29 +153,48 @@ tags: [coding, project/dots.factory, adr]
 EOF
 ```
 
-### Start notes for a new GitHub issue
+### Create a new task
+
+Filename: `YYYY-MM-DD HHmm <project> - <slug>.md` under `Tasks/`.
+
+```bash
+DATESTAMP=$(date +"%Y-%m-%d %H%M")
+cat > "$HOME/vaults/mist/Tasks/${DATESTAMP} dots.factory - add-pi-agent.md" <<'EOF'
+---
+title: dots.factory - Add pi agent
+aliases:
+  - dots.factory - Add pi agent
+tags:
+  - task
+  - project/dots.factory
+type: Feature
+status: open
+priority: 3 - Medium
+created: 2026-06-19
+due:
+scheduled:
+contexts:
+  - "[[dots.factory]]"
+projects: []
+project: "[[dots.factory]]"
+issue:
+id: 2026-06-19 1430 dots.factory - add-pi-agent
+---
+
+## Description
+
+...
+
+## Acceptance Criteria
+
+- [ ] ...
+EOF
+```
+
+If there's a linked GitHub issue, fetch it first and populate `issue:` and the description:
 
 ```bash
 gh issue view 42 --repo trash-panda-v91-beta/dots.factory
-```
-
-Then create `Coding/dots.factory - <issue-slug>.md`:
-
-```markdown
----
-project: dots.factory
-type: issue
-issue: 42
-status: active
-tags: [coding, project/dots.factory, issue]
----
-
-# dots.factory#42 — <title>
-
-**GitHub**: [#42](https://github.com/trash-panda-v91-beta/dots.factory/issues/42)
-
-## Investigation
-...
 ```
 
 ### Find related notes (backlinks)
@@ -137,10 +203,10 @@ tags: [coding, project/dots.factory, issue]
 obsidian-cli backlinks file="dots.factory"
 ```
 
-### Search investigation notes for a keyword
+### Search tasks by keyword
 
 ```bash
-obsidian-cli search:context query='deadlock' path=Coding
+obsidian-cli vault=mist search query='pi agent' path=Tasks
 ```
 
 ### When a skill asks for ADRs / CONTEXT for the current repo
