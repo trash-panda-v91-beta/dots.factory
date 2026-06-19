@@ -3,7 +3,7 @@ name: domain-modeling
 description: Build and sharpen a project's domain model. Use when the user wants to pin down domain terminology or a ubiquitous language, record an architectural decision, or when another skill needs to maintain the domain model.
 ---
 
-> **Per-repo context lives in the Obsidian vault, not the repo.** Use the `vault-mist` skill (personal repos) or `vault-nil` skill (CMB work repos) to read/write CONTEXT and ADRs in `Coding/<project>.md` and `Coding/<project> - ADR NNN - *.md`. If the project has no vault note yet, run `/setup-skills` first. References below to `CONTEXT.md` / `docs/adr/` mean the vault equivalents.
+> **Per-repo context lives in the Obsidian vault, not the repo.** Use the `vault-mist` skill (personal repos) or `vault-nil` skill (work/CMB repos) to read/write context and ADRs in `Coding/<project>.md` and `Coding/<project> - ADR NNN - *.md`. If the project has no vault note yet, run `/setup-skills` first. In-repo `CONTEXT.md` / `docs/adr/` files are fallbacks only — prefer the vault.
 
 # Domain Modeling
 
@@ -59,11 +59,11 @@ When domain relationships are being discussed, stress-test them with specific sc
 
 When the user states how something works, check whether the code agrees. If you find a contradiction, surface it: "Your code cancels entire Orders, but you just said partial cancellation is possible — which is right?"
 
-### Update CONTEXT.md inline
+### Update the vault context inline
 
-When a term is resolved, update `CONTEXT.md` right there. Don't batch these up — capture them as they happen. Use the format in [CONTEXT-FORMAT.md](./CONTEXT-FORMAT.md).
+When a term is resolved, update the project note in the vault right there (fall back to `CONTEXT.md` in-repo only if the vault is unavailable). Don't batch these up — capture them as they happen. Use the format in [CONTEXT-FORMAT.md](./CONTEXT-FORMAT.md).
 
-`CONTEXT.md` should be totally devoid of implementation details. Do not treat `CONTEXT.md` as a spec, a scratch pad, or a repository for implementation decisions. It is a glossary and nothing else.
+The context note should be totally devoid of implementation details. Do not treat it as a spec, a scratch pad, or a repository for implementation decisions. It is a glossary and nothing else.
 
 ### Offer ADRs sparingly
 
