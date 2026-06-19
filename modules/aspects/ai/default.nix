@@ -20,6 +20,7 @@ in
           piWebAccess = pkgs.local.pi-web-access;
           piMcpAdapter = pkgs.local.pi-mcp-adapter;
           context7Pi = pkgs.local.context7-pi;
+          piLsp = pkgs.local.pi-lsp;
         in
         {
           home.sessionVariables.CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC = 1;
@@ -67,7 +68,12 @@ in
               enableInstallTelemetry = false;
               enableAnalytics = false;
               defaultProvider = lib.mkDefault "anthropic";
-              extensions = [ "${piWebAccess}/index.js" "${context7Pi}/context7.js" "${piMcpAdapter}/index.js" ];
+              extensions = [
+                "${piWebAccess}/index.js"
+                "${context7Pi}/context7.js"
+                "${piMcpAdapter}/index.js"
+                "${piLsp}/pi-lsp.js"
+              ];
               skills = [ "${piWebAccess}/skills" "${context7Pi}/skills" ]
                 ++ map (name: toString (skillsDir + "/${name}.md")) skillNames;
             };
@@ -80,6 +86,59 @@ in
           };
 
           home.file."${config.programs.pi-coding-agent.configDir}/APPEND_SYSTEM.md".source = ./pi/APPEND_SYSTEM.md;
+
+          home.file."${config.programs.pi-coding-agent.configDir}/lsp.json".text = builtins.toJSON {
+            servers = {
+              biome = {
+                command = [ "biome" "lsp-proxy" ];
+                extensions = [
+                  ".astro" ".css" ".graphql" ".gql" ".html"
+                  ".js" ".jsx" ".json" ".jsonc"
+                  ".ts" ".tsx" ".vue"
+                ];
+              };
+              ts_ls = {
+                command = [ "typescript-language-server" "--stdio" ];
+                extensions = [ ".ts" ".tsx" ".js" ".jsx" ".mts" ".cts" ];
+              };
+              ruff = {
+                command = [ "ruff" "server" ];
+                extensions = [ ".py" ".pyi" ];
+              };
+              ty = {
+                command = [ "ty" "server" ];
+                extensions = [ ".py" ".pyi" ];
+              };
+              bashls = {
+                command = [ "bash-language-server" "start" ];
+                extensions = [ ".sh" ".bash" ];
+              };
+              nixd = {
+                command = [ "nixd" ];
+                extensions = [ ".nix" ];
+              };
+              gopls = {
+                command = [ "gopls" ];
+                extensions = [ ".go" ];
+              };
+              jsonls = {
+                command = [ "vscode-json-language-server" "--stdio" ];
+                extensions = [ ".json" ".jsonc" ];
+              };
+              yamlls = {
+                command = [ "yaml-language-server" "--stdio" ];
+                extensions = [ ".yaml" ".yml" ];
+              };
+              lua_ls = {
+                command = [ "lua-language-server" ];
+                extensions = [ ".lua" ];
+              };
+              harper_ls = {
+                command = [ "harper-ls" "--stdio" ];
+                extensions = [ ".md" ".txt" ".typ" ];
+              };
+            };
+          };
         };
     };
 }
