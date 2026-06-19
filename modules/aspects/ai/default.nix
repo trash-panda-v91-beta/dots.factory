@@ -137,6 +137,14 @@ in
                 command = [ "harper-ls" "--stdio" ];
                 extensions = [ ".md" ".txt" ".typ" ];
               };
+              rumdl = {
+                command = [ "rumdl" "server" ];
+                extensions = [ ".md" ];
+              };
+              tombi = {
+                command = [ "tombi" "lsp" ];
+                extensions = [ ".toml" ];
+              };
             };
           };
         };
