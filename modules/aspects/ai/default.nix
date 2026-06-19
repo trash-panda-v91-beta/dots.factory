@@ -76,6 +76,7 @@ in
           programs.mcp = {
             enable = true;
             servers.context7.command = lib.getExe pkgs.context7-mcp;
+            servers.aws-knowledge-mcp-server.url = "https://knowledge-mcp.global.api.aws";
           };
 
           home.file."${config.programs.pi-coding-agent.configDir}/APPEND_SYSTEM.md".source = ./pi/APPEND_SYSTEM.md;
