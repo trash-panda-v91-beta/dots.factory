@@ -55,6 +55,8 @@
             };
           };
 
+          home.sessionVariables.VAULTS_DIR = "$HOME/vaults";
+
           programs.obsidian.vaults.mist.target = "vaults/mist";
 
           programs.nixvim.plugins.obsidian.settings.workspaces = [

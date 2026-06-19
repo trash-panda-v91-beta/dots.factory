@@ -32,7 +32,7 @@ basename "$(git rev-parse --show-toplevel)"
 
 Decision rule:
 - Remote contains `corp-github.example.com` (or any internal corp host) → **nil vault** (`$VAULTS_DIR/nil`). See `vault-nil` skill.
-- Otherwise (personal `github.com`, no remote, etc.) → **mist vault** (`~/vaults/mist`). See `vault-mist` skill.
+- Otherwise (personal `github.com`, no remote, etc.) → **mist vault** (`$VAULTS_DIR/mist`). See `vault-mist` skill.
 
 The user can override the choice.
 
