@@ -124,7 +124,7 @@
 
               search = {
                 force = true;
-                default = "startpage";
+                default = "Startpage";
                 engines = {
                   "Startpage" = {
                     urls = [
