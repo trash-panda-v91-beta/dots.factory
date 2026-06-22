@@ -26,15 +26,15 @@ obsidian-cli create name="My Note" silent overwrite
 ```
 
 For multiline content use `\n` for newline and `\t` for tab in `content=` and `append=`.
-**Exception:** `details=` in `tasknotes:capture` does NOT interpret `\n` — it is a verbatim
+**Exception:** `details=` in `tasknotes:capture` does NOT interpret `\n` – it is a verbatim
 template substitution.
 
 ## File targeting
 
 Many commands accept `file` or `path` to target a file. Without either, the active file is used.
 
-- `file=<name>` — resolves like a wikilink (name only, no path or extension needed)
-- `path=<path>` — exact path from vault root, e.g. `folder/note.md`
+- `file=<name>` – resolves like a wikilink (name only, no path or extension needed)
+- `path=<path>` – exact path from vault root, e.g. `folder/note.md`
 
 Prefer `path=` when filenames contain special characters; `file=` lookup can mangle them.
 
@@ -49,12 +49,36 @@ obsidian-cli vault=nil search query="test"
 
 Always pass `vault=` explicitly when multiple vaults may be open.
 
+**Critical caveat – plugin commands ignore `vault=`.**
+Raw file commands (`read`, `create`, `append`, `property:set`, `delete`, `search`,
+`base:query`) reliably honour `vault=<name>`. Plugin-backed commands – anything under a
+plugin namespace such as `tasknotes:capture`, `daily:read`, `daily:append` – run against
+whichever vault Obsidian currently has **focused**. The `vault=` flag is parsed but
+silently ignored for these commands.
+
+Before any plugin command, switch Obsidian focus to the target vault first:
+
+```bash
+open "obsidian://open?vault=<name>"
+sleep 2
+```
+
+Then verify the result:
+
+```bash
+PATH_REL=$(echo "$RESULT" | jq -r .path)
+test -f "$VAULTS_DIR/<name>/$PATH_REL" || { echo "wrong vault – URI focus did not land in time"; exit 1; }
+```
+
+The CLI may return a plausible-looking path JSON even when the file landed in a different
+vault. Do not trust the return value alone.
+
 ## Common patterns
 
 ```bash
 obsidian-cli vault=nil read path="folder/note.md"
 obsidian-cli vault=nil create name="New Note" content="# Hello" template="Template" silent
-obsidian-cli vault=nil append path="folder/note.md" content="New line"
+obsidian-cli vault=nil append path="folder/note.md" content="New line"  # appends at EOF – not section-aware
 obsidian-cli vault=nil search query="search term" limit=10
 obsidian-cli vault=nil property:read path="folder/note.md" name="status"
 obsidian-cli vault=nil property:set path="folder/note.md" name="status" value="done"
@@ -64,6 +88,9 @@ obsidian-cli vault=nil daily:append content="- [ ] New task"
 ```
 
 Use `silent` to prevent files from opening in Obsidian. Use `total` on list commands to get a count.
+
+**`append` writes at end-of-file.** It has no awareness of named sections (e.g. `## Scratchpad`).
+To insert content inside a specific section, read the file, splice the content, and overwrite.
 
 ## Searching
 
@@ -84,7 +111,7 @@ prefer `base:query` when you need multiple fields from multiple files.
 
 ### Base query (preferred for structured frontmatter queries)
 
-`base:query` returns all requested fields in one structured JSON response — no follow-up
+`base:query` returns all requested fields in one structured JSON response – no follow-up
 `property:read` calls needed. Use it whenever you need to filter notes by frontmatter and
 read multiple fields from the results.
 
@@ -168,7 +195,7 @@ After making code changes to a plugin or theme, follow this workflow:
    ```bash
    obsidian-cli plugin:reload id=my-plugin
    ```
-2. **Check for errors** — if errors appear, fix and repeat from step 1:
+2. **Check for errors** – if errors appear, fix and repeat from step 1:
    ```bash
    obsidian-cli dev:errors
    ```

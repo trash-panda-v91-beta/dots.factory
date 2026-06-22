@@ -16,6 +16,16 @@ Do not create `docs/adr/` or `CONTEXT.md` in any repo. If a repo has no vault no
 Mostly Nix (nix-darwin, home-manager, nixvim) and TypeScript. Check the project AGENTS.md for
 project-specific rules; if absent, ask.
 
+## Dashes – hard constraint
+
+Every artifact you produce – chat output, file contents, code comments, docstrings, commit
+messages, PR descriptions, Jira issues, vault notes, skill output – uses `–` (U+2013, en dash)
+not `—` (U+2014, em dash). This is non-negotiable. The agent has historically violated this rule
+repeatedly and must treat it as a hard constraint, not a style preference.
+
+Before writing any new file or external content (Jira, Obsidian), verify no `—` characters are
+present. Replace any that appear.
+
 ## General behaviour
 <!-- markdownlint-disable MD041 -->
 
@@ -26,7 +36,6 @@ project-specific rules; if absent, ask.
 - Explain risky file edits and destructive commands before executing.
 - Write simply. Avoid AI-slop language – no flowery adjectives, unnecessary adverbs, or overly
   formal phrasing.
-- Use en dashes (–) not em dashes (—).
 - After editing or creating any file, run `lsp_diagnostics` on it. Fix all diagnostics where the
   fix is clear. If suppressing a diagnostic makes more sense than fixing it, ask the user before
   adding an ignore comment.
