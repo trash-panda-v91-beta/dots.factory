@@ -17,6 +17,23 @@
         "type": "github"
       }
     },
+    "context7-pi": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1781000518,
+        "narHash": "sha256-heLV/QLv6zDt5e1Qiel9JOEqUmIX2ifgMzqhCkMejuA=",
+        "owner": "upstash",
+        "repo": "context7",
+        "rev": "cb6aee187eee81f4d9b0521fc61ef5d058d2535a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "upstash",
+        "repo": "context7",
+        "rev": "cb6aee187eee81f4d9b0521fc61ef5d058d2535a",
+        "type": "github"
+      }
+    },
     "darwin": {
       "inputs": {
         "nixpkgs": [
@@ -263,9 +280,61 @@
         "type": "github"
       }
     },
+    "pi-lsp": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1781862618,
+        "narHash": "sha256-s/Bs3LfZycC6npqV54cxG6T044yDMVv40BHUirkiNRE=",
+        "owner": "narumiruna",
+        "repo": "pi-extensions",
+        "rev": "7580d01bc93361a7503401975e32365deca9666f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "narumiruna",
+        "ref": "v0.5.0",
+        "repo": "pi-extensions",
+        "type": "github"
+      }
+    },
+    "pi-mcp-adapter": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1781336059,
+        "narHash": "sha256-MrorLzxbn3O81B47Nd0d0xnd0xhXgMdobnXgD0axldE=",
+        "owner": "nicobailon",
+        "repo": "pi-mcp-adapter",
+        "rev": "a764c25609d8daf76e607bc99557621fc3ed8aa9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nicobailon",
+        "ref": "v2.10.0",
+        "repo": "pi-mcp-adapter",
+        "type": "github"
+      }
+    },
+    "pi-web-access": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1777757567,
+        "narHash": "sha256-D9no4SLigH/t3/WfirixMbTEjcEwZwJXld8j7pwBCew=",
+        "owner": "nicobailon",
+        "repo": "pi-web-access",
+        "rev": "076bf0db5e739b200286ca37486e4edd8d19123c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nicobailon",
+        "ref": "v0.10.7",
+        "repo": "pi-web-access",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "brew-src": "brew-src",
+        "context7-pi": "context7-pi",
         "corpo": [
           "nixpkgs"
         ],
@@ -282,6 +351,9 @@
         "nixpkgs-master": "nixpkgs-master",
         "nixvim": "nixvim",
         "opencode-nvim": "opencode-nvim",
+        "pi-lsp": "pi-lsp",
+        "pi-mcp-adapter": "pi-mcp-adapter",
+        "pi-web-access": "pi-web-access",
         "sops-nix": "sops-nix",
         "systems": "systems",
         "zen-browser": "zen-browser"

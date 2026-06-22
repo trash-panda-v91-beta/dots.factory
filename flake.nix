@@ -60,6 +60,23 @@
       url = "github:sudo-tee/opencode.nvim";
       flake = false;
     };
+    context7-pi = {
+      # monorepo – tag @upstash/context7-pi@0.1.0 maps to this commit
+      url = "github:upstash/context7/cb6aee187eee81f4d9b0521fc61ef5d058d2535a";
+      flake = false;
+    };
+    pi-lsp = {
+      url = "github:narumiruna/pi-extensions/v0.5.0";
+      flake = false;
+    };
+    pi-mcp-adapter = {
+      url = "github:nicobailon/pi-mcp-adapter/v2.10.0";
+      flake = false;
+    };
+    pi-web-access = {
+      url = "github:nicobailon/pi-web-access/v0.10.7";
+      flake = false;
+    };
 
     # CMB — private repo (corp host).
     # PMB builds: nixpkgs has no flakeModules → corpo.nix guard returns [].
