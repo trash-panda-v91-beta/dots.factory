@@ -134,6 +134,16 @@ in
               harper_ls = {
                 command = [ "harper-ls" "--stdio" ];
                 extensions = [ ".md" ".txt" ".typ" ];
+                initialization = {
+                  "harper-ls" = {
+                    linters = {
+                      boring_words = true;
+                      linking_verbs = true;
+                      sentence_capitalization = false;
+                    };
+                    codeActions.forceStable = true;
+                  };
+                };
               };
               rumdl = {
                 command = [ "rumdl" "server" ];
