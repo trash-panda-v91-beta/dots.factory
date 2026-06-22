@@ -1,6 +1,6 @@
 { inputs, ... }:
 {
-  # CMB — private repo (corp-github).
+  # CMB — private repo (corp host).
   # PMB builds: nixpkgs has no flakeModules → guard below returns [].
   # CMB builds: --override-input corpo path:../dots.corpo
   imports =

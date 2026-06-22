@@ -5,7 +5,7 @@
 Per-repo metadata (CONTEXT, ADRs, ticket notes, investigation notes) is **not** stored in the repo
 itself. It lives in an Obsidian vault, picked by the git remote:
 
-- Remote on `corp-github.example.com/*` (work) – use the **vault-nil** skill (`$VAULTS_DIR/nil`)
+- Remote on the corp GitHub host (work) – use the **vault-nil** skill (`$VAULTS_DIR/nil`)
 - Otherwise (personal `github.com`, no remote) – use the **vault-mist** skill (`$VAULTS_DIR/mist`)
 
 Do not create `docs/adr/` or `CONTEXT.md` in any repo. If a repo has no vault note yet, run the

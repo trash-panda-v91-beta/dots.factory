@@ -61,7 +61,7 @@
       flake = false;
     };
 
-    # CMB — private repo (corp-github).
+    # CMB — private repo (corp host).
     # PMB builds: nixpkgs has no flakeModules → corpo.nix guard returns [].
     # CMB builds: --override-input corpo path:../dots.corpo
     corpo.follows = "nixpkgs";
