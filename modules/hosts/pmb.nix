@@ -27,7 +27,7 @@
 
     provides.trash-panda-v91-beta = {
       homeManager =
-        { pkgs, ... }:
+        { config, pkgs, ... }:
         {
           programs.bun.enable = false;
 
@@ -55,7 +55,7 @@
             };
           };
 
-          home.sessionVariables.VAULTS_DIR = "$HOME/vaults";
+          home.sessionVariables.VAULTS_DIR = "${config.home.homeDirectory}/vaults";
 
           programs.obsidian.vaults.mist.target = "vaults/mist";
 

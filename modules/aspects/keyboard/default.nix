@@ -12,7 +12,7 @@
       {
         services.kanata = {
           enable = true;
-          package = pkgs.kanata;
+          package = pkgs.kanata-with-cmd;
           keyboards.internal = {
             config =
               let
@@ -34,6 +34,7 @@
             extraDefCfg = ''
               process-unmapped-keys yes
               windows-altgr cancel-lctl-press
+              danger-enable-cmd yes
             '';
           };
         };

@@ -73,6 +73,7 @@
                   "exec-and-forget ${mistScript}"
                   "workspace m"
                 ];
+                ctrl-alt-cmd-shift-c = "workspace c";
                 ctrl-alt-cmd-shift-g = "workspace-back-and-forth";
                 ctrl-alt-cmd-shift-p = "mode launcher";
               };

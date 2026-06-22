@@ -8,9 +8,9 @@
 
 (deflayer navigation
   M-1  M-2  M-3  M-4  M-5  lrld M-6  M-7  M-8  M-9  M-0
-  @pad @cls bck  fwd  @trl      @mist pgdn pgup end  @swh
+  @pad @cls bck  fwd  @trl      @com  pgdn pgup end  @swh
   @all @sav S-tab tab @run        lft  down up   rght @fun
-  @ndo @cut @cpy @pst @brr    _   @nil @mist @mwu @mwr @obs
+  @ndo @cut @cpy @pst @brr   @mut  @nil @mist @mwu @mwr @obs
             del             _               bspc
 )
 
@@ -33,11 +33,13 @@
 )
 
 (defalias
+  com M-S-C-A-c
   trl M-S-C-A-t
   brr M-S-C-A-b
   obs M-S-C-A-o
   nil M-S-C-A-n
   mist M-S-C-A-m
+  mut (cmd osascript -e 'tell application "System Events" to tell process "Microsoft Teams" to keystroke "m" using {control down, shift down}')
   run M-S-C-A-p
   swh M-S-C-A-g
   launcher M-S-C-A-b
