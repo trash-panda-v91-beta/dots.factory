@@ -1,6 +1,6 @@
 { pkgs, ... }:
 let
-  version = "4.5.1";
+  version = "4.11.0";
   base = "https://github.com/callumalpass/tasknotes/releases/download/${version}";
 in
 pkgs.runCommandLocal "tasknotes-${version}" { } ''
@@ -8,19 +8,19 @@ pkgs.runCommandLocal "tasknotes-${version}" { } ''
   cp ${
     pkgs.fetchurl {
       url = "${base}/main.js";
-      hash = "sha256-L2fixwyvE7Ik1iAMtmHznuuHnEfo4y9YNXiph1OiT5k=";
+      hash = "sha256-cRA/hobFaxJmQKcgKHrMya5MUdjYfHSmVwrBQcIA3mw=";
     }
   } $out/main.js
   cp ${
     pkgs.fetchurl {
       url = "${base}/manifest.json";
-      hash = "sha256-/1P8iZQSnMIVEor+jhpOKUwta0VYciVWw4ImaY7yp00=";
+      hash = "sha256-OJQABjT1NutKjgOwmtjZu+iKvjG6u3JtbxvExtHS2iE=";
     }
   } $out/manifest.json
   cp ${
     pkgs.fetchurl {
       url = "${base}/styles.css";
-      hash = "sha256-rW45VnOTuWu1NgyjOShw4e9XK8NcsZEsGlqzHFv9aWY=";
+      hash = "sha256-ZQOfFZkVcXvPAW60T87TR4cDrEa932xkIwhl2caqJqY=";
     }
   } $out/styles.css
 ''
