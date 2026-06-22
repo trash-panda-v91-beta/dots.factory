@@ -50,10 +50,11 @@ Two optional organisational folders (notes here would normally live in root):
 
 ## Coding notes (CONTEXT, ADRs, issues)
 
-Project metadata lives in root, not in a `Coding/` subfolder. The main note name equals the repo name.
+Project metadata lives in root, not in a `Coding/` subfolder. The main note name equals
+the repo name.
 
 ```
-dots.factory.md            # CONTEXT note
+dots.factory.md
 dots.factory - ADR 001 - use den.md
 dots.factory - add pi agent.md
 nebular-grid.md
@@ -63,15 +64,20 @@ nebular-grid.md
 
 ```yaml
 ---
-project: dots.factory
+project: dots.factory       # plain string — repo name
+projects:                   # wikilink list — universal base:query filter
+  - "[[dots.factory]]"
 type: context | adr | issue
-adr-number: 001            # type=adr only
-issue: 42                  # type=issue only, GitHub issue number
+adr-number: 001             # type=adr only
+issue: 42                   # type=issue only, GitHub issue number
 status: active | archived
 tags: [coding, projects]
 date: 2025-06-19
 ---
 ```
+
+`projects: ["[[<repo>]]"]` is the universal filter across all note types. Use it with
+`base:query` (see `obsidian-cli` skill) to find CONTEXT, ADRs, and issues in one query.
 
 ## Properties convention
 
@@ -96,119 +102,97 @@ Used on any note with a `rating` property (integer 1–7):
 
 ## Daily notes
 
-Stored in `Daily/YYYY-MM-DD.md`. Used as anchor points linked from other notes — not written in directly. Journal fragments are individual notes in root, named `YYYY-MM-DD HHmm optional-title.md`, created with Obsidian's unique note hotkey.
+Stored in `Daily/YYYY-MM-DD.md`. Used as anchor points linked from other notes — not written
+in directly. Journal fragments are individual notes in root, named
+`YYYY-MM-DD HHmm optional-title.md`, created with Obsidian's unique note hotkey.
 
-## Prerequisite
+## Prerequisites
 
-`obsidian-cli` requires Obsidian to be running. If commands fail with "unable to find Obsidian", remind the user to open Obsidian first.
-
-Always target the mist vault explicitly when nil might also be open:
-
-```bash
-obsidian vault="mist" <command>
-```
+- `obsidian-cli` requires Obsidian to be running
+- Always target the vault explicitly when nil might also be open: `vault=mist`
 
 ## Workflows
 
-### Find the CONTEXT note for a repo
+### Find all notes for a repo
 
 ```bash
-obsidian vault="mist" read file="dots.factory"
+REPO=$(basename "$(git rev-parse --show-toplevel)")
+
+obsidian-cli vault=mist create name="_tmp.base" overwrite silent content="
+filters:
+  and:
+    - projects.contains(link(\"$REPO\"))
+properties:
+  note.type:
+    displayName: Type
+  note.status:
+    displayName: Status
+views:
+  - type: table
+    name: All
+    order: [type, status]
+"
+sleep 1
+obsidian-cli vault=mist base:query path="_tmp.base" view="All" format=json
+obsidian-cli vault=mist delete path="_tmp.base" silent
 ```
 
-Or by searching:
+Filter results client-side by `"Type"` to get CONTEXT (`context`), ADRs (`adr`), or issues
+(`issue`). Read each with `obsidian-cli vault=mist read path="<path>"`.
+
+### Read CONTEXT for the current repo
 
 ```bash
-obsidian vault="mist" search query="project: dots.factory"
+REPO=$(basename "$(git rev-parse --show-toplevel)")
+obsidian-cli vault=mist read path="$REPO.md"
 ```
 
-### List all ADRs for a repo
+### Find a note by keyword
 
 ```bash
-ls $VAULTS_DIR/mist/ | grep "^dots.factory - ADR"
-```
-
-### Create a new ADR
-
-```bash
-# Check next ADR number
-ls $VAULTS_DIR/mist/ | grep "^dots.factory - ADR" | sort -V | tail -1
-
-# Create the file
-cat > "$VAULTS_DIR/mist/dots.factory - ADR 003 - flake-parts.md" <<'EOF'
----
-project: dots.factory
-type: adr
-adr-number: 003
-status: active
-tags: [coding, projects, adrs]
-date: YYYY-MM-DD
----
-
-# ADR 003 — Flake Parts
-
-**Date**: YYYY-MM-DD
-**Status**: Accepted
-
-## Context
-...
-
-## Decision
-...
-
-## Consequences
-...
-
-## Alternatives considered
-...
-EOF
-```
-
-### Start notes for a GitHub issue
-
-```bash
-gh issue view 42 --repo trash-panda-v91-beta/dots.factory
-```
-
-Then create `$VAULTS_DIR/mist/dots.factory - <issue-slug>.md`:
-
-```markdown
----
-project: dots.factory
-type: issue
-issue: 42
-status: active
-tags: [coding, projects, issues]
-date: YYYY-MM-DD
----
-
-# dots.factory#42 — <title>
-
-**GitHub**: [#42](https://github.com/trash-panda-v91-beta/dots.factory/issues/42)
-
-## Investigation
-...
-```
-
-### Search investigation notes for a keyword
-
-```bash
-obsidian vault="mist" search query="deadlock"
+obsidian-cli vault=mist search query="deadlock" format=json
 ```
 
 ### Find backlinks to a note
 
 ```bash
-obsidian vault="mist" backlinks file="dots.factory"
+obsidian-cli vault=mist backlinks file="dots.factory"
 ```
 
-### When a skill asks for ADRs / CONTEXT for the current repo
+### Create a new ADR
 
-1. Identify the repo: `basename "$(git rev-parse --show-toplevel)"`
-2. Read `$VAULTS_DIR/mist/<repo-name>.md` for CONTEXT
-3. Check `ls $VAULTS_DIR/mist/ | grep "^<repo-name> - ADR"` for ADRs
+Check the next ADR number from existing notes, then create:
 
-If neither exists, the project hasn't been onboarded — offer to create the CONTEXT note in root.
+```bash
+REPO=$(basename "$(git rev-parse --show-toplevel)")
+# Find next number
+obsidian-cli vault=mist search query="[project: \"$REPO\"] [type: \"adr\"]" format=json
+
+obsidian-cli vault=mist create silent \
+  name="$REPO - ADR 003 - decision-title" \
+  content="---\nproject: $REPO\nprojects:\n  - \"[[$REPO]]\"\ntype: adr\nadr-number: 003\nstatus: active\ntags: [coding, projects, adrs]\ndate: $(date +%Y-%m-%d)\n---\n\n# ADR 003 — Decision Title\n\n**Date**: $(date +%Y-%m-%d)\n**Status**: Accepted\n\n## Context\n\n## Decision\n\n## Consequences\n\n## Alternatives considered\n"
+```
+
+### Create an issue investigation note
+
+```bash
+REPO=$(basename "$(git rev-parse --show-toplevel)")
+ISSUE=42
+TITLE="short-slug"
+
+obsidian-cli vault=mist create silent \
+  name="$REPO - $TITLE" \
+  content="---\nproject: $REPO\nprojects:\n  - \"[[$REPO]]\"\ntype: issue\nissue: $ISSUE\nstatus: active\ntags: [coding, projects, issues]\ndate: $(date +%Y-%m-%d)\n---\n\n# $REPO#$ISSUE\n\n## Investigation\n"
+```
+
+## When a skill asks for ADRs / CONTEXT for the current repo
+
+1. Identify the repo: `REPO=$(basename "$(git rev-parse --show-toplevel)")`
+2. Run the base query above — returns CONTEXT, ADRs, and issues in one call
+3. Read CONTEXT (`"Type": "context"`) and ADRs (`"Type": "adr"`) with:
+   `obsidian-cli vault=mist read path="<path>"`
+
+If no results, the project hasn't been onboarded — offer to create the CONTEXT note in root.
 
 ## Authority
 
