@@ -1,7 +1,6 @@
 ---
 name: create-pr
-description: Create a pull request for the current branch.
-disable-model-invocation: true
+description: Create a pull request for the current branch. Use when the user says 'create a PR', 'open a PR', 'make a pull request', or 'create pr'.
 ---
 
 Create a PR for the current branch using `gh pr create`.
@@ -39,7 +38,7 @@ Leave out sections that have nothing to say.
 ## Style
 
 - Plain language. No flowery adjectives, no unnecessary adverbs.
-- En dashes (–) not em dashes (—).
+- Use `-` (hyphen-minus) not en dashes or em dashes.
 - No "This PR…" opener.
 
 ## Open it
