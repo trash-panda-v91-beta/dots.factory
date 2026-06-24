@@ -3,7 +3,7 @@ let
   riceDir = ./.;
 in
 {
-  dots.rice-cyberdream-dark.homeManager = {
+  dots.rice._.cyberdream-dark.homeManager = {
     programs.obsidian.defaultSettings = {
       appearance = {
         cssTheme = "Minimal";

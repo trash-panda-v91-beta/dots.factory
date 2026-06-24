@@ -1,4 +1,9 @@
-{ den, lib, __findFile, ... }:
+{
+  den,
+  lib,
+  __findFile,
+  ...
+}:
 {
   den.default = {
     darwin.system.stateVersion = 6;

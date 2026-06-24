@@ -1,31 +1,28 @@
-# PMB — personal MacBook (aarch64-darwin)
-{
-  lib,
-  __findFile,
-  ...
-}:
+# PMB - personal MacBook (aarch64-darwin)
+#
+# Host aspect = platform-level only. Everything else is enabled per-capability
+# from the user aspect (modules/users/trash-panda-v91-beta.nix).
+{ __findFile, lib, ... }:
 {
   den.aspects.pmb = {
-    description = "Personal MacBook — darwin host aspect";
+    description = "Personal MacBook - darwin host aspect";
 
-    includes = [
-      # System config
-      <dots/nix>
-      <dots/darwin-system>
-      <dots/homebrew>
-      <dots/library-linking>
-      <dots/overlays>
-      <dots/sops>
-      # Services
-      <dots/keyboard>
-      <dots/raycast>
-    ];
+    includes = [ <dots/bundle/platform> ];
 
-    darwin = {
-      nixpkgs.hostPlatform = "aarch64-darwin";
-    };
+    darwin.nixpkgs.hostPlatform = "aarch64-darwin";
 
+    # Per-host user customisation (mutual provider routes this to the user's HM).
+    # The outer `provides.<user>` is STATIC (no function wrapping); class
+    # modules below take their own args. Wrapping the outer block with
+    # `{ pkgs, ... }:` makes it parametric-dispatched on a non-entity arg
+    # and silently skips the whole block.
     provides.trash-panda-v91-beta = {
+      darwin =
+        { pkgs, ... }:
+        {
+          users.users.trash-panda-v91-beta.shell = pkgs.nushell;
+        };
+
       homeManager =
         { config, pkgs, ... }:
         {
