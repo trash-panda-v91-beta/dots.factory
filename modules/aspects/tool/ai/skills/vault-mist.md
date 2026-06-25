@@ -198,3 +198,11 @@ If no results, the project hasn't been onboarded — offer to create the CONTEXT
 
 - **GitHub Issues** — authoritative for: status, assignee, labels, milestones
 - **mist vault** — authoritative for: CONTEXT, ADRs, investigation notes, decisions, links, personal notes
+
+## Vault privacy in outbound channels
+
+Vault content is local context, not shared. Never reference the vault, investigation
+notes, or any vault path from GitHub issue/PR descriptions, commit messages, or other
+outbound channels. No "design rationale captured in X ADR" / "verification notes in Y"
+/ "see vault note" - if a reader needs the detail, write it into the message itself.
+Never point them at a path they cannot open.
