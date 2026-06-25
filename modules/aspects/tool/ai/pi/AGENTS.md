@@ -37,6 +37,10 @@ are present. Replace any that appear with `-`.
 - Explain risky file edits and destructive commands before executing.
 - Write simply. Avoid AI-slop language - no flowery adjectives, unnecessary adverbs, or overly
   formal phrasing.
+- Code comments: be brief, no AI slop, and really think if they're needed. Avoid them when
+  possible - variable, function, and class names should say what they do. Prefer a clearer name
+  or a smaller function over a comment. Only add a comment when it explains *why* (intent,
+  trade-off, non-obvious constraint), not *what* the code already says.
 - After editing or creating any file, run `lsp_diagnostics` on it. Fix all diagnostics where the
   fix is clear. If suppressing a diagnostic makes more sense than fixing it, ask the user before
   adding an ignore comment.
