@@ -13,9 +13,14 @@ stdenvNoCC.mkDerivation {
 
   nativeBuildInputs = [ bun ];
 
-  # The instructions loader resolves the skill file as path.join(__dirname, '..', 'skills', ...).
-  # After bundling, __dirname is the bundle's directory ($out), so drop the '..'.
+  # After install, index.js lives at $out/index.js and hooks/ at $out/hooks/.
+  # Fix all paths that would otherwise escape $out:
+  #   - pi-extension/index.js requires('../hooks/...') -> require('./hooks/...')
+  #   - hooks/ponytail-instructions.js resolves '../skills/...' via __dirname -> './skills/...'
   postPatch = ''
+    substituteInPlace pi-extension/index.js \
+      --replace-fail '../hooks/ponytail-config.js'       './hooks/ponytail-config.js' \
+      --replace-fail '../hooks/ponytail-instructions.js' './hooks/ponytail-instructions.js'
     substituteInPlace hooks/ponytail-instructions.js \
       --replace-fail \
         "path.join(__dirname, '..', 'skills', 'ponytail', 'SKILL.md')" \
@@ -39,6 +44,7 @@ stdenvNoCC.mkDerivation {
     runHook preInstall
     mkdir -p $out
     cp index.js $out/
+    cp -r hooks $out/
     cp -r skills $out/
     runHook postInstall
   '';
