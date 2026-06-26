@@ -73,6 +73,10 @@
       url = "github:nicobailon/pi-mcp-adapter/v2.10.0";
       flake = false;
     };
+    ponytail = {
+      url = "github:DietrichGebert/ponytail/v4.8.3";
+      flake = false;
+    };
     pi-web-access = {
       url = "github:nicobailon/pi-web-access/v0.10.7";
       flake = false;

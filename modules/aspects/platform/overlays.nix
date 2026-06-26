@@ -42,6 +42,7 @@ in
             };
             opencode-nvim = prev.callPackage "${pkgsDir}/opencode-nvim" { inherit inputs; };
             pi-lsp = prev.callPackage "${pkgsDir}/pi-lsp" { inherit inputs; };
+            ponytail-pi = prev.callPackage "${pkgsDir}/ponytail-pi" { inherit inputs; };
             pi-mcp-adapter = prev.callPackage "${pkgsDir}/pi-mcp-adapter" { inherit inputs; };
             pi-web-access = prev.callPackage "${pkgsDir}/pi-web-access" { inherit inputs; };
             superpowers = prev.callPackage "${pkgsDir}/superpowers" { inherit inputs; };

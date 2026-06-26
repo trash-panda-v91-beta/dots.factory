@@ -21,6 +21,7 @@ in
           piMcpAdapter = pkgs.local.pi-mcp-adapter;
           context7Pi = pkgs.local.context7-pi;
           piLsp = pkgs.local.pi-lsp;
+          ponytailPi = pkgs.local.ponytail-pi;
         in
         {
           home.sessionVariables.CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC = 1;
@@ -73,10 +74,12 @@ in
                 "${context7Pi}/context7.js"
                 "${piMcpAdapter}/index.js"
                 "${piLsp}/pi-lsp.js"
+                "${ponytailPi}/index.js"
               ];
               skills = [
                 "${piWebAccess}/skills"
                 "${context7Pi}/skills"
+                "${ponytailPi}/skills"
               ]
               ++ map (name: toString (skillsDir + "/${name}.md")) skillNames;
             };

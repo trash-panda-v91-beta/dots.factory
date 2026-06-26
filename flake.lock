@@ -331,6 +331,23 @@
         "type": "github"
       }
     },
+    "ponytail": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1782268332,
+        "narHash": "sha256-4ZT89GA5xnomNBIzY8Kh1yYP0AC9SeVhv406DEKpE3A=",
+        "owner": "DietrichGebert",
+        "repo": "ponytail",
+        "rev": "025da371cd7539c3eb0ad859b08b3ca55e695f16",
+        "type": "github"
+      },
+      "original": {
+        "owner": "DietrichGebert",
+        "ref": "v4.8.3",
+        "repo": "ponytail",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "brew-src": "brew-src",
@@ -354,6 +371,7 @@
         "pi-lsp": "pi-lsp",
         "pi-mcp-adapter": "pi-mcp-adapter",
         "pi-web-access": "pi-web-access",
+        "ponytail": "ponytail",
         "sops-nix": "sops-nix",
         "systems": "systems",
         "zen-browser": "zen-browser"
