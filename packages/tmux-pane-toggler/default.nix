@@ -1,29 +1,8 @@
-{
-  inputs,
-  lib,
-  stdenv,
-  pkgs,
-}:
-
-let
-  myName = "tmux-pane-toggler";
-  tmuxPaneToggler = pkgs.writeShellApplication {
-    name = "tmux-pane-toggler";
-    bashOptions = [ ];
-    runtimeInputs = with pkgs; [
-      tmux
-    ];
-    text = builtins.readFile src/tmux-pane-toggler.sh;
-  };
-in
-stdenv.mkDerivation {
-  name = myName;
-  src = tmuxPaneToggler;
-  installPhase = ''
-    mkdir -p "$out"
-    cp -r * "$out"/bin/
-  '';
-
+{ lib, pkgs, inputs ? null }:
+pkgs.writeShellApplication {
+  name = "tmux-pane-toggler";
+  runtimeInputs = [ pkgs.tmux ];
+  text = builtins.readFile ./src/tmux-pane-toggler.sh;
   meta = {
     description = "Tmux pane toggler script";
     mainProgram = "tmux-pane-toggler";
