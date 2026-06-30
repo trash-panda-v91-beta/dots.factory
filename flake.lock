@@ -20,17 +20,17 @@
     "context7-pi": {
       "flake": false,
       "locked": {
-        "lastModified": 1781000518,
-        "narHash": "sha256-heLV/QLv6zDt5e1Qiel9JOEqUmIX2ifgMzqhCkMejuA=",
+        "lastModified": 1782728664,
+        "narHash": "sha256-7bqUsYnpceA9GG/t/p24Y8c47YPHwYiYlJQ2Xqs/FzQ=",
         "owner": "upstash",
         "repo": "context7",
-        "rev": "cb6aee187eee81f4d9b0521fc61ef5d058d2535a",
+        "rev": "b1fb8b523263143db858d09698f9c67e3be79e33",
         "type": "github"
       },
       "original": {
         "owner": "upstash",
         "repo": "context7",
-        "rev": "cb6aee187eee81f4d9b0521fc61ef5d058d2535a",
+        "rev": "b1fb8b523263143db858d09698f9c67e3be79e33",
         "type": "github"
       }
     },
