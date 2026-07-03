@@ -2,7 +2,7 @@
 #
 # Host aspect = platform-level only. Everything else is enabled per-capability
 # from the user aspect (modules/users/trash-panda-v91-beta.nix).
-{ __findFile, lib, ... }:
+{ __findFile, ... }:
 {
   den.aspects.pmb = {
     description = "Personal MacBook - darwin host aspect";
@@ -24,7 +24,7 @@
         };
 
       homeManager =
-        { config, pkgs, ... }:
+        { config, ... }:
         {
           programs.bun.enable = false;
 
@@ -36,20 +36,9 @@
             IdentityAgent = ''"~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"'';
           };
 
-          programs.mcp.servers = {
-            hass = {
-              disabled = true;
-              command = lib.getExe pkgs.ha-mcp;
-              env = {
-                HOMEASSISTANT_URL = "{env:HASS_URL}";
-                HOMEASSISTANT_TOKEN = "{env:HASS_TOKEN}";
-              };
-            };
-            perplexity = {
-              disabled = true;
-              command = lib.getExe pkgs.perplexity-mcp;
-              env.PERPLEXITY_API_KEY = "{env:PERPLEXITY_API_KEY}";
-            };
+          programs.mcp.servers.litellm = {
+            url = "https://litellm.nebular-grid.space/mcp";
+            headers.Authorization = "Bearer {env:LITELLM_API_KEY}";
           };
 
           home.sessionVariables.VAULTS_DIR = "${config.home.homeDirectory}/vaults";
