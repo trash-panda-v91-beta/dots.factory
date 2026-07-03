@@ -313,7 +313,14 @@ in
             lualine_y = [ ];
             lualine_z = [ ];
           };
-          tabline = { };
+          tabline = {
+            lualine_a = [ { __unkeyed-1 = "tabs"; tabs_color = { active = "lualine_a_normal"; inactive = "lualine_b_normal"; }; } ];
+            lualine_b = [ ];
+            lualine_c = [ ];
+            lualine_x = [ ];
+            lualine_y = [ ];
+            lualine_z = [ ];
+          };
           extensions = [
             "neo-tree"
             "lazy"
