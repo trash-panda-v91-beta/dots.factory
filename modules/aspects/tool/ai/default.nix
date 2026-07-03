@@ -38,29 +38,6 @@ in
             skills = lib.genAttrs skillNames (name: skillsDir + "/${name}.md");
           };
 
-          programs.opencode = {
-            enable = true;
-            enableMcpIntegration = true;
-            settings = {
-              autoshare = false;
-              autoupdate = false;
-              share = "disabled";
-            };
-          };
-          xdg.configFile = {
-            "opencode/plugins/superpowers.js".source = "${superpowers}/.opencode/plugins/superpowers.js";
-            "opencode/skills/superpowers".source = "${superpowers}/skills";
-          }
-          // lib.genAttrs (map (name: "opencode/skills/${name}/SKILL.md") skillNames) (
-            key:
-            let
-              name = lib.removeSuffix "/SKILL.md" (lib.removePrefix "opencode/skills/" key);
-            in
-            {
-              source = skillsDir + "/${name}.md";
-            }
-          );
-
           programs.pi-coding-agent = {
             enable = true;
             context = ./pi/AGENTS.md;

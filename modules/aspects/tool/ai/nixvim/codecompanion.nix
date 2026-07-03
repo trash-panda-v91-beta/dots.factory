@@ -159,12 +159,6 @@
               description = "Claude Code CLI";
               provider = "terminal";
             };
-            agents.opencode = {
-              cmd = "opencode";
-              args = [ ];
-              description = "OpenCode CLI";
-              provider = "terminal";
-            };
             agents.pi = {
               cmd = "pi";
               args = [ ];

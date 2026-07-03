@@ -340,11 +340,6 @@ in
           settings.k9s.skin = "cyberdream";
         };
 
-        programs.opencode = {
-          themes.cyberdream = riceDir + "/programs/opencode/cyberdream.json";
-          tui.theme = "cyberdream";
-        };
-
         programs.pi-coding-agent.settings.theme = lib.mkForce "cyberdream";
         home.file."${config.programs.pi-coding-agent.configDir}/themes/cyberdream.json".source =
           riceDir + "/programs/pi/cyberdream.json";

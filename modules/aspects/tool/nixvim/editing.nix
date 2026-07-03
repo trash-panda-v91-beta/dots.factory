@@ -59,7 +59,7 @@
               "shellharden"
               "shfmt"
             ];
-            css = [ "stylelint" ];
+            css = [ "prettierd" ];
             javascript = {
               __unkeyed-1 = "prettierd";
               __unkeyed-2 = "biome";
@@ -120,7 +120,6 @@
             shellharden.command = pkgs.lib.getExe pkgs.shellharden;
             shfmt.command = pkgs.lib.getExe pkgs.shfmt;
             sqlfluff.command = pkgs.lib.getExe pkgs.sqlfluff;
-            stylelint.command = pkgs.lib.getExe pkgs.stylelint;
             stylua.command = pkgs.lib.getExe pkgs.stylua;
             swift_format.command = pkgs.lib.getExe pkgs.swift-format;
             xmlformat.command = pkgs.lib.getExe pkgs.xmlformat;
@@ -159,20 +158,18 @@
         ];
       };
 
-      # Render markdown (codecompanion, obsidian, opencode)
+      # Render markdown (codecompanion, obsidian)
       render-markdown = {
         enable = true;
         lazyLoad.settings.ft = [
           "codecompanion"
           "markdown"
-          "opencode_output"
         ];
         settings = {
           completions.lsp.enabled = true;
           file_types = [
             "codecompanion"
             "markdown"
-            "opencode_output"
           ];
           render_modes = true;
         };
