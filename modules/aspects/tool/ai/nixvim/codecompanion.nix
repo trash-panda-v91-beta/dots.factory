@@ -136,6 +136,7 @@
         };
 
         settings = {
+          display.cli.window.layout = "tab";
           display.chat = {
             window.layout = "buffer";
             floating_window = {
