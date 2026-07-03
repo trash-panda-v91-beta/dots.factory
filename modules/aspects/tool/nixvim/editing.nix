@@ -1,4 +1,5 @@
 # Editing — treesitter, lz-n, auto-save, conform-nvim, mini.*, koda, render-markdown, fastaction, codediff
+# codediff replaces diffview (git diff + history)
 { dots, ... }:
 {
   dots.tool._.nixvim.includes = [ dots.tool._.nixvim._.editing ];
@@ -199,13 +200,25 @@
     # Snippets file
     programs.nixvim.extraFiles."snippets/nix.json".source = ./snippets/nix.json;
 
-    # Codediff keymap
+    # Codediff keymaps
     programs.nixvim.keymaps = [
       {
         mode = [ "n" ];
         key = "<leader>gd";
         action = "<cmd>CodeDiff<cr>";
         options.desc = "Open CodeDiff";
+      }
+      {
+        mode = [ "n" ];
+        key = "<leader>gh";
+        action = "<cmd>CodeDiff history<cr>";
+        options.desc = "CodeDiff History";
+      }
+      {
+        mode = [ "n" ];
+        key = "<leader>gH";
+        action = "<cmd>CodeDiff history %<cr>";
+        options.desc = "CodeDiff Current File History";
       }
     ];
 

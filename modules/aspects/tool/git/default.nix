@@ -1,7 +1,7 @@
 { lib, ... }:
 {
   dots.tool._.git = {
-    description = "Git workflow: git, gh, lazygit, delta + gitsigns, neogit, diffview, octo, snacks/lazygit";
+    description = "Git workflow: git, gh, lazygit, delta + gitsigns, neogit, codediff, octo, snacks/lazygit";
 
     homeManager =
       { pkgs, ... }:
