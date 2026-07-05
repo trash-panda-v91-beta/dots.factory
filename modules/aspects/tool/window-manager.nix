@@ -7,11 +7,11 @@
       { pkgs, ... }:
       let
         aerospace = lib.getExe pkgs.aerospace;
-        sesh = lib.getExe pkgs.sesh;
+        herdr = lib.getExe pkgs.herdr;
         mkNotesScript =
           session: workspace:
           pkgs.writeShellScript "aerospace-notes-${session}" ''
-            export PATH="${pkgs.tmux}/bin:${pkgs.sesh}/bin:$PATH"
+            export PATH="${pkgs.herdr}/bin:$PATH"
             count=$(${aerospace} list-windows --workspace ${workspace} --app-bundle-id com.mitchellh.ghostty --count)
             if [ "$count" = "0" ]; then
               before=$(${aerospace} list-windows --all --app-bundle-id com.mitchellh.ghostty --json \
@@ -19,7 +19,7 @@
               /usr/bin/osascript -e "
                 tell application \"Ghostty\"
                   set cfg to new surface configuration
-                  set command of cfg to \"env PATH=${pkgs.tmux}/bin:${pkgs.sesh}/bin:\$PATH ${sesh} connect ${session}\"
+                  set command of cfg to \"sh -c 'cd ~/vaults/${session} 2>/dev/null; exec ${herdr} --session ${session}'\"
                   new window with configuration cfg
                 end tell"
               for i in $(seq 1 20); do
@@ -35,8 +35,6 @@
                   break
                 fi
               done
-            else
-              ${sesh} connect ${session}
             fi
           '';
         nilScript = mkNotesScript "nil" "n";

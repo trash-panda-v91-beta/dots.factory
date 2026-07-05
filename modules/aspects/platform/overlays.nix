@@ -20,12 +20,29 @@ in
 
       nixpkgs.overlays = [
         (final: prev: {
-          # duckdb 1.5.1 install-check phase crashes on macOS (SIGTRAP/BPT trap: 5)
-          # Tests run via doInstallCheck, not doCheck — must disable both
-          duckdb = prev.duckdb.overrideAttrs (_: {
-            doCheck = false;
-            doInstallCheck = false;
-          });
+          # herdr's source build vendors libghostty-vt which needs xcrun; use
+          # upstream release binary on darwin.
+          herdr = prev.stdenv.mkDerivation {
+            pname = "herdr";
+            version = "0.7.1";
+            src = prev.fetchurl {
+              url = "https://github.com/ogulcancelik/herdr/releases/download/v0.7.1/herdr-macos-aarch64";
+              hash = "sha256-FvRlPwSR6h59K0a1sCVC8Y4bguiNqvnikAVy5btjTfg=";
+            };
+            dontUnpack = true;
+            installPhase = ''
+              install -Dm755 $src $out/bin/herdr
+            '';
+            meta = {
+              description = "Terminal workspace manager for AI coding agents";
+              homepage = "https://herdr.dev";
+              license = lib.licenses.agpl3Plus;
+              mainProgram = "herdr";
+              platforms = [ "aarch64-darwin" ];
+              sourceProvenance = [ lib.sourceTypes.binaryNativeCode ];
+            };
+          };
+
           # TODO: remove once nixpkgs-unstable has nushell >= 0.112.2 (0.112.1 aarch64-darwin failed
           # on Hydra due to env_shlvl tests requiring exec(2) which is blocked by Nix sandbox on macOS
           # — no binary cache hit exists, forces local compile with tests disabled)
@@ -54,7 +71,6 @@ pi-lsp = prev.callPackage "${pkgsDir}/pi-lsp" { inherit inputs; };
             pi-mcp-adapter = prev.callPackage "${pkgsDir}/pi-mcp-adapter" { inherit inputs; };
             pi-web-access = prev.callPackage "${pkgsDir}/pi-web-access" { inherit inputs; };
             superpowers = prev.callPackage "${pkgsDir}/superpowers" { inherit inputs; };
-            tmux-pane-toggler = prev.callPackage "${pkgsDir}/tmux-pane-toggler" { inherit inputs; };
           };
         })
       ];

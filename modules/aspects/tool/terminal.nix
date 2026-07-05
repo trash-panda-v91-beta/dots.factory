@@ -1,7 +1,7 @@
 { inputs, lib, ... }:
 {
   dots.tool._.terminal = {
-    description = "Terminal environment: ghostty + tmux + sesh + nushell + starship";
+    description = "Terminal environment: ghostty + herdr + nushell + starship";
 
     darwin.homebrew.casks = [ "ghostty" ];
 
@@ -18,7 +18,7 @@
             adjust-cell-height = "30%";
             copy-on-select = true;
             cursor-style = "block";
-            font-size = 16;
+            font-size = 17;
             font-thicken = true;
             mouse-hide-while-typing = true;
             macos-non-native-fullscreen = false;
@@ -72,74 +72,16 @@
           '';
         };
 
-        programs.tmux = {
+        programs.herdr = {
           enable = true;
-          baseIndex = 1;
-          mouse = true;
-          keyMode = "vi";
-          sensibleOnTop = false;
-          shell = lib.getExe pkgs.nushell;
-          plugins = with pkgs.tmuxPlugins; [
-            continuum
-            vim-tmux-navigator
-          ];
-          extraConfig = ''
-            set -g default-terminal "tmux-256color"
-            set -as terminal-overrides ',xterm*:sitm=\E[3m'
-            set -as terminal-overrides ',*:RGB'
-            set -as terminal-overrides ',*:Smulx=\E[4::%p1%dm'
-            set -as terminal-overrides ',*:Setulc=\E[58::2::::%p1%{65536}%/%d::%p1%{256}%/%{255}%&%d::%p1%{255}%&%d%;m'
-            set -g extended-keys on
-            set -g extended-keys-format csi-u
-            set-window-option -g pane-base-index 1
-            set-option -g renumber-windows on
-            set-option -g detach-on-destroy off
-            set -sg escape-time 0
-            bind -n M-x kill-pane
-            bind -n M-Left resize-pane -L 5
-            bind -n M-Right resize-pane -R 5
-            bind -n M-Up resize-pane -U 5
-            bind -n M-Down resize-pane -D 5
-            bind -n M-v copy-mode
-            bind -T copy-mode-vi v send-keys -X begin-selection
-            bind -T copy-mode-vi C-v send-keys -X rectangle-toggle
-            bind -T copy-mode-vi y send-keys -X copy-selection-and-cancel
-            bind -n M-t run-shell "${lib.getExe pkgs.local.tmux-pane-toggler}"
-            bind -T copy-mode M-t run-shell "${lib.getExe pkgs.local.tmux-pane-toggler}"
-            bind -T copy-mode-vi M-t run-shell "${lib.getExe pkgs.local.tmux-pane-toggler}"
-            bind -T copy-mode Escape send-keys -X cancel
-            bind -T copy-mode-vi Escape send-keys -X cancel
-            bind -n M-w last-window
-            set-option -g focus-events on
-            set -gu default-command
-
-            # sesh integration
-            bind -n M-p run-shell "sesh last"
-            bind -n M-s display-popup -h 60% -w 35% -T " 󱘲 Sessions " -E "sesh picker -i"
-            set -g detach-on-destroy off
-          '';
-        };
-
-        programs.sesh = {
-          enable = true;
-          enableAlias = false;
-          enableTmuxIntegration = false;
-          package = pkgs.sesh;
           settings = {
-            cache = true;
-            tmux_command = lib.getExe pkgs.tmux;
-            session = [
-              {
-                name = "hack";
-                path = "~";
-              }
-            ];
+            onboarding = false;
+            terminal.default_shell = lib.getExe pkgs.nushell;
+            keys.prefix = "ctrl+b";
           };
         };
-        programs.fzf = {
-          tmux.enableShellIntegration = true;
-          enable = true;
-        };
+
+        programs.fzf.enable = true;
         programs.zoxide = {
           enable = true;
           enableNushellIntegration = true;

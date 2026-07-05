@@ -53,28 +53,12 @@
               __unkeyed-1 = "<leader>aa";
               __unkeyed-2.__raw = ''
                 function()
-                  local cur = vim.api.nvim_get_current_tabpage()
-                  for _, t in ipairs(vim.api.nvim_list_tabpages()) do
-                    local ok, val = pcall(vim.api.nvim_tabpage_get_var, t, 'is_cc_cli')
-                    if ok and val then
-                      if t == cur then
-                        vim.cmd('tabnext #')
-                      else
-                        vim.api.nvim_set_current_tabpage(t)
-                      end
-                      return
-                    end
+                  if vim.bo.filetype == 'codecompanion_terminal' then
+                    vim.cmd('buffer #')
+                  else
+                    require('codecompanion').toggle_cli()
+                    vim.schedule(function() vim.cmd('only') end)
                   end
-                  vim.api.nvim_create_autocmd('TabNew', {
-                    once = true,
-                    callback = function()
-                      vim.schedule(function()
-                        vim.api.nvim_tabpage_set_var(vim.api.nvim_get_current_tabpage(), 'is_cc_cli', true)
-                        pcall(vim.cmd, 'LualineRenameTab  pi')
-                      end)
-                    end,
-                  })
-                  require('codecompanion').toggle_cli()
                 end
               '';
               mode = [
@@ -161,7 +145,7 @@
         };
 
         settings = {
-          display.cli.window.layout = "tab";
+          display.cli.window.layout = "buffer";
           display.chat = {
             window.layout = "buffer";
             floating_window = {

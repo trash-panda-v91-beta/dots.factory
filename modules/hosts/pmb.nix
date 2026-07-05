@@ -51,38 +51,6 @@
               path = "~/vaults/mist";
             }
           ];
-
-          programs.sesh.settings.session = [
-            {
-              name = "hack";
-              path = "~";
-            }
-            {
-              name = "asc";
-              path = "~";
-              startup_command = "ssh asc.internal";
-            }
-            {
-              name = "dots";
-              path = "~/repos/personal/dots.factory";
-              startup_command = "nvim";
-            }
-            {
-              name = "nebular grid";
-              path = "~/repos/personal/nebular-grid";
-              startup_command = "nvim";
-            }
-            {
-              name = "mist";
-              path = "~/vaults/mist";
-              startup_command = "nvim";
-            }
-            {
-              name = "psb";
-              path = "~/repos/personal/nebular-grid";
-              startup_command = "k9s";
-            }
-          ];
         };
     };
   };
