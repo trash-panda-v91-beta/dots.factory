@@ -6,7 +6,49 @@
     darwin.homebrew.casks = [ "ghostty" ];
 
     homeManager =
-      { pkgs, config, ... }:
+      { pkgs, config, lib, ... }:
+      let
+        # focus-or-create a tab by label; cmd is run in the new pane if provided
+        herdrFocusTab =
+          label: cmd:
+          pkgs.writeShellApplication {
+            name = "herdr-focus-tab-${label}";
+            runtimeInputs = with pkgs; [
+              herdr
+              jq
+            ];
+            text = ''
+              ws="$HERDR_ACTIVE_WORKSPACE_ID"
+              tab_id=$(herdr tab list --workspace "$ws" | jq -r '.result.tabs[] | select(.label=="${label}") | .tab_id' | head -1)
+              if [ -n "$tab_id" ]; then
+                herdr tab focus "$tab_id"
+              else
+                ws_cwd=$(herdr pane list --workspace "$ws" | jq -r '.result.panes[0].cwd // empty')
+                cwd="''${ws_cwd:-$HOME}"
+${if cmd != null then ''
+                result=$(herdr tab create --workspace "$ws" --label "${label}" --cwd "$cwd" --no-focus)
+                pane_id=$(echo "$result" | jq -r '.result.root_pane.pane_id')
+                herdr pane run "$pane_id" "${cmd}"
+                '' else ''
+                herdr tab create --workspace "$ws" --label "${label}" --cwd "$cwd" --no-focus >/dev/null
+                ''}
+                new_tab=$(herdr tab list --workspace "$ws" | jq -r '.result.tabs[] | select(.label=="${label}") | .tab_id' | tail -1)
+                herdr tab focus "$new_tab"
+              fi
+            '';
+          };
+        herdrFocusNvim = herdrFocusTab "nvim" "nvim";
+        herdrFocusPi = herdrFocusTab "pi" "pi";
+        herdrFocusSh = herdrFocusTab "sh" null;
+
+        herdrZjumpOpen = pkgs.writeShellApplication {
+          name = "herdr-zjump-open";
+          runtimeInputs = [ pkgs.herdr ];
+          text = ''
+            exec herdr plugin pane open --plugin denful.zjump --entrypoint picker
+          '';
+        };
+      in
       {
         programs.ghostty = {
           enable = true;
@@ -33,10 +75,7 @@
             window-padding-balance = true;
             window-save-state = "always";
             quit-after-last-window-closed = true;
-            keybind = [
-              "super+t=ignore"
-              "super+d=ignore"
-            ];
+            keybind = [ ];
           };
         };
 
@@ -77,7 +116,51 @@
           settings = {
             onboarding = false;
             terminal.default_shell = lib.getExe pkgs.nushell;
-            keys.prefix = "ctrl+b";
+            ui.mouse_scroll_lines = 1;
+            keys = {
+              prefix = "alt+space";
+              switch_tab = "alt+1..9";
+              goto = "alt+s";
+              copy_mode = [
+                "prefix+["
+                "ctrl+alt+["
+              ];
+              previous_tab = "prefix+h";
+              next_tab = "prefix+l";
+              previous_workspace = "prefix+k";
+              next_workspace = "prefix+j";
+              last_pane = "alt+p";
+              open_worktree = "prefix+shift+o";
+              remove_worktree = "prefix+alt+d";
+              next_agent = "prefix+n";
+              previous_agent = "prefix+shift+n";
+              command = [
+                {
+                  key = "prefix+f";
+                  type = "shell";
+                  command = lib.getExe herdrZjumpOpen;
+                  description = "zjump: pick dir via zoxide";
+                }
+                {
+                  key = "alt+e";
+                  type = "shell";
+                  command = lib.getExe herdrFocusNvim;
+                  description = "focus or create nvim tab";
+                }
+                {
+                  key = "alt+a";
+                  type = "shell";
+                  command = lib.getExe herdrFocusPi;
+                  description = "focus or create pi tab";
+                }
+                {
+                  key = "alt+0";
+                  type = "shell";
+                  command = lib.getExe herdrFocusSh;
+                  description = "focus or create shell tab";
+                }
+              ];
+            };
           };
         };
 
@@ -242,6 +325,20 @@
           enableNushellIntegration = true;
           enableZshIntegration = true;
         };
+
+        home.packages = [ pkgs.herdr-zjump ];
+
+        # Register herdr-zjump with herdr's plugin registry. `plugin link` talks
+        # to the running herdr server via socket; if herdr isn't running (fresh
+        # boot, first activation), this fails silently and the user re-runs it
+        # manually. Also cleans up prior herdr-plus / scratch-dev registrations.
+        home.activation.linkHerdrZjump = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+          $DRY_RUN_CMD ${lib.getExe pkgs.herdr} plugin unlink cloudmanic.herdr-plus 2>/dev/null || true
+          $DRY_RUN_CMD ${lib.getExe pkgs.herdr} plugin unlink you.zjump 2>/dev/null || true
+          $DRY_RUN_CMD ${lib.getExe pkgs.herdr} plugin unlink denful.zjump 2>/dev/null || true
+          $DRY_RUN_CMD ${lib.getExe pkgs.herdr} plugin link ${pkgs.herdr-zjump} 2>/dev/null || \
+            echo "herdr-zjump: link deferred (is herdr running? run 'herdr plugin link ${pkgs.herdr-zjump}')"
+        '';
 
         home.sessionVariables.FNOX_AGE_KEY_FILE = "${config.home.homeDirectory}/.ssh/${config.home.username}";
       };

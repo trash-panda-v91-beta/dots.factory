@@ -1,0 +1,25 @@
+id = "denful.zjump"
+name = "zjump"
+version = "0.1.0"
+min_herdr_version = "0.7.0"
+description = "Zoxide-picker workspace launcher + auto tab layout (nvim/pi/sh) on worktree create/open."
+platforms = ["linux", "macos"]
+
+# Interactive picker: fzf-driven zoxide -> new workspace + nvim/pi/sh tabs.
+# Rendered inside a herdr overlay pane so zoxide's picker has a real TTY.
+[[panes]]
+id = "picker"
+title = "Jump"
+placement = "overlay"
+command = ["sh", "jump.sh"]
+
+# Every new/opened git worktree fires these events; we lay nvim/pi/sh over
+# the fresh workspace herdr just created. Guard inside the script skips
+# already-laid-out workspaces.
+[[events]]
+on = "worktree.created"
+command = ["sh", "worktree-event.sh"]
+
+[[events]]
+on = "worktree.opened"
+command = ["sh", "worktree-event.sh"]

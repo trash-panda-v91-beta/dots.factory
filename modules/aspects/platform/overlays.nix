@@ -22,6 +22,8 @@ in
         (final: prev: {
           # herdr's source build vendors libghostty-vt which needs xcrun; use
           # upstream release binary on darwin.
+          herdr-zjump = prev.callPackage "${pkgsDir}/herdr-zjump" { };
+
           herdr = prev.stdenv.mkDerivation {
             pname = "herdr";
             version = "0.7.1";
