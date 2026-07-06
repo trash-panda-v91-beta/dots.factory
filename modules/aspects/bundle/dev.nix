@@ -7,6 +7,7 @@
       <dots/tool/terminal>
       <dots/tool/nixvim>
       <dots/tool/git>
+      <dots/tool/hunk>
       <dots/tool/dev-tools>
       <dots/tool/ai>
       <dots/tool/runtimes>
