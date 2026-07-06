@@ -26,4 +26,4 @@
   num (layer-toggle numrow)
 )
 
-;; vim: set ft=lisp
+;; vim: set ft=lisp:

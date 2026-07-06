@@ -8,7 +8,7 @@
 
 (deflayer navigation
   M-1  M-2  M-3  M-4  M-5  lrld M-6  M-7  M-8  M-9  M-0
-  @pad @cls bck  fwd  @trl      @com  @mwd @mwu end  @swh
+  @pad @cls bck  fwd  @trl      @com  @mwd @mwu @cpm @swh
   @all @sav S-tab tab @run        lft  down up   rght @fun
   @ndo @cut @cpy @pst @brr   @mut  @nil @mist @mwl @mwr @obs
             del             _               bspc
@@ -27,15 +27,16 @@
 (deflayer funpad
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   f1   f2   f3   f4   XX        XX   XX   XX   XX   XX
-  f5   f6   f7   f8   XX        XX   lctl lalt lmet _
+  f5   f6   f7   f8   XX        XX   lalt lctl lmet _
   f9   f10  f11  f12  XX   XX   XX   XX   XX   XX   XX
             @std           _              @std
 )
 
 (defalias
   com M-S-C-A-c
-  trl M-S-C-A-t
+  trl (cmd open -a Ghostty)
   brr M-S-C-A-b
+  cpm C-A-[
   obs M-S-C-A-o
   nil M-S-C-A-n
   mist M-S-C-A-m
@@ -48,10 +49,10 @@
   fun (tap-hold-press 0 $long_hold_timeout (layer-switch funpad) (layer-while-held funpad))
 
   ;; Mouse wheel emulation
-  mwu (mwheel-up    50 120)
-  mwd (mwheel-down  50 120)
-  mwl (mwheel-left  50 120)
-  mwr (mwheel-right 50 120)
+  mwu (mwheel-up    100 60)
+  mwd (mwheel-down  100 60)
+  mwl (mwheel-left  100 60)
+  mwr (mwheel-right 100 60)
 )
 
-;; vim: set ft=lisp
+;; vim: set ft=lisp:
