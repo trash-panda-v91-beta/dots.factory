@@ -558,7 +558,27 @@ in
           ];
         };
 
-        # ponytail: herdr theme not yet wired (was cyberdream/catppuccin for tmux)
+        programs.herdr.settings.theme = {
+          name = "terminal";
+          custom = {
+            accent = "#5ea1ff";
+            panel_bg = "#16181a";
+            surface0 = "#3c4048";
+            surface1 = "#7b8496";
+            surface_dim = "#1e2124";
+            overlay0 = "#7b8496";
+            overlay1 = "#ffffff";
+            text = "#ffffff";
+            subtext0 = "#7b8496";
+            mauve = "#bd5eff";
+            green = "#5eff6c";
+            yellow = "#f1ff5e";
+            red = "#ff6e5e";
+            blue = "#5ea1ff";
+            teal = "#5ef1ff";
+            peach = "#ffbd5e";
+          };
+        };
       };
   };
 }

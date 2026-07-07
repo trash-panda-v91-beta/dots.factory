@@ -5,6 +5,11 @@
 
     darwin.homebrew.casks = [ "ghostty" ];
 
+    darwin.environment.variables = {
+      EDITOR = "nvim";
+      VISUAL = "nvim";
+    };
+
     homeManager =
       { pkgs, config, lib, ... }:
       let
@@ -125,6 +130,7 @@ ${if cmd != null then ''
                 "prefix+["
                 "ctrl+alt+["
               ];
+              edit_scrollback = "prefix+e";
               previous_tab = "prefix+h";
               next_tab = "prefix+l";
               previous_workspace = "prefix+k";
@@ -341,6 +347,8 @@ ${if cmd != null then ''
         '';
 
         home.sessionVariables.FNOX_AGE_KEY_FILE = "${config.home.homeDirectory}/.ssh/${config.home.username}";
+        home.sessionVariables.EDITOR = "nvim";
+        home.sessionVariables.VISUAL = "nvim";
       };
   };
 }

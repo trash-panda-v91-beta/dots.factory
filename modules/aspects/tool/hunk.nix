@@ -11,8 +11,7 @@
         programs.hunk = {
           enable = true;
           package = inputs.hunk.packages.${pkgs.stdenv.hostPlatform.system}.default;
-          # enableGitIntegration stays off: delta already owns core.pager.
-          # Use `hunk diff` / `hunk show` explicitly.
+          enableGitIntegration = true;
           settings = {
             theme = "auto";
             mode = "auto";

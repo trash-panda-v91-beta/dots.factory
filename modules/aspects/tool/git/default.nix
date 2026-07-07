@@ -6,7 +6,7 @@
     homeManager =
       { pkgs, ... }:
       {
-        programs.delta.enable = true;
+        programs.delta.enable = false;
         programs.git = {
           enable = true;
           lfs.enable = true;
@@ -20,6 +20,9 @@
             core.autocrlf = "input";
             core.editor = "nvim";
             diff.algorithm = "histogram";
+            diff.tool = "codediff";
+            difftool.codediff.cmd = ''nvim "$LOCAL" "$REMOTE" +"CodeDiff file $LOCAL $REMOTE"'';
+            difftool.prompt = false;
             fetch.prune = true;
             help.autocorrect = 10;
             init.defaultBranch = "main";
@@ -40,8 +43,8 @@
           settings = {
             prSections = [
               {
-                title = "My Pull Requests";
-                filters = "is:open author:@me";
+                title = "Open Pull Requests";
+                filters = "is:open";
               }
               {
                 title = "Needs My Review";
@@ -65,10 +68,27 @@
             defaults = {
               preview = {
                 open = true;
-                width = 50;
+                width = 65;
               };
               prsLimit = 20;
               issuesLimit = 20;
+            };
+            keybindings = {
+              universal = [
+                { key = "up"; builtin = "pageUp"; }
+                { key = "down"; builtin = "pageDown"; }
+                { key = "j"; builtin = "down"; }
+                { key = "k"; builtin = "up"; }
+                { key = "h"; builtin = "prevSection"; }
+                { key = "l"; builtin = "nextSection"; }
+              ];
+              prs = [
+                {
+                  key = "D";
+                  name = "codediff";
+                  command = "cd {{.RepoPath}} && gh pr checkout {{.PrNumber}} && nvim -c \"CodeDiff {{.BaseRefName}}...\"";
+                }
+              ];
             };
           };
         };
