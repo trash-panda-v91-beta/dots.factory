@@ -44,7 +44,10 @@ ${if cmd != null then ''
           };
         herdrFocusNvim = herdrFocusTab "nvim" "nvim";
         herdrFocusPi = herdrFocusTab "pi" "pi";
-        herdrFocusSh = herdrFocusTab "sh" null;
+        herdrFocusTerm = herdrFocusTab "term" null;
+        herdrFocusPrs = herdrFocusTab "prs" "gh pr list";
+        herdrFocusHunk = herdrFocusTab "hunk" "hunk diff";
+        herdrFocusLazygit = herdrFocusTab "lazygit" "lazygit";
 
         herdrZjumpOpen = pkgs.writeShellApplication {
           name = "herdr-zjump-open";
@@ -148,22 +151,40 @@ ${if cmd != null then ''
                   description = "zjump: pick dir via zoxide";
                 }
                 {
-                  key = "alt+e";
+                  key = "alt+n";
                   type = "shell";
                   command = lib.getExe herdrFocusNvim;
                   description = "focus or create nvim tab";
                 }
                 {
-                  key = "alt+a";
+                  key = "alt+i";
                   type = "shell";
                   command = lib.getExe herdrFocusPi;
                   description = "focus or create pi tab";
                 }
                 {
-                  key = "alt+0";
+                  key = "alt+t";
                   type = "shell";
-                  command = lib.getExe herdrFocusSh;
-                  description = "focus or create shell tab";
+                  command = lib.getExe herdrFocusTerm;
+                  description = "focus or create term tab";
+                }
+                {
+                  key = "alt+r";
+                  type = "shell";
+                  command = lib.getExe herdrFocusPrs;
+                  description = "focus or create prs tab (gh pr list)";
+                }
+                {
+                  key = "alt+h";
+                  type = "shell";
+                  command = lib.getExe herdrFocusHunk;
+                  description = "focus or create hunk tab";
+                }
+                {
+                  key = "alt+l";
+                  type = "shell";
+                  command = lib.getExe herdrFocusLazygit;
+                  description = "focus or create lazygit tab";
                 }
               ];
             };
