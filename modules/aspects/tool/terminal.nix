@@ -186,6 +186,30 @@ ${if cmd != null then ''
                   command = lib.getExe herdrFocusLazygit;
                   description = "focus or create lazygit tab";
                 }
+                {
+                  key = "ctrl+h";
+                  type = "plugin_action";
+                  command = "herdr-splits.nav-left";
+                  description = "navigate left (nvim/herdr)";
+                }
+                {
+                  key = "ctrl+j";
+                  type = "plugin_action";
+                  command = "herdr-splits.nav-down";
+                  description = "navigate down (nvim/herdr)";
+                }
+                {
+                  key = "ctrl+k";
+                  type = "plugin_action";
+                  command = "herdr-splits.nav-up";
+                  description = "navigate up (nvim/herdr)";
+                }
+                {
+                  key = "ctrl+l";
+                  type = "plugin_action";
+                  command = "herdr-splits.nav-right";
+                  description = "navigate right (nvim/herdr)";
+                }
               ];
             };
           };
@@ -365,6 +389,12 @@ ${if cmd != null then ''
           $DRY_RUN_CMD ${lib.getExe pkgs.herdr} plugin unlink denful.zjump 2>/dev/null || true
           $DRY_RUN_CMD ${lib.getExe pkgs.herdr} plugin link ${pkgs.herdr-zjump} 2>/dev/null || \
             echo "herdr-zjump: link deferred (is herdr running? run 'herdr plugin link ${pkgs.herdr-zjump}')"
+        '';
+
+        home.activation.linkHerdrSplits = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+          $DRY_RUN_CMD ${lib.getExe pkgs.herdr} plugin unlink herdr-splits 2>/dev/null || true
+          $DRY_RUN_CMD ${lib.getExe pkgs.herdr} plugin link ${pkgs.herdr-splits} 2>/dev/null || \
+            echo "herdr-splits: link deferred (is herdr running? run 'herdr plugin link ${pkgs.herdr-splits}')"
         '';
 
         home.sessionVariables.FNOX_AGE_KEY_FILE = "${config.home.homeDirectory}/.ssh/${config.home.username}";

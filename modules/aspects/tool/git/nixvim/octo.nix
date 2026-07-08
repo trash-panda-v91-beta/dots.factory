@@ -20,6 +20,75 @@
             default_to_projects_v2 = defaultToProjectsV2;
             default_merge_method = "squash";
             picker = "snacks";
+            picker_config = {
+              use_emojis = true;
+              snacks.actions = {
+                # Extra actions available while the PR picker is open.
+                # Default mappings from octo (open browser <C-b>, copy url
+                # <C-y>, copy sha <C-e>, checkout <C-o>, merge <C-r>) stay.
+                pull_requests = [
+                  {
+                    name = "pr_diff";
+                    lhs = "<C-d>";
+                    desc = "show PR diff";
+                    mode = [ "n" "i" ];
+                    fn.__raw = ''
+                      function(picker, item)
+                        picker:close()
+                        local repo = item.repository.nameWithOwner
+                        local buf = vim.api.nvim_create_buf(true, true)
+                        vim.bo[buf].filetype = "diff"
+                        vim.api.nvim_buf_set_name(buf, string.format("DIFF: %s#%d", repo, item.number))
+                        vim.api.nvim_set_current_buf(buf)
+                        vim.system(
+                          { "gh", "pr", "diff", tostring(item.number), "--repo", repo },
+                          { text = true },
+                          function(res)
+                            vim.schedule(function()
+                              local lines = vim.split(res.stdout or "", "\n")
+                              vim.bo[buf].modifiable = true
+                              vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
+                              vim.bo[buf].modifiable = false
+                            end)
+                          end
+                        )
+                      end
+                    '';
+                  }
+                  {
+                    name = "pr_approve";
+                    lhs = "<C-a>";
+                    desc = "approve PR";
+                    mode = [ "n" "i" ];
+                    fn.__raw = ''
+                      function(_picker, item)
+                        local repo = item.repository.nameWithOwner
+                        require("octo.gh").pr.review({
+                          item.number,
+                          repo = repo,
+                          approve = true,
+                          opts = { cb = function() require("octo.utils").info("Approved #" .. item.number) end },
+                        })
+                      end
+                    '';
+                  }
+                  {
+                    name = "pr_watch_checks";
+                    lhs = "<C-w>";
+                    desc = "watch checks";
+                    mode = [ "n" "i" ];
+                    fn.__raw = ''
+                      function(picker, item)
+                        picker:close()
+                        require("snacks").terminal(
+                          { "gh", "pr", "checks", tostring(item.number), "--repo", item.repository.nameWithOwner, "--watch" }
+                        )
+                      end
+                    '';
+                  }
+                ];
+              };
+            };
             commands = {
               pr = {
                 auto.__raw = ''
@@ -168,19 +237,54 @@
             };
           };
         };
-        # Global keymap for opening PR picker
+        # Global keymaps: Octo entry points modelled on gh-dash sections.
         keymaps = [
           {
             mode = "n";
-            key = "<leader>gp";
+            key = "<leader>op";
+            action.__raw = "function() require('octo.picker').prs() end";
+            options.desc = "Open PRs";
+          }
+          {
+            mode = "n";
+            key = "<leader>or";
+            action = "<cmd>Octo search is:pr is:open review-requested:@me<cr>";
+            options.desc = "PRs needing my review";
+          }
+          {
+            mode = "n";
+            key = "<leader>oI";
+            action = "<cmd>Octo search is:pr is:open involves:@me -author:@me<cr>";
+            options.desc = "PRs I'm involved in";
+          }
+          {
+            mode = "n";
+            key = "<leader>om";
+            action = "<cmd>Octo search is:pr is:open author:@me<cr>";
+            options.desc = "My open PRs";
+          }
+          {
+            mode = "n";
+            key = "<leader>oi";
+            action.__raw = "function() require('octo.picker').issues() end";
+            options.desc = "Open Issues";
+          }
+          {
+            mode = "n";
+            key = "<leader>on";
+            action = "<cmd>Octo notification list<cr>";
+            options.desc = "Notifications";
+          }
+          {
+            mode = "n";
+            key = "<leader>ot";
             action.__raw = ''
               function()
+                vim.cmd('tabnew')
                 require('octo.picker').prs()
               end
             '';
-            options = {
-              desc = "Open PRs";
-            };
+            options.desc = "Open Octo tab (dedicated PR workspace)";
           }
         ];
         # Add which-key group for octo buffers
@@ -196,31 +300,16 @@
                 local localleader = vim.g.maplocalleader or ' '
                 require('which-key').add({
                   { localleader .. 'a', group = 'Assignee', buffer = event.buf },
-                  { localleader .. 'ar', name = 'Reviewer', buffer = event.buf }, -- new group for reviewer actions
                   { localleader .. 'c', group = 'Comment', buffer = event.buf },
-                  { localleader .. 'cr', name = 'Reaction', buffer = event.buf }, -- reactions under comment
+                  { localleader .. 'cr', group = 'Reaction', buffer = event.buf },
                   { localleader .. 'g', group = 'Goto', buffer = event.buf },
                   { localleader .. 'i', group = 'Issue', buffer = event.buf },
                   { localleader .. 'l', group = 'Label', buffer = event.buf },
                   { localleader .. 'm', group = 'Merge', buffer = event.buf },
-                  { localleader .. 'r', group = 'Review', buffer = event.buf }, -- moved review group to r
+                  { localleader .. 'p', group = 'PR', buffer = event.buf },
+                  { localleader .. 'r', group = 'Review', buffer = event.buf },
                   { localleader .. 'y', group = 'Yank', buffer = event.buf },
-
-                  -- Hide unwanted global groups/keymaps that conflict with octo keymaps
-                  -- Hide LSP group (conflicts with Label)
-                  { localleader .. 'lD', hidden = true, buffer = event.buf },
-                  { localleader .. 'li', hidden = true, buffer = event.buf },
-                  { localleader .. 'lt', hidden = true, buffer = event.buf },
-                  { localleader .. 'ld', hidden = true, buffer = event.buf },
-                  -- Hide Code group (conflicts with Comment)
-                  { localleader .. 'ca', hidden = true, buffer = event.buf },
-                  -- Hide Git group items that aren't octo-related
-                  { localleader .. 'gd', hidden = true, buffer = event.buf },
-                  { localleader .. 'gD', hidden = true, buffer = event.buf },
-                  { localleader .. 'gh', hidden = true, buffer = event.buf },
-                  { localleader .. 'gH', hidden = true, buffer = event.buf },
-                  { localleader .. 'gL', hidden = true, buffer = event.buf },
-                  { localleader .. 'gn', hidden = true, buffer = event.buf },
+                  { ' ', group = 'PR Quick', buffer = event.buf },
                 })
 
                 -- Custom commands (not in octo builtins)
@@ -273,6 +362,56 @@
                   buffer = event.buf,
                   desc = 'Yank SHA'
                 })
+
+                -- Shared with gh-dash: a=approve, M=auto-merge, A=label approval, R=label robocat
+                local pr_action = function(fn)
+                  return function()
+                    local utils = require('octo.utils')
+                    local buf = utils.get_current_buffer()
+                    if not buf or not buf:isPullRequest() then return end
+                    fn(buf)
+                  end
+                end
+
+                vim.keymap.set('n', 'o', '<localleader>gb', { buffer = event.buf, remap = true, desc = 'Open in browser' })
+
+                vim.keymap.set('n', '<space>v', pr_action(function(buf)
+                  vim.system(
+                    { 'gh', 'pr', 'review', tostring(buf.node.number), '--approve', '--body', 'LGTM', '--repo', buf.repo },
+                    { text = true },
+                    function(res)
+                      vim.schedule(function()
+                        if res.code == 0 then
+                          require('octo.utils').info('Approved with LGTM')
+                          vim.cmd('Octo pr reload')
+                        else
+                          require('octo.utils').error(res.stderr or 'Failed to approve')
+                        end
+                      end)
+                    end
+                  )
+                end), { buffer = event.buf, desc = 'Approve PR + LGTM' })
+
+                vim.keymap.set('n', '<space>M', pr_action(function(buf)
+                  vim.cmd('Octo pr auto')
+                end), { buffer = event.buf, desc = 'Auto-merge PR' })
+
+                vim.keymap.set('n', '<space>L', pr_action(function(buf)
+                  vim.system(
+                    { 'gh', 'pr', 'edit', tostring(buf.node.number), '--add-label', 'approval/robocat', '--repo', buf.repo },
+                    { text = true },
+                    function(res)
+                      vim.schedule(function()
+                        if res.code == 0 then
+                          require('octo.utils').info('Label "approval/robocat" added')
+                          vim.cmd('Octo pr reload')
+                        else
+                          require('octo.utils').error(res.stderr or 'Failed to add label')
+                        end
+                      end)
+                    end
+                  )
+                end), { buffer = event.buf, desc = 'Label: approval/robocat' })
 
                 -- Comment: reactions moved under <localleader>cr*
                 vim.keymap.set('n', localleader .. 'crp', '<cmd>Octo reaction hooray<cr>', { buffer = event.buf, desc = 'React :tada:' })

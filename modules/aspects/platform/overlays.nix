@@ -23,6 +23,7 @@ in
           # herdr's source build vendors libghostty-vt which needs xcrun; use
           # upstream release binary on darwin.
           herdr-zjump = prev.callPackage "${pkgsDir}/herdr-zjump" { };
+          herdr-splits = prev.callPackage "${pkgsDir}/herdr-splits" { };
 
           herdr = prev.stdenv.mkDerivation {
             pname = "herdr";

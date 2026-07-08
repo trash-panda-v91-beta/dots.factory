@@ -86,7 +86,27 @@
                 {
                   key = "D";
                   name = "codediff";
-                  command = "cd {{.RepoPath}} && gh pr checkout {{.PrNumber}} && nvim -c \"CodeDiff {{.BaseRefName}}...\"";
+                  command = "cd {{.RepoPath}} && nvim -c \"CodeDiff {{.BaseRefName}}...\"";
+                }
+                {
+                  key = "e";
+                  name = "edit in octo";
+                  command = "nvim -c \"Octo pr edit {{.PrNumber}}\"";
+                }
+                {
+                  key = "v";
+                  name = "approve + LGTM";
+                  command = "gh pr review {{.PrNumber}} --approve --body 'LGTM' --repo {{.RepoName}}";
+                }
+                {
+                  key = "M";
+                  name = "auto-merge";
+                  command = "gh pr merge {{.PrNumber}} --auto --squash --repo {{.RepoName}}";
+                }
+                {
+                  key = "L";
+                  name = "label approval/robocat";
+                  command = "gh pr edit {{.PrNumber}} --add-label 'approval/robocat' --repo {{.RepoName}}";
                 }
               ];
             };

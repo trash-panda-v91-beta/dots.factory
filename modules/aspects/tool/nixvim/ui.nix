@@ -128,6 +128,16 @@
             show_help = false;
             show_keys = false;
             notify = false;
+            # In octo buffers only show buffer-local (octo) mappings, so
+            # which-key isn't cluttered with global LSP/git/etc groups.
+            filter.__raw = ''
+              function(mapping)
+                if vim.bo.filetype == "octo" then
+                  return mapping.buf ~= nil and mapping.buf ~= 0
+                end
+                return true
+              end
+            '';
             layout = {
               spacing = 3;
               align = "center";
@@ -213,12 +223,9 @@
                 icon = "";
               }
               {
-                __unkeyed-1 = "<leader>ob";
-                desc = "Render base embed";
-              }
-              {
-                __unkeyed-1 = "<leader>oo";
-                desc = "Open file from base embed";
+                __unkeyed-1 = "<leader>o";
+                group = "Octo";
+                icon = "🐙";
               }
               {
                 __unkeyed-1 = "<leader>un";
