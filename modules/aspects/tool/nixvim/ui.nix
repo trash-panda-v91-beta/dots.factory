@@ -118,7 +118,15 @@
           };
         };
 
-        lualine.enable = true;
+        lualine = {
+          enable = true;
+          settings.tabline.lualine_a = [
+            {
+              __unkeyed-1 = "tabs";
+              cond.__raw = "function() return #vim.api.nvim_list_tabpages() > 1 end";
+            }
+          ];
+        };
 
         which-key = {
           enable = true;
