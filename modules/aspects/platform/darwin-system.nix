@@ -5,6 +5,12 @@
 
     darwin = {
       system.defaults = {
+        CustomUserPreferences."com.apple.symbolichotkeys".AppleSymbolicHotKeys = {
+          # Disable Cmd+Space (Spotlight search) - freed for Vicinae
+          "64".enabled = false;
+          # Disable Cmd+Alt+Space (Finder search window)
+          "65".enabled = false;
+        };
         dock = {
           autohide = true;
           orientation = "bottom";

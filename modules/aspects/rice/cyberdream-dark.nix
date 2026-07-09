@@ -559,7 +559,7 @@ in
         };
 
         programs.vicinae = {
-          settings.theme.name = "Cyberdream";
+          settings.theme.dark.name = "Cyberdream";
           themes.cyberdream = {
             meta = {
               description = "Cyberdream theme for vicinae";

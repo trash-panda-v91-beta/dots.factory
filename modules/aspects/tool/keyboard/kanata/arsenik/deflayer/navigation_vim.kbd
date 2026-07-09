@@ -35,7 +35,7 @@
 (defalias
   com M-S-C-A-c
   trl (cmd open -a Ghostty)
-  clp (cmd vicinae open 'vicinae://launch/clipboard/history')
+  clp M-S-C-A-y
   brr M-S-C-A-b
   cpm C-A-[
   obs M-S-C-A-o
