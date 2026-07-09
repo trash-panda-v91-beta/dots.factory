@@ -15,7 +15,6 @@ in
         "claude-code"
         "copilot-language-server"
         "obsidian"
-        "raycast"
       ];
 
       nixpkgs.overlays = [

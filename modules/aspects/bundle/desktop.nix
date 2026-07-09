@@ -5,7 +5,7 @@
     description = "Workstation: tiling window manager, launcher, keyboard remap";
     includes = [
       <dots/tool/window-manager>
-      <dots/tool/raycast>
+      <dots/tool/vicinae>
       <dots/tool/keyboard>
     ];
   };

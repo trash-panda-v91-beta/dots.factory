@@ -30,6 +30,8 @@
       flake = false;
     };
 
+    vicinae.url = "github:vicinaehq/vicinae";
+
     den.url = "github:vic/den/v0.16.0";
     import-tree.url = "github:vic/import-tree";
     flake-parts.url = "github:hercules-ci/flake-parts";
