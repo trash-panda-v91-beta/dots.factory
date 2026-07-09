@@ -327,8 +327,8 @@
 
                 -- Remove <localleader>vp (old Review: Approve key)
 
-                -- PR: reload buffer (<localleader>pr)
-                vim.keymap.set('n', localleader .. 'pr', '<cmd>Octo pr reload<cr>', {
+                -- PR: reload buffer (r, matches gh-dash `r`)
+                vim.keymap.set('n', 'r', '<cmd>Octo pr reload<cr>', {
                   buffer = event.buf,
                   desc = 'Reload PR buffer'
                 })

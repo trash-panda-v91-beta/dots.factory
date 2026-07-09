@@ -52,6 +52,7 @@ in
                 "${piMcpAdapter}/index.js"
                 "${piLsp}/pi-lsp.js"
                 "${ponytailPi}/index.js"
+                "${config.programs.pi-coding-agent.configDir}/extensions/herdr-agent-state.ts"
               ];
               skills = [
                 "${piWebAccess}/skills"
@@ -63,6 +64,9 @@ in
           };
 
           programs.mcp.enable = true;
+
+          home.file."${config.programs.pi-coding-agent.configDir}/extensions/herdr-agent-state.ts".source =
+            pkgs.herdr-src + "/src/integration/assets/pi/herdr-agent-state.ts";
 
           home.file."${config.programs.pi-coding-agent.configDir}/lsp.json".text = builtins.toJSON {
             servers = {

@@ -141,7 +141,7 @@
             filter.__raw = ''
               function(mapping)
                 if vim.bo.filetype == "octo" then
-                  return mapping.buf ~= nil and mapping.buf ~= 0
+                  return mapping.buffer ~= nil and mapping.buffer ~= 0
                 end
                 return true
               end

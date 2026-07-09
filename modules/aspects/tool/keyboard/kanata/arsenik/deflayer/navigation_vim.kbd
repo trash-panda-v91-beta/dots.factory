@@ -49,10 +49,12 @@
   fun (tap-hold-press 0 $long_hold_timeout (layer-switch funpad) (layer-while-held funpad))
 
   ;; Mouse wheel emulation
-  mwu (mwheel-up    100 60)
-  mwd (mwheel-down  100 60)
-  mwl (mwheel-left  100 60)
-  mwr (mwheel-right 100 60)
+  ;; On macOS: distance = SCROLL_WHEEL_EVENT_DELTA_AXIS_1 = lines.
+  ;; distance 1 = 1 line per event, interval = ms between repeats while held.
+  mwu (mwheel-up    50 2)
+  mwd (mwheel-down  50 2)
+  mwl (mwheel-left  50 2)
+  mwr (mwheel-right 50 2)
 )
 
 ;; vim: set ft=lisp:

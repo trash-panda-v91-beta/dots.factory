@@ -24,6 +24,9 @@ in
           # upstream release binary on darwin.
           herdr-zjump = prev.callPackage "${pkgsDir}/herdr-zjump" { };
           herdr-splits = prev.callPackage "${pkgsDir}/herdr-splits" { };
+          # herdr source tree (integration assets, etc.) - kept separate from the
+          # binary-fetch herdr derivation below which has no src attribute.
+          herdr-src = prev.herdr.src;
 
           herdr = prev.stdenv.mkDerivation {
             pname = "herdr";

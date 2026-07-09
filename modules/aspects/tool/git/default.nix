@@ -89,7 +89,7 @@
                   command = "cd {{.RepoPath}} && nvim -c \"CodeDiff {{.BaseRefName}}...\"";
                 }
                 {
-                  key = "e";
+                  key = "c";
                   name = "edit in octo";
                   command = "nvim -c \"Octo pr edit {{.PrNumber}}\"";
                 }
