@@ -11,37 +11,55 @@
 
         # Opens a vault workspace with two accordion-tiled windows: Obsidian
         # pointed at the vault, and a Ghostty running herdr in the vault dir.
-        # Each app is placed by captured window-id (Obsidian sets its title
-        # after the window appears, so title-based routing races - id is exact).
+        # Obsidian is routed by title (the vault name is stable in its title);
+        # Ghostty is routed by captured window-id (its title is just the cwd,
+        # so title matching is not reliable for it).
         mkNotesScript =
           session: workspace:
           pkgs.writeShellScript "aerospace-notes-${session}" ''
             export PATH="${pkgs.herdr}/bin:$PATH"
 
-            place_new_window() {
-              # $1 = app-bundle-id, $2 = command that spawns the window
-              local bid="$1" spawn="$2" before after new_id
-              if [ "$(${aerospace} list-windows --workspace ${workspace} --app-bundle-id "$bid" --count)" != "0" ]; then
-                return
-              fi
-              before=$(${aerospace} list-windows --all --app-bundle-id "$bid" --json | /usr/bin/jq -r '.[]["window-id"]')
-              eval "$spawn"
+            ghostty_ids() {
+              ${aerospace} list-windows --monitor all --app-bundle-id com.mitchellh.ghostty --json \
+                | /usr/bin/jq -r '.[]["window-id"]'
+            }
+
+            move_obsidian_by_title() {
+              ${aerospace} list-windows --monitor all --app-bundle-id md.obsidian --json \
+                | /usr/bin/jq -r --arg m "- ${session} - Obsidian" '.[] | select(.["window-title"] | contains($m)) | .["window-id"]' \
+                | while read -r wid; do
+                    [ -n "$wid" ] && ${aerospace} move-node-to-workspace --window-id "$wid" ${workspace}
+                  done
+            }
+
+            # Obsidian: open the vault if it isn't already placed, then route by title.
+            if [ "$(${aerospace} list-windows --workspace ${workspace} --app-bundle-id md.obsidian --count)" = "0" ]; then
+              /usr/bin/open "obsidian://open?vault=${session}"
               for _ in $(seq 1 25); do
                 sleep 0.2
-                after=$(${aerospace} list-windows --all --app-bundle-id "$bid" --json | /usr/bin/jq -r '.[]["window-id"]')
-                new_id=$(comm -13 <(echo "$before" | sort) <(echo "$after" | sort) | head -1)
+                move_obsidian_by_title
+                [ "$(${aerospace} list-windows --workspace ${workspace} --app-bundle-id md.obsidian --count)" != "0" ] && break
+              done
+            fi
+
+            # Ghostty: spawn a new window and place it by captured window-id.
+            if [ "$(${aerospace} list-windows --workspace ${workspace} --app-bundle-id com.mitchellh.ghostty --count)" = "0" ]; then
+              before=$(ghostty_ids)
+              /usr/bin/osascript -e "
+                tell application \"Ghostty\"
+                  set cfg to new surface configuration
+                  set command of cfg to \"sh -c 'cd ~/vaults/${session} 2>/dev/null; exec ${herdr} --session ${session}'\"
+                  new window with configuration cfg
+                end tell"
+              for _ in $(seq 1 25); do
+                sleep 0.2
+                new_id=$(comm -13 <(echo "$before" | sort) <(ghostty_ids | sort) | head -1)
                 if [ -n "$new_id" ]; then
                   ${aerospace} move-node-to-workspace --window-id "$new_id" ${workspace}
                   break
                 fi
               done
-            }
-
-            place_new_window md.obsidian \
-              "/usr/bin/open 'obsidian://open?vault=${session}'"
-
-            place_new_window com.mitchellh.ghostty \
-              "/usr/bin/osascript -e 'tell application \"Ghostty\" to (new window with configuration (new surface configuration with properties {command:\"sh -c '\"'\"'cd ~/vaults/${session} 2>/dev/null; exec ${herdr} --session ${session}'\"'\"'\"}))'"
+            fi
 
             ${aerospace} layout --workspace ${workspace} accordion 2>/dev/null || true
           '';
@@ -130,6 +148,20 @@
               {
                 "if".app-id = "com.okta.mobile";
                 run = [ "layout floating" ];
+              }
+              {
+                "if" = {
+                  app-id = "md.obsidian";
+                  window-title-regex-substring = "- mist - Obsidian";
+                };
+                run = [ "move-node-to-workspace m" ];
+              }
+              {
+                "if" = {
+                  app-id = "md.obsidian";
+                  window-title-regex-substring = "- nil - Obsidian";
+                };
+                run = [ "move-node-to-workspace n" ];
               }
               {
                 "if" = {
