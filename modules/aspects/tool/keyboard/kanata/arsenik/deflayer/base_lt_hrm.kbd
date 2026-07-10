@@ -2,9 +2,9 @@
 
 (deflayer base
   _    _    _    _    _    _    _    _    _    _    _
-  q    w    e    r    t         y    u    i    o    p
+  q    w    e    r    @tt        y    u    i    o    p
   a    @ss  @dd  @ff  g         h    @jj  @kk  @ll  ;
-  z    x    c    v    b    <    n    m    ,    .    /
+  z    x    c    v    @bb  <    n    m    ,    .    /
             @sft          @nav            @sym
 )
 
@@ -26,6 +26,31 @@
   jj (tap-hold $tap_timeout $long_hold_timeout j lalt)
   kk (tap-hold $tap_timeout $long_hold_timeout k rctl)
   ll (tap-hold $tap_timeout $long_hold_timeout l rmet)
+
+  ;; App launchers: tap types the letter, hold + space launches the app.
+  tt (tap-hold $tap_timeout $long_hold_timeout t (layer-while-held launch-t))
+  bb (tap-hold $tap_timeout $long_hold_timeout b (layer-while-held launch-b))
+)
+
+(deflayer launch-t
+  _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _         _    _    _    _    _
+  _    _    _    _    _         _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _
+            _             @open-t         _
+)
+
+(deflayer launch-b
+  _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _         _    _    _    _    _
+  _    _    _    _    _         _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _
+            _             @open-b         _
+)
+
+(defalias
+  open-t (cmd open -a Ghostty)
+  open-b (cmd open -a Zen)
 )
 
 ;; vim: set ft=lisp:
