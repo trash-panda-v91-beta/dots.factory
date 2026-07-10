@@ -44,16 +44,21 @@ and companion launch layers in the same file.
 Pattern: define a `tap-hold` alias on the letter, activating a `layer-while-held` when
 space is pressed while holding. The layer fires the action on the `@nav` (space) position.
 
+**The action emits the aerospace hyper chord** (`M-S-C-A-<letter>`), not a raw
+`open -a`. Aerospace owns the workspace-switch + app-open logic - kanata is just an
+ergonomic alias for the 4-finger hyper chord. Single source of truth: to change what an
+app launcher does, edit aerospace, not kanata.
+
 Existing launchers:
-- `t` + Space -> open Ghostty (terminal)
-- `b` + Space -> open Zen Browser
+- `t` + Space -> `M-S-C-A-t` -> aerospace opens Ghostty + switches to workspace `t`
+- `b` + Space -> `M-S-C-A-b` -> aerospace opens Zen + switches to workspace `b`
 
 Adding a new app launcher (`X` = mnemonic letter):
 
 1. Add alias in `defalias`:
    ```
    xx (tap-hold $tap_timeout $long_hold_timeout x (layer-while-held launch-x))
-   open-x (cmd open -a "AppName")
+   open-x M-S-C-A-x
    ```
 2. Add the key to the base layer (`@xx` replacing `x`).
 3. Add the layer definition:
@@ -67,6 +72,7 @@ Adding a new app launcher (`X` = mnemonic letter):
    )
    ```
    The `@open-x` sits in the `@nav` (space thumb) position - that is what gets pressed.
+4. Wire the matching `ctrl-alt-cmd-shift-x` binding in aerospace (see Layer 2).
 
 Common mnemonic letters to avoid (taken or reserved):
 - `t` terminal, `b` browser, `s`/`d`/`f`/`j`/`k`/`l` HRM (never use for launchers)
@@ -288,10 +294,11 @@ custom bindings in this skill when they are added.
 
 Given app `X` (mnemonic letter), app bundle ID `com.vendor.X`, app name "AppName":
 
-1. **kanata** - add `@xx` alias + `launch-x` layer + `open-x` cmd in
-   `deflayer/base_lt_hrm.kbd`
-2. **aerospace** - add `ctrl-alt-cmd-shift-x` in `mode.main.binding`, `x` in
-   `mode.launcher.binding`, and `on-window-detected` rule in `window-manager.nix`
+1. **aerospace first** (owns the logic) - add `ctrl-alt-cmd-shift-x` in
+   `mode.main.binding` (workspace switch + app open), `x` in `mode.launcher.binding`,
+   and an `on-window-detected` rule in `window-manager.nix`
+2. **kanata** - add `@xx` alias + `launch-x` layer + `open-x M-S-C-A-x` in
+   `deflayer/base_lt_hrm.kbd`. This just emits the hyper chord aerospace listens for
 3. **vicinae** (optional) - add a provider shortcut if vicinae has an extension for it
 4. Test: `mise run build` - no changes needed to nvim unless the app has an nvim plugin
 
