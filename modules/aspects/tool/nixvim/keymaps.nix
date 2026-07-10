@@ -83,6 +83,27 @@
       keymaps = [
         {
           mode = "n";
+          key = "<leader>q";
+          action.__raw = ''
+            function()
+              if vim.fn.tabpagenr('$') > 1 then
+                vim.cmd.write()
+                vim.cmd.tabclose()
+              else
+                vim.cmd('wq')
+              end
+            end
+          '';
+          options.desc = "Close tab / quit";
+        }
+        {
+          mode = ["n" "i" "v"];
+          key = "<C-s>";
+          action = "<cmd>w<CR>";
+          options.desc = "Save";
+        }
+        {
+          mode = "n";
           key = "<leader>/";
           action = "<cmd>nohl<CR>";
           options = {
