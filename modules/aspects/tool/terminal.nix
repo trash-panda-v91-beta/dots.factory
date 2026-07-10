@@ -51,9 +51,8 @@ ${if cmd != null then ''
 
         herdrZjumpOpen = pkgs.writeShellApplication {
           name = "herdr-zjump-open";
-          runtimeInputs = [ pkgs.herdr ];
           text = ''
-            exec herdr plugin pane open --plugin denful.zjump --entrypoint picker
+            exec vicinae "vicinae://extensions/trash-panda-v91-beta/zerdr/jump"
           '';
         };
       in
@@ -376,20 +375,6 @@ ${if cmd != null then ''
           enableNushellIntegration = true;
           enableZshIntegration = true;
         };
-
-        home.packages = [ pkgs.herdr-zjump ];
-
-        # Register herdr-zjump with herdr's plugin registry. `plugin link` talks
-        # to the running herdr server via socket; if herdr isn't running (fresh
-        # boot, first activation), this fails silently and the user re-runs it
-        # manually. Also cleans up prior herdr-plus / scratch-dev registrations.
-        home.activation.linkHerdrZjump = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-          $DRY_RUN_CMD ${lib.getExe pkgs.herdr} plugin unlink cloudmanic.herdr-plus 2>/dev/null || true
-          $DRY_RUN_CMD ${lib.getExe pkgs.herdr} plugin unlink you.zjump 2>/dev/null || true
-          $DRY_RUN_CMD ${lib.getExe pkgs.herdr} plugin unlink denful.zjump 2>/dev/null || true
-          $DRY_RUN_CMD ${lib.getExe pkgs.herdr} plugin link ${pkgs.herdr-zjump} 2>/dev/null || \
-            echo "herdr-zjump: link deferred (is herdr running? run 'herdr plugin link ${pkgs.herdr-zjump}')"
-        '';
 
         home.activation.linkHerdrSplits = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
           $DRY_RUN_CMD ${lib.getExe pkgs.herdr} plugin unlink herdr-splits 2>/dev/null || true

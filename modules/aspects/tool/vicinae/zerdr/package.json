@@ -1,0 +1,42 @@
+{
+  "$schema": "https://raw.githubusercontent.com/vicinaehq/vicinae/refs/heads/main/extra/schemas/extension.json",
+  "name": "zerdr",
+  "title": "Zerdrd",
+  "description": "Zoxide directory picker that opens a herdr workspace with the standard 6-tab layout",
+  "categories": ["Developer Tools"],
+  "license": "MIT",
+  "platforms": ["macOS", "Linux"],
+  "author": "trash-panda-v91-beta",
+  "contributors": [],
+  "pastContributors": [],
+  "icon": "icon.png",
+  "commands": [
+    {
+      "name": "jump",
+      "title": "Jump to Directory",
+      "subtitle": "Herdr Jump",
+      "description": "Pick a zoxide directory and open it as a herdr workspace with nvim/pi/term/prs/hunk/lazygit tabs",
+      "mode": "view"
+    }
+  ],
+  "preferences": [
+    {
+      "name": "zoxidePath",
+      "type": "textfield",
+      "title": "Zoxide binary path",
+      "description": "Full path to the zoxide binary. The containing directory is also added to PATH for herdr.",
+      "default": "~/.nix-profile/bin/zoxide",
+      "required": false
+    }
+  ],
+  "scripts": {
+    "build": "vici build",
+    "dev": "vici develop"
+  },
+  "dependencies": {
+    "@vicinae/api": "^0.22.2"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.2"
+  }
+}
