@@ -8,34 +8,42 @@
       let
         aerospace = lib.getExe pkgs.aerospace;
         herdr = lib.getExe pkgs.herdr;
+
+        # Opens a vault workspace with two accordion-tiled windows: Obsidian
+        # pointed at the vault, and a Ghostty running herdr in the vault dir.
+        # Each app is placed by captured window-id (Obsidian sets its title
+        # after the window appears, so title-based routing races - id is exact).
         mkNotesScript =
           session: workspace:
           pkgs.writeShellScript "aerospace-notes-${session}" ''
             export PATH="${pkgs.herdr}/bin:$PATH"
-            count=$(${aerospace} list-windows --workspace ${workspace} --app-bundle-id com.mitchellh.ghostty --count)
-            if [ "$count" = "0" ]; then
-              before=$(${aerospace} list-windows --all --app-bundle-id com.mitchellh.ghostty --json \
-                | /usr/bin/jq -r '.[]["window-id"]')
-              /usr/bin/osascript -e "
-                tell application \"Ghostty\"
-                  set cfg to new surface configuration
-                  set command of cfg to \"sh -c 'cd ~/vaults/${session} 2>/dev/null; exec ${herdr} --session ${session}'\"
-                  new window with configuration cfg
-                end tell"
-              for i in $(seq 1 20); do
+
+            place_new_window() {
+              # $1 = app-bundle-id, $2 = command that spawns the window
+              local bid="$1" spawn="$2" before after new_id
+              if [ "$(${aerospace} list-windows --workspace ${workspace} --app-bundle-id "$bid" --count)" != "0" ]; then
+                return
+              fi
+              before=$(${aerospace} list-windows --all --app-bundle-id "$bid" --json | /usr/bin/jq -r '.[]["window-id"]')
+              eval "$spawn"
+              for _ in $(seq 1 25); do
                 sleep 0.2
-                after=$(${aerospace} list-windows --all --app-bundle-id com.mitchellh.ghostty --json \
-                  | /usr/bin/jq -r '.[]["window-id"]')
+                after=$(${aerospace} list-windows --all --app-bundle-id "$bid" --json | /usr/bin/jq -r '.[]["window-id"]')
                 new_id=$(comm -13 <(echo "$before" | sort) <(echo "$after" | sort) | head -1)
                 if [ -n "$new_id" ]; then
-                  focused=$(${aerospace} list-workspaces --focused)
-                  if [ "$focused" = "${workspace}" ]; then
-                    ${aerospace} move-node-to-workspace --window-id "$new_id" ${workspace}
-                  fi
+                  ${aerospace} move-node-to-workspace --window-id "$new_id" ${workspace}
                   break
                 fi
               done
-            fi
+            }
+
+            place_new_window md.obsidian \
+              "/usr/bin/open 'obsidian://open?vault=${session}'"
+
+            place_new_window com.mitchellh.ghostty \
+              "/usr/bin/osascript -e 'tell application \"Ghostty\" to (new window with configuration (new surface configuration with properties {command:\"sh -c '\"'\"'cd ~/vaults/${session} 2>/dev/null; exec ${herdr} --session ${session}'\"'\"'\"}))'"
+
+            ${aerospace} layout --workspace ${workspace} accordion 2>/dev/null || true
           '';
         nilScript = mkNotesScript "nil" "n";
         mistScript = mkNotesScript "mist" "m";
@@ -57,10 +65,6 @@
                 "exec-and-forget /usr/bin/open -a \"Zen Browser\""
                 "workspace b"
               ];
-              ctrl-alt-cmd-shift-o = [
-                "exec-and-forget /usr/bin/open -a Obsidian"
-                "workspace o"
-              ];
               ctrl-alt-cmd-shift-n = [
                 "exec-and-forget ${nilScript}"
                 "workspace n"
@@ -69,7 +73,15 @@
                 "exec-and-forget ${mistScript}"
                 "workspace m"
               ];
-              ctrl-alt-cmd-shift-c = "workspace c";
+              ctrl-alt-cmd-shift-c = [
+                "exec-and-forget /usr/bin/open -a Slack"
+                "workspace c"
+              ];
+              ctrl-alt-cmd-shift-w = [
+                "exec-and-forget /usr/bin/open -a \"Microsoft Teams\""
+                "workspace w"
+              ];
+              ctrl-alt-cmd-shift-tab = "focus-back-and-forth";
               ctrl-alt-cmd-shift-g = "workspace-back-and-forth";
               ctrl-alt-cmd-shift-p = "mode launcher";
             };
@@ -81,11 +93,6 @@
               b = [
                 "exec-and-forget /usr/bin/open -a \"Zen Browser\""
                 "workspace b"
-                "mode main"
-              ];
-              o = [
-                "exec-and-forget /usr/bin/open -a Obsidian"
-                "workspace o"
                 "mode main"
               ];
               n = [
@@ -103,19 +110,9 @@
                 "workspace c"
                 "mode main"
               ];
-              i = [
-                "exec-and-forget /usr/bin/open -a Mail"
-                "workspace i"
-                "mode main"
-              ];
-              f = [
-                "exec-and-forget /usr/bin/open -a \"Actual Budget\""
-                "workspace f"
-                "mode main"
-              ];
-              e = [
-                "exec-and-forget /usr/bin/open -a Finder"
-                "workspace e"
+              w = [
+                "exec-and-forget /usr/bin/open -a \"Microsoft Teams\""
+                "workspace w"
                 "mode main"
               ];
               h = [
@@ -161,24 +158,12 @@
                 run = [ "move-node-to-workspace b" ];
               }
               {
-                "if".app-id = "md.obsidian";
-                run = [ "move-node-to-workspace o" ];
-              }
-              {
                 "if".app-id = "com.tinyspeck.slackmacgap";
                 run = [ "move-node-to-workspace c" ];
               }
               {
                 "if".app-id = "com.microsoft.teams2";
-                run = [ "move-node-to-workspace c" ];
-              }
-              {
-                "if".app-id = "com.apple.mail";
-                run = [ "move-node-to-workspace i" ];
-              }
-              {
-                "if".app-id = "com.apple.finder";
-                run = [ "move-node-to-workspace e" ];
+                run = [ "move-node-to-workspace w" ];
               }
               {
                 "if" = { };

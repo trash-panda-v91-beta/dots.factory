@@ -2,9 +2,9 @@
 
 (deflayer base
   _    _    _    _    _    _    _    _    _    _    _
-  q    w    e    r    @tt        y    u    i    o    p
+  q    @ww  e    r    @tt        y    u    i    o    p
   a    @ss  @dd  @ff  g         h    @jj  @kk  @ll  ;
-  z    x    c    v    @bb  <    n    m    ,    .    /
+  z    x    @cc  v    @bb  <    @nn   @mm  ,    .    /
             @sft          @nav            @sym
 )
 
@@ -30,6 +30,10 @@
   ;; App launchers: tap types the letter, hold + space launches the app.
   tt (tap-hold $tap_timeout $long_hold_timeout t (layer-while-held launch-t))
   bb (tap-hold $tap_timeout $long_hold_timeout b (layer-while-held launch-b))
+  cc (tap-hold $tap_timeout $long_hold_timeout c (layer-while-held launch-c))
+  ww (tap-hold $tap_timeout $long_hold_timeout w (layer-while-held launch-w))
+  mm (tap-hold $tap_timeout $long_hold_timeout m (layer-while-held launch-m))
+  nn (tap-hold $tap_timeout $long_hold_timeout n (layer-while-held launch-n))
 )
 
 (deflayer launch-t
@@ -48,11 +52,47 @@
             _             @open-b         _
 )
 
+(deflayer launch-c
+  _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _         _    _    _    _    _
+  _    _    _    _    _         _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _
+            _             @open-c         _
+)
+
+(deflayer launch-w
+  _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _         _    _    _    _    _
+  _    _    _    _    _         _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _
+            _             @open-w         _
+)
+
+(deflayer launch-m
+  _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _         _    _    _    _    _
+  _    _    _    _    _         _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _
+            _             @open-m         _
+)
+
+(deflayer launch-n
+  _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _         _    _    _    _    _
+  _    _    _    _    _         _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _
+            _             @open-n         _
+)
+
 (defalias
-  ;; t+Space / b+Space emit the aerospace hyper chord; aerospace owns the
+  ;; <letter>+Space emit the aerospace hyper chord; aerospace owns the
   ;; workspace-switch + app-open logic (single source of truth).
   open-t M-S-C-A-t
   open-b M-S-C-A-b
+  open-c M-S-C-A-c
+  open-w M-S-C-A-w
+  open-m M-S-C-A-m
+  open-n M-S-C-A-n
 )
 
 ;; vim: set ft=lisp:

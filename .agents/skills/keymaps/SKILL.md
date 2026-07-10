@@ -49,9 +49,13 @@ space is pressed while holding. The layer fires the action on the `@nav` (space)
 ergonomic alias for the 4-finger hyper chord. Single source of truth: to change what an
 app launcher does, edit aerospace, not kanata.
 
-Existing launchers:
-- `t` + Space -> `M-S-C-A-t` -> aerospace opens Ghostty + switches to workspace `t`
-- `b` + Space -> `M-S-C-A-b` -> aerospace opens Zen + switches to workspace `b`
+Existing launchers (each emits `M-S-C-A-<letter>`, aerospace does the rest):
+- `t` + Space -> Ghostty + workspace `t`
+- `b` + Space -> Zen + workspace `b`
+- `c` + Space -> Slack + workspace `c`
+- `w` + Space -> MS Teams + workspace `w`
+- `m` + Space -> mist vault (Obsidian + herdr) + workspace `m`
+- `n` + Space -> nil vault (Obsidian + herdr) + workspace `n`
 
 Adding a new app launcher (`X` = mnemonic letter):
 
@@ -75,12 +79,15 @@ Adding a new app launcher (`X` = mnemonic letter):
 4. Wire the matching `ctrl-alt-cmd-shift-x` binding in aerospace (see Layer 2).
 
 Common mnemonic letters to avoid (taken or reserved):
-- `t` terminal, `b` browser, `s`/`d`/`f`/`j`/`k`/`l` HRM (never use for launchers)
+- taken launchers: `t` terminal, `b` browser, `c` chat/Slack, `w` work/Teams,
+  `m` mist, `n` nil
+- `s`/`d`/`f`/`j`/`k`/`l` are home-row mods - **never** use for launchers (holding them
+  is your Cmd/Ctrl/Alt/Meta)
 - `space` is the nav-layer tap - cannot be a launcher key
 
-Available mnemonic slots: `a` (ai/app), `c` (chat/Slack), `e` (explorer/Finder),
-`g` (git), `i` (inbox/Mail), `m` (mist/notes), `n` (nil/notes), `o` (obsidian),
-`p` (picker/vicinae), `v` (vicinae), `w` (work), `z` (zoxide/jump)
+Available mnemonic slots: `a` (ai/app), `e` (explorer/editor), `g` (git),
+`i` (inbox/mail), `o` (obsidian), `p` (picker/vicinae), `v` (vicinae), `q`, `r`, `u`,
+`x`, `y`, `z` (zoxide/jump)
 
 ### Space+nav = vicinae entrypoints
 
@@ -104,8 +111,16 @@ File: `modules/aspects/tool/window-manager.nix`
 
 `ctrl-alt-cmd-shift-<letter>` = jump to workspace + optionally open its app.
 
-Current workspaces: `t` terminal, `b` browser, `o` obsidian, `n` nil vault,
-`m` mist vault, `c` chat (Slack), `g` back-and-forth toggle, `p` enter launcher mode.
+Current workspaces: `t` terminal (Ghostty), `b` browser (Zen), `c` chat (Slack),
+`w` work chat (MS Teams), `n` nil vault, `m` mist vault, `h` home (catch-all).
+Controls: `g` workspace back-and-forth, `tab` cycle windows in workspace
+(`focus-back-and-forth`), `p` enter launcher mode.
+
+The `n`/`m` vault workspaces open **two accordion-tiled windows**: Obsidian pointed at
+the vault (`obsidian://open?vault=<name>`) plus a Ghostty running herdr in
+`~/vaults/<name>`. Both are placed by captured window-id in `mkNotesScript` (Obsidian
+sets its title after the window appears, so title-regex routing races - window-id is
+exact). `ctrl-alt-cmd-shift-tab` cycles between the two.
 
 Adding a new workspace:
 
@@ -272,9 +287,9 @@ custom bindings in this skill when they are added.
 
 ## Cross-layer consistency rules
 
-1. **One letter = one app** everywhere: `t`=terminal, `b`=browser, `o`=obsidian,
-   `n`=nil, `m`=mist, `c`=chat. Use the same letter in kanata launchers, aerospace
-   workspaces, and aerospace launcher mode.
+1. **One letter = one app** everywhere: `t`=terminal, `b`=browser, `c`=chat (Slack),
+   `w`=work chat (Teams), `n`=nil, `m`=mist. Use the same letter in kanata launchers,
+   aerospace workspaces, and aerospace launcher mode.
 
 2. **Quit = `q` or `<C-q>`** everywhere: aerospace launcher `esc` exits, vicinae
    `esc` exits, nvim `<leader>q` closes buffer, herdr `alt+w` closes tab.
