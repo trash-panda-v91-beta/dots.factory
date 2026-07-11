@@ -75,6 +75,7 @@ pi-lsp = prev.callPackage "${pkgsDir}/pi-lsp" { inherit inputs; };
             pi-mcp-adapter = prev.callPackage "${pkgsDir}/pi-mcp-adapter" { inherit inputs; };
             pi-web-access = prev.callPackage "${pkgsDir}/pi-web-access" { inherit inputs; };
             superpowers = prev.callPackage "${pkgsDir}/superpowers" { inherit inputs; };
+            vault-workspace = prev.callPackage "${pkgsDir}/vault-workspace" { };
           };
         })
       ];
