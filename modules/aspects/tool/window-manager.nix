@@ -8,6 +8,25 @@
       let
         aerospace = lib.getExe pkgs.aerospace;
         herdr = lib.getExe pkgs.herdr;
+        # Real macOS $HOME is resolved at runtime: the HM username is a public
+        # pseudonym, so config.home.homeDirectory points at the wrong path.
+        vaultsSubdir = "SAPDevelop/vaults";
+
+        # Attaches to the vault's herdr session, ensuring it has a workspace
+        # rooted at the vault dir first (herdr attach ignores process cwd, so
+        # the workspace must be created explicitly).
+        mkHerdrLauncher =
+          session:
+          pkgs.writeShellScript "herdr-vault-${session}" ''
+            vault="$HOME/${vaultsSubdir}/${session}"
+            # workspace list only exposes id + label (no cwd), so match on the
+            # label we set to avoid piling up duplicate workspaces per launch.
+            if ! ${herdr} --session ${session} workspace list 2>/dev/null \
+                 | /usr/bin/jq -e '.result.workspaces[] | select(.label == "${session}")' >/dev/null 2>&1; then
+              ${herdr} --session ${session} workspace create --cwd "$vault" --label ${session} --no-focus >/dev/null 2>&1 || true
+            fi
+            exec ${herdr} --session ${session}
+          '';
 
         # Opens a vault workspace with two accordion-tiled windows: Obsidian
         # pointed at the vault, and a Ghostty running herdr in the vault dir.
@@ -48,7 +67,7 @@
               /usr/bin/osascript -e "
                 tell application \"Ghostty\"
                   set cfg to new surface configuration
-                  set command of cfg to \"sh -c 'cd ~/vaults/${session} 2>/dev/null; exec ${herdr} --session ${session}'\"
+                  set command of cfg to \"${mkHerdrLauncher session}\"
                   new window with configuration cfg
                 end tell"
               for _ in $(seq 1 25); do
