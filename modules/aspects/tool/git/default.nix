@@ -73,6 +73,9 @@
               prsLimit = 20;
               issuesLimit = 20;
             };
+            repoPaths = {
+              "trash-panda-v91-beta/*" = "$REPOS/*";
+            };
             keybindings = {
               universal = [
                 { key = "up"; builtin = "pageUp"; }
