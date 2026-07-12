@@ -34,7 +34,7 @@
 
 (defalias
   com M-S-C-A-c
-  zjmp M-S-C-A-z
+  zjmp (cmd open vicinae://launch/@trash-panda-v91-beta/zerdr/jump)
   clp M-S-C-A-y
   brr M-S-C-A-b
   cpm C-A-[

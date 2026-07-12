@@ -51,7 +51,6 @@
           theme.dark.name = "Cyberdream";
           providers = {
             clipboard.entrypoints.history.shortcut = "super+control+alt+shift+Y";
-            "@${config.home.username}/zerdr".entrypoints.jump.shortcut = "super+control+alt+shift+Z";
             "@khasbilegt/store.raycast.1password".preferences = {
               version = "v8";
               primaryAction = "copy-password";

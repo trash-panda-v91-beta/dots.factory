@@ -73,6 +73,9 @@
               prsLimit = 20;
               issuesLimit = 20;
             };
+            repoPaths = {
+              "trash-panda-v91-beta/*" = "/Users/I572068/SAPDevelop/repos/personal/*";
+            };
             keybindings = {
               universal = [
                 { key = "up"; builtin = "pageUp"; }
