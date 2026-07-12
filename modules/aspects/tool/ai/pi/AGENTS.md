@@ -11,6 +11,14 @@ itself. It lives in an Obsidian vault, picked by the git remote:
 Do not create `docs/adr/` or `CONTEXT.md` in any repo. If a repo has no vault note yet, run the
 `setup-skills` skill.
 
+Vault artifacts are **local to me** - public/shared channels have no access to them. Never mention
+or reference them in any outbound or committed text: no ADR numbers, no "see ADR NNN", no CONTEXT /
+vault / Obsidian / scratchpad references in code comments, docstrings, commit messages, PR titles or
+descriptions, Jira issues/comments, or code review replies. This includes bare decision identifiers
+like "ADR 003" - a reader cannot open it. If the reader needs the rationale, write it directly in
+your own words; never point at a path or ADR they cannot see. Keep the *why* explanation, drop the
+pointer.
+
 ## Stack
 
 Mostly Nix (nix-darwin, home-manager, nixvim) and TypeScript. Check the project AGENTS.md for
