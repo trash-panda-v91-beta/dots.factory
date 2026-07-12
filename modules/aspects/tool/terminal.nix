@@ -52,7 +52,7 @@ ${if cmd != null then ''
         herdrZjumpOpen = pkgs.writeShellApplication {
           name = "herdr-zjump-open";
           text = ''
-            exec vicinae "vicinae://extensions/trash-panda-v91-beta/zerdr/jump"
+            exec vicinae "vicinae://extensions/${config.home.username}/zerdr/jump"
           '';
         };
       in
