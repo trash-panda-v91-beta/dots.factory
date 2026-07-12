@@ -87,6 +87,10 @@
               ];
               prs = [
                 {
+                  key = " ";
+                  builtin = "checkout";
+                }
+                {
                   key = "D";
                   name = "codediff";
                   command = "cd {{.RepoPath}} && nvim -c \"CodeDiff {{.BaseRefName}}...\"";
