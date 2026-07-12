@@ -42,6 +42,7 @@
                 "workspace w"
               ];
               ctrl-alt-cmd-shift-tab = "focus-back-and-forth";
+              ctrl-alt-cmd-shift-i = "focus dfs-next --wrap-around";
               ctrl-alt-cmd-shift-g = "workspace-back-and-forth";
               ctrl-alt-cmd-shift-p = "mode launcher";
             };
