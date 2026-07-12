@@ -51,6 +51,7 @@
           theme.dark.name = "Cyberdream";
           providers = {
             clipboard.entrypoints.history.shortcut = "super+control+alt+shift+Y";
+            "@${config.home.username}/zerdr".entrypoints.jump.shortcut = "super+control+alt+shift+Z";
             "@khasbilegt/store.raycast.1password".preferences = {
               version = "v8";
               primaryAction = "copy-password";
@@ -58,7 +59,7 @@
               closeWindowAfterCopying = true;
               reduceItemListMemoryUsage = false;
               zshPath = "/bin/zsh";
-              cliPath = "/Users/trash-panda-v91-beta/.nix-profile/bin/op";
+              cliPath = "${config.home.homeDirectory}/.nix-profile/bin/op";
             };
           } // config.vicinae.extraProviders;
         };
