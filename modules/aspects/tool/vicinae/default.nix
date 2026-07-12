@@ -23,6 +23,18 @@
     homeManager =
       { config, pkgs, lib, ... }:
       let
+        misdrExt = pkgs.buildNpmPackage {
+          name = "misdr";
+          src = ./misdr;
+          inherit (pkgs.importNpmLock) npmConfigHook;
+          npmDeps = pkgs.importNpmLock { npmRoot = ./misdr; };
+          installPhase = ''
+            runHook preInstall
+            mkdir -p $out
+            npm run build -- --out $out
+            runHook postInstall
+          '';
+        };
         herdrZjumpExt = pkgs.buildNpmPackage {
           name = "zerdr";
           src = ./zerdr;
@@ -52,6 +64,7 @@
           providers = {
             clipboard.entrypoints.history.shortcut = "super+control+alt+shift+Y";
             "@trash-panda-v91-beta/zerdr".entrypoints.jump.shortcut = "super+control+alt+shift+Z";
+            "@trash-panda-v91-beta/misdr".entrypoints.tasks.shortcut = "super+control+alt+shift+M";
             "@khasbilegt/store.raycast.1password".preferences = {
               version = "v8";
               primaryAction = "copy-password";
@@ -71,6 +84,7 @@
         };
 
         xdg.dataFile."vicinae/extensions/zerdr".source = herdrZjumpExt;
+        xdg.dataFile."vicinae/extensions/misdr".source = misdrExt;
 
         xdg.configFile."vicinae/settings.json".source = vicinaeSettings;
 
