@@ -54,9 +54,9 @@ One line, conventional-commit style: `type: what changed`. No period.
 Keep it short. Omit anything obvious from the diff.
 
 ```markdown
-## What
+## Changes
 
-One or two sentences. What changed and why — not how.
+One or two sentences. What changed and why - not how.
 
 ## Notes
 
