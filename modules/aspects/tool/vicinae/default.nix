@@ -51,6 +51,7 @@
           theme.dark.name = "Cyberdream";
           providers = {
             clipboard.entrypoints.history.shortcut = "super+control+alt+shift+Y";
+            "@trash-panda-v91-beta/zerdr".entrypoints.jump.shortcut = "super+control+alt+shift+Z";
             "@khasbilegt/store.raycast.1password".preferences = {
               version = "v8";
               primaryAction = "copy-password";
