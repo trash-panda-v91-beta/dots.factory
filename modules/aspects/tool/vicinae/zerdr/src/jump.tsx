@@ -27,6 +27,30 @@ function resolveAppName(): string {
   return getPreferenceValues<Preferences>().herdrAppName || "Ghostty";
 }
 
+// open -a only raises the app within macOS; aerospace keeps showing the old
+// workspace. Focus the app's window through aerospace so its workspace comes
+// forward too. Falls back to open -a when aerospace or the window is absent.
+function focusTerminalApp(): void {
+  const appName = resolveAppName();
+  try {
+    const line = execFileSync(
+      "aerospace",
+      ["list-windows", "--all", "--format", "%{window-id}|%{app-name}"],
+      { encoding: "utf8" },
+    )
+      .split("\n")
+      .find((l) => l.split("|")[1]?.trim() === appName);
+    const windowId = line?.split("|")[0]?.trim();
+    if (windowId) {
+      execFileSync("aerospace", ["focus", "--window-id", windowId]);
+      return;
+    }
+  } catch {
+    // aerospace missing or errored - fall through to open -a
+  }
+  execFileSync("/usr/bin/open", ["-a", appName]);
+}
+
 function resolveHerdr(): string {
   return getPreferenceValues<Preferences>().herdrPath
     .replace(/^~/, process.env.HOME ?? "");
@@ -211,7 +235,7 @@ export default function Jump() {
                         await closeMainWindow();
                         try {
                           herdr("workspace", "focus", workspace.wsId);
-                          execFileSync("/usr/bin/open", ["-a", resolveAppName()]);
+                          focusTerminalApp();
                         }
                         catch (e) { await showToast({ style: Toast.Style.Failure, title: "Focus failed", message: String(e) }); }
                       }}
@@ -237,7 +261,7 @@ export default function Jump() {
                     icon={Icon.Plus}
                     onAction={async () => {
                       await closeMainWindow();
-                      try { openNewWorkspace(dir); }
+                      try { openNewWorkspace(dir); focusTerminalApp(); }
                       catch (e) { await showToast({ style: Toast.Style.Failure, title: "Open failed", message: String(e) }); }
                     }}
                   />
