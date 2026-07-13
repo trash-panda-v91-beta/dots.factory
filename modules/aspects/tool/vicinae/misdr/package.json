@@ -27,6 +27,14 @@
       "description": "Full path to the mise binary.",
       "default": "~/.nix-profile/bin/mise",
       "required": false
+    },
+    {
+      "name": "herdrPath",
+      "type": "textfield",
+      "title": "Herdr binary path",
+      "description": "Full path to the herdr binary.",
+      "default": "~/.nix-profile/bin/herdr",
+      "required": false
     }
   ],
   "scripts": {
