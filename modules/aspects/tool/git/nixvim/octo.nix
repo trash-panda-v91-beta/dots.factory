@@ -327,6 +327,12 @@
 
                 -- Remove <localleader>vp (old Review: Approve key)
 
+                -- close octo buffer
+                vim.keymap.set('n', 'q', '<cmd>bd<cr>', {
+                  buffer = event.buf,
+                  desc = 'Close'
+                })
+
                 -- PR: reload buffer (r, matches gh-dash `r`)
                 vim.keymap.set('n', 'r', '<cmd>Octo pr reload<cr>', {
                   buffer = event.buf,
