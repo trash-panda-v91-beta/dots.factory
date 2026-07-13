@@ -35,13 +35,12 @@ function applyLayout(wsId: string, tab1Id: string, tab1Pane: string): void {
   herdr("tab", "rename", tab1Id, "nvim");
   herdr("pane", "run", tab1Pane, "nvim");
 
-  const tab2 = JSON.parse(herdr("tab", "create", "--workspace", wsId, "--label", "pi", "--no-focus"));
-  herdr("pane", "run", tab2.result.root_pane.pane_id, "pi");
+  const tab2 = JSON.parse(herdr("tab", "create", "--workspace", wsId, "--label", "ai", "--no-focus"));
+  herdr("pane", "run", tab2.result.root_pane.pane_id, "pi --resume");
 
+  herdr("tab", "create", "--workspace", wsId, "--label", "git", "--no-focus");
+  herdr("tab", "create", "--workspace", wsId, "--label", "pr", "--no-focus");
   herdr("tab", "create", "--workspace", wsId, "--label", "term", "--no-focus");
-  herdr("tab", "create", "--workspace", wsId, "--label", "prs", "--no-focus");
-  herdr("tab", "create", "--workspace", wsId, "--label", "hunk", "--no-focus");
-  herdr("tab", "create", "--workspace", wsId, "--label", "lazygit", "--no-focus");
 }
 
 function openNewWorkspace(dir: string): void {
