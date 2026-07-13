@@ -12,6 +12,20 @@
               "<C-s>" = false;
             };
           };
+          builders.NeogitPullPopup.__raw = ''
+            function(builder)
+              builder:action("m", "Checkout main and pull", function(popup)
+                local git = require("neogit.lib.git")
+                git.branch.checkout("main")
+
+                local current = git.branch.current()
+                local pushRemote = git.branch.pushRemote() or git.branch.set_pushRemote()
+                if pushRemote and current then
+                  git.pull.pull_interactive(pushRemote, current, popup:get_arguments())
+                end
+              end)
+            end
+          '';
         };
       };
       keymaps = [
@@ -21,18 +35,6 @@
           action = "<cmd>Neogit<cr>";
           options = {
             desc = "Open Neogit";
-          };
-        }
-        {
-          mode = [ "n" ];
-          key = "<leader>gm";
-          action.__raw = ''
-            function()
-              -- ... your Lua code ...
-            end
-          '';
-          options = {
-            desc = "Sync main (checkout->fetch->pull)";
           };
         }
         {
