@@ -43,7 +43,8 @@ ${if cmd != null then ''
             '';
           };
         herdrFocusNvim = herdrFocusTab "nvim" "nvim";
-        herdrFocusPi = herdrFocusTab "pi" "pi";
+        herdrFocusGit = herdrFocusTab "git" "nvim -c Neogit";
+        herdrFocusAi = herdrFocusTab "ai" "pi";
         herdrFocusTerm = herdrFocusTab "term" null;
         herdrFocusPrs = herdrFocusTab "prs" "gh pr list";
         herdrFocusHunk = herdrFocusTab "hunk" "hunk diff";
@@ -137,7 +138,7 @@ ${if cmd != null then ''
               next_tab = "prefix+l";
               previous_workspace = "prefix+k";
               next_workspace = "prefix+j";
-              last_pane = "alt+p";
+              last_pane = "alt+semicolon";
               open_worktree = "prefix+shift+o";
               remove_worktree = "prefix+alt+d";
               next_agent = "prefix+n";
@@ -156,10 +157,16 @@ ${if cmd != null then ''
                   description = "focus or create nvim tab";
                 }
                 {
-                  key = "alt+i";
+                  key = "alt+g";
                   type = "shell";
-                  command = lib.getExe herdrFocusPi;
-                  description = "focus or create pi tab";
+                  command = lib.getExe herdrFocusGit;
+                  description = "focus or create git tab (neogit)";
+                }
+                {
+                  key = "alt+a";
+                  type = "shell";
+                  command = lib.getExe herdrFocusAi;
+                  description = "focus or create ai tab";
                 }
                 {
                   key = "alt+t";
@@ -168,7 +175,7 @@ ${if cmd != null then ''
                   description = "focus or create term tab";
                 }
                 {
-                  key = "alt+r";
+                  key = "alt+p";
                   type = "shell";
                   command = lib.getExe herdrFocusPrs;
                   description = "focus or create prs tab (gh pr list)";
