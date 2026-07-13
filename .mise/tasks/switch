@@ -5,9 +5,36 @@ set -euo pipefail
 
 host="${HOST_ALIAS:-$(hostname -s)}"
 
-echo "Building configuration for '$host' ..."
 if [ "$host" = "cmb" ]; then
-	nh darwin switch . -- --override-input corpo path:../dots.corpo
+	extra="--override-input corpo path:../dots.corpo"
 else
-	nh darwin switch .
+	extra=""
 fi
+
+echo "Building configuration for '$host' ..."
+
+privileges() { /Applications/Privileges.app/Contents/MacOS/PrivilegesCLI "$1"; }
+[ "$host" = "cmb" ] && privileges --add
+
+if command -v nh &>/dev/null; then
+	if [ "$host" = "cmb" ]; then
+		nh darwin switch . -- $extra
+	else
+		nh darwin switch .
+	fi
+else
+	echo "nh not found - falling back to build+activate ..."
+	# Build as user so the 1Password SSH agent works for the corp tap.
+	# ponytail: no-op on PMB since the tap is only in dots.corpo; safe to always set.
+	SSH_AUTH_SOCK="${SSH_AUTH_SOCK:-$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock}"
+	export SSH_AUTH_SOCK
+	# shellcheck disable=SC2086
+	result=$(nix build ".#darwinConfigurations.${host}.system" $extra --no-link --print-out-paths)
+	# Register system profile so nh clean does not treat the generation as orphaned.
+	sudo nix-env -p /nix/var/nix/profiles/system --set "$result"
+	# darwin-rebuild activate reads systemConfig from the profile we just set and
+	# correctly runs home-manager steps as $SUDO_USER, registering its profile link.
+	sudo darwin-rebuild activate
+fi
+
+[ "$host" = "cmb" ] && privileges --remove
