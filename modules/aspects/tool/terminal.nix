@@ -46,7 +46,7 @@ ${if cmd != null then ''
         herdrFocusGit = herdrFocusTab "git" "nvim -c Neogit";
         herdrFocusAi = herdrFocusTab "ai" "pi";
         herdrFocusTerm = herdrFocusTab "term" null;
-        herdrFocusPrs = herdrFocusTab "prs" "gh pr list";
+        herdrFocusPrs = herdrFocusTab "prs" "gh dash";
         herdrFocusHunk = herdrFocusTab "hunk" "hunk diff";
         herdrFocusLazygit = herdrFocusTab "lazygit" "lazygit";
 
@@ -178,7 +178,7 @@ ${if cmd != null then ''
                   key = "alt+p";
                   type = "shell";
                   command = lib.getExe herdrFocusPrs;
-                  description = "focus or create prs tab (gh pr list)";
+                  description = "focus or create prs tab (gh dash)";
                 }
                 {
                   key = "alt+h";
