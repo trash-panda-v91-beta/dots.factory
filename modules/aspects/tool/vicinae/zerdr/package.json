@@ -35,6 +35,14 @@
       "description": "Full path to the herdr binary.",
       "default": "~/.nix-profile/bin/herdr",
       "required": false
+    },
+    {
+      "name": "herdrAppName",
+      "type": "textfield",
+      "title": "Terminal app name",
+      "description": "App name passed to `open -a` to bring herdr's terminal to front.",
+      "default": "Ghostty",
+      "required": false
     }
   ],
   "scripts": {

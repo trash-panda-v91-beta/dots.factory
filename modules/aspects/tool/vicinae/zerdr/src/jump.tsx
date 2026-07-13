@@ -15,11 +15,16 @@ import { useCallback, useEffect, useState } from "react";
 interface Preferences {
   zoxidePath: string;
   herdrPath: string;
+  herdrAppName: string;
 }
 
 function resolveZoxide(): string {
   return getPreferenceValues<Preferences>().zoxidePath
     .replace(/^~/, process.env.HOME ?? "");
+}
+
+function resolveAppName(): string {
+  return getPreferenceValues<Preferences>().herdrAppName || "Ghostty";
 }
 
 function resolveHerdr(): string {
@@ -204,7 +209,10 @@ export default function Jump() {
                       icon={Icon.Terminal}
                       onAction={async () => {
                         await closeMainWindow();
-                        try { herdr("workspace", "focus", workspace.wsId); }
+                        try {
+                          herdr("workspace", "focus", workspace.wsId);
+                          execFileSync("/usr/bin/open", ["-a", resolveAppName()]);
+                        }
                         catch (e) { await showToast({ style: Toast.Style.Failure, title: "Focus failed", message: String(e) }); }
                       }}
                     />
