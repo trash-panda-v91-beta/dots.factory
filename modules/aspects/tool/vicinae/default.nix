@@ -53,7 +53,7 @@
           close_on_focus_loss = true;
           pop_to_root_on_close = true;
           favicon_service = "twenty";
-          global_shortcuts.toggle = "control+SPACE";
+          global_shortcuts.toggle = "shift+SPACE";
           font = {
             rendering = "qt";
             normal.family = "JetBrains Mono";
