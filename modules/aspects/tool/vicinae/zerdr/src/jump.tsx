@@ -14,6 +14,7 @@ import { useCallback, useEffect, useState } from "react";
 
 interface Preferences {
   zoxidePath: string;
+  herdrPath: string;
 }
 
 function resolveZoxide(): string {
@@ -21,13 +22,13 @@ function resolveZoxide(): string {
     .replace(/^~/, process.env.HOME ?? "");
 }
 
-function execEnv(): NodeJS.ProcessEnv {
-  const binDir = resolveZoxide().replace(/\/[^/]+$/, "");
-  return { ...process.env, PATH: `${binDir}:${process.env.PATH ?? "/usr/bin:/bin"}` };
+function resolveHerdr(): string {
+  return getPreferenceValues<Preferences>().herdrPath
+    .replace(/^~/, process.env.HOME ?? "");
 }
 
 function herdr(...args: string[]): string {
-  return execFileSync("herdr", args, { encoding: "utf8", env: execEnv() });
+  return execFileSync(resolveHerdr(), args, { encoding: "utf8" });
 }
 
 function applyLayout(wsId: string, tab1Id: string, tab1Pane: string): void {
@@ -122,7 +123,6 @@ function loadEntries(): DirEntry[] {
 
   const zoxDirs = execFileSync(resolveZoxide(), ["query", "-l"], {
     encoding: "utf8",
-    env: execEnv(),
   })
     .trim()
     .split("\n")

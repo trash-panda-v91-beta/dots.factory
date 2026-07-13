@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 
 interface Preferences {
   misePath: string;
+  herdrPath: string;
 }
 
 interface MiseTask {
@@ -25,8 +26,13 @@ function resolveMise(): string {
     .replace(/^~/, process.env.HOME ?? "");
 }
 
+function resolveHerdr(): string {
+  return getPreferenceValues<Preferences>().herdrPath
+    .replace(/^~/, process.env.HOME ?? "");
+}
+
 function herdr(...args: string[]): unknown {
-  return JSON.parse(execFileSync("herdr", args, { encoding: "utf8" }));
+  return JSON.parse(execFileSync(resolveHerdr(), args, { encoding: "utf8" }));
 }
 
 function getFocusedCwd(): { wsId: string; cwd: string } {
@@ -55,8 +61,8 @@ function runTask(wsId: string, cwd: string, taskName: string): void {
   };
   const { tab_id, } = created.result.tab;
   const { pane_id } = created.result.root_pane;
-  execFileSync("herdr", ["pane", "run", pane_id, `${resolveMise()} run ${taskName}`]);
-  execFileSync("herdr", ["tab", "focus", tab_id]);
+  execFileSync(resolveHerdr(), ["pane", "run", pane_id, `${resolveMise()} run ${taskName}`]);
+  execFileSync(resolveHerdr(), ["tab", "focus", tab_id]);
 }
 
 export default function Tasks() {

@@ -73,3 +73,6 @@ include it.
   vim-internal plugins (lsp, completion, ui, etc.) stay under `tool/nixvim/`.
 - **Don't** create `docs/adr/` or `CONTEXT.md` here - repo metadata (CONTEXT, ADRs,
   ticket notes) is kept out-of-tree by the maintainer's personal workflow
+- **Commit messages** use [Conventional Commits](https://www.conventionalcommits.org/):
+  `<type>(<scope>): <description>` - types: `feat`, `fix`, `chore`, `refactor`, `docs`, `style`, `test`.
+  Scope is optional but encouraged (e.g. `fix(vicinae/zerdr): ...`).

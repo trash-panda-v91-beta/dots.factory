@@ -24,8 +24,16 @@
       "name": "zoxidePath",
       "type": "textfield",
       "title": "Zoxide binary path",
-      "description": "Full path to the zoxide binary. The containing directory is also added to PATH for herdr.",
+      "description": "Full path to the zoxide binary.",
       "default": "~/.nix-profile/bin/zoxide",
+      "required": false
+    },
+    {
+      "name": "herdrPath",
+      "type": "textfield",
+      "title": "Herdr binary path",
+      "description": "Full path to the herdr binary.",
+      "default": "~/.nix-profile/bin/herdr",
       "required": false
     }
   ],
