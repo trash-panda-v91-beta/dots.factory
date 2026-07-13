@@ -9,7 +9,7 @@
 (deflayer navigation
   M-1  M-2  M-3  M-4  M-5  lrld M-6  M-7  M-8  M-9  M-0
   @pad @cls bck  fwd  @zjmp     @clp  @mwd @mwu @cpm @swh
-  @all @sav S-tab tab @run        lft  down up   rght @fun
+  @all @sav S-tab tab @run        lft  down up   rght @lp
   @ndo @cut @cpy @pst @brr   @mut  @wcy @mist @mwl @mwr @obs
             del             _               bspc
 )
@@ -46,6 +46,7 @@
   run M-S-C-A-p
   swh M-S-C-A-g
   launcher M-S-C-A-b
+  lp A-scln
   std (layer-switch base)
   pad (tap-hold-press 0 $long_hold_timeout (layer-switch numpad) (layer-while-held numpad))
   fun (tap-hold-press 0 $long_hold_timeout (layer-switch funpad) (layer-while-held funpad))
