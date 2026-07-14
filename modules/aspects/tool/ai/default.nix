@@ -16,7 +16,6 @@ in
       homeManager =
         { config, pkgs, ... }:
         let
-          superpowers = pkgs.local.superpowers;
           piWebAccess = pkgs.local.pi-web-access;
           piMcpAdapter = pkgs.local.pi-mcp-adapter;
           context7Pi = pkgs.local.context7-pi;

@@ -47,19 +47,6 @@ in
             };
           };
 
-          # TODO: remove once nixpkgs-unstable has nushell >= 0.112.2 (0.112.1 aarch64-darwin failed
-          # on Hydra due to env_shlvl tests requiring exec(2) which is blocked by Nix sandbox on macOS
-          # — no binary cache hit exists, forces local compile with tests disabled)
-          nushell = prev.nushell.overrideAttrs (_: {
-            doCheck = false;
-          });
-          # luajit_2_0 source in nixpkgs c6d65881 incorrectly omits aarch64-darwin from meta.platforms,
-          # causing ha-mcp → fastmcp → lupa → luajit_2_0 to fail on Apple Silicon (nixpkgs bug)
-          luajit_2_0 = prev.luajit_2_0.overrideAttrs (old: {
-            meta = (old.meta or { }) // {
-              platforms = old.meta.platforms ++ [ "aarch64-darwin" ];
-            };
-          });
           local = {
             koda-nvim = prev.callPackage "${pkgsDir}/koda-nvim" { inherit inputs; };
             context7-pi = prev.callPackage "${pkgsDir}/context7-pi" { inherit inputs; };
@@ -74,7 +61,6 @@ pi-lsp = prev.callPackage "${pkgsDir}/pi-lsp" { inherit inputs; };
             ponytail-pi = prev.callPackage "${pkgsDir}/ponytail-pi" { inherit inputs; };
             pi-mcp-adapter = prev.callPackage "${pkgsDir}/pi-mcp-adapter" { inherit inputs; };
             pi-web-access = prev.callPackage "${pkgsDir}/pi-web-access" { inherit inputs; };
-            superpowers = prev.callPackage "${pkgsDir}/superpowers" { inherit inputs; };
             vault-workspace = prev.callPackage "${pkgsDir}/vault-workspace" { };
           };
         })

@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
-#MISE description="Update all flake inputs"
+#MISE description="Update all flake inputs and vendored packages"
 
 set -euo pipefail
 
 nix flake update
+"$(git rev-parse --show-toplevel)/packages/update-obsidian.sh"
