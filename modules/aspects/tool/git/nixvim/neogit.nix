@@ -6,7 +6,7 @@
       plugins.neogit = {
         enable = true;
         settings = {
-          kind = "replace";
+          kind = "auto";
           mappings = {
             status = {
               "<C-s>" = false;
