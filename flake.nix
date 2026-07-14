@@ -42,7 +42,7 @@
       inputs.flake-parts.follows = "flake-parts";
       inputs.systems.follows = "systems";
     };
-    systems.url = "github:nix-systems/default";
+    systems.url = "github:nix-systems/aarch64-darwin";
 
     sops-nix = {
       url = "github:Mic92/sops-nix";

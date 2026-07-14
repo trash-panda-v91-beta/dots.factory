@@ -28,10 +28,15 @@
     }
   ];
 
+  # Restrict perSystem evaluation to aarch64-darwin only.
+  # nixpkgs 26.11 dropped x86_64-darwin; treefmt-nix (via hunk) would
+  # otherwise try to evaluate perSystem for x86_64-darwin and fail.
+  systems = [ "aarch64-darwin" ];
+
   # Formatters for nix fmt
   perSystem =
     { pkgs, system, ... }:
     {
-      formatter = pkgs.nixfmt-tree;
+      formatter = pkgs.nixfmt-rfc-style;
     };
 }
