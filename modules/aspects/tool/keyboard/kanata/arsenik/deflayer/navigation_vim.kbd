@@ -42,7 +42,7 @@
   nil M-S-C-A-n
   wcy M-S-C-A-i
   mist M-S-C-A-m
-  mut (cmd osascript -e 'tell application "System Events" to tell process "Microsoft Teams" to keystroke "m" using {control down, shift down}')
+  mut XX
   run M-S-C-A-p
   swh M-S-C-A-g
   launcher M-S-C-A-b

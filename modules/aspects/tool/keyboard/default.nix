@@ -21,7 +21,7 @@
                 hash = "sha256-WjdmjgEMoo3QNqT4yWxaKOkfuRLdNg4Im+V1Hy5vWgY=";
               };
             in
-            (pkgs.kanata.override { withCmd = true; }).overrideAttrs (_: {
+            pkgs.kanata.overrideAttrs (_: {
               version = "1.12.0";
               src = kanata-src;
               cargoDeps = pkgs.rustPlatform.fetchCargoVendor {
@@ -50,7 +50,6 @@
             extraDefCfg = ''
               process-unmapped-keys yes
               windows-altgr cancel-lctl-press
-              danger-enable-cmd yes
             '';
           };
         };
