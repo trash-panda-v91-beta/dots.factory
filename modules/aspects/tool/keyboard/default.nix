@@ -12,23 +12,7 @@
       {
         services.kanata = {
           enable = true;
-          package =
-            let
-              kanata-src = pkgs.fetchFromGitHub {
-                owner = "jtroo";
-                repo = "kanata";
-                rev = "v1.12.0";
-                hash = "sha256-WjdmjgEMoo3QNqT4yWxaKOkfuRLdNg4Im+V1Hy5vWgY=";
-              };
-            in
-            pkgs.kanata.overrideAttrs (_: {
-              version = "1.12.0";
-              src = kanata-src;
-              cargoDeps = pkgs.rustPlatform.fetchCargoVendor {
-                src = kanata-src;
-                hash = "sha256-4UBN4I35ZPPPL68LxxPna9Fs9sATCiwoTbWgHYwqOjs=";
-              };
-            });
+          package = pkgs.kanata;
           keyboards.internal = {
             config =
               let
