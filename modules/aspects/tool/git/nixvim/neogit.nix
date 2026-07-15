@@ -6,7 +6,7 @@
       plugins.neogit = {
         enable = true;
         settings = {
-          kind = "auto";
+          kind = "tab";
           mappings = {
             status = {
               "<C-s>" = false;
