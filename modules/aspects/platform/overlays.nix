@@ -13,7 +13,6 @@ in
         "1password"
         "1password-cli"
         "claude-code"
-        "copilot-language-server"
         "obsidian"
       ];
 
