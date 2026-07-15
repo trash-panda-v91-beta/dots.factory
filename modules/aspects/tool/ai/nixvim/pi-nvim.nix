@@ -45,10 +45,9 @@
           -- getregion needs to run before we drop back to normal mode
           vim.cmd("normal! \27")
           local lines = vim.fn.getregion(s, e, { type = "v" })
-          local ft = vim.bo.filetype == "markdown" and "md" or vim.bo.filetype
           local ctx = string.format(
             "@%s:%d-%d\n```%s\n%s\n```\n\n",
-            vim.fn.expand("%:."), s[2], e[2], ft, table.concat(lines, "\n")
+            vim.fn.expand("%:."), s[2], e[2], vim.bo.filetype, table.concat(lines, "\n")
           )
           pi_prompt(ctx)
         end, { desc = "Ask pi about selection" })
