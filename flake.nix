@@ -62,6 +62,10 @@
       url = "github:oskarnurm/koda.nvim";
       flake = false;
     };
+    pi-nvim = {
+      url = "github:carderne/pi-nvim";
+      flake = false;
+    };
     opencode-nvim = {
       url = "github:sudo-tee/opencode.nvim";
       flake = false;
