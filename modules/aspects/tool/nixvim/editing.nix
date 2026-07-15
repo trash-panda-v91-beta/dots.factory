@@ -158,18 +158,16 @@
         ];
       };
 
-      # Render markdown (codecompanion, obsidian, octo)
+      # Render markdown (obsidian, octo)
       render-markdown = {
         enable = true;
         lazyLoad.settings.ft = [
-          "codecompanion"
           "markdown"
           "octo"
         ];
         settings = {
           completions.lsp.enabled = true;
           file_types = [
-            "codecompanion"
             "markdown"
             "octo"
           ];

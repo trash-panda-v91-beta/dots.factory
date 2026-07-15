@@ -81,8 +81,6 @@
               plugins = true;
             };
             combinePlugins.standalonePlugins = with pkgs; [
-              vimPlugins.codecompanion-history-nvim
-              vimPlugins.codecompanion-nvim
               vimPlugins.mini-nvim
               vimPlugins.nvim-treesitter
               vimPlugins.oil-nvim
