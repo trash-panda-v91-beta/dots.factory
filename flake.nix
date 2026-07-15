@@ -80,7 +80,7 @@
       flake = false;
     };
     pi-mcp-adapter = {
-      url = "github:nicobailon/pi-mcp-adapter/v2.10.0";
+      url = "github:nicobailon/pi-mcp-adapter/v2.11.0";
       flake = false;
     };
     ponytail = {

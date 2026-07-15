@@ -16,7 +16,7 @@ stdenvNoCC.mkDerivation {
 
   outputHashAlgo = "sha256";
   outputHashMode = "recursive";
-  outputHash = "sha256-AdAQmy/RyAMHzC4Sj6wQwPpaKiRC/4IwRb/GS54r3Jg=";
+  outputHash = "sha256-c07tvYGIrB307T+YPRKjTQnFTrgoFyvdy8qzTJSHJl8=";
 
   buildPhase = ''
     runHook preBuild
