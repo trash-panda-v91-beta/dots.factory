@@ -21,6 +21,7 @@ in
           context7Pi = pkgs.local.context7-pi;
           piLsp = pkgs.local.pi-lsp;
           ponytailPi = pkgs.local.ponytail-pi;
+          piNvim = pkgs.local.pi-nvim;
         in
         {
           home.sessionVariables.CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC = 1;
@@ -51,6 +52,7 @@ in
                 "${piMcpAdapter}/index.js"
                 "${piLsp}/pi-lsp.js"
                 "${ponytailPi}/index.js"
+                "${piNvim}/extension.ts"
                 "${config.programs.pi-coding-agent.configDir}/extensions/herdr-agent-state.ts"
               ];
               skills = [

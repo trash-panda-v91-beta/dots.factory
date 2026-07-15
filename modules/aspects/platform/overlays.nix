@@ -48,6 +48,7 @@ in
 
           local = {
             koda-nvim = prev.callPackage "${pkgsDir}/koda-nvim" { inherit inputs; };
+            pi-nvim = prev.callPackage "${pkgsDir}/pi-nvim" { inherit inputs; };
             context7-pi = prev.callPackage "${pkgsDir}/context7-pi" { inherit inputs; };
             obsidian-minimal-settings-plugin = prev.callPackage "${pkgsDir}/obsidian-minimal-settings-plugin" {
               inherit inputs;
