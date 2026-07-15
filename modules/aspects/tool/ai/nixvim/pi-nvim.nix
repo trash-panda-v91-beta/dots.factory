@@ -31,8 +31,7 @@
           end)
         end
 
-        vim.keymap.set("n", "<leader>p", function() pi_prompt() end, { desc = "Ask pi" })
-        vim.keymap.set("n", "<leader>pf", function()
+        vim.keymap.set("n", "<leader>p", function()
           local file = vim.fn.expand("%:.")
           if file == "" then
             vim.notify("no file", vim.log.levels.WARN)
