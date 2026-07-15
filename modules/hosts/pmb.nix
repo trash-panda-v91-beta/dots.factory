@@ -36,11 +36,6 @@
             IdentityAgent = ''"~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"'';
           };
 
-          programs.mcp.servers.litellm = {
-            url = "https://litellm.nebular-grid.space/mcp";
-            headers.Authorization = "Bearer {env:LITELLM_API_KEY}";
-          };
-
           home.sessionVariables.VAULTS_DIR = "${config.home.homeDirectory}/vaults";
 
           programs.obsidian.vaults.mist.target = "vaults/mist";

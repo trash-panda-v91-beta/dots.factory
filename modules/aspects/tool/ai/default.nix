@@ -11,7 +11,9 @@ in
     { ... }:
     {
       description = "AI coding assistants";
-      includes = [ (den._.unfree [ "claude-code" ]) ];
+      includes = [
+        (den._.unfree [ "claude-code" ])
+      ];
 
       homeManager =
         { config, pkgs, ... }:
@@ -63,6 +65,23 @@ in
               ++ map (name: toString (skillsDir + "/${name}.md")) skillNames;
             };
           };
+
+          # pi-mcp-adapter reads ~/.pi/agent/mcp.json and resolves
+          # bearerTokenEnv from the shell environment at runtime, so the
+          # secret never touches the nix store.
+          home.file."${config.programs.pi-coding-agent.configDir}/mcp.json".text =
+            builtins.toJSON
+              {
+                mcpServers = {
+                  litellm = {
+                    url = "https://litellm.nebular-grid.space/mcp/";
+                    auth = "bearer";
+                    bearerTokenEnv = "LITELLM_API_KEY";
+                    lifecycle = "lazy";
+                    idleTimeout = 10;
+                  };
+                };
+              };
 
           programs.mcp.enable = true;
 
