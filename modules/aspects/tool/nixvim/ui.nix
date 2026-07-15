@@ -169,15 +169,6 @@
             };
             spec = [
               {
-                __unkeyed-1 = "<leader>s";
-                group = "Sidekick";
-                icon = "🤖";
-                mode = [
-                  "n"
-                  "v"
-                ];
-              }
-              {
                 __unkeyed-1 = "<leader>b";
                 group = "Buffers";
                 icon = "󰓩";
