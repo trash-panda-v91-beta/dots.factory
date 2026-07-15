@@ -32,6 +32,14 @@
         end
 
         vim.keymap.set("n", "<leader>p", function() pi_prompt() end, { desc = "Ask pi" })
+        vim.keymap.set("n", "<leader>pf", function()
+          local file = vim.fn.expand("%:.")
+          if file == "" then
+            vim.notify("no file", vim.log.levels.WARN)
+            return
+          end
+          pi_prompt(string.format("@%s\n\n", file))
+        end, { desc = "Ask pi about current file" })
         vim.keymap.set("v", "<leader>p", function()
           local s = vim.fn.getpos("'<")
           local e = vim.fn.getpos("'>")
@@ -39,7 +47,7 @@
           vim.cmd("normal! \27")
           local lines = vim.fn.getregion(s, e, { type = "v" })
           local ctx = string.format(
-            "From %s L%d-%d:\n```%s\n%s\n```\n\n",
+            "@%s:%d-%d\n```%s\n%s\n```\n\n",
             vim.fn.expand("%:."), s[2], e[2], vim.bo.filetype, table.concat(lines, "\n")
           )
           pi_prompt(ctx)
