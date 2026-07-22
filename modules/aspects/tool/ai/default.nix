@@ -66,22 +66,10 @@ in
             };
           };
 
-          # pi-mcp-adapter reads ~/.pi/agent/mcp.json and resolves
-          # bearerTokenEnv from the shell environment at runtime, so the
-          # secret never touches the nix store.
+          # pi-mcp-adapter reads ~/.pi/agent/mcp.json at runtime.
+          # litellm is PMB-only; written from pmb.nix.
           home.file."${config.programs.pi-coding-agent.configDir}/mcp.json".text =
-            builtins.toJSON
-              {
-                mcpServers = {
-                  litellm = {
-                    url = "https://litellm.nebular-grid.space/mcp/";
-                    auth = "bearer";
-                    bearerTokenEnv = "LITELLM_API_KEY";
-                    lifecycle = "lazy";
-                    idleTimeout = 10;
-                  };
-                };
-              };
+            builtins.toJSON { mcpServers = {}; };
 
           programs.mcp.enable = true;
 

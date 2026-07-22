@@ -26,6 +26,18 @@
       homeManager =
         { config, ... }:
         {
+          # litellm MCP is PMB-only; bearer token resolved from env at runtime.
+          home.file."${config.programs.pi-coding-agent.configDir}/mcp.json".text =
+            builtins.toJSON {
+              mcpServers.litellm = {
+                url = "https://litellm.nebular-grid.space/mcp/";
+                auth = "bearer";
+                bearerTokenEnv = "LITELLM_API_KEY";
+                lifecycle = "lazy";
+                idleTimeout = 10;
+              };
+            };
+
           programs.bun.enable = false;
 
           programs.ssh.settings."asc.internal" = {
