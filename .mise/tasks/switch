@@ -14,7 +14,9 @@ fi
 echo "Building configuration for '$host' ..."
 
 privileges() { /Applications/Privileges.app/Contents/MacOS/PrivilegesCLI "$1"; }
-[ "$host" = "cmb" ] && privileges --add
+if [ "$host" = "cmb" ]; then
+	privileges --add
+fi
 
 if command -v nh &>/dev/null; then
 	if [ "$host" = "cmb" ]; then
@@ -37,4 +39,6 @@ else
 	sudo darwin-rebuild activate
 fi
 
-[ "$host" = "cmb" ] && privileges --remove
+if [ "$host" = "cmb" ]; then
+	privileges --remove
+fi
