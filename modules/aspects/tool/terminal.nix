@@ -13,9 +13,11 @@
     homeManager =
       { pkgs, config, lib, ... }:
       let
-        # focus-or-create a tab by label; cmd is run in the new pane if provided
+        tabDefs = (builtins.fromTOML (builtins.readFile ./tabs.toml)).tabs;
+
+        # focus-or-create a tab by label; cmd is run when creating or when the pane is back at shell
         herdrFocusTab =
-          label: cmd:
+          { label, command ? null, ... }:
           pkgs.writeShellApplication {
             name = "herdr-focus-tab-${label}";
             runtimeInputs = with pkgs; [
@@ -27,13 +29,23 @@
               tab_id=$(herdr tab list --workspace "$ws" | jq -r '.result.tabs[] | select(.label=="${label}") | .tab_id' | head -1)
               if [ -n "$tab_id" ]; then
                 herdr tab focus "$tab_id"
+${if command != null then ''
+                pane_id=$(herdr pane list --workspace "$ws" | jq -r --arg t "$tab_id" '.result.panes[] | select(.tab_id==$t) | .pane_id' | head -1)
+                if [ -n "$pane_id" ]; then
+                  shell_pid=$(herdr pane process-info --pane "$pane_id" | jq -r '.result.process_info.shell_pid')
+                  fg_pid=$(herdr pane process-info --pane "$pane_id" | jq -r '.result.process_info.foreground_processes[0].pid')
+                  if [ "$fg_pid" = "$shell_pid" ]; then
+                    herdr pane run "$pane_id" "${command}"
+                  fi
+                fi
+                '' else ""}
               else
                 ws_cwd=$(herdr pane list --workspace "$ws" | jq -r '.result.panes[0].cwd // empty')
                 cwd="''${ws_cwd:-$HOME}"
-${if cmd != null then ''
+${if command != null then ''
                 result=$(herdr tab create --workspace "$ws" --label "${label}" --cwd "$cwd" --no-focus)
                 pane_id=$(echo "$result" | jq -r '.result.root_pane.pane_id')
-                herdr pane run "$pane_id" "${cmd}"
+                herdr pane run "$pane_id" "${command}"
                 '' else ''
                 herdr tab create --workspace "$ws" --label "${label}" --cwd "$cwd" --no-focus >/dev/null
                 ''}
@@ -42,13 +54,8 @@ ${if cmd != null then ''
               fi
             '';
           };
-        herdrFocusNvim = herdrFocusTab "nvim" "nvim";
-        herdrFocusGit = herdrFocusTab "git" "nvim -c Neogit";
-        herdrFocusAi = herdrFocusTab "ai" "pi";
-        herdrFocusTerm = herdrFocusTab "term" null;
-        herdrFocusPrs = herdrFocusTab "prs" "gh dash";
-        herdrFocusHunk = herdrFocusTab "hunk" "hunk diff";
-        herdrFocusLazygit = herdrFocusTab "lazygit" "lazygit";
+
+        tabFocusScripts = map (tab: { inherit tab; script = herdrFocusTab tab; }) tabDefs;
 
         herdrZjumpOpen = pkgs.writeShellApplication {
           name = "herdr-zjump-open";
@@ -150,48 +157,12 @@ ${if cmd != null then ''
                   command = lib.getExe herdrZjumpOpen;
                   description = "zjump: pick dir via zoxide";
                 }
-                {
-                  key = "alt+n";
+              ] ++ map ({ tab, script }: {
+                  key = tab.key;
                   type = "shell";
-                  command = lib.getExe herdrFocusNvim;
-                  description = "focus or create nvim tab";
-                }
-                {
-                  key = "alt+g";
-                  type = "shell";
-                  command = lib.getExe herdrFocusGit;
-                  description = "focus or create git tab (neogit)";
-                }
-                {
-                  key = "alt+a";
-                  type = "shell";
-                  command = lib.getExe herdrFocusAi;
-                  description = "focus or create ai tab";
-                }
-                {
-                  key = "alt+t";
-                  type = "shell";
-                  command = lib.getExe herdrFocusTerm;
-                  description = "focus or create term tab";
-                }
-                {
-                  key = "alt+p";
-                  type = "shell";
-                  command = lib.getExe herdrFocusPrs;
-                  description = "focus or create prs tab (gh dash)";
-                }
-                {
-                  key = "alt+h";
-                  type = "shell";
-                  command = lib.getExe herdrFocusHunk;
-                  description = "focus or create hunk tab";
-                }
-                {
-                  key = "alt+l";
-                  type = "shell";
-                  command = lib.getExe herdrFocusLazygit;
-                  description = "focus or create lazygit tab";
-                }
+                  command = lib.getExe script;
+                  description = "focus or create ${tab.label} tab";
+                }) tabFocusScripts ++ [
                 {
                   key = "ctrl+h";
                   type = "plugin_action";

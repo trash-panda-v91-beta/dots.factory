@@ -1,0 +1,33 @@
+[[tabs]]
+label = "nvim"
+command = "nvim"
+key = "alt+n"
+
+[[tabs]]
+label = "git"
+command = "nvim -c Neogit"
+key = "alt+g"
+
+[[tabs]]
+label = "ai"
+command = "pi -c"
+key = "alt+a"
+
+[[tabs]]
+label = "term"
+key = "alt+t"
+
+[[tabs]]
+label = "prs"
+command = "gh dash"
+key = "alt+p"
+
+[[tabs]]
+label = "hunk"
+command = "hunk diff"
+key = "alt+h"
+
+[[tabs]]
+label = "lazygit"
+command = "lazygit"
+key = "alt+l"
