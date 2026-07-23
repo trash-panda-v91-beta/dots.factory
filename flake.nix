@@ -91,6 +91,10 @@
       url = "github:nicobailon/pi-web-access/v0.10.7";
       flake = false;
     };
+    pi-neuralwatt = {
+      url = "github:aliou/pi-neuralwatt/v0.10.2";
+      flake = false;
+    };
 
     # CMB — private repo (corp host).
     # PMB builds: nixpkgs has no flakeModules → corpo.nix guard returns [].
