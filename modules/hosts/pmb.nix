@@ -24,8 +24,15 @@
         };
 
       homeManager =
-        { config, ... }:
+        { config, pkgs, lib, ... }:
         {
+          programs.pi-coding-agent.settings.extensions = lib.mkAfter [
+            "${pkgs.local.pi-neuralwatt}/provider.js"
+            "${pkgs.local.pi-neuralwatt}/command-quotas.js"
+            "${pkgs.local.pi-neuralwatt}/quota-warnings.js"
+            "${pkgs.local.pi-neuralwatt}/sub-bar-integration.js"
+          ];
+
           # litellm MCP is PMB-only; bearer token resolved from env at runtime.
           home.file."${config.programs.pi-coding-agent.configDir}/mcp.json".text =
             builtins.toJSON {

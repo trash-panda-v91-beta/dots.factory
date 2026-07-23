@@ -424,6 +424,23 @@
         "type": "github"
       }
     },
+    "pi-neuralwatt": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1784479860,
+        "narHash": "sha256-NhQHPeB+ThHVmLzETMgkbphkc3YmpugsH74jsDgWrpA=",
+        "owner": "aliou",
+        "repo": "pi-neuralwatt",
+        "rev": "109b0180962be3375a80080e9da2af3c284863c1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "aliou",
+        "ref": "v0.10.2",
+        "repo": "pi-neuralwatt",
+        "type": "github"
+      }
+    },
     "pi-nvim": {
       "flake": false,
       "locked": {
@@ -497,6 +514,7 @@
         "opencode-nvim": "opencode-nvim",
         "pi-lsp": "pi-lsp",
         "pi-mcp-adapter": "pi-mcp-adapter",
+        "pi-neuralwatt": "pi-neuralwatt",
         "pi-nvim": "pi-nvim",
         "pi-web-access": "pi-web-access",
         "ponytail": "ponytail",
