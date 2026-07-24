@@ -72,7 +72,7 @@
     };
     context7-pi = {
       # monorepo – tag @upstash/context7-pi@0.1.0 maps to this commit
-      url = "github:upstash/context7/cb6aee187eee81f4d9b0521fc61ef5d058d2535a";
+      url = "github:upstash/context7/305dd3ca10341fd0190825417bbd7a0c861490c9";
       flake = false;
     };
     pi-lsp = {
