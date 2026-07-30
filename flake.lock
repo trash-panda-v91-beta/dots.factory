@@ -45,17 +45,17 @@
     "context7-pi": {
       "flake": false,
       "locked": {
-        "lastModified": 1781000518,
-        "narHash": "sha256-heLV/QLv6zDt5e1Qiel9JOEqUmIX2ifgMzqhCkMejuA=",
+        "lastModified": 1785401554,
+        "narHash": "sha256-Msvr7srpy+2HzxYKsPzo0hhzW7E1/ktTwdBEtuFMgRE=",
         "owner": "upstash",
         "repo": "context7",
-        "rev": "cb6aee187eee81f4d9b0521fc61ef5d058d2535a",
+        "rev": "594a73133e14631af8c915a1b4f2c8039c964fe1",
         "type": "github"
       },
       "original": {
         "owner": "upstash",
         "repo": "context7",
-        "rev": "cb6aee187eee81f4d9b0521fc61ef5d058d2535a",
+        "rev": "594a73133e14631af8c915a1b4f2c8039c964fe1",
         "type": "github"
       }
     },
