@@ -56,6 +56,11 @@
           };
 
           home.sessionVariables.VAULTS_DIR = "${config.home.homeDirectory}/vaults";
+          home.sessionVariables.REPOS = "${config.home.homeDirectory}/repos";
+          home.sessionVariables.MISE_TRUSTED_CONFIG_PATHS = lib.concatStringsSep ":" [
+            "${config.home.homeDirectory}/.herdr/worktrees"
+            "${config.dots.reposDir}/github.com/trash-panda-v91-beta"
+          ];
 
           programs.obsidian.vaults.mist.target = "vaults/mist";
 

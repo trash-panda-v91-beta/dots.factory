@@ -1,7 +1,7 @@
 # dots.factory
 
 Personal macOS dotfiles using [den](https://den.denful.dev) (aspect-oriented Nix) on
-nix-darwin + home-manager. Hosts: **PMB** (here) and **CMB** (in `../dots.corpo`).
+nix-darwin + home-manager. Hosts: **PMB** (here) and **CMB** (`dots.corpo`).
 
 ## Common Tasks
 
@@ -14,7 +14,7 @@ mise run check    # linters + dry-run build
 mise run fix      # formatters
 ```
 
-`HOST_ALIAS=cmb mise run …` builds CMB (requires `../dots.corpo`).
+`HOST_ALIAS=cmb mise run …` builds CMB (requires `dots.corpo`).
 
 ## Layout
 

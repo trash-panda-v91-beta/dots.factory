@@ -6,7 +6,7 @@ set -euo pipefail
 host="${HOST_ALIAS:-$(hostname -s)}"
 
 if [ "$host" = "cmb" ]; then
-	extra="--override-input corpo path:../dots.corpo"
+	extra="--override-input corpo path:${CORPO_REPO:?CORPO_REPO not set}"
 else
 	extra=""
 fi

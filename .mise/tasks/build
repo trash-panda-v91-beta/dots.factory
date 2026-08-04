@@ -7,7 +7,7 @@ host="${HOST_ALIAS:-$(hostname -s)}"
 
 echo "Building configuration for '$host' ..."
 if [ "$host" = "cmb" ]; then
-	nh darwin build . -n -- --override-input corpo path:../dots.corpo
+	nh darwin build . -n -- --override-input corpo path:${CORPO_REPO:?CORPO_REPO not set}
 else
 	nh darwin build . -n
 fi

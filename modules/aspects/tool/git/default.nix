@@ -1,11 +1,16 @@
-{ lib, ... }:
+{ lib, config, ... }:
 {
   dots.tool._.git = {
     description = "Git workflow: git, gh, lazygit, delta + gitsigns, neogit, codediff, octo, snacks/lazygit";
 
     homeManager =
-      { pkgs, ... }:
+      { pkgs, config, lib, ... }:
       {
+        options.dots.reposDir = lib.mkOption {
+          type = lib.types.str;
+          default = "${config.home.homeDirectory}/repos";
+          description = "Root directory for all repos (host-specific)";
+        };
         programs.delta.enable = false;
         programs.git = {
           enable = true;
@@ -74,7 +79,7 @@
               issuesLimit = 20;
             };
             repoPaths = {
-              "trash-panda-v91-beta/*" = "$REPOS/*";
+              "trash-panda-v91-beta/*" = "${config.dots.reposDir}/github.com/trash-panda-v91-beta/*";
             };
             keybindings = {
               universal = [
