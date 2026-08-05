@@ -37,7 +37,7 @@ in
               includeCoAuthoredBy = false;
               theme = "dark";
             };
-            skills = lib.genAttrs skillNames (name: skillsDir + "/${name}.md");
+            skills = lib.mapAttrs (_: lib.mkDefault) (lib.genAttrs skillNames (name: skillsDir + "/${name}.md"));
           };
 
           programs.pi-coding-agent = {

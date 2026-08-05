@@ -11,8 +11,8 @@
           default = "${config.home.homeDirectory}/repos";
           description = "Root directory for all repos (host-specific)";
         };
-        programs.delta.enable = false;
-        programs.git = {
+        config.programs.delta.enable = false;
+        config.programs.git = {
           enable = true;
           lfs.enable = true;
           ignores = [
@@ -42,8 +42,8 @@
           };
         };
 
-        programs.gh.enable = true;
-        programs.gh-dash = {
+        config.programs.gh.enable = true;
+        config.programs.gh-dash = {
           enable = true;
           settings = {
             prSections = [
@@ -96,9 +96,13 @@
                   builtin = "checkout";
                 }
                 {
-                  key = "D";
+                  key = "d";
                   name = "codediff";
                   command = "cd {{.RepoPath}} && nvim -c \"CodeDiff {{.BaseRefName}}...\"";
+                }
+                {
+                  key = "D";
+                  builtin = "diff";
                 }
                 {
                   key = "c";
@@ -109,6 +113,16 @@
                   key = "v";
                   name = "approve + LGTM";
                   command = "gh pr review {{.PrNumber}} --approve --body 'LGTM' --repo {{.RepoName}}";
+                }
+                {
+                  key = "u";
+                  name = "update branch (rebase)";
+                  command = "gh pr update-branch {{.PrNumber}} --rebase --repo {{.RepoName}}";
+                }
+                {
+                  key = "U";
+                  name = "update branch (merge)";
+                  command = "gh pr update-branch {{.PrNumber}} --repo {{.RepoName}}";
                 }
                 {
                   key = "M";
@@ -125,7 +139,7 @@
           };
         };
 
-        programs.lazygit = {
+        config.programs.lazygit = {
           enable = true;
           settings = {
             customCommands = [
