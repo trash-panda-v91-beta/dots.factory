@@ -60,7 +60,7 @@ ${if command != null then ''
         herdrZjumpOpen = pkgs.writeShellApplication {
           name = "herdr-zjump-open";
           text = ''
-            exec vicinae "vicinae://extensions/${config.home.username}/zerdr/jump"
+            exec vicinae "vicinae://extensions/${config.home.username}/herdr/workspaces"
           '';
         };
       in

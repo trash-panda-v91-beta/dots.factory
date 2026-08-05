@@ -1,88 +1,29 @@
-import { execFileSync } from "node:child_process";
+import { existsSync } from "node:fs";
 import {
   Action,
   ActionPanel,
+  Cache,
   closeMainWindow,
   Color,
-  getPreferenceValues,
   Icon,
   List,
   showToast,
   Toast,
 } from "@vicinae/api";
 import { useCallback, useEffect, useState } from "react";
+import {
+  AgentStatus,
+  execAsync,
+  focusTerminalApp,
+  herdr,
+  herdrAsync,
+  PaneList,
+  resolveZoxide,
+  WorkspaceCreated,
+  WorkspaceList,
+  WorktreeList,
+} from "./lib/herdr";
 
-interface Preferences {
-  zoxidePath: string;
-  herdrPath: string;
-  herdrAppName: string;
-}
-
-function resolveZoxide(): string {
-  return getPreferenceValues<Preferences>().zoxidePath
-    .replace(/^~/, process.env.HOME ?? "");
-}
-
-function resolveAppName(): string {
-  return getPreferenceValues<Preferences>().herdrAppName || "Ghostty";
-}
-
-// open -a only raises the app within macOS; aerospace keeps showing the old
-// workspace. Focus the app's window through aerospace so its workspace comes
-// forward too. Falls back to open -a when aerospace or the window is absent.
-function focusTerminalApp(): void {
-  const appName = resolveAppName();
-  try {
-    const line = execFileSync(
-      "aerospace",
-      ["list-windows", "--all", "--format", "%{window-id}|%{app-name}"],
-      { encoding: "utf8" },
-    )
-      .split("\n")
-      .find((l) => l.split("|")[1]?.trim() === appName);
-    const windowId = line?.split("|")[0]?.trim();
-    if (windowId) {
-      execFileSync("aerospace", ["focus", "--window-id", windowId]);
-      return;
-    }
-  } catch {
-    // aerospace missing or errored - fall through to open -a
-  }
-  execFileSync("/usr/bin/open", ["-a", appName]);
-}
-
-function resolveHerdr(): string {
-  return getPreferenceValues<Preferences>().herdrPath
-    .replace(/^~/, process.env.HOME ?? "");
-}
-
-function herdr(...args: string[]): string {
-  return execFileSync(resolveHerdr(), args, { encoding: "utf8" });
-}
-
-function applyLayout(wsId: string, tab1Id: string, tab1Pane: string): void {
-  herdr("tab", "rename", tab1Id, "nvim");
-  herdr("pane", "run", tab1Pane, "nvim");
-
-  const tab2 = JSON.parse(herdr("tab", "create", "--workspace", wsId, "--label", "ai", "--no-focus"));
-  herdr("pane", "run", tab2.result.root_pane.pane_id, "pi --resume");
-
-  herdr("tab", "create", "--workspace", wsId, "--label", "git", "--no-focus");
-  herdr("tab", "create", "--workspace", wsId, "--label", "pr", "--no-focus");
-  herdr("tab", "create", "--workspace", wsId, "--label", "term", "--no-focus");
-}
-
-function openNewWorkspace(dir: string): void {
-  const created = JSON.parse(herdr("workspace", "create", "--cwd", dir, "--focus"));
-  const r = created.result;
-  applyLayout(
-    r.workspace?.workspace_id ?? r.workspace_id,
-    r.tab?.tab_id ?? r.tab_id,
-    r.root_pane?.pane_id ?? r.pane_id,
-  );
-}
-
-type AgentStatus = "working" | "blocked" | "idle" | "done" | "unknown";
 type Filter = AgentStatus | "all";
 
 interface Workspace {
@@ -95,6 +36,22 @@ interface Workspace {
 interface DirEntry {
   dir: string;
   workspace: Workspace | undefined;
+  branch?: string;
+}
+
+function openNewWorkspace(dir: string): void {
+  const created = herdr<WorkspaceCreated>("workspace", "create", "--cwd", dir, "--focus");
+  herdr("tab", "rename", created.result.tab.tab_id, "git");
+  herdr("pane", "run", created.result.root_pane.pane_id, "nvim -c Neogit");
+}
+
+function getWorktrees(dir: string): Array<{ dir: string; branch: string }> {
+  try {
+    return herdr<WorktreeList>("worktree", "list", "--cwd", dir)
+      .result.worktrees.map((wt) => ({ dir: wt.path, branch: wt.branch }));
+  } catch {
+    return [];
+  }
 }
 
 const STATUS_COLOR: Record<AgentStatus, Color> = {
@@ -121,25 +78,22 @@ const FILTERS: { value: Filter; label: string }[] = [
   { value: "done",    label: "Done"    },
 ];
 
-function loadEntries(): DirEntry[] {
-  const wsList: Workspace[] = JSON.parse(herdr("workspace", "list"))
-    .result.workspaces.map((w: {
-      workspace_id: string;
-      label: string;
-      agent_status: AgentStatus;
-      focused: boolean;
-    }) => ({
-      wsId: w.workspace_id,
-      label: w.label,
-      agentStatus: w.agent_status,
-      focused: w.focused,
-    }));
+async function loadEntries(): Promise<DirEntry[]> {
+  const [wsResult, paneResult, zoxRaw] = await Promise.all([
+    herdrAsync<WorkspaceList>("workspace", "list"),
+    herdrAsync<PaneList>("pane", "list"),
+    execAsync(resolveZoxide(), ["query", "-l"]),
+  ]);
+
+  const wsList: Workspace[] = wsResult.result.workspaces.map((w) => ({
+    wsId: w.workspace_id,
+    label: w.label,
+    agentStatus: w.agent_status,
+    focused: w.focused,
+  }));
 
   const cwdByWsId = new Map<string, string>();
-  for (const p of JSON.parse(herdr("pane", "list")).result.panes as Array<{
-    workspace_id: string;
-    cwd: string;
-  }>) {
+  for (const p of paneResult.result.panes) {
     if (!cwdByWsId.has(p.workspace_id)) cwdByWsId.set(p.workspace_id, p.cwd);
   }
 
@@ -149,13 +103,7 @@ function loadEntries(): DirEntry[] {
     if (cwd) workspaceByCwd.set(cwd, ws);
   }
 
-  const zoxDirs = execFileSync(resolveZoxide(), ["query", "-l"], {
-    encoding: "utf8",
-  })
-    .trim()
-    .split("\n")
-    .filter(Boolean);
-
+  const zoxDirs = zoxRaw.trim().split("\n").filter(Boolean);
   const openOnlyDirs = [...workspaceByCwd.keys()].filter((d) => !zoxDirs.includes(d));
 
   return [...openOnlyDirs, ...zoxDirs].map((dir) => ({
@@ -164,28 +112,78 @@ function loadEntries(): DirEntry[] {
   }));
 }
 
+function enrichWithWorktrees(entries: DirEntry[]): DirEntry[] {
+  const allDirSet = new Set(entries.map((e) => e.dir));
+  const branchByDir = new Map<string, string>();
+  const extraDirs: string[] = [];
+  const seenMainWorktree = new Set<string>();
+
+  for (const { dir } of entries) {
+    if (!existsSync(dir + "/.git")) continue;
+    const worktrees = getWorktrees(dir);
+    if (worktrees.length === 0) continue;
+    const mainDir = worktrees[0].dir;
+    if (seenMainWorktree.has(mainDir)) continue;
+    seenMainWorktree.add(mainDir);
+    for (const wt of worktrees) {
+      branchByDir.set(wt.dir, wt.branch);
+      if (!allDirSet.has(wt.dir)) { extraDirs.push(wt.dir); allDirSet.add(wt.dir); }
+    }
+  }
+
+  if (branchByDir.size === 0 && extraDirs.length === 0) return entries;
+
+  const enriched = entries.map((e) =>
+    branchByDir.has(e.dir) ? { ...e, branch: branchByDir.get(e.dir) } : e
+  );
+  return [...enriched, ...extraDirs.map((dir) => ({ dir, workspace: undefined, branch: branchByDir.get(dir) }))];
+}
+
 function applyFilter(entries: DirEntry[], filter: Filter): DirEntry[] {
   if (filter === "all") return entries;
   return entries.filter((e) => e.workspace?.agentStatus === filter);
 }
 
-export default function Jump() {
-  const [entries, setEntries] = useState<DirEntry[]>([]);
-  const [filter, setFilter] = useState<Filter>("all");
-  const [loading, setLoading] = useState(true);
+const cache = new Cache();
+const CACHE_KEY = "entries.v1";
 
-  const reload = useCallback(() => {
-    setLoading(true);
+function readCache(): DirEntry[] {
+  const raw = cache.get(CACHE_KEY);
+  if (!raw) return [];
+  try { return JSON.parse(raw) as DirEntry[]; } catch { return []; }
+}
+
+function writeCache(entries: DirEntry[]): void {
+  try { cache.set(CACHE_KEY, JSON.stringify(entries)); } catch { /* ignore */ }
+}
+
+export default function Workspaces() {
+  const [entries, setEntries] = useState<DirEntry[]>(readCache);
+  const [filter, setFilter] = useState<Filter>("all");
+  const [loading, setLoading] = useState(entries.length === 0);
+
+  const reload = useCallback(async () => {
+    let base: DirEntry[];
     try {
-      setEntries(loadEntries());
+      base = await loadEntries();
     } catch (e) {
       showToast({ style: Toast.Style.Failure, title: "Load failed", message: String(e) });
-    } finally {
       setLoading(false);
+      return;
     }
+    setEntries(base);
+    setLoading(false);
+    writeCache(base);
+    setTimeout(() => {
+      try {
+        const enriched = enrichWithWorktrees(base);
+        setEntries(enriched);
+        writeCache(enriched);
+      } catch { /* ignore */ }
+    }, 0);
   }, []);
 
-  useEffect(() => { reload(); }, [reload]);
+  useEffect(() => { void reload(); }, [reload]);
 
   const toggleFilter = useCallback((value: AgentStatus) => {
     setFilter((cur) => cur === value ? "all" : value);
@@ -205,7 +203,7 @@ export default function Jump() {
         </List.Dropdown>
       }
     >
-      {visible.map(({ dir, workspace }) => {
+      {visible.map(({ dir, workspace, branch }) => {
         const label = dir.replace(process.env.HOME ?? "", "~");
         const status = workspace?.agentStatus;
 
@@ -213,6 +211,7 @@ export default function Jump() {
           <List.Item
             key={dir}
             title={label}
+            subtitle={branch}
             icon={
               workspace
                 ? { source: STATUS_ICON[workspace.agentStatus], tintColor: STATUS_COLOR[workspace.agentStatus] }

@@ -1,0 +1,72 @@
+{
+  "$schema": "https://raw.githubusercontent.com/vicinaehq/vicinae/refs/heads/main/extra/schemas/extension.json",
+  "name": "herdr",
+  "title": "Herdr",
+  "description": "Herdr workspace commands",
+  "categories": ["Developer Tools"],
+  "license": "MIT",
+  "platforms": ["macOS", "Linux"],
+  "author": "trash-panda-v91-beta",
+  "contributors": [],
+  "pastContributors": [],
+  "icon": "icon.png",
+  "commands": [
+    {
+      "name": "workspaces",
+      "title": "Workspaces",
+      "subtitle": "Herdr",
+      "description": "Jump to a workspace or open a new one from zoxide",
+      "mode": "view"
+    },
+    {
+      "name": "new-worktree",
+      "title": "New Worktree",
+      "subtitle": "Herdr",
+      "description": "Create a new git worktree from the current workspace",
+      "mode": "view"
+    },
+    {
+      "name": "sync-main",
+      "title": "Sync Main",
+      "subtitle": "Herdr",
+      "description": "Switch to main, fetch, and pull in the focused workspace",
+      "mode": "no-view"
+    }
+  ],
+  "preferences": [
+    {
+      "name": "herdrPath",
+      "type": "textfield",
+      "title": "Herdr binary path",
+      "description": "Full path to the herdr binary.",
+      "default": "~/.nix-profile/bin/herdr",
+      "required": false
+    },
+    {
+      "name": "zoxidePath",
+      "type": "textfield",
+      "title": "Zoxide binary path",
+      "description": "Full path to the zoxide binary.",
+      "default": "~/.nix-profile/bin/zoxide",
+      "required": false
+    },
+    {
+      "name": "herdrAppName",
+      "type": "textfield",
+      "title": "Terminal app name",
+      "description": "Terminal app hosting herdr; matched against aerospace app-name to switch workspace.",
+      "default": "Ghostty",
+      "required": false
+    }
+  ],
+  "scripts": {
+    "build": "vici build",
+    "dev": "vici develop"
+  },
+  "dependencies": {
+    "@vicinae/api": "^0.22.2"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.2"
+  }
+}

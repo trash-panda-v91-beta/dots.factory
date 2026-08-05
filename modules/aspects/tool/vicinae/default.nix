@@ -35,11 +35,11 @@
             runHook postInstall
           '';
         };
-        herdrZjumpExt = pkgs.buildNpmPackage {
-          name = "zerdr";
-          src = ./zerdr;
+        herdrExt = pkgs.buildNpmPackage {
+          name = "herdr";
+          src = ./herdr;
           inherit (pkgs.importNpmLock) npmConfigHook;
-          npmDeps = pkgs.importNpmLock { npmRoot = ./zerdr; };
+          npmDeps = pkgs.importNpmLock { npmRoot = ./herdr; };
           installPhase = ''
             runHook preInstall
             mkdir -p $out
@@ -63,7 +63,7 @@
           theme.dark.name = "Cyberdream";
           providers = {
             clipboard.entrypoints.history.shortcut = "super+control+alt+shift+Y";
-            "@trash-panda-v91-beta/zerdr".entrypoints.jump.shortcut = "super+control+alt+shift+Z";
+            "@trash-panda-v91-beta/herdr".entrypoints.workspaces.shortcut = "super+control+alt+shift+H";
             "@trash-panda-v91-beta/misdr".entrypoints.tasks.shortcut = "super+control+alt+shift+M";
             "@khasbilegt/store.raycast.1password".preferences = {
               version = "v8";
@@ -83,7 +83,7 @@
           package = inputs.vicinae.packages.${pkgs.stdenv.hostPlatform.system}.default;
         };
 
-        xdg.dataFile."vicinae/extensions/zerdr".source = herdrZjumpExt;
+        xdg.dataFile."vicinae/extensions/herdr".source = herdrExt;
         xdg.dataFile."vicinae/extensions/misdr".source = misdrExt;
 
         xdg.configFile."vicinae/settings.json".source = vicinaeSettings;
