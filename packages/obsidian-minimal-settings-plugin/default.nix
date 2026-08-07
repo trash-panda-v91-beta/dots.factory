@@ -1,6 +1,6 @@
 { pkgs, ... }:
 let
-  version = "8.2.3";
+  version = "9.0.0";
   base = "https://github.com/kepano/obsidian-minimal-settings/releases/download/${version}";
 in
 pkgs.runCommandLocal "obsidian-minimal-settings-${version}" { } ''
@@ -8,13 +8,13 @@ pkgs.runCommandLocal "obsidian-minimal-settings-${version}" { } ''
   cp ${
     pkgs.fetchurl {
       url = "${base}/main.js";
-      hash = "sha256-iqk1CXf8oJj1bOpETrZylC4Q/K65sHrOsFo9U2iqdCs=";
+      hash = "sha256-91TgzmUj5DO/+OeZWoSPfX+sIFOZ+as7ElhDAmH9kMQ=";
     }
   } $out/main.js
   cp ${
     pkgs.fetchurl {
       url = "${base}/manifest.json";
-      hash = "sha256-FoKjO20Rf0gVpFKzVbUJAYeqwF7m6quPDoN3s6ecRFM=";
+      hash = "sha256-IDj5wfXKAm68Hz4Va62XxnHSxAGiBxg4RQjvcgcejF8=";
     }
   } $out/manifest.json
   cp ${

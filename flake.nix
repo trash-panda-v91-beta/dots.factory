@@ -18,7 +18,7 @@
       inputs.brew-src.follows = "brew-src";
     };
     brew-src = {
-      url = "github:Homebrew/brew/5.1.7";
+      url = "github:Homebrew/brew/6.0.15";
       flake = false;
     };
     homebrew-core = {
@@ -32,7 +32,7 @@
 
     vicinae.url = "github:vicinaehq/vicinae";
 
-    den.url = "github:vic/den/v0.16.0";
+    den.url = "github:vic/den/v0.18.0";
     import-tree.url = "github:vic/import-tree";
     flake-parts.url = "github:hercules-ci/flake-parts";
 
@@ -72,27 +72,27 @@
     };
     context7-pi = {
       # monorepo – tag @upstash/context7-pi@0.1.0 maps to this commit
-      url = "github:upstash/context7/cb6aee187eee81f4d9b0521fc61ef5d058d2535a";
+      url = "github:upstash/context7/b250c2515694eee4b6df4db82fa056df9ed3e306";
       flake = false;
     };
     pi-lsp = {
-      url = "github:narumiruna/pi-extensions/v0.5.0";
+      url = "github:narumiruna/pi-extensions/@narumitw/pi-lsp@0.49.4";
       flake = false;
     };
     pi-mcp-adapter = {
-      url = "github:nicobailon/pi-mcp-adapter/v2.11.0";
+      url = "github:nicobailon/pi-mcp-adapter/v2.21.0";
       flake = false;
     };
     ponytail = {
-      url = "github:DietrichGebert/ponytail/v4.8.3";
+      url = "github:DietrichGebert/ponytail/v4.9.0";
       flake = false;
     };
     pi-web-access = {
-      url = "github:nicobailon/pi-web-access/v0.10.7";
+      url = "github:nicobailon/pi-web-access/v0.18.0";
       flake = false;
     };
     pi-neuralwatt = {
-      url = "github:aliou/pi-neuralwatt/v0.10.2";
+      url = "github:aliou/pi-neuralwatt/v0.11.3";
       flake = false;
     };
 
