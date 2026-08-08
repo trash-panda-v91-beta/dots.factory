@@ -1,0 +1,68 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: Update deps
+
+# Runs weekly (and on-demand) to bump non-flake sources - npins pins,
+# Obsidian, and any pi-* FOD hashes affected by those bumps - and opens
+# a PR. Flake inputs (nixpkgs, home-manager, den, etc.) are handled by
+# Renovate; this workflow only owns what Renovate can't see:
+#   npins/sources.json, packages/obsidian-*/default.nix, and the
+#   outputHash lines in the pi-* FOD packages.
+#
+# Runs on macos-latest because refresh-pi-hashes.sh needs to actually
+# build the aarch64-darwin FODs to catch the new "got: sha256-..." lines.
+
+on:
+  schedule:
+    - cron: "0 6 * * 1"   # Monday 06:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+
+      - uses: jdx/mise-action@dba19683ed58901619b14f395a24841710cb4925 # v4
+
+      - uses: cachix/install-nix-action@8aa03977d8d733052d78f4e008a241fd1dbf36b3 # v31.10.6
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+            accept-flake-config = true
+
+      - uses: nix-community/cache-nix-action@7df957e333c1e5da7721f60227dbba6d06080569 # v7
+        with:
+          primary-key: nix-${{ runner.os }}-update-${{ hashFiles('flake.lock', 'npins/sources.json') }}
+          restore-prefixes-first-match: nix-${{ runner.os }}-update-
+          gc-max-store-size-macos: 5G
+
+      - name: npins update
+        run: nix run nixpkgs#npins -- update
+
+      - name: Bump Obsidian
+        run: packages/update-obsidian.sh
+
+      - name: Refresh pi-* FOD hashes
+        run: packages/refresh-pi-hashes.sh
+
+      - name: Verify build
+        env:
+          GH_TOKEN: ${{ secrets.VAULT_READ_TOKEN }}
+        run: mise run check
+
+      - uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e # v7.0.8
+        with:
+          commit-message: "chore(deps): weekly npins + obsidian + pi-* hash refresh"
+          title: "chore(deps): weekly npins + obsidian + pi-* hash refresh"
+          body: |
+            Automated weekly bump of everything not managed by Renovate:
+            - `npins/sources.json` - pi-*, ponytail, context7-pi, plugins
+            - Obsidian version + asset hashes
+            - `outputHash` for pi-* whole-build FODs
+          branch: deps/weekly-npins
+          delete-branch: true

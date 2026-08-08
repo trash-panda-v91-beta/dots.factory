@@ -34,6 +34,33 @@ mise run switch    # activate
 
 Why the split: real flakes live as flake inputs so nixpkgs' Nix ecosystem tooling works. The nine `flake = false` sources moved to npins in commit `dba2de4` because `npins update <pkg>` is a natural per-package update, and dots.corpo already uses npins - same mental model across both repos now.
 
+## Automation
+
+**Renovate** (weekly Monday 02:00-03:00, per `renovate.json`):
+- Opens PRs for `flake.nix` / `flake.lock` bumps (nixpkgs and other real flake inputs)
+- Does not see `npins/sources.json`, Obsidian versions, or pi-* FOD hashes
+
+**GitHub Action `deps-update.yml`** (weekly Monday 06:00 UTC, or `workflow_dispatch`):
+- Runs on macos-latest
+- `npins update` -> `update-obsidian.sh` -> `refresh-pi-hashes.sh` -> `mise run check`
+- Opens a PR on branch `deps/weekly-npins`
+
+**CI (`ci.yml`)** runs on every PR (Renovate's, deps-update's, or manual):
+- `mise run check` on macos-latest catches stale FOD hashes and broken
+  builds before merge - if you land a Renovate PR that touches nixpkgs
+  and bun's version drifted, the pi-* FOD hash mismatch will fail check.
+
+### Manual follow-up on Renovate PRs
+
+Renovate can't refresh FOD hashes on its own. If a Renovate PR fails CI
+with a hash mismatch, pull the branch and run:
+
+```bash
+packages/refresh-pi-hashes.sh
+git add packages/pi-*/default.nix
+git commit --amend --no-edit && git push --force-with-lease
+```
+
 ## Common tasks
 
 ### Just one package
