@@ -2,14 +2,16 @@
 # Refresh outputHash for pi-* packages that use a whole-build FOD.
 # See .agents/skills/pi-package-builds/SKILL.md for why they're FODs.
 #
-# When a flake input bumps, the FOD hash goes stale. This script builds each
-# affected package, catches the hash mismatch, and rewrites default.nix in
-# place. Wired into `mise run update` after `nix flake update`.
+# Source revisions for these packages are pinned via npins (see
+# npins/sources.json). When you run `npins update <pkg>`, the source rev
+# bumps, but the FOD outputHash in the package's default.nix stays stale.
+# This script rebuilds each affected package, catches the hash mismatch,
+# and rewrites default.nix in place. Wired into `mise run update`.
 set -euo pipefail
 cd "$(git rev-parse --show-toplevel)"
 
-# Packages whose default.nix has a top-level `outputHash = "sha256-...";`
-# tied to a flake input.
+# Packages whose default.nix carries a top-level
+# `outputHash = "sha256-...";` tied to an npins source.
 pkgs=(
   pi-web-access
   pi-mcp-adapter
@@ -18,11 +20,10 @@ pkgs=(
 
 for pkg in "${pkgs[@]}"; do
   file="packages/$pkg/default.nix"
-  # Extract the current hash so we can tell if the build actually needs updating.
   cur=$(sed -n 's/.*outputHash = "\(sha256-[^"]*\)".*/\1/p' "$file")
   echo "==> $pkg (current: $cur)"
 
-  # Build; on hash mismatch nix prints "got: sha256-<new>".
+  # On hash mismatch nix prints "got: sha256-<new>".
   log=$(nix build --impure --no-link --expr "
     let f = builtins.getFlake (toString ./.);
         pkgs = f.inputs.nixpkgs.legacyPackages.aarch64-darwin;
@@ -32,8 +33,6 @@ for pkg in "${pkgs[@]}"; do
   new=$(echo "$log" | sed -n 's/.*got: *\(sha256-[^ ]*\).*/\1/p' | head -1)
 
   if [[ -z "$new" ]]; then
-    # No mismatch reported - either up to date or a different failure. Show
-    # something useful either way.
     if echo "$log" | grep -q "error:"; then
       echo "  build failed with something other than a hash mismatch:"
       echo "$log" | grep -E "error:|Last" | head -5
@@ -49,7 +48,6 @@ for pkg in "${pkgs[@]}"; do
   fi
 
   echo "  $cur -> $new"
-  # Escape for sed: base64 hashes contain +/=. Only + needs quoting.
   sed -i '' "s|outputHash = \"$cur\";|outputHash = \"$new\";|" "$file"
 done
 

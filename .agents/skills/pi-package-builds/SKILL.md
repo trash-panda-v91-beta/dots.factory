@@ -32,21 +32,35 @@ Why: nix has a well-known slow path for FODs whose output is a tree of many smal
 
 So: whole-build FOD is the pragmatic answer here. The single derivation lands only the tiny bundled `.js` (a few MB) in the store, avoiding the slow path entirely.
 
+## Where sources come from
+
+Source revisions are pinned via **npins** (`npins/sources.json`), not as flake
+inputs. Each npins-pinned source is exposed to modules as `inputs.<name>` at
+the flake output level (see `flake.nix`: `npinsSources` gets merged into
+`inputs`), so package derivations still read `inputs.pi-web-access` etc.
+
+Why npins here and flake inputs for the rest: these packages are just source
+tarballs (they were `flake = false` inputs). npins gives us per-package
+updates (`npins update pi-web-access`) which flake inputs don't. Real flakes
+(nixpkgs, home-manager, darwin, den, nixvim, ...) stay in `flake.nix`.
+
 ## When (and how) to bump hashes
 
 Automatic path (preferred):
 
 ```bash
-mise run update    # runs `nix flake update`, then `update-obsidian.sh`, then
+mise run update    # bumps flake inputs (`nix flake update`), then npins
+                   # sources (`npins update`), then obsidian, then runs
                    # `refresh-pi-hashes.sh` which walks each FOD-having
                    # pi-* package and rewrites outputHash from the build's
                    # `got: sha256-...` line.
 ```
 
-Or just the hash refresh, without flake bump:
+Update a single package:
 
 ```bash
-packages/refresh-pi-hashes.sh
+nix run nixpkgs#npins -- update pi-web-access    # bump source rev
+packages/refresh-pi-hashes.sh                    # bump FOD hash
 ```
 
 Manual path (if the script chokes): a flake input bump will fail the build

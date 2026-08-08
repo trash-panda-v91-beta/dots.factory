@@ -3,6 +3,18 @@
 
 set -euo pipefail
 
+root="$(git rev-parse --show-toplevel)"
+cd "$root"
+
+# 1. Bump flake inputs (nixpkgs, home-manager, den, nixvim, ...).
 nix flake update
-"$(git rev-parse --show-toplevel)/packages/update-obsidian.sh"
-"$(git rev-parse --show-toplevel)/packages/refresh-pi-hashes.sh"
+
+# 2. Bump npins sources (pi-*, ponytail, context7-pi, koda-nvim, pi-nvim,
+#    opencode-nvim). These live in npins/sources.json.
+nix run nixpkgs#npins -- update
+
+# 3. Bump Obsidian derivations (version + hashes from GitHub releases).
+"$root/packages/update-obsidian.sh"
+
+# 4. Refresh outputHash for pi-* whole-build FODs whose source just changed.
+"$root/packages/refresh-pi-hashes.sh"

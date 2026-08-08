@@ -1,5 +1,28 @@
 {
-  outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);
+  outputs =
+    flakeInputs:
+    let
+      # Sources that used to live as `flake = false` inputs now come from
+      # npins (see npins/sources.json). This adapts each to look like a flake
+      # input (adds `shortRev`) and merges into `inputs`, so any existing
+      # `inputs.pi-web-access` etc. code keeps working.
+      npinsSources = import ./npins;
+      pinNames = builtins.filter (n: n != "__functor") (builtins.attrNames npinsSources);
+      asFlakeInput =
+        src:
+        src
+        // {
+          shortRev = builtins.substring 0 7 (src.revision or src.rev or "0000000");
+        };
+      npinsAsInputs = builtins.listToAttrs (
+        map (n: {
+          name = n;
+          value = asFlakeInput npinsSources.${n};
+        }) pinNames
+      );
+      inputs = flakeInputs // npinsAsInputs;
+    in
+    flakeInputs.flake-parts.lib.mkFlake { inherit inputs; } (flakeInputs.import-tree ./modules);
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
@@ -58,42 +81,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    koda-nvim = {
-      url = "github:oskarnurm/koda.nvim";
-      flake = false;
-    };
-    pi-nvim = {
-      url = "github:carderne/pi-nvim";
-      flake = false;
-    };
-    opencode-nvim = {
-      url = "github:sudo-tee/opencode.nvim";
-      flake = false;
-    };
-    context7-pi = {
-      url = "github:upstash/context7/@upstash/context7-pi@0.1.2";
-      flake = false;
-    };
-    pi-lsp = {
-      url = "github:narumiruna/pi-extensions/v0.49.5";
-      flake = false;
-    };
-    pi-mcp-adapter = {
-      url = "github:nicobailon/pi-mcp-adapter/v2.21.0";
-      flake = false;
-    };
-    ponytail = {
-      url = "github:DietrichGebert/ponytail/v4.9.0";
-      flake = false;
-    };
-    pi-web-access = {
-      url = "github:nicobailon/pi-web-access/v0.18.0";
-      flake = false;
-    };
-    pi-neuralwatt = {
-      url = "github:aliou/pi-neuralwatt/v0.11.3";
-      flake = false;
-    };
+    # Sources pinned via npins (not flake inputs): koda-nvim, pi-nvim,
+    # opencode-nvim, context7-pi, pi-lsp, pi-mcp-adapter, ponytail,
+    # pi-web-access, pi-neuralwatt.
+    # Update those with `npins update <name>` (or `mise run update`).
 
     # CMB — private repo (corp host).
     # PMB builds: nixpkgs has no flakeModules → corpo.nix guard returns [].

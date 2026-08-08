@@ -47,7 +47,10 @@ in
           };
 
           obsidian = prev.obsidian.overrideAttrs (old: {
-            sourceRoot = "Obsidian ${old.version}-universal/Obsidian.app";
+            # 1.13.x DMG nests the app under a versioned prefix directory.
+            # Nixpkgs' installPhase then does `cp -R Obsidian.app $out/...`,
+            # so sourceRoot must be the prefix directory, not the .app.
+            sourceRoot = "Obsidian ${old.version}-universal";
           });
 
           local = {
