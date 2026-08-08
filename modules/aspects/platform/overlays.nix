@@ -46,6 +46,10 @@ in
             };
           };
 
+          obsidian = prev.obsidian.overrideAttrs (old: {
+            sourceRoot = "Obsidian ${old.version}-universal/Obsidian.app";
+          });
+
           local = {
             koda-nvim = prev.callPackage "${pkgsDir}/koda-nvim" { inherit inputs; };
             pi-nvim = inputs.pi-nvim;

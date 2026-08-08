@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+# Refresh outputHash for pi-* packages that use a whole-build FOD.
+# See .agents/skills/pi-package-builds/SKILL.md for why they're FODs.
+#
+# When a flake input bumps, the FOD hash goes stale. This script builds each
+# affected package, catches the hash mismatch, and rewrites default.nix in
+# place. Wired into `mise run update` after `nix flake update`.
+set -euo pipefail
+cd "$(git rev-parse --show-toplevel)"
+
+# Packages whose default.nix has a top-level `outputHash = "sha256-...";`
+# tied to a flake input.
+pkgs=(
+  pi-web-access
+  pi-mcp-adapter
+  pi-neuralwatt
+)
+
+for pkg in "${pkgs[@]}"; do
+  file="packages/$pkg/default.nix"
+  # Extract the current hash so we can tell if the build actually needs updating.
+  cur=$(sed -n 's/.*outputHash = "\(sha256-[^"]*\)".*/\1/p' "$file")
+  echo "==> $pkg (current: $cur)"
+
+  # Build; on hash mismatch nix prints "got: sha256-<new>".
+  log=$(nix build --impure --no-link --expr "
+    let f = builtins.getFlake (toString ./.);
+        pkgs = f.inputs.nixpkgs.legacyPackages.aarch64-darwin;
+    in pkgs.callPackage ./packages/$pkg { inputs = f.inputs; }
+  " 2>&1 || true)
+
+  new=$(echo "$log" | sed -n 's/.*got: *\(sha256-[^ ]*\).*/\1/p' | head -1)
+
+  if [[ -z "$new" ]]; then
+    # No mismatch reported - either up to date or a different failure. Show
+    # something useful either way.
+    if echo "$log" | grep -q "error:"; then
+      echo "  build failed with something other than a hash mismatch:"
+      echo "$log" | grep -E "error:|Last" | head -5
+      exit 1
+    fi
+    echo "  up to date"
+    continue
+  fi
+
+  if [[ "$new" == "$cur" ]]; then
+    echo "  up to date (hash unchanged)"
+    continue
+  fi
+
+  echo "  $cur -> $new"
+  # Escape for sed: base64 hashes contain +/=. Only + needs quoting.
+  sed -i '' "s|outputHash = \"$cur\";|outputHash = \"$new\";|" "$file"
+done
+
+echo
+echo "Done. Re-run 'mise run build' to verify."

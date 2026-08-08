@@ -16,7 +16,7 @@ stdenvNoCC.mkDerivation {
 
   outputHashAlgo = "sha256";
   outputHashMode = "recursive";
-  outputHash = "sha256-bwK6hpJELJFu7sA7RZrFMrti0PWwknpFbBldEzuWauo=";
+  outputHash = "sha256-jD0KxnNkQfvEVRZI+VhbApgQ9g1Xvxfeg3xH8PhdbRs=";
 
   buildPhase = ''
     runHook preBuild
@@ -40,7 +40,6 @@ stdenvNoCC.mkDerivation {
     runHook preInstall
     mkdir -p $out
     cp index.js $out/
-    cp -r skills $out/
     runHook postInstall
   '';
 
