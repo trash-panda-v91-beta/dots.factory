@@ -27,10 +27,6 @@ run = [
   "nix build .#darwinConfigurations.pmb.system --dry-run",
 ]
 
-[tasks.update]
-description = "Update flake inputs (flake.lock)"
-run = "nix flake update"
-
 [tasks.fix]
 description = "Run all fixers and formatters"
 run = "hk fix"

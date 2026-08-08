@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+#MISE description="Rebuild pi-* whole-build FODs and rewrite their outputHash if stale"
+
+"$(git rev-parse --show-toplevel)/packages/refresh-pi-hashes.sh"

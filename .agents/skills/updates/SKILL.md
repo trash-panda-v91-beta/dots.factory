@@ -69,8 +69,8 @@ Everything from the npins list:
 
 ```bash
 npins update pi-web-access
-packages/refresh-pi-hashes.sh   # only needed if this pkg has a whole-build FOD
-mise run build                  # verify
+mise run refresh-hashes             # only needed if this pkg has a whole-build FOD
+mise run build                      # verify
 ```
 
 Everything from the flake list:
@@ -92,25 +92,25 @@ mise run build
 Renovate PRs typically bump one flake input (or one npins pin) at a time. If the PR touches a package that has a whole-build FOD (pi-web-access, pi-mcp-adapter, pi-neuralwatt), the build will fail with a hash mismatch. On the Renovate branch:
 
 ```bash
-packages/refresh-pi-hashes.sh
+mise run refresh-hashes
 git add packages/pi-*/default.nix
 git commit --amend --no-edit && git push --force-with-lease
 ```
 
-Or wire Renovate's [`postUpgradeTasks`](https://docs.renovatebot.com/configuration-options/#postupgradetasks) to run `packages/refresh-pi-hashes.sh` automatically, if the Renovate runner has Nix available.
+Or wire Renovate's [`postUpgradeTasks`](https://docs.renovatebot.com/configuration-options/#postupgradetasks) to run `mise run refresh-hashes` automatically, if the Renovate runner has Nix available.
 
 ### After bumping nixpkgs
 
 nixpkgs bumps can silently change:
 
 - **The `obsidian` derivation shape** - `sourceRoot` overrides in `modules/aspects/platform/overlays.nix` may need adjustment. If Obsidian fails with "chmod: cannot access 'Obsidian.app'" or "no Makefile", read the log and adjust `sourceRoot` (currently `Obsidian ${old.version}-universal`).
-- **The `bun` version** - which can change pi-* whole-build FOD outputs. `refresh-pi-hashes.sh` handles this.
+- **The `bun` version** - which can change pi-* whole-build FOD outputs. `mise run refresh-hashes` handles this.
 
 If a nixpkgs bump touches something else and breaks the build, `nix log <drv-path>` on the failing derivation is your friend.
 
 ## Anti-patterns
 
-- **Do not** hand-edit `outputHash` in pi-* package derivations. Run `refresh-pi-hashes.sh`.
+- **Do not** hand-edit `outputHash` in pi-* package derivations. Run `mise run refresh-hashes`.
 - **Do not** hand-edit `flake.lock` or `npins/sources.json`. Use the update commands.
 - **Do not** run `nix flake update <name>` for a package that's in npins - it doesn't exist there. Check the table above first.
 
