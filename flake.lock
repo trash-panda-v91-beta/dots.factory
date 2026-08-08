@@ -57,8 +57,8 @@
       },
       "original": {
         "owner": "upstash",
+        "ref": "@upstash/context7-pi@0.1.2",
         "repo": "context7",
-        "rev": "b250c2515694eee4b6df4db82fa056df9ed3e306",
         "type": "github"
       }
     },
@@ -429,16 +429,16 @@
     "pi-lsp": {
       "flake": false,
       "locked": {
-        "lastModified": 1786093182,
-        "narHash": "sha256-zT5naGdelE0TpXnd7HEGwgSeY3oQ3kmLDT3QAaoK0kk=",
+        "lastModified": 1786016673,
+        "narHash": "sha256-V9YbPFAfUr7PFrsc72BtnFEW9XN2APTd3Csk1tW/2Lk=",
         "owner": "narumiruna",
         "repo": "pi-extensions",
-        "rev": "56d797291d8f8ae0cae20b6fa4308517f58007e7",
+        "rev": "05fc48fce32d7d1c78afd84a1eb5e2608471d0bf",
         "type": "github"
       },
       "original": {
         "owner": "narumiruna",
-        "ref": "@narumitw/pi-lsp@0.49.4",
+        "ref": "v0.49.5",
         "repo": "pi-extensions",
         "type": "github"
       }

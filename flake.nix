@@ -71,12 +71,11 @@
       flake = false;
     };
     context7-pi = {
-      # monorepo – tag @upstash/context7-pi@0.1.0 maps to this commit
-      url = "github:upstash/context7/b250c2515694eee4b6df4db82fa056df9ed3e306";
+      url = "github:upstash/context7/@upstash/context7-pi@0.1.2";
       flake = false;
     };
     pi-lsp = {
-      url = "github:narumiruna/pi-extensions/@narumitw/pi-lsp@0.49.4";
+      url = "github:narumiruna/pi-extensions/v0.49.5";
       flake = false;
     };
     pi-mcp-adapter = {

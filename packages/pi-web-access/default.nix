@@ -18,18 +18,6 @@ stdenvNoCC.mkDerivation {
   outputHashMode = "recursive";
   outputHash = "sha256-bwK6hpJELJFu7sA7RZrFMrti0PWwknpFbBldEzuWauo=";
 
-  postPatch = ''
-    substituteInPlace index.ts \
-      --replace-fail '@mariozechner/pi-coding-agent' '@earendil-works/pi-coding-agent' \
-      --replace-fail '@mariozechner/pi-tui' '@earendil-works/pi-tui' \
-      --replace-fail '@mariozechner/pi-ai' '@earendil-works/pi-ai'
-    substituteInPlace storage.ts \
-      --replace-fail '@mariozechner/pi-coding-agent' '@earendil-works/pi-coding-agent'
-    substituteInPlace summary-review.ts \
-      --replace-fail '@mariozechner/pi-coding-agent' '@earendil-works/pi-coding-agent' \
-      --replace-fail '@mariozechner/pi-ai' '@earendil-works/pi-ai'
-  '';
-
   buildPhase = ''
     runHook preBuild
 
