@@ -3,25 +3,16 @@
   dots.tool._.nixvim.includes = [ dots.tool._.nixvim._.completion ];
   dots.tool._.nixvim._.completion.homeManager =
     { lib, ... }:
-    let
-      mkBlinkPlugin =
-        {
-          enable ? true,
-          ...
-        }@args:
-        {
-          inherit enable;
-          lazyLoad.settings.event = [
-            "InsertEnter"
-            "CmdlineEnter"
-          ];
-        }
-        // (builtins.removeAttrs args [ "enable" ]);
-    in
     {
       programs.nixvim = {
         plugins = {
-          blink-ripgrep = mkBlinkPlugin { };
+          blink-ripgrep = {
+            enable = true;
+            lazyLoad.settings.event = [
+              "InsertEnter"
+              "CmdlineEnter"
+            ];
+          };
         };
 
         plugins.blink-cmp = {

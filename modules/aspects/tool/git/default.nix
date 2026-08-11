@@ -1,17 +1,16 @@
-{ lib, config, ... }:
+{ ... }:
 {
   dots.tool._.git = {
     description = "Git workflow: git, gh, lazygit, delta + gitsigns, neogit, codediff, octo, snacks/lazygit";
 
     homeManager =
-      { pkgs, config, lib, ... }:
+      { config, lib, ... }:
       {
         options.dots.reposDir = lib.mkOption {
           type = lib.types.str;
           default = "${config.home.homeDirectory}/repos";
           description = "Root directory for all repos (host-specific)";
         };
-        config.programs.delta.enable = false;
         config.programs.git = {
           enable = true;
           lfs.enable = true;
@@ -83,12 +82,30 @@
             };
             keybindings = {
               universal = [
-                { key = "up"; builtin = "pageUp"; }
-                { key = "down"; builtin = "pageDown"; }
-                { key = "j"; builtin = "down"; }
-                { key = "k"; builtin = "up"; }
-                { key = "h"; builtin = "prevSection"; }
-                { key = "l"; builtin = "nextSection"; }
+                {
+                  key = "up";
+                  builtin = "pageUp";
+                }
+                {
+                  key = "down";
+                  builtin = "pageDown";
+                }
+                {
+                  key = "j";
+                  builtin = "down";
+                }
+                {
+                  key = "k";
+                  builtin = "up";
+                }
+                {
+                  key = "h";
+                  builtin = "prevSection";
+                }
+                {
+                  key = "l";
+                  builtin = "nextSection";
+                }
               ];
               prs = [
                 {

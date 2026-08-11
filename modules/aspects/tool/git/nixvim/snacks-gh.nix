@@ -7,7 +7,7 @@
         pkgs.gh
       ];
       plugins.snacks.settings.gh = {
-        enable = true;
+        enabled = true;
       };
       plugins.snacks.settings.picker = {
         sources = {

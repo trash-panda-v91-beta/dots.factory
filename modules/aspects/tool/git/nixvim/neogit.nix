@@ -1,7 +1,7 @@
 { dots, ... }:
 {
   dots.tool._.git.includes = [ dots.tool._.git._.git-neogit ];
-  dots.tool._.git._.git-neogit.homeManager = { lib, ... }: {
+  dots.tool._.git._.git-neogit.homeManager = { ... }: {
     programs.nixvim = {
       plugins.neogit = {
         enable = true;
@@ -41,36 +41,6 @@
           action = "<cmd>Neogit<cr>";
           options = {
             desc = "Open Neogit";
-          };
-        }
-        {
-          mode = [ "n" ];
-          key = "<leader>gn";
-          action.__raw = ''
-            function()
-              -- ... your Lua code ...
-            end
-          '';
-          options = {
-            desc = "New branch (main->pull->create)";
-          };
-        }
-      ];
-
-      # Add autocommand/keymaps for OpenCode commit integration
-      autoCmd = [
-        {
-          event = [ "FileType" ];
-          pattern = [
-            "gitcommit"
-            "NeogitCommitMessage"
-          ];
-          callback = {
-            __raw = ''
-              function(event)
-                -- ... your Lua code ...
-              end
-            '';
           };
         }
       ];

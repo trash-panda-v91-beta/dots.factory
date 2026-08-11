@@ -39,10 +39,6 @@ let
       msg = "programs.nushell should be enabled";
     }
     {
-      cond = hm.programs.tmux.enable;
-      msg = "programs.tmux should be enabled";
-    }
-    {
       cond = hm.programs.nixvim.enable;
       msg = "programs.nixvim should be enabled";
     }

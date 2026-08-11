@@ -3,11 +3,6 @@
   dots.tool._.obsidian.includes = [ dots.tool._.obsidian._."obsidian-nvim" ];
   dots.tool._.obsidian._."obsidian-nvim".homeManager =
     { ... }:
-    let
-      # Hardcode workspaces since we're removing the option layer
-      # Override these values as needed
-      workspaces = [ ];
-    in
     {
       programs.nixvim = {
         keymaps = [
@@ -27,7 +22,6 @@
           };
           settings = {
             legacy_commands = false;
-            workspaces = workspaces;
             ui.enable = false;
 
             completion.min_chars = 0;

@@ -6,9 +6,7 @@
     let
       herdr-splits-nvim = pkgs.vimUtils.buildVimPlugin {
         pname = "herdr-splits.nvim";
-        version = "2026-07-08";
-        # reuse the same source as the herdr-side package in pkgs.herdr-splits
-        src = pkgs.herdr-splits.src;
+        inherit (pkgs.herdr-splits) version src;
       };
     in
     {
@@ -21,10 +19,30 @@
         '';
 
         keymaps = [
-          { mode = "n"; key = "<C-h>"; action.__raw = "function() require('herdr-splits').move_cursor_left() end"; options.desc = "Navigate left"; }
-          { mode = "n"; key = "<C-j>"; action.__raw = "function() require('herdr-splits').move_cursor_down() end"; options.desc = "Navigate down"; }
-          { mode = "n"; key = "<C-k>"; action.__raw = "function() require('herdr-splits').move_cursor_up() end"; options.desc = "Navigate up"; }
-          { mode = "n"; key = "<C-l>"; action.__raw = "function() require('herdr-splits').move_cursor_right() end"; options.desc = "Navigate right"; }
+          {
+            mode = "n";
+            key = "<C-h>";
+            action.__raw = "function() require('herdr-splits').move_cursor_left() end";
+            options.desc = "Navigate left";
+          }
+          {
+            mode = "n";
+            key = "<C-j>";
+            action.__raw = "function() require('herdr-splits').move_cursor_down() end";
+            options.desc = "Navigate down";
+          }
+          {
+            mode = "n";
+            key = "<C-k>";
+            action.__raw = "function() require('herdr-splits').move_cursor_up() end";
+            options.desc = "Navigate up";
+          }
+          {
+            mode = "n";
+            key = "<C-l>";
+            action.__raw = "function() require('herdr-splits').move_cursor_right() end";
+            options.desc = "Navigate right";
+          }
         ];
       };
     };

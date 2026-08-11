@@ -97,7 +97,11 @@
           options.desc = "Close tab / quit";
         }
         {
-          mode = ["n" "i" "v"];
+          mode = [
+            "n"
+            "i"
+            "v"
+          ];
           key = "<C-s>";
           action = "<cmd>w<CR>";
           options.desc = "Save";
@@ -157,6 +161,30 @@
           options = {
             desc = "Yank selection with relative path";
           };
+        }
+        {
+          mode = "n";
+          key = "<leader>ca";
+          action.__raw = "function() require('fastaction').code_action() end";
+          options.desc = "Code action";
+        }
+        {
+          mode = "v";
+          key = "<leader>ca";
+          action.__raw = "function() require('fastaction').range_code_action() end";
+          options.desc = "Code action (range)";
+        }
+        {
+          mode = "n";
+          key = "gra";
+          action.__raw = "function() require('fastaction').code_action() end";
+          options.desc = "Code action";
+        }
+        {
+          mode = "v";
+          key = "gra";
+          action.__raw = "function() require('fastaction').range_code_action() end";
+          options.desc = "Code action (range)";
         }
       ];
     };
