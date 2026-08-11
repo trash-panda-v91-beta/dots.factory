@@ -2,12 +2,7 @@
 {
   dots.tool._.git.includes = [ dots.tool._.git._.git-octo ];
   dots.tool._.git._.git-octo.homeManager =
-    { pkgs, lib, ... }:
-    let
-      # Hardcoded values (previously configurable via options)
-      defaultToProjectsV2 = true;
-      extraKeymaps = [ ];
-    in
+    { pkgs, ... }:
     {
       programs.nixvim = {
         extraPackages = [
@@ -17,7 +12,7 @@
           enable = true;
           settings = {
             enable_builtin = true;
-            default_to_projects_v2 = defaultToProjectsV2;
+            default_to_projects_v2 = true;
             default_merge_method = "squash";
             picker = "snacks";
             picker_config = {
@@ -31,7 +26,10 @@
                     name = "pr_diff";
                     lhs = "<C-d>";
                     desc = "show PR diff";
-                    mode = [ "n" "i" ];
+                    mode = [
+                      "n"
+                      "i"
+                    ];
                     fn.__raw = ''
                       function(picker, item)
                         picker:close()
@@ -59,7 +57,10 @@
                     name = "pr_approve";
                     lhs = "<C-a>";
                     desc = "approve PR";
-                    mode = [ "n" "i" ];
+                    mode = [
+                      "n"
+                      "i"
+                    ];
                     fn.__raw = ''
                       function(_picker, item)
                         local repo = item.repository.nameWithOwner
@@ -76,7 +77,10 @@
                     name = "pr_watch_checks";
                     lhs = "<C-w>";
                     desc = "watch checks";
-                    mode = [ "n" "i" ];
+                    mode = [
+                      "n"
+                      "i"
+                    ];
                     fn.__raw = ''
                       function(picker, item)
                         picker:close()
@@ -428,19 +432,6 @@
                 vim.keymap.set('n', localleader .. 'crr', '<cmd>Octo reaction rocket<cr>', { buffer = event.buf, desc = 'React :rocket:' })
                 vim.keymap.set('n', localleader .. 'crl', '<cmd>Octo reaction laugh<cr>', { buffer = event.buf, desc = 'React :laughing:' })
                 vim.keymap.set('n', localleader .. 'crc', '<cmd>Octo reaction confused<cr>', { buffer = event.buf, desc = 'React :confused:' })
-
-                ${lib.concatMapStringsSep "\n" (
-                  keymap:
-                  let
-                    action = if builtins.isAttrs keymap.action then keymap.action.__raw else keymap.action;
-                  in
-                  ''
-                    vim.keymap.set('${keymap.mode or "n"}', '${keymap.key}', ${action}, {
-                      buffer = event.buf,
-                      desc = '${keymap.desc or ""}'
-                    })
-                  ''
-                ) extraKeymaps}
               end
             '';
           }

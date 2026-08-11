@@ -37,7 +37,9 @@ in
               includeCoAuthoredBy = false;
               theme = "dark";
             };
-            skills = lib.mapAttrs (_: lib.mkDefault) (lib.genAttrs skillNames (name: skillsDir + "/${name}.md"));
+            skills = lib.mapAttrs (_: lib.mkDefault) (
+              lib.genAttrs skillNames (name: skillsDir + "/${name}.md")
+            );
           };
 
           programs.pi-coding-agent = {
@@ -65,12 +67,14 @@ in
             };
           };
 
-          # pi-mcp-adapter reads ~/.pi/agent/mcp.json at runtime.
+          # Skills live in ~/.pi/agent/skills (copied from the repo tree).
           home.file."${config.programs.pi-coding-agent.configDir}/skills".source = skillsDir;
 
-          # litellm is PMB-only; written from pmb.nix.
-          home.file."${config.programs.pi-coding-agent.configDir}/mcp.json".text =
-            builtins.toJSON { mcpServers = {}; };
+          # litellm is PMB-only; overwritten from pmb.nix. pi-mcp-adapter reads
+          # ~/.pi/agent/mcp.json at runtime.
+          home.file."${config.programs.pi-coding-agent.configDir}/mcp.json".text = builtins.toJSON {
+            mcpServers = { };
+          };
 
           programs.mcp.enable = true;
 

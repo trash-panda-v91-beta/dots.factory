@@ -21,11 +21,6 @@
           };
         };
 
-        notify = {
-          enable = true;
-          lazyLoad.settings.event = "DeferredUIEnter";
-        };
-
         noice = {
           enable = true;
           lazyLoad.settings.event = "DeferredUIEnter";
@@ -67,9 +62,9 @@
               input = { };
             };
             messages = {
-              view = "notify";
-              view_error = "notify";
-              view_warn = "notify";
+              view = "mini";
+              view_error = "mini";
+              view_warn = "mini";
             };
             lsp = {
               override = {

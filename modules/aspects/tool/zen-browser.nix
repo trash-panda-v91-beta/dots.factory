@@ -15,7 +15,7 @@
       {
         programs.zen-browser = {
           enable = true;
-          package = pkgs.lib.mkIf pkgs.stdenv.isDarwin null;
+          package = null; # installed via homebrew cask on darwin
 
           policies =
             let

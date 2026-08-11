@@ -29,19 +29,6 @@
       "url": "https://github.com/oskarnurm/koda.nvim/archive/a7da3ced59eadafbda6eb4d7f7e2a6a3d9ecf858.tar.gz",
       "hash": "sha256-OiWW7c+cd/MioepNN40pFO3hTAm9ov80I1mVYmTW428="
     },
-    "opencode-nvim": {
-      "type": "Git",
-      "repository": {
-        "type": "GitHub",
-        "owner": "sudo-tee",
-        "repo": "opencode.nvim"
-      },
-      "branch": "main",
-      "submodules": false,
-      "revision": "cdf00c5f4ac8161d3ec66bfcb8af140b30b42c6a",
-      "url": "https://github.com/sudo-tee/opencode.nvim/archive/cdf00c5f4ac8161d3ec66bfcb8af140b30b42c6a.tar.gz",
-      "hash": "sha256-2RWyh9ep+VGqjIAax+TvnF57JhzDqHgzNRBXLxkoi6M="
-    },
     "pi-lsp": {
       "type": "GitRelease",
       "repository": {

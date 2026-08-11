@@ -6,9 +6,9 @@
     includes = [ { homeManager.imports = [ inputs.sops-nix.homeManagerModules.sops ]; } ];
 
     homeManager =
-      { pkgs, home, ... }:
+      { pkgs, config, ... }:
       let
-        sshPrivateKey = "${home.homeDirectory}/.ssh/${home.username}";
+        sshPrivateKey = "${config.home.homeDirectory}/.ssh/${config.home.username}";
       in
       {
         sops = {

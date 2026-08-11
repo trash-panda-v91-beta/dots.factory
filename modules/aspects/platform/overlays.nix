@@ -9,15 +9,17 @@ in
     darwin = {
       home-manager.useGlobalPkgs = true;
 
-      nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-        "1password"
-        "1password-cli"
-        "claude-code"
-        "obsidian"
-      ];
+      nixpkgs.config.allowUnfreePredicate =
+        pkg:
+        builtins.elem (lib.getName pkg) [
+          "1password"
+          "1password-cli"
+          "claude-code"
+          "obsidian"
+        ];
 
       nixpkgs.overlays = [
-        (final: prev: {
+        (_final: prev: {
           # herdr's source build vendors libghostty-vt which needs xcrun; use
           # upstream release binary on darwin.
           herdr-splits = prev.callPackage "${pkgsDir}/herdr-splits" { };
@@ -64,7 +66,7 @@ in
             obsidian-tasknotes-plugin = prev.callPackage "${pkgsDir}/obsidian-tasknotes-plugin" {
               inherit inputs;
             };
-pi-lsp = prev.callPackage "${pkgsDir}/pi-lsp" { inherit inputs; };
+            pi-lsp = prev.callPackage "${pkgsDir}/pi-lsp" { inherit inputs; };
             ponytail-pi = prev.callPackage "${pkgsDir}/ponytail-pi" { inherit inputs; };
             pi-mcp-adapter = prev.callPackage "${pkgsDir}/pi-mcp-adapter" { inherit inputs; };
             pi-web-access = prev.callPackage "${pkgsDir}/pi-web-access" { inherit inputs; };
