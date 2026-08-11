@@ -25,9 +25,15 @@ for pkg in "${pkgs[@]}"; do
 
   # On hash mismatch nix prints "got: sha256-<new>".
   log=$(nix build --impure --no-link --expr "
-    let f = builtins.getFlake (toString ./.);
-        pkgs = f.inputs.nixpkgs.legacyPackages.aarch64-darwin;
-    in pkgs.callPackage ./packages/$pkg { inputs = f.inputs; }
+    let
+      f = builtins.getFlake (toString ./.);
+      npinsSources = import ./npins;
+      pinNames = builtins.filter (n: n != \"__functor\") (builtins.attrNames npinsSources);
+      asFlakeInput = src: src // { shortRev = builtins.substring 0 7 (src.revision or src.rev or \"0000000\"); };
+      npinsAsInputs = builtins.listToAttrs (map (n: { name = n; value = asFlakeInput npinsSources.\${n}; }) pinNames);
+      inputs = f.inputs // npinsAsInputs;
+      pkgs = f.inputs.nixpkgs.legacyPackages.aarch64-darwin;
+    in pkgs.callPackage ./packages/$pkg { inherit inputs; }
   " 2>&1 || true)
 
   new=$(echo "$log" | sed -n 's/.*got: *\(sha256-[^ ]*\).*/\1/p' | head -1)
