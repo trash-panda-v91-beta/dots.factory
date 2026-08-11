@@ -14,7 +14,7 @@ name: weekly deps bump
 
 on:
   schedule:
-    - cron: "0 6 * * 1"   # Monday 06:00 UTC
+    - cron: "0 6 * * 1" # Monday 06:00 UTC
   workflow_dispatch:
 
 permissions: {}
@@ -58,13 +58,7 @@ jobs:
       - name: Verify build
         env:
           GH_TOKEN: ${{ secrets.VAULT_READ_TOKEN }}
-        run: |
-          nix shell \
-            nixpkgs#nixfmt-rfc-style \
-            nixpkgs#deadnix \
-            nixpkgs#shfmt \
-            nixpkgs#shellcheck \
-            --command mise run check
+        run: mise run check
 
       - uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
         with:
