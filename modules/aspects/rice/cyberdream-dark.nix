@@ -558,8 +558,7 @@ in
           ];
         };
 
-        programs.vicinae = {
-          themes.cyberdream = {
+        programs.vicinae.themes.cyberdream = {
             meta = {
               description = "Cyberdream theme for vicinae";
               inherits = "vicinae-dark";
@@ -583,7 +582,8 @@ in
             colors.text.links = { default = "#5ea1ff"; visited = "#ff5ea0"; };
             colors.text.selection = { background = "#5ea1ff"; foreground = "#ffffff"; };
           };
-        };
+
+        vicinae.extraSettings.theme.dark.name = "Cyberdream";
 
         programs.herdr.settings.theme = {
           name = "terminal";
