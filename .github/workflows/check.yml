@@ -1,6 +1,6 @@
 ---
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
-name: CI
+name: check
 
 on:
   push:
@@ -9,16 +9,25 @@ on:
   pull_request:
   workflow_dispatch:
 
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
   check:
-    name: Check
+    name: lint and build (macOS)
     runs-on: macos-latest
+    timeout-minutes: 45
     permissions:
-      actions: write
+      actions: write # cache-nix-action purges old caches
       contents: read
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Install mise
         uses: jdx/mise-action@dba19683ed58901619b14f395a24841710cb4925 # v4
