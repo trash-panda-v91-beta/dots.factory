@@ -52,4 +52,10 @@ jobs:
       - name: Run checks
         env:
           GH_TOKEN: ${{ secrets.VAULT_READ_TOKEN }}
-        run: mise run check
+        run: |
+          nix shell \
+            nixpkgs#nixfmt-rfc-style \
+            nixpkgs#deadnix \
+            nixpkgs#shfmt \
+            nixpkgs#shellcheck \
+            --command mise run check
