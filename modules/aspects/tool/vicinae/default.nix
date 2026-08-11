@@ -15,6 +15,11 @@
               default = {};
               description = "Extra provider entries merged into vicinae settings.json.";
             };
+            options.vicinae.extraSettings = lib.mkOption {
+              type = lib.types.attrsOf lib.types.anything;
+              default = {};
+              description = "Extra top-level settings merged into vicinae settings.json.";
+            };
           })
         ];
       }
@@ -59,8 +64,6 @@
             normal.family = "JetBrains Mono";
           };
           launcher_window.material = "liquid_glass";
-          # TODO: move to rice/cyberdream-dark.nix once programs.vicinae.settings works on darwin
-          theme.dark.name = "Cyberdream";
           providers = {
             clipboard.entrypoints.history.shortcut = "super+control+alt+shift+Y";
             "@trash-panda-v91-beta/herdr".entrypoints.workspaces.shortcut = "super+control+alt+shift+H";
@@ -75,7 +78,7 @@
               cliPath = "${config.home.homeDirectory}/.nix-profile/bin/op";
             };
           } // config.vicinae.extraProviders;
-        };
+        } // config.vicinae.extraSettings;
       in
       {
         programs.vicinae = {
