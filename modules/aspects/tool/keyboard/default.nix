@@ -50,6 +50,7 @@
             extraDefCfg = ''
               process-unmapped-keys yes
               windows-altgr cancel-lctl-press
+              macos-continue-if-no-devs-found yes
             '';
           };
         };

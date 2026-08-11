@@ -45,6 +45,10 @@ are present. Replace any that appear with `-`.
 - Explain risky file edits and destructive commands before executing.
 - Write simply. Avoid AI-slop language - no flowery adjectives, unnecessary adverbs, or overly
   formal phrasing.
+- Jira and Obsidian content (issue descriptions, comments, ADR/CONTEXT bodies, task notes) must be
+  brief and human. Write like a dev leaving a note for a teammate: plain sentences, active voice,
+  no AI preamble ("This ticket tracks...", "The purpose of this document..."), no bullet-point
+  explosion for things that fit in two lines. Short is better than padded.
 - Code comments: be brief, no AI slop, and really think if they're needed. Avoid them when
   possible - variable, function, and class names should say what they do. Prefer a clearer name
   or a smaller function over a comment. Only add a comment when it explains *why* (intent,
