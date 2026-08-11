@@ -1,6 +1,5 @@
 {
-  den,
-  lib,
+  # deadnix: skip
   __findFile,
   ...
 }:
@@ -33,10 +32,20 @@
   # otherwise try to evaluate perSystem for x86_64-darwin and fail.
   systems = [ "aarch64-darwin" ];
 
-  # Formatters for nix fmt
+  # Formatters for nix fmt, plus a devShell with the Nix-ecosystem
+  # linter binaries that don't ship prebuilt macos-arm64 releases
+  # (nixfmt, deadnix). Everything else (shellcheck, shfmt, hk, ...)
+  # comes from mise. `nix develop -c hk check` combines both.
   perSystem =
-    { pkgs, system, ... }:
+    { pkgs, ... }:
     {
-      formatter = pkgs.nixfmt-rfc-style;
+      formatter = pkgs.nixfmt;
+
+      devShells.default = pkgs.mkShellNoCC {
+        packages = [
+          pkgs.nixfmt
+          pkgs.deadnix
+        ];
+      };
     };
 }
