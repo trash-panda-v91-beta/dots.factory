@@ -64,10 +64,10 @@ const STATUS_COLOR: Record<AgentStatus, Color> = {
 
 const STATUS_ICON: Record<AgentStatus, Icon> = {
   working: Icon.CircleProgress,
-  blocked: Icon.ExclamationMark,
+  blocked: Icon.Exclamationmark,
   idle:    Icon.CheckCircle,
   done:    Icon.CheckCircle,
-  unknown: Icon.QuestionMark,
+  unknown: Icon.QuestionMarkCircle,
 };
 
 const FILTERS: { value: Filter; label: string }[] = [
@@ -267,9 +267,9 @@ export default function Workspaces() {
                 )}
 
                 <ActionPanel.Section title="Filter">
-                  <Action title="Show All" icon={Icon.List}           shortcut={{ modifiers: ["opt"], key: "a" }} onAction={() => setFilter("all")} />
+                  <Action title="Show All" icon={Icon.CheckList}        shortcut={{ modifiers: ["opt"], key: "a" }} onAction={() => setFilter("all")} />
                   <Action title="Working"  icon={Icon.CircleProgress}  shortcut={{ modifiers: ["opt"], key: "w" }} onAction={() => toggleFilter("working")} />
-                  <Action title="Blocked"  icon={Icon.ExclamationMark} shortcut={{ modifiers: ["opt"], key: "b" }} onAction={() => toggleFilter("blocked")} />
+                  <Action title="Blocked"  icon={Icon.Exclamationmark} shortcut={{ modifiers: ["opt"], key: "b" }} onAction={() => toggleFilter("blocked")} />
                   <Action title="Idle"     icon={Icon.CheckCircle}     shortcut={{ modifiers: ["opt"], key: "i" }} onAction={() => toggleFilter("idle")} />
                   <Action title="Done"     icon={Icon.CheckCircle}     shortcut={{ modifiers: ["opt"], key: "e" }} onAction={() => toggleFilter("done")} />
                 </ActionPanel.Section>

@@ -35,7 +35,10 @@ export default function NewWorktree() {
         <ActionPanel>
           <Action.SubmitForm
             title="Create Worktree"
-            onSubmit={async ({ repo, branch, base }: { repo: string; branch: string; base: string }) => {
+            onSubmit={async (values) => {
+              const repo = String(values.repo ?? "");
+              const branch = String(values.branch ?? "");
+              const base = String(values.base ?? "");
               const baseBranch = base.trim() || "main";
               fetchMain(repo, baseBranch);
               try {
