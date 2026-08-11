@@ -61,12 +61,18 @@ in
                 "${piWebAccess}/skills"
                 "${context7Pi}/skills"
                 "${ponytailPi}/skills"
-              ]
-              ++ map (name: toString (skillsDir + "/${name}.md")) skillNames;
+                "${config.programs.pi-coding-agent.configDir}/ai-skills"
+              ];
             };
           };
 
           # pi-mcp-adapter reads ~/.pi/agent/mcp.json at runtime.
+          # Stable symlink to the live skills dir - avoids baking a store hash
+          # into settings.json that goes stale after every switch.
+          home.file."${config.programs.pi-coding-agent.configDir}/ai-skills".source =
+            config.lib.file.mkOutOfStoreSymlink
+              "${config.home.homeDirectory}/repos/github.com/trash-panda-v91-beta/dots.factory/modules/aspects/tool/ai/skills";
+
           # litellm is PMB-only; written from pmb.nix.
           home.file."${config.programs.pi-coding-agent.configDir}/mcp.json".text =
             builtins.toJSON { mcpServers = {}; };
