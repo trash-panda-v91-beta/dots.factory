@@ -1,6 +1,6 @@
 ---
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
-name: CodeQL
+name: codeql
 
 on:
   workflow_dispatch:
@@ -13,13 +13,17 @@ on:
   schedule:
     - cron: "30 6 * * *"
 
-permissions:
-  contents: read
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   analyze:
-    name: Analyze (${{ matrix.language }})
+    name: analyze ${{ matrix.language }}
     runs-on: ubuntu-latest
+    timeout-minutes: 30
 
     permissions:
       security-events: write

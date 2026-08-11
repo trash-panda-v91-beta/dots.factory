@@ -45,7 +45,7 @@ Why the split: real flakes live as flake inputs so nixpkgs' Nix ecosystem toolin
 - `npins update` -> `update-obsidian.sh` -> `refresh-pi-hashes.sh` -> `mise run check`
 - Opens a PR on branch `deps/weekly-npins`
 
-**CI (`ci.yml`)** runs on every PR (Renovate's, deps-update's, or manual):
+**Check (`check.yml`)** runs on every PR (Renovate's, deps-update's, or manual):
 - `mise run check` on macos-latest catches stale FOD hashes and broken
   builds before merge - if you land a Renovate PR that touches nixpkgs
   and bun's version drifted, the pi-* FOD hash mismatch will fail check.
