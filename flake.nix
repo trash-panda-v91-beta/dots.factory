@@ -52,10 +52,6 @@
       url = "github:homebrew/homebrew-cask";
       flake = false;
     };
-    neved4-tap = {
-      url = "github:neved4/homebrew-tap";
-      flake = false;
-    };
 
     vicinae.url = "github:vicinaehq/vicinae";
 

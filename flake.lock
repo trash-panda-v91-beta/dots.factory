@@ -221,22 +221,6 @@
         "type": "github"
       }
     },
-    "neved4-tap": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1785727283,
-        "narHash": "sha256-hLLwJ4TizqpWvgE+EBsWqmFe1SLvKc075sGRCwmrgD4=",
-        "owner": "neved4",
-        "repo": "homebrew-tap",
-        "rev": "c647a31b37e3e582c80996828344e1faa7b4d94e",
-        "type": "github"
-      },
-      "original": {
-        "owner": "neved4",
-        "repo": "homebrew-tap",
-        "type": "github"
-      }
-    },
     "nix-homebrew": {
       "inputs": {
         "brew-src": [
@@ -407,7 +391,6 @@
         "homebrew-core": "homebrew-core",
         "hunk": "hunk",
         "import-tree": "import-tree_2",
-        "neved4-tap": "neved4-tap",
         "nix-homebrew": "nix-homebrew",
         "nixpkgs": "nixpkgs",
         "nixpkgs-master": "nixpkgs-master",
