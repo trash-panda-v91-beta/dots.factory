@@ -66,7 +66,10 @@
           launcher_window.material = "liquid_glass";
           providers = {
             clipboard.entrypoints.history.shortcut = "super+control+alt+shift+Y";
-            "@trash-panda-v91-beta/herdr".entrypoints.workspaces.shortcut = "super+control+alt+shift+H";
+            "@trash-panda-v91-beta/herdr".entrypoints = {
+              workspaces.shortcut = "super+control+alt+shift+H";
+              open-k9s.shortcut = "alt+K";
+            };
             "@trash-panda-v91-beta/misdr".entrypoints.tasks.shortcut = "super+control+alt+shift+M";
             "@khasbilegt/store.raycast.1password".preferences = {
               version = "v8";
