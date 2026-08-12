@@ -7,6 +7,7 @@
       <dots/tool/window-manager>
       <dots/tool/vicinae>
       <dots/tool/keyboard>
+      <dots/tool/iamb>
     ];
   };
 }
