@@ -40,9 +40,17 @@ export interface WorkspaceCreated {
   };
 }
 
+export interface TabInfo {
+  tab_id: string;
+  workspace_id: string;
+  label: string;
+  focused: boolean;
+}
+
 export interface WorkspaceList  { result: { workspaces: WorkspaceInfo[] } }
 export interface PaneList       { result: { panes: PaneInfo[] } }
 export interface WorktreeList   { result: { worktrees: WorktreeInfo[] } }
+export interface TabList        { result: { tabs: TabInfo[] } }
 
 function expandTilde(p: string): string {
   return p.replace(/^~/, process.env.HOME ?? "");
