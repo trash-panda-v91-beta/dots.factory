@@ -70,10 +70,6 @@ in
           # Skills live in ~/.pi/agent/skills (copied from the repo tree).
           home.file."${config.programs.pi-coding-agent.configDir}/skills".source = skillsDir;
 
-          home.file."${config.programs.pi-coding-agent.configDir}/web-search.json".text = builtins.toJSON {
-            workflow = "none";
-          };
-
           # litellm is PMB-only; overwritten from pmb.nix. pi-mcp-adapter reads
           # ~/.pi/agent/mcp.json at runtime.
           home.file."${config.programs.pi-coding-agent.configDir}/mcp.json".text = builtins.toJSON {
