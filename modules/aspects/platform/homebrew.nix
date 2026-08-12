@@ -13,7 +13,7 @@
           "homebrew/homebrew-cask" = inputs.homebrew-cask;
         }
         // lib.optionalAttrs (host.name == "pmb") {
-          "neved4/tap" = inputs.neved4-tap;
+          "neved4/homebrew-tap" = inputs.neved4-tap;
         };
       in
       {
@@ -22,6 +22,7 @@
           mutableTaps = false;
           user = config.system.primaryUser;
           taps = nixHomebrewTaps;
+          trust.taps = lib.optionals (host.name == "pmb") [ "neved4/tap" ];
         };
         homebrew = {
           enable = true;
