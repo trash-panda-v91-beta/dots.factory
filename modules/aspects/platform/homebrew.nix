@@ -11,6 +11,9 @@
         nixHomebrewTaps = {
           "homebrew/homebrew-core" = inputs.homebrew-core;
           "homebrew/homebrew-cask" = inputs.homebrew-cask;
+        }
+        // lib.optionalAttrs (host.name == "pmb") {
+          "neved4/tap" = inputs.neved4-tap;
         };
       in
       {
@@ -29,6 +32,7 @@
             upgrade = true;
           };
           taps = builtins.attrNames nixHomebrewTaps;
+          casks = lib.optionals (host.name == "pmb") [ "cinny" ];
         };
       };
   };
