@@ -6,7 +6,10 @@
     homeManager = { pkgs, ... }: {
       programs.iamb = {
         enable = true;
-        settings.default_profile = "personal";
+        settings = {
+          default_profile = "personal";
+          profiles.personal.user_id = "@petr:nebular-grid.space";
+        };
       };
     };
   };
