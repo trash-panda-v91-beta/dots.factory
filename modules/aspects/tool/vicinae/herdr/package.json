@@ -26,6 +26,13 @@
       "mode": "view"
     },
     {
+      "name": "open-k9s",
+      "title": "Open k9s",
+      "subtitle": "Herdr",
+      "description": "Open a new tab running k9s in the current workspace directory",
+      "mode": "no-view"
+    },
+    {
       "name": "sync-main",
       "title": "Sync Main",
       "subtitle": "Herdr",
