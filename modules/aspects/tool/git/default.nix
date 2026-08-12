@@ -115,7 +115,7 @@
                 {
                   key = "d";
                   name = "codediff";
-                  command = "cd {{.RepoPath}} && nvim -c \"CodeDiff {{.BaseRefName}}...\"";
+                  command = "cd {{.RepoPath}} && nvim -c \"CodeDiff {{.BaseRefName}}\"";
                 }
                 {
                   key = "D";
