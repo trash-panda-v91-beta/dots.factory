@@ -72,9 +72,9 @@ in
 
           # litellm is PMB-only; overwritten from pmb.nix. pi-mcp-adapter reads
           # ~/.pi/agent/mcp.json at runtime.
-          home.file."${config.programs.pi-coding-agent.configDir}/mcp.json".text = builtins.toJSON {
+          home.file."${config.programs.pi-coding-agent.configDir}/mcp.json".text = lib.mkDefault (builtins.toJSON {
             mcpServers = { };
-          };
+          });
 
           programs.mcp.enable = true;
 
