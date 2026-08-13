@@ -49,9 +49,55 @@ For each bot comment:
 
 For each comment you apply: make the fix, note what you changed.
 
-For each comment you skip: be ready to explain why in one sentence if asked. You do not need to reply to every comment - that creates noise.
+For each comment you skip: be ready to explain why in one sentence if asked. You don't need to reply to every comment, but replying is worth it when the thread carries a real question or when your "rejecting because..." reasoning will be useful to a future reader.
 
-### 5. Push
+### 5. Reply and resolve (GitHub Enterprise)
+
+`gh pr comment` posts a top-level comment, not a reply on a review thread. For inline replies, hit the API directly. On GitHub Enterprise Server the PR number MUST be in the path - `repos/{owner}/{repo}/pulls/comments/{id}/replies` (no PR number) returns 404 on GHES 3.19.
+
+**Reply to one comment:**
+
+```bash
+gh api "repos/{owner}/{repo}/pulls/{pr}/comments/{comment_id}/replies" \
+  -f body="Fixed in abc1234."
+```
+
+**Reply to a batch** (e.g. answering every bot flag on one review):
+
+```bash
+reply() {
+  gh api "repos/{owner}/{repo}/pulls/{pr}/comments/$1/replies" \
+    -f body="$2" --jq '.id // .message'
+}
+reply 12345 'Removed in abc1234.'
+reply 67890 'Fixed in abc1234 - added a unit test for the multi-package case.'
+```
+
+**Resolve the thread.** Replies do not resolve the thread; it stays open until you resolve it explicitly. REST doesn't cover this - use GraphQL. Two calls: one to find the thread ID for the comment you just replied to (`databaseId` on the GraphQL comment matches the REST comment `id`), one to resolve it.
+
+```bash
+# List threads with their comment databaseIds:
+gh api graphql -f query='
+  query($owner:String!,$repo:String!,$pr:Int!){
+    repository(owner:$owner,name:$repo){
+      pullRequest(number:$pr){
+        reviewThreads(first:100){
+          nodes{ id isResolved comments(first:1){nodes{databaseId}} }
+        }
+      }
+    }
+  }' -F owner={owner} -F repo={repo} -F pr={pr}
+
+# Resolve one:
+gh api graphql -f query='
+  mutation($id:ID!){
+    resolveReviewThread(input:{threadId:$id}){ thread{ isResolved } }
+  }' -f id="<threadId>"
+```
+
+Reply first, resolve second. A resolved thread with no reply is fine for pure nits you're skipping silently; a reply + resolve is the right shape when you're rejecting a bot flag and want the reasoning captured.
+
+### 6. Push
 
 ```bash
 git add <files> && git commit -m "fix: address PR review comments" && git push
