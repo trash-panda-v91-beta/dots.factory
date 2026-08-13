@@ -33,7 +33,8 @@
             "${pkgs.local.pi-neuralwatt}/sub-bar-integration.js"
           ];
 
-          home.file."${config.programs.pi-coding-agent.configDir}/web-search.json".text =
+          # pi-web-access reads its config from ~/.pi/web-search.json (not configDir).
+          home.file.".pi/web-search.json".text =
             builtins.toJSON {
               workflow = "none";
               searxngBaseUrl = "https://search.nebular-grid.space";
