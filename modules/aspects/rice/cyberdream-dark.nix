@@ -350,6 +350,10 @@ in
         programs.pi-coding-agent.settings.theme = lib.mkForce "cyberdream";
         home.file."${config.programs.pi-coding-agent.configDir}/themes/cyberdream.json".source =
           riceDir + "/programs/pi/cyberdream.json";
+        home.file."${config.programs.pi-coding-agent.configDir}/themes/cyberdream-light.json".source =
+          riceDir + "/programs/pi/cyberdream-light.json";
+        home.file."${config.programs.pi-coding-agent.configDir}/themes/cyberdream-muted.json".source =
+          riceDir + "/programs/pi/cyberdream-muted.json";
 
         programs.yazi.theme = {
           manager = {
