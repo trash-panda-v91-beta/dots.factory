@@ -35,6 +35,7 @@
 
           home.file."${config.programs.pi-coding-agent.configDir}/web-search.json".text =
             builtins.toJSON {
+              workflow = "none";
               searxngBaseUrl = "https://search.nebular-grid.space";
               searchRouting = {
                 providers = [ "searxng" "exa" "openai" ];
