@@ -7,3 +7,7 @@ gitsigns
 kanata
 kbd
 nixvim
+nushell
+perSystem
+sessionVariables
+treefmt
