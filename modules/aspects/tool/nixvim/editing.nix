@@ -140,12 +140,39 @@
       };
 
       # Mini modules
-      mini-ai.enable = true;
+      mini-ai = {
+        enable = true;
+        settings = {
+          search_method = "cover";
+          custom_textobjects.__raw = ''
+            {
+              B = MiniExtra.gen_ai_spec.buffer(),
+              F = require('mini.ai').gen_spec.treesitter({ a = '@function.outer', i = '@function.inner' }),
+            }
+          '';
+        };
+      };
+
       mini-icons = {
         enable = true;
         mockDevIcons = true;
+        settings = {
+          use_file_extension.__raw = ''
+            function(ext, _)
+              local ext3 = { scm = true, txt = true, yml = true }
+              local ext4 = { json = true, yaml = true }
+              return not (ext3[ext:sub(-3)] or ext4[ext:sub(-4)])
+            end
+          '';
+        };
+        luaConfig.post = ''
+          MiniIcons.tweak_lsp_kind()
+        '';
       };
-      mini-surround.enable = true;
+
+      # Statusline + tabline (replaces lualine)
+      mini-statusline.enable = true;
+      mini-tabline.enable = true;
 
       # Completion (replaces blink-cmp)
       mini-completion = {
@@ -154,14 +181,33 @@
           delay.completion = 100;
           lsp_completion = {
             source_func = "omnifunc";
-            auto_setup = true;
+            auto_setup = false;
+            process_items.__raw = ''
+              function(items, base)
+                local opts = { kind_priority = { Text = -1, Snippet = 99 } }
+                return MiniCompletion.default_process_items(items, base, opts)
+              end
+            '';
           };
           window = {
             info.border = "single";
             signature.border = "single";
           };
         };
+        luaConfig.post = ''
+          -- Set omnifunc via LspAttach (matches MiniMax pattern)
+          vim.api.nvim_create_autocmd('LspAttach', {
+            callback = function(ev)
+              vim.bo[ev.buf].omnifunc = 'v:lua.MiniCompletion.completefunc_lsp'
+            end,
+          })
+          -- Advertise completion capabilities to LSP servers
+          vim.lsp.config('*', { capabilities = MiniCompletion.get_lsp_capabilities() })
+        '';
       };
+
+      # Tab / Shift-Tab / CR / BS for pmenu navigation with mini.completion
+      # (mini.keymap not exposed as individual nixvim plugin - use bundle)
 
       # Notifications (replaces snacks.notifier)
       mini-notify = {
@@ -170,15 +216,91 @@
           lsp_progress.enable = true;
           window.config.border = "single";
         };
-        # Route vim.notify through mini.notify
         luaConfig.post = ''vim.notify = MiniNotify.make_notify()'';
       };
 
       # Buffer deletion keeping window layout (replaces snacks.bufdelete)
       mini-bufremove.enable = true;
 
-      # Highlight word under cursor (replaces snacks.words)
+      # Highlight word under cursor
       mini-cursorword.enable = true;
+
+      # Autopairs (also in cmdline)
+      mini-pairs = {
+        enable = true;
+        settings.modes.command = true;
+      };
+
+      # Extra options + <C-hjkl> window nav + \-toggles
+      mini-basics = {
+        enable = true;
+        settings = {
+          options.basic = false;
+          mappings = {
+            windows = true;
+            move_with_alt = true;
+          };
+        };
+      };
+
+      # gc / gcc commenting
+      mini-comment.enable = true;
+
+      # Motion
+      mini-jump.enable = true;
+      mini-jump2d.enable = true;
+
+      # <M-hjkl> to move lines/selections
+      mini-move.enable = true;
+
+      # gr replace, gx exchange, gs sort, gm multiply, g= evaluate
+      mini-operators = {
+        enable = true;
+        luaConfig.post = ''
+          -- Swap adjacent function arguments (relies on mini.ai's `a` textobject)
+          vim.keymap.set('n', '(', 'gxiagxila', { remap = true, desc = 'Swap arg left' })
+          vim.keymap.set('n', ')', 'gxiagxina', { remap = true, desc = 'Swap arg right' })
+        '';
+      };
+
+      mini-align.enable = true;
+      mini-bracketed.enable = true;
+      mini-splitjoin.enable = true;
+      mini-trailspace.enable = true;
+
+      # TODO/FIXME/NOTE/HACK + hex colour highlighting
+      mini-hipatterns = {
+        enable = true;
+        settings.highlighters.__raw = ''
+          {
+            fixme = MiniExtra.gen_highlighter.words({ 'FIXME', 'Fixme', 'fixme' }, 'MiniHipatternsFixme'),
+            hack  = MiniExtra.gen_highlighter.words({ 'HACK', 'Hack', 'hack' }, 'MiniHipatternsHack'),
+            todo  = MiniExtra.gen_highlighter.words({ 'TODO', 'Todo', 'todo' }, 'MiniHipatternsTodo'),
+            note  = MiniExtra.gen_highlighter.words({ 'NOTE', 'Note', 'note' }, 'MiniHipatternsNote'),
+            hex_color = require('mini.hipatterns').gen_highlighter.hex_color(),
+          }
+        '';
+      };
+
+      # Cmdline autocomplete + autocorrect - via mini.modules bundle below
+
+      # vim.ui.input replacement - via mini.modules bundle below
+
+      # Auto root + restore cursor + terminal bg sync
+      mini-misc = {
+        enable = true;
+        luaConfig.post = ''
+          MiniMisc.setup_auto_root()
+          MiniMisc.setup_restore_cursor()
+          MiniMisc.setup_termbg_sync()
+        '';
+      };
+
+      # Frecency (visits picker via mini.extra)
+      mini-visits.enable = true;
+
+      # Session management
+      mini-sessions.enable = true;
 
       # Which-key replacement
       mini-clue = {
@@ -190,21 +312,27 @@
             { mode = "x"; keys = "<Leader>"; }
             { mode = "n"; keys = "<LocalLeader>"; }
             { mode = "x"; keys = "<LocalLeader>"; }
+            { mode = "n"; keys = "\\"; }
+            { mode = "n"; keys = "["; }
+            { mode = "x"; keys = "["; }
+            { mode = "n"; keys = "]"; }
+            { mode = "x"; keys = "]"; }
+            { mode = "i"; keys = "<C-x>"; }
             { mode = "n"; keys = "g"; }
             { mode = "x"; keys = "g"; }
             { mode = "n"; keys = "'"; }
-            { mode = "n"; keys = "`"; }
             { mode = "x"; keys = "'"; }
+            { mode = "n"; keys = "`"; }
             { mode = "x"; keys = "`"; }
             { mode = "n"; keys = "\""; }
             { mode = "x"; keys = "\""; }
             { mode = "i"; keys = "<C-r>"; }
             { mode = "c"; keys = "<C-r>"; }
             { mode = "n"; keys = "<C-w>"; }
+            { mode = "n"; keys = "s"; }
+            { mode = "x"; keys = "s"; }
             { mode = "n"; keys = "z"; }
             { mode = "x"; keys = "z"; }
-            { mode = "n"; keys = "["; }
-            { mode = "n"; keys = "]"; }
           ];
           clues.__raw = ''
             {
@@ -212,7 +340,8 @@
               require('mini.clue').gen_clues.g(),
               require('mini.clue').gen_clues.marks(),
               require('mini.clue').gen_clues.registers(),
-              require('mini.clue').gen_clues.windows(),
+              require('mini.clue').gen_clues.square_brackets(),
+              require('mini.clue').gen_clues.windows({ submode_resize = true }),
               require('mini.clue').gen_clues.z(),
               { mode = 'n', keys = '<Leader>b', desc = '+Buffers' },
               { mode = 'n', keys = '<Leader>c', desc = '+Code' },
@@ -246,8 +375,21 @@
         modules = {
           indentscope = { };
           snippets.snippets.__unkeyed-2.__raw = ''require("mini.snippets").gen_loader.from_lang()'';
+          # Newer modules without individual nixvim plugin options
+          cmdline = { };
+          input = { };
+          keymap = { };
         };
+        luaConfig.post = ''
+          -- mini.keymap: Tab/S-Tab/CR/BS for pmenu (mini.completion UX)
+          MiniKeymap.map_multistep('i', '<Tab>',   { 'pmenu_next' })
+          MiniKeymap.map_multistep('i', '<S-Tab>', { 'pmenu_prev' })
+          MiniKeymap.map_multistep('i', '<CR>',    { 'pmenu_accept', 'minipairs_cr' })
+          MiniKeymap.map_multistep('i', '<BS>',    { 'minipairs_bs' })
+        '';
       };
+
+      mini-surround.enable = true;
 
       # Render markdown (obsidian, octo)
       render-markdown = {
