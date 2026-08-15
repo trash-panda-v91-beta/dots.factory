@@ -32,10 +32,10 @@
             severity_sort = true;
             signs = {
               text = {
-                "__rawKey__vim.diagnostic.severity.ERROR" = "";
-                "__rawKey__vim.diagnostic.severity.WARN" = "";
-                "__rawKey__vim.diagnostic.severity.HINT" = "󰌵";
-                "__rawKey__vim.diagnostic.severity.INFO" = "";
+                "__rawKey__vim.diagnostic.severity.ERROR" = "✕";
+                "__rawKey__vim.diagnostic.severity.WARN" = "⚠";
+                "__rawKey__vim.diagnostic.severity.HINT" = "◦";
+                "__rawKey__vim.diagnostic.severity.INFO" = "◇";
               };
               texthl = {
                 "__rawKey__vim.diagnostic.severity.ERROR" = "DiagnosticError";
@@ -94,12 +94,17 @@
             conceallevel = 2;
             cursorline = true;
             cursorlineopt = "both";
+            # Mode lives in the cursor (geometry-in-spirit statusline).
+            # Shape + color per mode; highlight groups defined in the active rice.
+            guicursor = "n-o-sm:block-GeometryCursorN,i-ci:ver25-GeometryCursorI,v-ve:block-GeometryCursorV,c:block-GeometryCursorC,r-cr:hor20-GeometryCursorR,t:block-GeometryCursorT";
             foldcolumn = "1";
             foldenable = true;
             foldlevel = 99;
             foldlevelstart = 99;
+            laststatus = 3;
             list = true;
-            listchars = "tab:» ,trail:·,nbsp:␣";
+            listchars = "tab:▸ ,trail:·,nbsp:␣,extends:⋯,precedes:⋯";
+            fillchars = "foldopen:▾,foldclose:▸,fold: ,foldsep: ,diff:╱,eob: ";
             matchtime = 1;
             number = true;
             relativenumber = true;
