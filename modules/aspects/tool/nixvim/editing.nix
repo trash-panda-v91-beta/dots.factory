@@ -146,7 +146,7 @@
           search_method = "cover";
           custom_textobjects.__raw = ''
             {
-              B = MiniExtra.gen_ai_spec.buffer(),
+              B = require('mini.extra').gen_ai_spec.buffer(),
               F = require('mini.ai').gen_spec.treesitter({ a = '@function.outer', i = '@function.inner' }),
             }
           '';
@@ -273,10 +273,10 @@
         enable = true;
         settings.highlighters.__raw = ''
           {
-            fixme = MiniExtra.gen_highlighter.words({ 'FIXME', 'Fixme', 'fixme' }, 'MiniHipatternsFixme'),
-            hack  = MiniExtra.gen_highlighter.words({ 'HACK', 'Hack', 'hack' }, 'MiniHipatternsHack'),
-            todo  = MiniExtra.gen_highlighter.words({ 'TODO', 'Todo', 'todo' }, 'MiniHipatternsTodo'),
-            note  = MiniExtra.gen_highlighter.words({ 'NOTE', 'Note', 'note' }, 'MiniHipatternsNote'),
+            fixme = require('mini.extra').gen_highlighter.words({ 'FIXME', 'Fixme', 'fixme' }, 'MiniHipatternsFixme'),
+            hack  = require('mini.extra').gen_highlighter.words({ 'HACK', 'Hack', 'hack' }, 'MiniHipatternsHack'),
+            todo  = require('mini.extra').gen_highlighter.words({ 'TODO', 'Todo', 'todo' }, 'MiniHipatternsTodo'),
+            note  = require('mini.extra').gen_highlighter.words({ 'NOTE', 'Note', 'note' }, 'MiniHipatternsNote'),
             hex_color = require('mini.hipatterns').gen_highlighter.hex_color(),
           }
         '';
