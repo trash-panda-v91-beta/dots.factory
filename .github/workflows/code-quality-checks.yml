@@ -17,7 +17,7 @@ concurrency:
 
 jobs:
   code-quality:
-    name: code-quality
+    name: Code Quality
     runs-on: macos-latest
     timeout-minutes: 45
     permissions:
@@ -55,7 +55,7 @@ jobs:
         run: mise run check
 
   tests:
-    name: tests
+    name: Run Tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
