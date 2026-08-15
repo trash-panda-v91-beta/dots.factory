@@ -10,88 +10,17 @@
         ];
         plugins.octo = {
           enable = true;
+          lazyLoad.settings = {
+            cmd = [ "Octo" ];
+            ft = "octo";
+          };
           settings = {
             enable_builtin = true;
             default_to_projects_v2 = true;
             default_merge_method = "squash";
-            picker = "snacks";
+            picker.__raw = "'default'";
             picker_config = {
               use_emojis = true;
-              snacks.actions = {
-                # Extra actions available while the PR picker is open.
-                # Default mappings from octo (open browser <C-b>, copy url
-                # <C-y>, copy sha <C-e>, checkout <C-o>, merge <C-r>) stay.
-                pull_requests = [
-                  {
-                    name = "pr_diff";
-                    lhs = "<C-d>";
-                    desc = "show PR diff";
-                    mode = [
-                      "n"
-                      "i"
-                    ];
-                    fn.__raw = ''
-                      function(picker, item)
-                        picker:close()
-                        local repo = item.repository.nameWithOwner
-                        local buf = vim.api.nvim_create_buf(true, true)
-                        vim.bo[buf].filetype = "diff"
-                        vim.api.nvim_buf_set_name(buf, string.format("DIFF: %s#%d", repo, item.number))
-                        vim.api.nvim_set_current_buf(buf)
-                        vim.system(
-                          { "gh", "pr", "diff", tostring(item.number), "--repo", repo },
-                          { text = true },
-                          function(res)
-                            vim.schedule(function()
-                              local lines = vim.split(res.stdout or "", "\n")
-                              vim.bo[buf].modifiable = true
-                              vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
-                              vim.bo[buf].modifiable = false
-                            end)
-                          end
-                        )
-                      end
-                    '';
-                  }
-                  {
-                    name = "pr_approve";
-                    lhs = "<C-a>";
-                    desc = "approve PR";
-                    mode = [
-                      "n"
-                      "i"
-                    ];
-                    fn.__raw = ''
-                      function(_picker, item)
-                        local repo = item.repository.nameWithOwner
-                        require("octo.gh").pr.review({
-                          item.number,
-                          repo = repo,
-                          approve = true,
-                          opts = { cb = function() require("octo.utils").info("Approved #" .. item.number) end },
-                        })
-                      end
-                    '';
-                  }
-                  {
-                    name = "pr_watch_checks";
-                    lhs = "<C-w>";
-                    desc = "watch checks";
-                    mode = [
-                      "n"
-                      "i"
-                    ];
-                    fn.__raw = ''
-                      function(picker, item)
-                        picker:close()
-                        require("snacks").terminal(
-                          { "gh", "pr", "checks", tostring(item.number), "--repo", item.repository.nameWithOwner, "--watch" }
-                        )
-                      end
-                    '';
-                  }
-                ];
-              };
             };
             commands = {
               pr = {
@@ -291,31 +220,17 @@
             options.desc = "Open Octo tab (dedicated PR workspace)";
           }
         ];
-        # Add which-key group for octo buffers
-        autoGroups.octo_which_key.clear = true;
+        # Add clue groups for octo buffers via mini.clue's buffer-scoped triggers.
+        # Custom octo-specific mappings that aren't in octo's builtins.
+        autoGroups.octo_extra_maps.clear = true;
         autoCmd = [
           {
             event = "FileType";
             pattern = "octo";
-            group = "octo_which_key";
+            group = "octo_extra_maps";
             callback.__raw = ''
               function(event)
-                -- Add octo-specific which-key groups
                 local localleader = vim.g.maplocalleader or ' '
-                require('which-key').add({
-                  { localleader .. 'a', group = 'Assignee', buffer = event.buf },
-                  { localleader .. 'c', group = 'Comment', buffer = event.buf },
-                  { localleader .. 'cr', group = 'Reaction', buffer = event.buf },
-                  { localleader .. 'g', group = 'Goto', buffer = event.buf },
-                  { localleader .. 'i', group = 'Issue', buffer = event.buf },
-                  { localleader .. 'l', group = 'Label', buffer = event.buf },
-                  { localleader .. 'm', group = 'Merge', buffer = event.buf },
-                  { localleader .. 'p', group = 'PR', buffer = event.buf },
-                  { localleader .. 'r', group = 'Review', buffer = event.buf },
-                  { localleader .. 'y', group = 'Yank', buffer = event.buf },
-                  { ' ', group = 'PR Quick', buffer = event.buf },
-                })
-
                 -- Custom commands (not in octo builtins)
                 -- Merge: auto-merge
                 vim.keymap.set('n', localleader .. 'ma', '<cmd>Octo pr auto<cr>', {

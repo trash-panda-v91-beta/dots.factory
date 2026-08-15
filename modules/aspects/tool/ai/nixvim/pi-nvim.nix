@@ -143,15 +143,6 @@
           pi_prompt(ctx)
         end, { desc = "Ask pi about selection" })
       '';
-
-      plugins.which-key.settings.spec = [
-        {
-          __unkeyed-1 = "<leader>p";
-          group = "Pi";
-          icon = "🥧";
-          mode = [ "n" "v" ];
-        }
-      ];
     };
   };
 }

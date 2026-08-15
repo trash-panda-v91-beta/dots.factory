@@ -5,6 +5,18 @@
     programs.nixvim = {
       plugins.overseer = {
         enable = true;
+        lazyLoad.settings.cmd = [
+          "OverseerToggle"
+          "OverseerRun"
+          "OverseerRunCmd"
+          "OverseerLoadBundle"
+          "OverseerOpen"
+          "OverseerClose"
+          "OverseerInfo"
+          "OverseerBuild"
+          "OverseerQuickAction"
+          "OverseerTaskAction"
+        ];
         settings.templates = [ "builtin" ];
       };
       keymaps = [

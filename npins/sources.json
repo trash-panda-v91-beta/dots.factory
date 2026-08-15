@@ -121,6 +121,19 @@
       "revision": "0a4dd63ad4541f4f655c4108a295916f3c1d8fda",
       "url": "https://api.github.com/repos/DietrichGebert/ponytail/tarball/refs/tags/v4.9.0",
       "hash": "sha256-8cYggVltBAlZ/Zj4pl1bOu7mQdZFXCmDGW4RSpvRA+w="
+    },
+    "tiny-code-action-nvim": {
+      "type": "Git",
+      "repository": {
+        "type": "GitHub",
+        "owner": "rachartier",
+        "repo": "tiny-code-action.nvim"
+      },
+      "branch": "main",
+      "submodules": false,
+      "revision": "0d040ed81f7953118b81cd12681fcdfcac069803",
+      "url": "https://github.com/rachartier/tiny-code-action.nvim/archive/0d040ed81f7953118b81cd12681fcdfcac069803.tar.gz",
+      "hash": "sha256-UF9zeO5Uujdt2MEwy2d2Lhk6JRnEN4vrEvYslv0/zaA="
     }
   },
   "version": 8
