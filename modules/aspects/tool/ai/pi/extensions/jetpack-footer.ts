@@ -1,72 +1,84 @@
 /**
- * Jetpack-styled pi footer.
+ * Jetpack-styled pi TUI: header, footer, working indicator.
  *
- * Mirrors starship jetpack's grammar on a single line:
- *   ◎ <repo_root> △ <branch>        ⎪↑in ↓out $cost⎥  <model>  HH:MM
+ * Header:  ◎ pi v<ver>
+ * Footer:  repo △ branch          ⎪▴in ▿out ◈cost⎥  provider∷model
  *
- * ◎ .............. jetpack character.success_symbol (bright-yellow bold)
- * <repo_root> ..... jetpack directory.repo_root_style (bold accent)
- * △ <branch> ...... jetpack git_branch.symbol + style (italic accent)
- * ⎪ ... ⎥ ......... jetpack git_status bracket (bold italic accent),
- *                    here wrapping session stats instead of git status details
- * time ............ jetpack time.style (italic dimmed white)
- *
- * Colors go through pi theme tokens so it respects the active theme.
- * Italic is emitted directly (SGR 3 / 23) - pi theme has no italic helper.
+ * One anchor (◎) reserved for the header brand.
+ * One accent hue for the "location" cluster (repo + branch + brackets).
+ * Cost is the only loud colour (error) - money leaving the system.
+ * Provider prefix flows as one dim label into the accent model name.
  */
 
 import type { AssistantMessage } from "@earendil-works/pi-ai";
-import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
+import type { ExtensionAPI, Theme } from "@earendil-works/pi-coding-agent";
+import { VERSION } from "@earendil-works/pi-coding-agent";
 import { truncateToWidth, visibleWidth } from "@earendil-works/pi-tui";
 
 const italic = (s: string) => `\x1b[3m${s}\x1b[23m`;
 
-const fmtCount = (n: number) => (n < 1000 ? `${n}` : `${(n / 1000).toFixed(1)}k`);
+// Chrome margin. Matches pi's `outputPad = 1` so header/footer align with messages.
+const PAD = " ";
 
-const hhmm = () => {
-	const d = new Date();
-	return `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
+// Always show "k" so the width doesn't jitter when a session crosses 1000.
+// 0 -> "0"  ·  843 -> "0.8k"  ·  12345 -> "12k"  ·  123456 -> "123k"
+const fmtTokens = (n: number) => {
+	if (n === 0) return "0";
+	if (n < 1000) return `${(n / 1000).toFixed(1)}k`;
+	if (n < 10_000) return `${(n / 1000).toFixed(1)}k`;
+	return `${Math.round(n / 1000)}k`;
 };
 
-const repoNameFromCwd = () => {
-	const cwd = process.cwd().replace(/\/+$/, "");
-	return cwd.split("/").pop() ?? "";
+// Drop the leading "0" for sub-dollar costs so the eye lands on the digits.
+// 0 -> "0"  ·  0.014 -> ".014"  ·  1.234 -> "1.23"  ·  12.34 -> "12.3"
+const fmtCost = (n: number) => {
+	if (n === 0) return "0";
+	if (n < 1) return `.${Math.round(n * 1000).toString().padStart(3, "0")}`;
+	if (n < 100) return n.toFixed(2);
+	return Math.round(n).toString();
 };
 
-const truncBranch = (b: string | null, max = 40) => {
-	if (!b) return "";
-	return b.length > max ? `${b.slice(0, max)}⋯` : b;
-};
+const repoNameFromCwd = () => process.cwd().replace(/\/+$/, "").split("/").pop() ?? "";
+const truncBranch = (b: string | null, max = 40) =>
+	!b ? "" : b.length > max ? `${b.slice(0, max)}⋯` : b;
 
 export default function (pi: ExtensionAPI) {
+	let footerRepaint: (() => void) | null = null;
+
 	pi.on("session_start", (_event, ctx) => {
-		// Working indicator: jetpack pulse (density ramp).
+		// Working indicator: shape ramp carries the motion, colour stays flat.
 		const frames = ["·", "∘", "◦", "○", "◎", "●", "◎", "○", "◦", "∘"];
 		ctx.ui.setWorkingIndicator({
-			frames: frames.map((f, i) => {
-				const mid = frames.length / 2;
-				const token = Math.abs(i - mid) < 2 ? "accent" : Math.abs(i - mid) < 4 ? "muted" : "dim";
-				return ctx.ui.theme.fg(token, f);
-			}),
+			frames: frames.map((f) => ctx.ui.theme.fg("muted", italic(f))),
 			intervalMs: 100,
 		});
 
-		ctx.ui.setFooter((tui, theme, footerData) => {
+		// Header: ◎ pi v<ver>   (brand only - no keybinding hints, operator mode)
+		ctx.ui.setHeader((_tui, theme: Theme) => ({
+			render(width: number): string[] {
+				const line = [
+					theme.fg("success", theme.bold("◎")),
+					theme.fg("accent", theme.bold("pi")),
+					theme.fg("dim", italic(`v${VERSION}`)),
+				].join("  ");
+				return [truncateToWidth(`${PAD}${line}`, width)];
+			},
+			invalidate() {},
+		}));
+
+		// Footer: repo △ branch          ⎪▴in ▿out ◈cost⎥  provider∷model
+		ctx.ui.setFooter((tui, theme: Theme, footerData) => {
+			footerRepaint = () => tui.requestRender();
 			const unsubBranch = footerData.onBranchChange(() => tui.requestRender());
-			// Live clock: repaint every 30s so time doesn't stale when idle.
-			const tick = setInterval(() => tui.requestRender(), 30_000);
 
 			return {
-				dispose: () => {
+				dispose() {
 					unsubBranch();
-					clearInterval(tick);
+					footerRepaint = null;
 				},
 				invalidate() {},
 				render(width: number): string[] {
-					// Session stats (available to any extension)
-					let input = 0;
-					let output = 0;
-					let cost = 0;
+					let input = 0, output = 0, cost = 0;
 					for (const e of ctx.sessionManager.getBranch()) {
 						if (e.type === "message" && e.message.role === "assistant") {
 							const m = e.message as AssistantMessage;
@@ -78,33 +90,42 @@ export default function (pi: ExtensionAPI) {
 
 					const repo = repoNameFromCwd();
 					const branch = truncBranch(footerData.getGitBranch());
-					const model = ctx.model?.id ?? "no-model";
-					const time = hhmm();
+					const provider = ctx.model?.provider ?? null;
+					const modelName = ctx.model?.id ?? "no-model";
 
-					// --- Left: ◎  repo  △ branch
-					const leftParts: string[] = [
-						theme.fg("success", theme.bold("◎")),
-					];
+					// Left: repo (accent) △ branch (success) - two hues split location vs git state
+					const leftParts: string[] = [];
 					if (repo) leftParts.push(theme.fg("accent", theme.bold(repo)));
-					if (branch) leftParts.push(theme.fg("accent", italic(`△ ${branch}`)));
+					if (branch) {
+						leftParts.push(
+							`${theme.fg("success", theme.bold(italic("△")))} ${theme.fg("success", italic(branch))}`,
+						);
+					}
 					const left = leftParts.join(" ");
 
-					// --- Right: ⎪↑in ↓out $cost⎥  model  HH:MM
-					const bracketL = theme.fg("accent", theme.bold(italic("⎪")));
-					const bracketR = theme.fg("accent", theme.bold(italic("⎥")));
-					const stats = theme.fg(
-						"muted",
-						italic(`↑${fmtCount(input)} ↓${fmtCount(output)} $${cost.toFixed(3)}`),
-					);
-					const statsBlock = `${bracketL}${stats}${bracketR}`;
-					const modelStr = theme.fg("muted", italic(model));
-					const timeStr = theme.fg("dim", italic(time));
-					const right = `${statsBlock}  ${modelStr}  ${timeStr}`;
+					// Right: ⎪ stats ⎥  provider∷model  (brackets dim, cost the only loud hue)
+					const bracketL = theme.fg("dim", italic("⎪"));
+					const bracketR = theme.fg("dim", italic("⎥"));
+					const stats = [
+						theme.fg("accent", italic(`▴${fmtTokens(input)}`)),
+						theme.fg("accent", italic(`▿${fmtTokens(output)}`)),
+						theme.fg("error", italic(`◈${fmtCost(cost)}`)),
+					].join(" ");
+					const modelLabel = provider
+						? `${theme.fg("dim", italic(`${provider}∷`))}${theme.fg("accent", italic(modelName))}`
+						: theme.fg("accent", italic(modelName));
+					const right = `${bracketL}${stats}${bracketR}  ${modelLabel}`;
 
-					const gap = Math.max(1, width - visibleWidth(left) - visibleWidth(right));
-					return [truncateToWidth(left + " ".repeat(gap) + right, width)];
+					const gap = Math.max(1, width - visibleWidth(left) - visibleWidth(right) - PAD.length * 2);
+					return [truncateToWidth(`${PAD}${left}${" ".repeat(gap)}${right}${PAD}`, width)];
 				},
 			};
 		});
+	});
+
+	pi.on("model_select", () => footerRepaint?.());
+
+	pi.on("session_shutdown", () => {
+		footerRepaint = null;
 	});
 }
