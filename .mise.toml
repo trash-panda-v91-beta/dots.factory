@@ -25,13 +25,13 @@ uvx = true
 [tasks.check]
 description = "Run all checks"
 run = [
-  "nix develop -c hk check",
-  "nix build .#darwinConfigurations.pmb.system --dry-run",
+  "hk check",
+  "nix flake check --no-build",
 ]
 
 [tasks.fix]
 description = "Run all fixers and formatters"
-run = "nix develop -c hk fix"
+run = "hk fix"
 
 [tasks.test]
 description = "Run tests (none configured yet)"
