@@ -1,6 +1,6 @@
 ---
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
-name: check
+name: Code Quality Checks
 
 on:
   push:
@@ -16,12 +16,11 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
-  check:
-    name: lint and build (macOS)
+  code-quality:
+    name: Code Quality
     runs-on: macos-latest
     timeout-minutes: 45
     permissions:
-      actions: write # cache-nix-action purges old caches
       contents: read
     steps:
       - name: Checkout
@@ -39,17 +38,22 @@ jobs:
             experimental-features = nix-command flakes
             accept-flake-config = true
 
-      - name: Cache Nix store
-        uses: nix-community/cache-nix-action@7df957e333c1e5da7721f60227dbba6d06080569 # v7
-        with:
-          primary-key: nix-${{ runner.os }}-check-${{ hashFiles('flake.lock', '**/*.nix') }}
-          restore-prefixes-first-match: nix-${{ runner.os }}-check-
-          gc-max-store-size-macos: 5G
-          purge: true
-          purge-prefixes: nix-${{ runner.os }}-check-
-          purge-created: 604800
-
       - name: Run checks
         env:
           GH_TOKEN: ${{ secrets.VAULT_READ_TOKEN }}
         run: mise run check
+
+  tests:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install mise
+        uses: jdx/mise-action@dba19683ed58901619b14f395a24841710cb4925 # v4
+
+      - name: Run tests
+        run: mise run test
