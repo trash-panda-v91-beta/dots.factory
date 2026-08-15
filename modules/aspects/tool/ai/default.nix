@@ -58,6 +58,7 @@ in
                 "${ponytailPi}/index.js"
                 "${piNvim}/extension.ts"
                 "${config.programs.pi-coding-agent.configDir}/extensions/herdr-agent-state.ts"
+                "${config.programs.pi-coding-agent.configDir}/extensions/jetpack-footer.ts"
               ];
               skills = [
                 "${piWebAccess}/skills"
@@ -80,6 +81,9 @@ in
 
           home.file."${config.programs.pi-coding-agent.configDir}/extensions/herdr-agent-state.ts".source =
             pkgs.herdr-src + "/src/integration/assets/pi/herdr-agent-state.ts";
+
+          home.file."${config.programs.pi-coding-agent.configDir}/extensions/jetpack-footer.ts".source =
+            ./pi/extensions/jetpack-footer.ts;
 
           home.file."${config.programs.pi-coding-agent.configDir}/pi-lsp.json".text = builtins.toJSON {
             servers = {
