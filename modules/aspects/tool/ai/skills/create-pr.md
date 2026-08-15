@@ -1,81 +1,112 @@
 ---
 name: create-pr
-description: Create a pull request for the current branch. Use when the user says 'create a PR', 'open a PR', 'make a pull request', or 'create pr'.
+description: >
+  Create a pull request for the current branch. Use when the user says 'create a PR',
+  'open a PR', 'make a pull request', 'create pr', 'raise a PR', 'submit a PR', 'ship
+  this', 'push this up', 'let\'s PR this', or when they otherwise indicate the current
+  work is ready for review. Also use when finishing a branch of work that has commits
+  and no open PR yet.
 ---
 
-Create a PR for the current branch using `gh pr create`.
+Create a PR with `gh pr create`. Write it like a note to a teammate, not like documentation.
 
-## Before opening
-
-### 1. Branch and working tree
+## Before Opening
 
 ```bash
-git branch --show-current      # current branch
-git status --porcelain         # uncommitted changes?
+git branch --show-current
+git status --porcelain
+git log <base>..HEAD --oneline           # what is going in
+gh pr list --head "$(git branch --show-current)"  # already open?
 ```
 
-If on `main` / `master` / `trunk`:
+If on `main` / `master` / `trunk`: cut a feature branch first. Derive the name from the intended
+title (kebab-case, optional conventional-commit prefix). If there are uncommitted changes, ask
+whether to include them - don't silently `git add -A`.
 
-1. Derive a branch name from the intended PR title (kebab-case, conventional-commit
-   prefix optional - e.g. `fix-vault-leak`, `feat-add-aspect`). Ask the user if unsure.
-2. `git checkout -b <branch>`
-3. If there are uncommitted changes, stage and commit them with a conventional-commit
-   message that matches the PR title. Show the user the staged diff first if it's
-   non-trivial.
+Read the diff before writing the body. If a vault note gives you background, use it for your own
+understanding only.
 
-If already on a feature branch with uncommitted changes: ask whether to commit them
-into this PR or leave them out. Don't silently `git add -A`.
+### Privacy Fence (Hard Rule)
 
-### 2. Sanity checks
-
-```bash
-git log main..HEAD --oneline   # commits going in
-gh pr list                     # confirm no open PR for this branch
-```
-
-Read the diff. If there's a vault note for this project, read it for **background
-understanding only**.
-
-### Privacy fence (hard rule)
-
-Vault content - CONTEXT notes, ADRs, scratchpad, ticket notes, any file under
-`$VAULTS_DIR/*` - is local context. It must not appear in the PR title, body, commit
-messages, or any other outbound text. No references to ADR numbers, vault paths,
-"design rationale captured in X ADR", "verification notes in Y", etc. If a reader
-needs the detail, write it directly into the PR body in your own words - never point
-at a path they cannot open.
+Vault content - CONTEXT, ADRs, scratchpad, any file under `$VAULTS_DIR/*` - is local context. Never
+appears in PR title, body, commit messages, or any other outbound text. No ADR numbers, no vault
+paths, no "see ADR NNN". If a reader needs the detail, write it directly into the body in your own
+words.
 
 ## Title
 
-One line, conventional-commit style: `type: what changed`. No period.
+One line, conventional-commit style: `type: what changed`. No period. No AI adverbs.
 
 ## Body
 
-Keep it short. Omit anything obvious from the diff.
+Short. Human. Write like the dev who did the work is telling the reviewer what to look at.
 
-```markdown
-## Changes
+**Do:**
 
-One or two sentences. What changed and why - not how.
+- Two or three sentences of what and why, dropping anything obvious from the diff
+- A short bullet list only when there is real structure worth showing (e.g.
+  `swap :rocket: → :package: in three places` beats a paragraph)
+- Call out anything reviewer-hostile (migration step, temporary hack, known follow-up)
 
-## Notes
+**Don't:**
 
-Optional. Only include if something non-obvious needs calling out
-(migration step, known limitation, follow-up ticket).
-```
-
-Leave out sections that have nothing to say.
+- Open with "This PR…" or "The purpose of this PR is…"
+- Restate the title
+- Explain what the diff already shows
+- Add `## Testing`, `## Screenshots`, `## Checklist` sections when you have nothing to say - leave
+  them out entirely, no "N/A"
+- Adverbs: "carefully", "thoroughly", "properly", "seamlessly", "cleanly"
+- Marketing adjectives: "comprehensive", "robust", "elegant", "cohesive"
+- Restate the emoji/label decisions if they are visible in the diff
 
 ## Style
 
-- Plain language. No flowery adjectives, no unnecessary adverbs.
-- Use `-` (hyphen-minus) not en dashes or em dashes.
-- No "This PR…" opener.
+- Plain language, active voice
+- `-` (hyphen-minus), not `–` or `—`
+- Backticks for code, file paths, identifiers, and any Slack `:emoji:` codes
+- Fenced code blocks for anything longer than one identifier
 
-## Open it
+## Open It
 
 ```bash
 gh pr create --title "<title>" --body "<body>"
 ```
 
-Add `--draft` if it's not ready for review.
+Flags:
+
+- `--draft` when not ready for review
+- `--repo org/repo --head user:branch --base master` when pushing from a fork to upstream
+- `--base <branch>` when the target is not the default branch
+
+## Examples
+
+**Bad (AI-ish, verbose):**
+
+```text
+## Summary
+
+This PR comprehensively refactors the authentication helper to provide a
+more robust and elegant token handling experience. It carefully renames
+the legacy `authenticate()` function across the codebase to `verify_token()`
+to align with our new naming conventions, ensuring a seamless developer
+experience.
+
+## Changes
+
+- Renamed function across 12 files
+- Updated all call sites
+- Modified type hints
+
+## Testing
+
+Ran the full test suite.
+```
+
+**Good (short, human):**
+
+```text
+Renames `authenticate()` to `verify_token()` across the codebase to match
+the new naming convention (verb + object, not just verb).
+
+Call sites updated in the same commit. No behaviour change.
+```
