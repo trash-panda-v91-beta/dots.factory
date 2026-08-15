@@ -165,25 +165,25 @@
         {
           mode = "n";
           key = "<leader>ca";
-          action.__raw = "function() require('fastaction').code_action() end";
+          action.__raw = "function() vim.lsp.buf.code_action() end";
           options.desc = "Code action";
         }
         {
           mode = "v";
           key = "<leader>ca";
-          action.__raw = "function() require('fastaction').range_code_action() end";
+          action.__raw = "function() vim.lsp.buf.code_action() end";
           options.desc = "Code action (range)";
         }
         {
           mode = "n";
           key = "gra";
-          action.__raw = "function() require('fastaction').code_action() end";
+          action.__raw = "function() vim.lsp.buf.code_action() end";
           options.desc = "Code action";
         }
         {
           mode = "v";
           key = "gra";
-          action.__raw = "function() require('fastaction').range_code_action() end";
+          action.__raw = "function() vim.lsp.buf.code_action() end";
           options.desc = "Code action (range)";
         }
       ];
