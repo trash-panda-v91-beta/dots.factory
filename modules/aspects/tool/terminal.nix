@@ -228,9 +228,11 @@ ${if command != null then ''
             ];
             right_format = builtins.concatStringsSep "" [
               "$singularity$kubernetes$directory$vcsh$fossil_branch$git_branch$git_commit$git_state$git_status"
-              "$hg_branch$pijul_channel$docker_context$package$c$cmake$deno$dotnet$elixir$golang$haskell"
-              "$java$julia$kotlin$lua$nim$nodejs$python$ruby$rust$swift$terraform$zig$conda$memory_usage"
-              "$aws$gcloud$azure$custom$status$os$battery$time"
+              "$hg_branch$pijul_channel$docker_context$package$c$cpp$cmake$cobol$daml$dart$deno$dotnet"
+              "$elixir$elm$erlang$fennel$fortran$golang$guix_shell$haskell$haxe$helm$java$julia$kotlin"
+              "$gradle$lua$maven$nim$nodejs$bun$ocaml$opa$perl$php$pulumi$purescript$python$raku$rlang"
+              "$red$ruby$rust$scala$solidity$swift$terraform$vlang$vagrant$xmake$zig$buf$conda$pixi"
+              "$meson$spack$memory_usage$aws$gcloud$openstack$azure$crystal$custom$status$os$battery$time"
             ];
             fill.symbol = " ";
             character = {
@@ -324,23 +326,176 @@ ${if command != null then ''
               pure_msg = "[⌾](bold dimmed green)";
             };
             aws.disabled = true;
+            # languages - jetpack style: " [label](italic) [symbol+version]($style)"
+            c = {
+              format = " [c](italic) [\${symbol}(\${version}(-\${name}))]($style)";
+              symbol = "ℂ ";
+              style = "bold bright-blue";
+            };
+            cpp = {
+              format = " [c++](italic) [\${symbol}(\${version}(-\${name}))]($style)";
+              symbol = "ℂ ";
+              style = "bold bright-blue";
+            };
+            cmake = {
+              format = " [cmake](italic) [\${symbol}\${version}]($style)";
+              symbol = "△ ";
+              style = "bold bright-blue";
+            };
+            dart = {
+              format = " [dart](italic) [\${symbol}\${version}]($style)";
+              symbol = "◁◅ ";
+              style = "bold bright-cyan";
+            };
+            deno = {
+              format = " [deno](italic) [∫ \${version}](bold bright-green)";
+              version_format = "\${raw}";
+            };
+            dotnet = {
+              format = " [.net](italic) [\${symbol}\${version}( 🎯\${tfm})]($style)";
+              symbol = "⊡ ";
+              style = "bold bright-blue";
+            };
+            elixir = {
+              format = " [exs](italic) [\${symbol}\${version}( OTP \${otp_version})]($style)";
+              symbol = "△ ";
+              style = "bold bright-purple";
+            };
+            elm = {
+              format = " [elm](italic) [\${symbol}\${version}]($style)";
+              symbol = "◩ ";
+              style = "bold bright-blue";
+            };
+            erlang = {
+              format = " [erl](italic) [\${symbol}\${version}]($style)";
+              symbol = "◈ ";
+              style = "bold red";
+            };
+            golang = {
+              format = " [go](italic) [\${symbol}\${version}]($style)";
+              symbol = "∩ ";
+              style = "bold bright-cyan";
+            };
+            haskell = {
+              format = " [hs](italic) [\${symbol}\${version}]($style)";
+              symbol = "❯λ ";
+              style = "bold bright-purple";
+            };
+            java = {
+              format = " [java](italic) [\${symbol}\${version}]($style)";
+              symbol = "∪ ";
+              style = "bold red";
+            };
+            julia = {
+              format = " [jl](italic) [\${symbol}\${version}]($style)";
+              symbol = "◎ ";
+              style = "bold bright-purple";
+            };
+            kotlin = {
+              format = " [kt](italic) [\${symbol}\${version}]($style)";
+              symbol = "⬡ ";
+              style = "bold bright-blue";
+            };
+            lua = {
+              format = " [lua](italic) [\${symbol}\${version}]($style)";
+              symbol = "⨀ ";
+              style = "bold bright-yellow";
+              version_format = "\${raw}";
+            };
+            nim = {
+              format = " [nim](italic) [\${symbol}\${version}]($style)";
+              symbol = "▴▲▴ ";
+              style = "bold bright-yellow";
+            };
             nodejs = {
               format = " [node](italic) [◫ (\${version})](bold bright-green)";
+              version_format = "\${raw}";
               detect_files = [
                 "package-lock.json"
                 "yarn.lock"
               ];
               detect_extensions = [ ];
             };
+            bun = {
+              format = " [bun](italic) [◫ (\${version})](bold bright-green)";
+              version_format = "\${raw}";
+            };
+            ocaml = {
+              format = " [ml](italic) [\${symbol}\${version}(\${switch_indicator}\${switch_name})]($style)";
+              symbol = "⋗ ";
+              style = "bold bright-yellow";
+            };
+            perl = {
+              format = " [pl](italic) [\${symbol}\${version}]($style)";
+              symbol = "◇ ";
+              style = "bold bright-blue";
+            };
+            php = {
+              format = " [php](italic) [\${symbol}\${version}]($style)";
+              symbol = "◭ ";
+              style = "bold bright-purple";
+            };
             python = {
               format = " [py](italic) [\${symbol}\${version}]($style)";
               symbol = "[⌉](bold bright-blue)⌊ ";
               style = "bold bright-yellow";
+              version_format = "\${raw}";
+            };
+            ruby = {
+              format = " [rb](italic) [\${symbol}\${version}]($style)";
+              symbol = "◆ ";
+              style = "bold red";
+              version_format = "\${raw}";
             };
             rust = {
               format = " [rs](italic) [\${symbol}\${version}]($style)";
               symbol = "⊃ ";
               style = "bold red";
+              version_format = "\${raw}";
+            };
+            scala = {
+              format = " [sc](italic) [\${symbol}\${version}]($style)";
+              symbol = "⊹ ";
+              style = "bold red";
+            };
+            swift = {
+              format = " [sw](italic) [\${symbol}\${version}]($style)";
+              symbol = "◁ ";
+              style = "bold bright-red";
+              version_format = "\${raw}";
+            };
+            terraform = {
+              format = " [tf](italic) [\${symbol}\${workspace}]($style)";
+              symbol = "◫ ";
+              style = "bold bright-purple";
+            };
+            zig = {
+              format = " [zig](italic) [\${symbol}\${version}]($style)";
+              symbol = "⚡ ";
+              style = "bold bright-yellow";
+            };
+            package = {
+              format = " [pkg](italic dimmed) [\${symbol}\${version}]($style)";
+              symbol = "◨ ";
+              style = "dimmed yellow italic bold";
+              version_format = "\${raw}";
+            };
+            conda = {
+              format = " [conda](italic) [\${symbol}\${environment}]($style)";
+              symbol = "◯ ";
+            };
+            pixi = {
+              format = " [pixi](italic) [\${symbol}\${version}( \${environment})]($style)";
+              symbol = "■ ";
+            };
+            spack = {
+              format = " [spack](italic) [\${symbol}\${environment}]($style)";
+              symbol = "◇ ";
+            };
+            memory_usage = {
+              format = " [mem](italic) [\${symbol}\${ram}( \${swap})]($style)";
+              symbol = "▪▫▪ ";
+              disabled = false;
             };
           };
         };
