@@ -428,14 +428,6 @@
             virt_texts.priority = 2048;
           };
         };
-        luaConfig.post = ''
-          -- Force native virtual_text / virtual_lines off after the plugin
-          -- takes over. Otherwise nvim's built-in and tiny-inline render both.
-          vim.diagnostic.config({
-            virtual_text = false,
-            virtual_lines = false,
-          })
-        '';
       };
 
       codediff = {
