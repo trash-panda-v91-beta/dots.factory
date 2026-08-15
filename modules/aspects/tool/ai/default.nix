@@ -50,6 +50,8 @@ in
               enableInstallTelemetry = false;
               enableAnalytics = false;
               defaultProvider = lib.mkDefault "anthropic";
+              editorPaddingX = 2;
+              outputPad = 1;
               extensions = [
                 "${piWebAccess}/index.js"
                 "${context7Pi}/context7.js"
