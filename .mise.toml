@@ -32,3 +32,7 @@ run = [
 [tasks.fix]
 description = "Run all fixers and formatters"
 run = "nix develop -c hk fix"
+
+[tasks.test]
+description = "Run tests (none configured yet)"
+run = "echo no tests configured"
