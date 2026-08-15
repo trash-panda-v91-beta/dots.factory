@@ -120,225 +120,66 @@ in
           };
         };
 
-        programs.nixvim.plugins.lualine.settings = {
-          options = {
-            component_separators = {
-              left = "";
-              right = "";
-            };
-            section_separators = {
-              left = "";
-              right = "";
-            };
-            globalstatus = true;
-            refresh = {
-              statusline = 200;
-              tabline = 200;
-              winbar = 200;
-            };
-          };
-          sections = {
-            lualine_a = [
-              {
-                __unkeyed-1 = "mode";
-                fmt.__raw = ''
-                  function(str)
-                    local mode = vim.fn.mode()
-                    local mode_map = {
-                      ['n'] = '◎', ['no'] = '◎', ['nov'] = '◎', ['noV'] = '◎',
-                      ['noCTRL-V'] = '◎', ['niI'] = '◎', ['niR'] = '◎', ['niV'] = '◎',
-                      ['nt'] = '◎', ['ntT'] = '◎',
-                      ['v'] = '▼', ['vs'] = '▼', ['V'] = '▼', ['Vs'] = '▼',
-                      ['CTRL-V'] = '▼', ['\22'] = '▼', ['\22s'] = '▼',
-                      ['i'] = '○', ['ic'] = '○', ['ix'] = '○',
-                      ['R'] = '○', ['Rc'] = '○', ['Rx'] = '○', ['Rv'] = '○',
-                      ['Rvc'] = '○', ['Rvx'] = '○',
-                      ['c'] = '○', ['cv'] = '○', ['ce'] = '○',
-                      ['r'] = '○', ['rm'] = '○', ['r?'] = '○', ['!'] = '○',
-                      ['t'] = '■',
-                    }
-                    return mode_map[mode] or '◎'
-                  end
-                '';
-                color.__raw = ''
-                  function()
-                    local mode = vim.fn.mode()
-                    local normal_modes = { 'n', 'no', 'nov', 'noV', 'noCTRL-V', 'niI', 'niR', 'niV', 'nt', 'ntT' }
-                    for _, m in ipairs(normal_modes) do
-                      if mode == m then return { fg = '#5ef1ff', gui = 'bold' } end
-                    end
-                    local visual_modes = { 'v', 'vs', 'V', 'Vs', 'CTRL-V', '\22', '\22s' }
-                    for _, m in ipairs(visual_modes) do
-                      if mode == m then return { fg = '#f1ff5e', gui = 'bold' } end
-                    end
-                    if mode == 't' then return { fg = '#5eff6c', gui = 'bold' } end
-                    return { fg = '#ff6e5e', gui = 'bold' }
-                  end
-                '';
-              }
-            ];
-            lualine_b = [
-              { __unkeyed-1.__raw = ''function() return "" end''; }
-            ];
-            lualine_c = [
-              {
-                __unkeyed-1.__raw = ''
-                  function()
-                    local devicons_ok, devicons = pcall(require, 'nvim-web-devicons')
-                    local filename = vim.fn.expand('%:t')
-                    if filename == "" then filename = "[No Name]" end
-                    local icon = ""
-                    if devicons_ok and filename ~= "[No Name]" then
-                      local ext = vim.fn.expand('%:e')
-                      icon = devicons.get_icon(filename, ext, { default = true })
-                      icon = icon and (icon .. " ") or ""
-                    end
-                    local modified = vim.bo.modified and " ●" or ""
-                    local readonly = vim.bo.readonly and " " or ""
-                    local win_width = vim.o.columns
-                    local content = icon .. filename .. modified .. readonly
-                    local content_len = vim.fn.strdisplaywidth(content)
-                    local left_offset = 6
-                    local padding_left = math.max(0, math.floor((win_width - content_len) / 2) - left_offset)
-                    local spaces = string.rep(" ", padding_left)
-                    return spaces .. content
-                  end
-                '';
-                color = {
-                  fg = "#7b8496";
-                };
-                padding = {
-                  left = 0;
-                  right = 1;
-                };
-              }
-              {
-                __unkeyed-1 = "branch";
-                icon = "";
-                icons_enabled = false;
-                fmt.__raw = ''
-                  function(str)
-                    if str == "" then return "" end
-                    return "△ " .. str
-                  end
-                '';
-                color = {
-                  fg = "#5ef1ff";
-                };
-              }
-              {
-                __unkeyed-1 = "diff";
-                colored = true;
-                symbols = {
-                  added = "▴";
-                  modified = "▴";
-                  removed = "▿";
-                };
-                diff_color = {
-                  added = {
-                    fg = "#5eff6c";
-                  };
-                  modified = {
-                    fg = "#5eff6c";
-                  };
-                  removed = {
-                    fg = "#ff6e5e";
-                  };
-                };
-              }
-              {
-                __unkeyed-1.__raw = ''
-                  function()
-                    local status_dict = vim.b.gitsigns_status_dict
-                    if not status_dict then return "" end
-                    local added = status_dict.added or 0
-                    local changed = status_dict.changed or 0
-                    local removed = status_dict.removed or 0
-                    if (added + changed + removed) == 0 then return "" end
-                    local result = {}
-                    table.insert(result, '%#LualineGitSeparator#⎪')
-                    if added > 0 then table.insert(result, '%#LualineGitStaged#●◦') end
-                    if changed > 0 then table.insert(result, '%#LualineGitUnstaged#◌◦') end
-                    if removed > 0 then table.insert(result, '%#LualineGitSeparator#▿') end
-                    table.insert(result, '%#LualineGitSeparator#⎪')
-                    return table.concat(result, "")
-                  end
-                '';
-              }
-            ];
-            lualine_x = [
-              {
-                __unkeyed-1 = "diagnostics";
-                sources = [ "nvim_lsp" ];
-                sections = [
-                  "error"
-                  "warn"
-                ];
-                symbols = {
-                  error = " ";
-                  warn = " ";
-                };
-                diagnostics_color = {
-                  error = {
-                    fg = "#ff6e5e";
-                  };
-                  warn = {
-                    fg = "#ffbd5e";
-                  };
-                };
-              }
-            ];
-            lualine_y = [ ];
-            lualine_z = [
-              {
-                __unkeyed-1 = "location";
-                color = {
-                  fg = "#7b8496";
-                };
-              }
-            ];
-          };
-          inactive_sections = {
-            lualine_a = [ ];
-            lualine_b = [ ];
-            lualine_c = [
-              {
-                __unkeyed-1 = "filename";
-                color = {
-                  fg = "#7b8496";
-                };
-              }
-            ];
-            lualine_x = [ ];
-            lualine_y = [ ];
-            lualine_z = [ ];
-          };
-          tabline = {
-            lualine_a = [ { __unkeyed-1 = "tabs"; tabs_color = { active = "lualine_a_normal"; inactive = "lualine_b_normal"; }; } ];
-            lualine_b = [ ];
-            lualine_c = [ ];
-            lualine_x = [ ];
-            lualine_y = [ ];
-            lualine_z = [ ];
-          };
-          extensions = [
-            "neo-tree"
-            "lazy"
-            "trouble"
-            "oil"
-          ];
-        };
-
         programs.nixvim.extraConfigLua = ''
+          -- Geometry-in-spirit statusline colors + per-mode cursor colors.
+          -- Cursor shape comes from tool/nixvim/default.nix guicursor;
+          -- statusline content from tool/nixvim/editing.nix mini-statusline.
+          local function apply_geometry_hl()
+            local set = function(name, opts) vim.api.nvim_set_hl(0, name, opts) end
+
+            -- Cursor color per mode. `bg` is the drawn cursor color;
+            -- `fg` is the char under the cursor.
+            set("GeometryCursorN", { bg = "#f1ff5e", fg = "#16181a" })  -- normal   : bright-yellow
+            set("GeometryCursorI", { bg = "#bd5eff", fg = "#16181a" })  -- insert   : purple
+            set("GeometryCursorV", { bg = "#ffbd5e", fg = "#16181a" })  -- visual   : orange
+            set("GeometryCursorC", { bg = "#5eff6c", fg = "#16181a" })  -- command  : green
+            set("GeometryCursorR", { bg = "#ff6e5e", fg = "#16181a" })  -- replace  : red
+            set("GeometryCursorT", { bg = "#5ef1ff", fg = "#16181a" })  -- terminal : cyan
+
+            -- Mode glyph (colored, far-left of statusline). Same palette as the
+            -- cursor groups but as fg, so it stays legible on the statusline.
+            set("GeometryModeN", { fg = "#f1ff5e", bold = true, italic = true })
+            set("GeometryModeI", { fg = "#bd5eff", italic = true })
+            set("GeometryModeV", { fg = "#ffbd5e", italic = true })
+            set("GeometryModeC", { fg = "#5eff6c", italic = true })
+            set("GeometryModeR", { fg = "#ff6e5e", italic = true })
+            set("GeometryModeT", { fg = "#5ef1ff", italic = true })
+
+            -- Statusline pieces — each with its own italic accent (jetpack-style).
+            set("GeometryDir",       { fg = "#5ea1ff", italic = true })
+            set("GeometryFile",      { fg = "#5ea1ff", bold = true })
+            set("GeometryModified",  { fg = "#f1ff5e", italic = true })
+            set("GeometryReadOnly",  { fg = "#ff5ef1", italic = true })
+            set("GeometryBranch",    { fg = "#5ea1ff", italic = true })
+            set("GeometryDiffAdd",   { fg = "#5eff6c", italic = true })
+            set("GeometryDiffMod",   { fg = "#f1ff5e", italic = true })
+            set("GeometryDiffDel",   { fg = "#ff6e5e", italic = true })
+            set("GeometryDiagErr",   { fg = "#ff6e5e", bold = true, italic = true })
+            set("GeometryDiagWarn",  { fg = "#ffbd5e", italic = true })
+            set("GeometryFiletype",  { fg = "#7b8496", italic = true })
+            set("GeometryLangRed",    { fg = "#ff6e5e", italic = true })
+            set("GeometryLangYellow", { fg = "#f1ff5e", italic = true })
+            set("GeometryLangGreen",  { fg = "#5eff6c", italic = true })
+            set("GeometryLangBlue",   { fg = "#5ea1ff", italic = true })
+            set("GeometryLangPurple", { fg = "#bd5eff", italic = true })
+
+            -- Winbar breadcrumb (mirrors starship [directory] palette).
+            set("GeometryWinbarHome", { fg = "#7b8496", italic = true })
+            set("GeometryWinbarRoot", { fg = "#5ea1ff", bold = true })
+            set("GeometryWinbarPath", { fg = "#5ea1ff", italic = true })
+            set("GeometryWinbarFile", { fg = "#5ea1ff", bold = true })
+            set("GeometryWinbarSep",  { fg = "#3c4048" })
+            set("GeometryLocation",  { fg = "#7b8496", italic = true })
+
+            set("MiniStatuslineInactive", { fg = "#7b8496" })
+          end
+
+          -- Apply now (colorscheme is already loaded at extraConfigLua time)
+          -- and re-apply if the user swaps colorscheme later.
+          apply_geometry_hl()
           vim.api.nvim_create_autocmd("ColorScheme", {
-          	pattern = "*",
-          	callback = function()
-          		vim.api.nvim_set_hl(0, "LualineGitStaged", { fg = "#ffbd5e" })
-          		vim.api.nvim_set_hl(0, "LualineGitUnstaged", { fg = "#f1ff5e" })
-          		vim.api.nvim_set_hl(0, "LualineGitSeparator", { fg = "#7b8496" })
-          		vim.api.nvim_set_hl(0, "LualineFiletypeIcon", { fg = "#5ea1ff" })
-          		vim.api.nvim_set_hl(0, "LualineFilename", { fg = "#7b8496" })
-          	end,
+            pattern = "*",
+            callback = apply_geometry_hl,
           })
         '';
 

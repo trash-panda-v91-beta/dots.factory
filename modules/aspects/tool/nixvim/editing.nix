@@ -171,7 +171,167 @@
       };
 
       # Statusline + tabline (replaces lualine)
-      mini-statusline.enable = true;
+      # Statusline mirrors starship jetpack layout & palette on a single line;
+      # mode glyph lives at far left (herdr blocks OSC 12 so cursor-color
+      # per mode is unreliable). Cursor shape/color still applied via guicursor
+      # in default.nix — works outside herdr as a bonus.
+      mini-statusline = {
+        enable = true;
+        settings = {
+          use_icons = false;
+          content.active.__raw = ''
+            function()
+              local bo, fn, b = vim.bo, vim.fn, vim.b
+
+              -- Mode glyph (mirror starship character block: ◎/○/▼/■/□)
+              local first = fn.mode():sub(1, 1)
+              local glyph, mhl = "◎", "GeometryModeN"
+              if     first == "i"                                                                                    then glyph, mhl = "○", "GeometryModeI"
+              elseif first == "v" or first == "V" or first == "\22" or first == "s" or first == "S" or first == "\19" then glyph, mhl = "▼", "GeometryModeV"
+              elseif first == "R"                                                                                    then glyph, mhl = "□", "GeometryModeR"
+              elseif first == "c" or first == "r" or first == "!"                                                    then glyph, mhl = "■", "GeometryModeC"
+              elseif first == "t"                                                                                    then glyph, mhl = "▪", "GeometryModeT"
+              end
+
+              -- Directory (starship [directory].repo_root_format equivalent).
+              -- Cache repo root per buffer — vim.fs.root is a few filesystem stats
+              -- but statusline redraws are frequent.
+              local repo_root = b.geometry_repo_root
+              if repo_root == nil then
+                repo_root = vim.fs.root(0, ".git") or ""
+                b.geometry_repo_root = repo_root
+              end
+              local repo_name = repo_root ~= "" and fn.fnamemodify(repo_root, ":t") or ""
+              local basename  = fn.expand("%:t")
+              if basename == "" then basename = "[No Name]" end
+
+              -- Truncate subpath to last 2 components with "□ " prefix
+              -- (matches starship truncation_length = 2, truncation_symbol = "□ ").
+              local trunc, subpath = "", ""
+              if repo_name ~= "" then
+                local full = fn.expand("%:p")
+                if full:sub(1, #repo_root) == repo_root then
+                  local subdir = fn.fnamemodify(full:sub(#repo_root + 2), ":h")
+                  if subdir ~= "" and subdir ~= "." then
+                    local parts = vim.split(subdir, "/", { plain = true })
+                    if #parts > 2 then
+                      trunc = "□ "
+                      subpath = "/" .. parts[#parts - 1] .. "/" .. parts[#parts]
+                    else
+                      subpath = "/" .. subdir
+                    end
+                  end
+                end
+              else
+                local d = fn.fnamemodify(fn.expand("%:~:."), ":h")
+                if d ~= "." then subpath = d .. "/" end
+              end
+              local readonly = bo.readonly and " ◈" or ""
+              local modified = bo.modified and " ●" or ""
+              local fname_leader = (repo_name ~= "" or subpath ~= "") and "/" or ""
+
+              -- Git (from gitsigns; per-file hunks, not repo-wide file states).
+              local branch  = b.gitsigns_head or ""
+              local d       = b.gitsigns_status_dict or {}
+              local added, changed, removed = d.added or 0, d.changed or 0, d.removed or 0
+              local br      = #branch > 40 and (branch:sub(1, 40) .. "⋯") or branch
+              local has_dirty = (added + changed + removed) > 0
+
+              -- Diagnostics (O(1) via vim.diagnostic.count)
+              local dc = vim.diagnostic.count(0) or {}
+              local errs, warns = dc[vim.diagnostic.severity.ERROR] or 0, dc[vim.diagnostic.severity.WARN] or 0
+
+              local ft   = bo.filetype
+              local time = fn.strftime("%R")
+
+              -- Filetype → jetpack-style glyph + color category.
+              local FT = {
+                rust            = { "⊃",  "GeometryLangRed"    },
+                ruby            = { "◆",  "GeometryLangRed"    },
+                swift           = { "◁",  "GeometryLangRed"    },
+                python          = { "⌊",  "GeometryLangYellow" },
+                lua             = { "⨀",  "GeometryLangYellow" },
+                javascript      = { "◫", "GeometryLangGreen"  },
+                typescript      = { "◫", "GeometryLangGreen"  },
+                javascriptreact = { "◫", "GeometryLangGreen"  },
+                typescriptreact = { "◫", "GeometryLangGreen"  },
+                c               = { "ℂ",  "GeometryLangBlue"   },
+                cpp             = { "ℂ",  "GeometryLangBlue"   },
+                dart            = { "◁",  "GeometryLangBlue"   },
+                nix             = { "✶",  "GeometryLangBlue"   },
+                dockerfile      = { "◧",  "GeometryLangBlue"   },
+                go              = { "∩",  "GeometryLangBlue"   },
+                haskell         = { "❯L", "GeometryLangPurple" },
+                julia           = { "◎",  "GeometryLangPurple" },
+                elixir          = { "△",  "GeometryLangPurple" },
+                markdown        = { "≡",  "GeometryFiletype"   },
+                json            = { "◇",  "GeometryFiletype"   },
+                yaml            = { "≣",  "GeometryFiletype"   },
+                toml            = { "≡",  "GeometryFiletype"   },
+                sh              = { "▶",  "GeometryFiletype"   },
+                bash            = { "▶",  "GeometryFiletype"   },
+                zsh             = { "▶",  "GeometryFiletype"   },
+                fish            = { "▶",  "GeometryFiletype"   },
+                nu              = { "▶",  "GeometryFiletype"   },
+                vim             = { "◐",  "GeometryFiletype"   },
+                html            = { "◈",  "GeometryFiletype"   },
+                css             = { "◐",  "GeometryFiletype"   },
+                scss            = { "◐",  "GeometryFiletype"   },
+                make            = { "▤",  "GeometryFiletype"   },
+                sql             = { "▦",  "GeometryFiletype"   },
+              }
+
+              -- Left: {mode}  {□ ?}{repo_root bold}{subpath italic}{/basename italic}{readonly}{modified}
+              local left = string.format(
+                "%%#%s# %s  %%#GeometryTruncBox#%s%%#GeometryRepoRoot#%s%%#GeometryPath#%s%s%%#GeometryReadOnly#%s%%#GeometryModified#%s",
+                mhl, glyph, trunc, repo_name, subpath, fname_leader .. basename, readonly, modified
+              )
+
+              -- Right (touch branch to status bracket like starship;
+              -- git_metrics after the bracket).
+              local right = {}
+              if branch ~= "" then
+                local piece = string.format("%%#GeometryBranchSym#△ %%#GeometryBranch#%s", br)
+                if has_dirty then
+                  piece = piece .. "%#GeometryStatusBracket#⎪"
+                  if changed > 0 or added > 0 then piece = piece .. "%#GeometryStatusMod#●◦" end
+                  if removed > 0                then piece = piece .. "%#GeometryStatusDel#✕"    end
+                  piece = piece .. "%#GeometryStatusBracket#⎥"
+                end
+                right[#right+1] = piece
+              end
+              if added   > 0 then right[#right+1] = string.format("%%#GeometryDiffAdd#▴%d",  added) end
+              if removed > 0 then right[#right+1] = string.format("%%#GeometryDiffDel#▿%d",  removed) end
+              if errs    > 0 then right[#right+1] = string.format("%%#GeometryDiagErr#✕%d",  errs) end
+              if warns   > 0 then right[#right+1] = string.format("%%#GeometryDiagWarn#⚠%d", warns) end
+              if ft     ~= "" then
+                local entry = FT[ft]
+                if entry then
+                  right[#right+1] = string.format("%%#%s#%s", entry[2], entry[1])
+                else
+                  right[#right+1] = string.format("%%#GeometryFiletype#%s", ft)
+                end
+              end
+              right[#right+1] = "%#GeometryLocation#L%l:%v"
+              right[#right+1] = string.format("%%#GeometryTime#%s", time)
+
+              return left .. "%<%=" .. table.concat(right, " ") .. " "
+            end
+          '';
+          content.inactive.__raw = ''
+            function()
+              return "%#MiniStatuslineInactive# %f%m%r "
+            end
+          '';
+        };
+        luaConfig.post = ''
+          -- Live clock: repaint statusline every 30s so time doesn't stale on idle.
+          local t = vim.uv.new_timer()
+          if t then t:start(30000, 30000, vim.schedule_wrap(function()
+            if vim.api.nvim_get_mode().mode ~= "c" then vim.cmd("redrawstatus") end
+          end)) end
+        '';
+      };
       mini-tabline.enable = true;
 
       # Completion (replaces blink-cmp)
@@ -564,6 +724,78 @@
             },
           })
         end,
+      })
+
+      -- === Geometry / jetpack integrations ===================================
+
+      -- Fold text: closed folds render as "◐ +N ───── <first line>"
+      _G.GeometryFoldText = function()
+        local n = vim.v.foldend - vim.v.foldstart + 1
+        local first = vim.fn.getline(vim.v.foldstart):gsub("^\\s+", "")
+        return string.format("◐ +%d ─ %s", n, first)
+      end
+      vim.opt.foldtext = "v:lua.GeometryFoldText()"
+
+      -- Winbar breadcrumb: mirrors starship [directory] grammar.
+      --   ⌂  ⌈ dots.factory  tool/nixvim  editing.nix
+      _G.GeometryWinbar = function()
+        local buf = vim.api.nvim_win_get_buf(vim.g.statusline_winid or 0)
+        if vim.bo[buf].buftype ~= "" then return "" end
+        local basename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(buf), ":t")
+        if basename == "" then return "" end
+
+        local repo_root = vim.b[buf].geometry_repo_root
+        if repo_root == nil then
+          repo_root = vim.fs.root(buf, ".git") or ""
+          vim.b[buf].geometry_repo_root = repo_root
+        end
+
+        local full = vim.api.nvim_buf_get_name(buf)
+        local parts = {}
+        if repo_root ~= "" and full:sub(1, #repo_root) == repo_root then
+          parts[#parts+1] = "%#GeometryWinbarHome#⌂ "
+          parts[#parts+1] = "%#GeometryWinbarSep#⌈ "
+          parts[#parts+1] = "%#GeometryWinbarRoot#" .. vim.fn.fnamemodify(repo_root, ":t")
+          local sub = vim.fn.fnamemodify(full:sub(#repo_root + 2), ":h")
+          if sub ~= "" and sub ~= "." then
+            parts[#parts+1] = "  %#GeometryWinbarSep#›  %#GeometryWinbarPath#" .. sub
+          end
+          parts[#parts+1] = "  %#GeometryWinbarSep#›  %#GeometryWinbarFile#" .. basename
+        else
+          parts[#parts+1] = "%#GeometryWinbarFile#" .. basename
+        end
+        return " " .. table.concat(parts, "")
+      end
+      vim.opt.winbar = "%!v:lua.GeometryWinbar()"
+
+      -- Sign-column mode dot: colored ◎ on the current line, tinted per mode.
+      -- Compensates for terminals (herdr) that block OSC 12 cursor-color changes.
+      local ns = vim.api.nvim_create_namespace("geometry_mode_dot")
+      local mode_sign_hl = {
+        n = "GeometryModeN", i = "GeometryModeI", v = "GeometryModeV",
+        V = "GeometryModeV", ["\22"] = "GeometryModeV",
+        s = "GeometryModeV", S = "GeometryModeV", ["\19"] = "GeometryModeV",
+        R = "GeometryModeR", c = "GeometryModeC", r = "GeometryModeC",
+        ["!"] = "GeometryModeC", t = "GeometryModeT",
+      }
+      local function paint_mode_dot()
+        local buf = vim.api.nvim_get_current_buf()
+        if not vim.api.nvim_buf_is_valid(buf) then return end
+        if vim.bo[buf].buftype ~= "" then
+          pcall(vim.api.nvim_buf_clear_namespace, buf, ns, 0, -1)
+          return
+        end
+        local hl = mode_sign_hl[vim.fn.mode():sub(1, 1)] or "GeometryModeN"
+        local row = vim.api.nvim_win_get_cursor(0)[1] - 1
+        pcall(vim.api.nvim_buf_clear_namespace, buf, ns, 0, -1)
+        pcall(vim.api.nvim_buf_set_extmark, buf, ns, row, 0, {
+          sign_text = "◎",
+          sign_hl_group = hl,
+          priority = 100,
+        })
+      end
+      vim.api.nvim_create_autocmd({ "ModeChanged", "CursorMoved", "CursorMovedI", "BufEnter" }, {
+        callback = vim.schedule_wrap(paint_mode_dot),
       })
     '';
   };
