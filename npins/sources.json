@@ -11,10 +11,10 @@
       "version_upper_bound": null,
       "release_prefix": null,
       "submodules": false,
-      "version": "@upstash/context7-pi@0.1.2",
-      "revision": "850fc498e9919913b52cc10df1c78155ac2f5b5b",
-      "url": "https://api.github.com/repos/upstash/context7/tarball/refs/tags/@upstash/context7-pi@0.1.2",
-      "hash": "sha256-BqssEX4AcqOJJRe4H0ChbpCJE2Zw1TsOdL7sqc8kv2s="
+      "version": "v1.0.30",
+      "revision": "f35c002beeada90ed6fdddf19c0345f9f41cccdb",
+      "url": "https://api.github.com/repos/upstash/context7/tarball/refs/tags/v1.0.30",
+      "hash": "sha256-cNm/NROFHy+3cOozzvC1WUhGb7bwccvOIiMt30lAN3E="
     },
     "koda-nvim": {
       "type": "Git",
@@ -56,10 +56,10 @@
       "version_upper_bound": null,
       "release_prefix": null,
       "submodules": false,
-      "version": "v2.21.0",
-      "revision": "a7c18bdee21bf501851e1688a659eec1141f2097",
-      "url": "https://api.github.com/repos/nicobailon/pi-mcp-adapter/tarball/refs/tags/v2.21.0",
-      "hash": "sha256-9B+Q+SIutyXMuNvWZrVvCfGSpMaVrBwvFHvE995zFMA="
+      "version": "v2.26.0",
+      "revision": "ca2f1b4270f5a14c23178e32d4f93c4f98d5a05e",
+      "url": "https://api.github.com/repos/nicobailon/pi-mcp-adapter/tarball/refs/tags/v2.26.0",
+      "hash": "sha256-l8PDjwNk6SC4mzanp7gxOCsVm2NQcigNBl+7zs+CbWM="
     },
     "pi-neuralwatt": {
       "type": "GitRelease",
@@ -72,10 +72,10 @@
       "version_upper_bound": null,
       "release_prefix": null,
       "submodules": false,
-      "version": "v0.11.3",
-      "revision": "7749f7adfb5f0e8c5a61d32a4093a5182b8e353a",
-      "url": "https://api.github.com/repos/aliou/pi-neuralwatt/tarball/refs/tags/v0.11.3",
-      "hash": "sha256-CoCHJAszvlBA1Xcp/dufByb8h0FqmOtKsozpn5SN1RM="
+      "version": "v0.13.0",
+      "revision": "7a56b0b3448e8508633fb77b43c5952a35300223",
+      "url": "https://api.github.com/repos/aliou/pi-neuralwatt/tarball/refs/tags/v0.13.0",
+      "hash": "sha256-8IO93x/u1Frest019GVKUGr8FvCt/btf1C/MAXpDj3c="
     },
     "pi-nvim": {
       "type": "Git",
@@ -101,10 +101,10 @@
       "version_upper_bound": null,
       "release_prefix": null,
       "submodules": false,
-      "version": "v0.18.0",
-      "revision": "62b1704a34592cd6a20ab12f3e7d8e9785ff653d",
-      "url": "https://api.github.com/repos/nicobailon/pi-web-access/tarball/refs/tags/v0.18.0",
-      "hash": "sha256-6C0fD/rZOxGxOoF38CKcxWGcCSru4ZWVNtttKy+J/yQ="
+      "version": "v0.23.0",
+      "revision": "c1ce8590d684842ba129241a2121b6157dcf4223",
+      "url": "https://api.github.com/repos/nicobailon/pi-web-access/tarball/refs/tags/v0.23.0",
+      "hash": "sha256-q/TZUkgeC/W/Ft7RMVIDc6m/Dsj2amicHhSeCbzk05E="
     },
     "ponytail": {
       "type": "GitRelease",
