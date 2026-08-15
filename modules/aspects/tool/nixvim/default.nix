@@ -44,9 +44,13 @@
                 "__rawKey__vim.diagnostic.severity.INFO" = "DiagnosticInfo";
               };
             };
-            # virtual_text disabled - tiny-inline-diagnostic renders these
+            # tiny-inline-diagnostic renders these - keep both disabled
+            # so nvim's built-in virtual overlay doesn't duplicate the plugin.
+            # NOTE: `virtual_lines.current_line = false` would set
+            # virtual_lines = { current_line = false } which vim.diagnostic
+            # treats as ENABLED with those opts. Must be a bare `false`.
             virtual_text = false;
-            virtual_lines.current_line = false;
+            virtual_lines = false;
             update_in_insert = false;
           };
 
