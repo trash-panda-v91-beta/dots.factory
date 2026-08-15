@@ -5,6 +5,7 @@
     programs.nixvim = {
       plugins.neogit = {
         enable = true;
+        lazyLoad.settings.cmd = [ "Neogit" ];
         settings = {
           kind = "replace";
           mappings = {

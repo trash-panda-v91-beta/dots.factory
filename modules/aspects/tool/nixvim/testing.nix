@@ -5,6 +5,7 @@
     programs.nixvim = {
       plugins.neotest = {
         enable = true;
+        lazyLoad.settings.event = "DeferredUIEnter";
         adapters.python = {
           enable = true;
           settings = {

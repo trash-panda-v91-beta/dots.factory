@@ -44,12 +44,14 @@
                 "__rawKey__vim.diagnostic.severity.INFO" = "DiagnosticInfo";
               };
             };
-            virtual_lines.current_line = true;
-            virtual_text = {
-              severity.min = "warn";
-              source = "if_many";
-            };
-            update_in_insert = true;
+            # tiny-inline-diagnostic renders these - keep both disabled
+            # so nvim's built-in virtual overlay doesn't duplicate the plugin.
+            # NOTE: `virtual_lines.current_line = false` would set
+            # virtual_lines = { current_line = false } which vim.diagnostic
+            # treats as ENABLED with those opts. Must be a bare `false`.
+            virtual_text = false;
+            virtual_lines = false;
+            update_in_insert = false;
           };
 
           filetype = {
