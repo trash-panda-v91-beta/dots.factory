@@ -409,6 +409,27 @@
       };
 
       # Codediff
+      # Inline diagnostics (rachartier/tiny-inline-diagnostic.nvim)
+      # Loads on DeferredUIEnter (before first LspAttach) so its own
+      # LspAttach autocmd fires for every attached client
+      tiny-inline-diagnostic = {
+        enable = true;
+        lazyLoad.settings.event = "DeferredUIEnter";
+        settings = {
+          preset = "modern";
+          options = {
+            show_source = {
+              enabled = true;
+              if_many = false;
+            };
+            multilines.enabled = true;
+            show_all_diags_on_cursorline = false;
+            enable_on_insert = false;
+            virt_texts.priority = 2048;
+          };
+        };
+      };
+
       codediff = {
         enable = true;
         settings.keymaps = {
@@ -534,7 +555,7 @@
               "buffer",
               opts = {
                 hotkeys = true,
-                hotkeys_mode = "text_diff_based",
+                hotkeys_mode = "sequential",
                 auto_preview = false,
                 auto_accept = false,
                 position = "cursor",
