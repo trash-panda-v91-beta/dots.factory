@@ -44,12 +44,10 @@
                 "__rawKey__vim.diagnostic.severity.INFO" = "DiagnosticInfo";
               };
             };
-            virtual_lines.current_line = true;
-            virtual_text = {
-              severity.min = "warn";
-              source = "if_many";
-            };
-            update_in_insert = true;
+            # virtual_text disabled - tiny-inline-diagnostic renders these
+            virtual_text = false;
+            virtual_lines.current_line = false;
+            update_in_insert = false;
           };
 
           filetype = {

@@ -517,7 +517,33 @@
     };
 
     # Koda
-    programs.nixvim.extraPlugins = [ pkgs.local.koda-nvim ];
-    programs.nixvim.extraConfigLua = ''require("koda").setup({ auto = false, cache = true, })'';
+    programs.nixvim.extraPlugins = [
+      pkgs.local.koda-nvim
+      pkgs.local.tiny-code-action-nvim
+    ];
+    programs.nixvim.extraConfigLua = ''
+      require("koda").setup({ auto = false, cache = true, })
+
+      -- Lazy-load tiny-code-action on first LspAttach
+      vim.api.nvim_create_autocmd("LspAttach", {
+        once = true,
+        callback = function()
+          require("tiny-code-action").setup({
+            backend = "vim",
+            picker = {
+              "buffer",
+              opts = {
+                hotkeys = true,
+                hotkeys_mode = "text_diff_based",
+                auto_preview = false,
+                auto_accept = false,
+                position = "cursor",
+                winborder = "single",
+              },
+            },
+          })
+        end,
+      })
+    '';
   };
 }
