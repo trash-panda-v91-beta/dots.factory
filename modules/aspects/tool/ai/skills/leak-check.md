@@ -1,6 +1,17 @@
 ---
 name: leak-check
-description: Final scan before any outbound write - PR body, commit message, Jira description, Jira comment, code comment, docstring, Slack message, or any text a stranger will read. **Auto-fires unconditionally at the last moment before send.** Catches vault paths, ADR pointers ("see ADR 003", "per ADR NNN"), scratchpad phrasing, `$VAULTS_DIR` / `Coding/` / vault note filenames, and any other reference to a private-side artifact the reader cannot open. Also catches the reverse: corp strings (`concur.com`, `CAT-XXXX`, service repo names) landing in personal-side files. Triggered by every outbound skill (`create-pr`, `review-comments`, `task-new`, `vault-nil` sync flows, `handoff`) as their mandatory final step; and directly on "check for leaks", "audit for leaks", "scan this", "make sure this doesn't leak".
+description: >
+  Final scan before any outbound write - PR body, commit message, Jira
+  description, Jira comment, code comment, docstring, Slack message, or any text
+  a stranger will read. Auto-fires unconditionally at the last moment before
+  send. Catches vault paths, ADR pointer phrases like "see ADR NNN" or "per
+  ADR X", scratchpad phrasing, `$VAULTS_DIR` / `Coding/` / vault note filenames,
+  and any other reference to a private-side artifact the reader cannot open.
+  Also runs the reverse direction - corp strings landing in personal-side files.
+  Triggered by every outbound skill (`create-pr`, `review-comments`, `task-new`,
+  `vault-nil` sync flows, `handoff`) as their mandatory final step, and
+  directly on phrases like "check for leaks", "audit for leaks", "scan this",
+  "make sure this doesn't leak".
 ---
 
 # leak-check

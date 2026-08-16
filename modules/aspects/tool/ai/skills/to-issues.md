@@ -1,13 +1,13 @@
 ---
 name: to-issues
-description: Break a plan into independently-grabbable tickets on the project issue tracker using tracer-bullet vertical slices. Auto-fires when the user says "break this into issues", "break this into tickets", "file the tickets", "plan the work", or "split into subtasks". Files each slice through the `task-new` skill (which on nil creates real CAT issues via the Jira adapter).
+description: Break a plan into independently-grabbable tickets on the project issue tracker using tracer-bullet vertical slices. Auto-fires when the user says "break this into issues", "break this into tickets", "file the tickets", "plan the work", or "split into subtasks". Files each slice through the `task-new` skill (which on nil creates real tracker issues via the Jira adapter).
 ---
 
 # To Issues
 
 Break a plan into independently-grabbable tickets using vertical slices
 (tracer bullets). Files the tickets via `task-new` per slice - which means the
-adapter (nil = Jira) creates real CAT issues in the same pass.
+adapter (nil = Jira) creates real tracker issues in the same pass.
 
 ## When to reach for me
 
@@ -61,7 +61,7 @@ Iterate until the user approves the breakdown.
 ### 5. Publish the issues
 
 For each approved slice, call `task-new`. That skill writes the vault note
-and, on nil, creates the CAT ticket via the Jira adapter. Publish in
+and, on nil, creates the tracker ticket via the Jira adapter. Publish in
 dependency order so real tracker IDs can go into each successor's `blockedBy`
 field.
 
