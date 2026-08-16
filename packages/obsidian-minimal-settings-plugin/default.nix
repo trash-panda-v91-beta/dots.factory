@@ -1,26 +1,18 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 let
-  version = "9.0.0";
-  base = "https://github.com/kepano/obsidian-minimal-settings/releases/download/${version}";
+  fetch =
+    name: pin:
+    pkgs.fetchurl {
+      inherit name;
+      url = pin.url;
+      hash = pin.hash;
+    };
+  manifest = fetch "manifest.json" inputs.obsidian-minimal-settings-manifest;
+  version = (builtins.fromJSON (builtins.readFile manifest)).version;
 in
 pkgs.runCommandLocal "obsidian-minimal-settings-${version}" { } ''
   mkdir -p $out
-  cp ${
-    pkgs.fetchurl {
-      url = "${base}/main.js";
-      hash = "sha256-91TgzmUj5DO/+OeZWoSPfX+sIFOZ+as7ElhDAmH9kMQ=";
-    }
-  } $out/main.js
-  cp ${
-    pkgs.fetchurl {
-      url = "${base}/manifest.json";
-      hash = "sha256-IDj5wfXKAm68Hz4Va62XxnHSxAGiBxg4RQjvcgcejF8=";
-    }
-  } $out/manifest.json
-  cp ${
-    pkgs.fetchurl {
-      url = "${base}/styles.css";
-      hash = "sha256-UAhHYNqSelv1rBudO5YNxS4dCjv2kOVN+PTXb4ISYow=";
-    }
-  } $out/styles.css
+  cp ${fetch "main.js"    inputs.obsidian-minimal-settings-main}     $out/main.js
+  cp ${manifest}                                                      $out/manifest.json
+  cp ${fetch "styles.css" inputs.obsidian-minimal-settings-styles}   $out/styles.css
 ''
