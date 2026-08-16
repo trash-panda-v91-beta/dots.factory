@@ -62,9 +62,28 @@ Short. Human. Write like the dev who did the work is telling the reviewer what t
 ## Style
 
 - Plain language, active voice
-- `-` (hyphen-minus), not `–` or `—`
+- `-` (hyphen-minus), not `-` or `-`
 - Backticks for code, file paths, identifiers, and any Slack `:emoji:` codes
 - Fenced code blocks for anything longer than one identifier
+
+## Final scan - mandatory before sending
+
+**Run `leak-check` against the drafted title + body before `gh pr create`.** The
+PR is a public artifact - the reader has no access to your vault, ADRs,
+scratchpad, or personal skill pack.
+
+Specifically forbid: `see ADR NNN`, `per ADR X`, `see the vault`,
+`per the CONTEXT note`, `$VAULTS_DIR`, `Coding/`, vault note filenames, any
+`dots.factory` / `dots.corpo` path. If the reader needs the *reasoning*, restate
+it in the PR body directly. Never point at a path or ADR they cannot open.
+
+```bash
+# scan the draft
+grep -nEi '\$VAULTS_DIR|vaults/(mist|nil)|Coding/|ADR [0-9]{2,4}|Scratchpad|dots\.(factory|corpo)|see the vault' <<<"$TITLE"$'\n'"$BODY" \
+  && { echo "LEAK - rewrite before sending"; exit 1; }
+```
+
+Re-scan until clean.
 
 ## Open It
 
