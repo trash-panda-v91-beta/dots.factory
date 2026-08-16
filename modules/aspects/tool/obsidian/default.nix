@@ -28,7 +28,7 @@
                 {
                   name = "daily-notes";
                   settings = {
-                    folder = "Daily";
+                    folder = "/";
                     template = "Templates/Daily Note Template";
                   };
                 }
@@ -69,14 +69,13 @@
                 {
                   pkg = pkgs.local.obsidian-tasknotes-plugin;
                   settings = {
-                    tasksFolder = "Tasks";
-                    archiveFolder = "Tasks/Archive";
+                    tasksFolder = "";
+                    moveArchivedTasks = false;
                     taskTag = "task";
                     taskIdentificationMethod = "tag";
                     taskFilenameFormat = "custom";
                     customFilenameTemplate = "{{date}} {{hour}}{{minute}} {{title}}";
                     storeTitleInFilename = false;
-                    moveArchivedTasks = true;
                     autoCreateDefaultBasesFiles = true;
                     enableBases = true;
                     taskCreationDefaults = {
