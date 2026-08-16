@@ -1,11 +1,10 @@
 ---
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
-name: weekly deps bump
+name: Deps Update
 
-# Runs weekly (and on-demand) to bump non-flake sources - npins pins,
-# Obsidian, and any pi-* FOD hashes affected by those bumps - and opens
-# a PR. Flake inputs (nixpkgs, home-manager, den, etc.) are handled by
-# Renovate; this workflow only owns what Renovate can't see:
+# Bumps non-flake sources - npins pins, Obsidian, and pi-* FOD hashes -
+# and opens a PR. Flake inputs (nixpkgs, home-manager, den, etc.) are
+# handled by Renovate; this workflow only owns what Renovate can't see:
 #   npins/sources.json, packages/obsidian-*/default.nix, and the
 #   outputHash lines in the pi-* FOD packages.
 #
@@ -21,16 +20,23 @@ permissions: {}
 
 jobs:
   update:
-    name: bump npins, obsidian, pi-* hashes
+    name: Bump npins, Obsidian, pi-* Hashes
     runs-on: macos-latest
     timeout-minutes: 90
     permissions:
-      contents: write
-      pull-requests: write
+      packages: read
     steps:
+      - name: Generate Token
+        uses: actions/create-github-app-token@1b10c78c7865c340bc4f6099eb2f838309f1e8c3 # v3.1.1
+        id: app-token
+        with:
+          client-id: ${{ vars.TRASHBOT_APP_ID }}
+          private-key: ${{ secrets.TRASHBOT_APP_PRIVATE_KEY }}
+
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+          token: ${{ steps.app-token.outputs.token }}
 
       - uses: jdx/mise-action@dba19683ed58901619b14f395a24841710cb4925 # v4
 
@@ -62,12 +68,13 @@ jobs:
 
       - uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
         with:
-          commit-message: "chore(deps): weekly npins + obsidian + pi-* hash refresh"
-          title: "chore(deps): weekly npins + obsidian + pi-* hash refresh"
+          token: ${{ steps.app-token.outputs.token }}
+          commit-message: "chore(deps): bump npins + obsidian + pi-* hashes"
+          title: "chore(deps): bump npins + obsidian + pi-* hashes"
           body: |
-            Automated weekly bump of everything not managed by Renovate:
+            Automated bump of everything not managed by Renovate:
             - `npins/sources.json` - pi-*, ponytail, context7-pi, plugins
             - Obsidian version + asset hashes
             - `outputHash` for pi-* whole-build FODs
-          branch: deps/weekly-npins
+          branch: deps/npins-bump
           delete-branch: true
