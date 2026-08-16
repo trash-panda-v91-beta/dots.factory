@@ -97,7 +97,7 @@
             # Mode lives in the cursor (geometry-in-spirit statusline).
             # Shape + color per mode; highlight groups defined in the active rice.
             guicursor = "n-o-sm:block-GeometryCursorN,i-ci:ver25-GeometryCursorI,v-ve:block-GeometryCursorV,c:block-GeometryCursorC,r-cr:hor20-GeometryCursorR,t:block-GeometryCursorT";
-            foldcolumn = "1";
+            foldcolumn = "0";
             foldenable = true;
             foldlevel = 99;
             foldlevelstart = 99;
