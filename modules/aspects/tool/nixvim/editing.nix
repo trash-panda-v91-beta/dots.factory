@@ -242,7 +242,6 @@
               local errs, warns = dc[vim.diagnostic.severity.ERROR] or 0, dc[vim.diagnostic.severity.WARN] or 0
 
               local ft   = bo.filetype
-              local time = fn.strftime("%R")
 
               -- Filetype → jetpack-style glyph + color category.
               local FT = {
@@ -301,21 +300,21 @@
                 right[#right+1] = piece
               end
               if added   > 0 then right[#right+1] = string.format("%%#GeometryDiffAdd#▴%d",  added) end
+              if changed > 0 then right[#right+1] = string.format("%%#GeometryDiffMod#●%d",  changed) end
               if removed > 0 then right[#right+1] = string.format("%%#GeometryDiffDel#▿%d",  removed) end
               if errs    > 0 then right[#right+1] = string.format("%%#GeometryDiagErr#✕%d",  errs) end
               if warns   > 0 then right[#right+1] = string.format("%%#GeometryDiagWarn#⚠%d", warns) end
               if ft     ~= "" then
                 local entry = FT[ft]
                 if entry then
-                  right[#right+1] = string.format("%%#%s#%s", entry[2], entry[1])
+                  right[#right+1] = string.format("%%#GeometryFiletype#%s %%#%s#%s", ft, entry[2], entry[1])
                 else
                   right[#right+1] = string.format("%%#GeometryFiletype#%s", ft)
                 end
               end
-              right[#right+1] = "%#GeometryLocation#L%l:%v"
-              right[#right+1] = string.format("%%#GeometryTime#%s", time)
+              right[#right+1] = "%#GeometryLocation#%l:%v"
 
-              return left .. "%<%=" .. table.concat(right, " ") .. " "
+              return left .. "%<%=" .. table.concat(right, "  ") .. " "
             end
           '';
           content.inactive.__raw = ''
@@ -324,13 +323,6 @@
             end
           '';
         };
-        luaConfig.post = ''
-          -- Live clock: repaint statusline every 30s so time doesn't stale on idle.
-          local t = vim.uv.new_timer()
-          if t then t:start(30000, 30000, vim.schedule_wrap(function()
-            if vim.api.nvim_get_mode().mode ~= "c" then vim.cmd("redrawstatus") end
-          end)) end
-        '';
       };
       mini-tabline.enable = true;
 
