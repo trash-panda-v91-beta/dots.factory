@@ -53,6 +53,11 @@ For each comment you skip: be ready to explain why in one sentence if asked. You
 
 ### 5. Reply and resolve (GitHub Enterprise)
 
+**Before sending any reply**, run `leak-check` on the reply body. Reviewers see
+the PR, not your vault - never write `see ADR NNN`, `per the CONTEXT note`,
+`in the vault`, or any path they cannot open. If they need the reasoning,
+put the reasoning in the reply directly.
+
 `gh pr comment` posts a top-level comment, not a reply on a review thread. For inline replies, hit the API directly. On GitHub Enterprise Server the PR number MUST be in the path - `repos/{owner}/{repo}/pulls/comments/{id}/replies` (no PR number) returns 404 on GHES 3.19.
 
 **Reply to one comment:**
@@ -104,6 +109,12 @@ git add <files> && git commit -m "fix: address PR review comments" && git push
 ```
 
 One commit per logical group of fixes, not one per comment.
+
+### 7. Loop back if the fix needs real work
+
+Applying a review comment often means writing new code, not just tweaking a line.
+When that happens, hand off to `coding` for the next cycle - red / green /
+refactor, then back through `review` before pushing.
 
 ## Signal vs noise at a glance
 

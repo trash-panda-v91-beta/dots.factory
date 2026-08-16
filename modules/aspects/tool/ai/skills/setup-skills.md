@@ -1,122 +1,88 @@
 ---
 name: setup-skills
-description: Onboard a repo into the vault-based metadata workflow. Creates the project's CONTEXT note in the appropriate vault (mist for personal, nil for work). Run once per repo before using other engineering skills.
-disable-model-invocation: true
+description: Onboard the current repo into the vault workflow - write its CONTEXT note. Use when a repo has no CONTEXT yet, when the user says "onboard this repo" / "set up skills" / "create the CONTEXT note", or when another skill (orient, coding, domain-modeling, diagnosing-bugs) discovers a missing CONTEXT and needs to bootstrap.
 ---
 
-# Setup Skills
+# setup-skills
 
-Onboard the **current repo** into the vault-based metadata workflow. Per-repo metadata (CONTEXT, ADRs, ticket enrichment) lives in your Obsidian vault under `Coding/`, not in the repo itself.
+Onboard the current repo: interview the user briefly, write `<repo>.md` in the
+right vault. That's it.
 
-## What this skill does
+Everything about vault selection, structure, and CONTEXT frontmatter lives in
+the `vault` skill.
 
-1. Detect which vault to use (mist or nil) from the git remote
-2. Pick the project's canonical name (default: repo name)
-3. Create the project's main note: `Coding/<project>.md` with CONTEXT frontmatter
-4. (Optional) Append an `## Agent skills` block to `CLAUDE.md` / `AGENTS.md` referencing the vault notes — this is the only thing written into the repo, and it's just a pointer
+## 1. Pick the vault
 
-## Prerequisites
-
-- Obsidian is running (for `obsidian-cli`)
-- For work repos: `vault-nil` skill available (CMB only)
-- For personal repos: `vault-mist` skill available
-
-## Process
-
-### 1. Detect the repo and pick the vault
+Follow the `vault` skill's selection rule. On PMB this is always `mist`; on CMB
+`vault-nil` overrides to `nil` for work repos.
 
 ```bash
-git remote -v
-basename "$(git rev-parse --show-toplevel)"
+REPO=$(basename "$(git rev-parse --show-toplevel)")
 ```
 
-Decision rule:
-- Remote is on the corp GitHub host (internal) → **nil vault** (`$VAULTS_DIR/nil`). See `vault-nil` skill.
-- Otherwise (personal `github.com`, no remote, etc.) → **mist vault** (`$VAULTS_DIR/mist`). See `vault-mist` skill.
+Ask the user if the canonical name should differ from the repo directory (e.g.
+a family of related repos sharing a project label). Default: use the repo name.
 
-The user can override the choice.
-
-### 2. Pick the project name
-
-Default: the repo's directory name (e.g. `dots.factory`, `nebular-grid`).
-
-Confirm with the user — they may want to use a different canonical name (e.g. several related repos sharing a project label).
-
-### 3. Check for existing notes
+## 2. Bail if already onboarded
 
 ```bash
-ls "$VAULT/Coding/" | grep "^<project>"
+test -f "$VAULTS_DIR/$VAULT/$REPO.md" && { echo "already onboarded"; exit 0; }
 ```
 
-If `<project>.md` already exists, the repo is already onboarded — just confirm and exit. Don't overwrite.
+Never overwrite an existing CONTEXT.
 
-### 4. Create the CONTEXT note
+## 3. Interview
 
-Write `<vault>/Coding/<project>.md`:
+Three short questions - the user is likely at a keyboard, not writing an essay:
 
-```markdown
+1. **What does this repo do?** (one paragraph)
+2. **Any domain terms an agent should know?** (glossary seed)
+3. **Any conventions or gotchas?** (constraints seed)
+
+Skip a question if the user has nothing. Short beats padded.
+
+## 4. Write the note
+
+```bash
+cat > "$VAULTS_DIR/$VAULT/$REPO.md" <<EOF
 ---
-project: <name>
+project: $REPO
+projects:
+  - "[[$REPO]]"
 type: context
 status: active
-tags: [coding, project/<name>]
+tags: [coding]
+date: $(date +%Y-%m-%d)
 ---
 
-# <name>
+# $REPO
 
-<one-paragraph project description>
+<paragraph from Q1>
 
 ## Domain
 
-<key terms, ubiquitous language>
+<Q2 answers, one term per line>
 
 ## Constraints
 
-<things the agent should know — invariants, gotchas>
+<Q3 answers>
 
 ## Links
 
-- Repo: <url>
-- (Jira project, ticket tracker, etc.)
+- Repo: $(git remote get-url origin 2>/dev/null || echo "<none>")
+EOF
 ```
 
-Interview the user briefly to fill in:
-- One-paragraph description (ask: "what does this repo do?")
-- Key terms (ask: "any domain terms an agent should know?")
-- Constraints (ask: "any conventions or gotchas?")
+Follow the vault writing rule: brief and human, dev-note voice, hyphen-minus
+only. See `vault` skill. **Link everything that could plausibly become a note**
+in the Domain and Constraints sections - technologies, tools, vendors, people,
+domain terms, patterns. Cast wide. Unresolved links become useful backlinks
+later.
 
-Keep it short — they can grow the note over time.
-
-### 5. (Optional) Add a CLAUDE.md pointer
-
-Ask the user: "Add an `## Agent skills` block to `CLAUDE.md` pointing to the vault?"
-
-If yes, append (or update existing) in `CLAUDE.md`:
-
-```markdown
-## Agent skills
-
-This repo's metadata (CONTEXT, ADRs, ticket notes) lives in the **<mist|nil> vault** under `Coding/<project>`. Use the `vault-<mist|nil>` skill to read or update them. Do not create `docs/adr/` or `CONTEXT.md` in this repo.
-```
-
-### 6. Done
+## 5. Done
 
 Tell the user:
-- Vault note created at `<vault>/Coding/<project>.md`
-- Future ADRs go in `Coding/<project> - ADR NNN - <slug>.md`
-- Future issue notes go in `Coding/<project> - <issue-key> - <slug>.md`
-- The `vault-<mist|nil>` skill explains the conventions
 
-## Triage labels
-
-Triage labels (the 5-role state machine in the `triage` skill) map to your tracker:
-
-- **GitHub Issues**: use the role names as labels — `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`. Create them on first use if missing.
-- **Jira CAT**: there are no labels — use transition states. Suggested mapping (the `triage` skill should follow this on CMB):
-  - `needs-triage` → state `Ready` not yet groomed (use a comment "needs triage")
-  - `needs-info` → state `Blocked` with a comment requesting info
-  - `ready-for-agent` → state `Ready` with comment "agent-ready"
-  - `ready-for-human` → state `Ready`
-  - `wontfix` → state `Cancel`
-
-Don't overengineer — most personal repos don't need triage; this only matters when you actually run `/triage`.
+- CONTEXT note at `$VAULTS_DIR/$VAULT/$REPO.md`
+- Future ADRs: `<repo> - ADR NNN - <slug>.md` at vault root (see `vault`)
+- The `orient` skill will pick it up next session

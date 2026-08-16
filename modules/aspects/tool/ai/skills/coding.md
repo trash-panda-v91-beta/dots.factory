@@ -1,9 +1,9 @@
 ---
-name: tdd
-description: Test-driven development. Use when the user wants to build features or fix bugs test-first, mentions "red-green-refactor", or wants integration tests.
+name: coding
+description: The coding discipline - red / green / refactor as the inner cycle, tight feedback loop (typecheck + single-file test on every cycle, full suite once at the end), commit at cycle boundaries, self-review before opening a PR. Auto-fires when the user wants to implement a feature, add or build something new, fix a bug, write a function/method/class, or says "start coding" / "let's code this" / "add integration tests" / "red-green-refactor" / "test-first". Skip for trivial edits (typos, renames, comment tweaks, config bumps).
 ---
 
-> **Per-repo context lives in the Obsidian vault, not the repo.** Use the `vault-mist` skill (personal repos) or `vault-nil` skill (CMB work repos) to read CONTEXT and ADRs from `Coding/<project>.md` and `Coding/<project> - ADR NNN - *.md`. If the project has no vault note yet, run `/setup-skills` first. References below to `CONTEXT.md` / `docs/adr/` mean the vault equivalents.
+> **Per-repo context lives in the Obsidian vault, not the repo.** See the `vault` skill for reading CONTEXT and ADRs. Run `/setup-skills` on a repo with no CONTEXT note yet.
 
 # Test-Driven Development
 
@@ -52,7 +52,7 @@ Before writing any code:
 
 - [ ] Confirm with user what interface changes are needed
 - [ ] Confirm with user which behaviors to test (prioritize)
-- [ ] Identify opportunities for deep modules (small interface, deep implementation) — run the `/codebase-design` skill for the vocabulary and the testability checks
+- [ ] Identify opportunities for deep modules (small interface, deep implementation) - run the `/codebase-design` skill for the vocabulary and the testability checks
 - [ ] List the behaviors to test (not implementation steps)
 - [ ] Get user approval on the plan
 
@@ -108,3 +108,26 @@ After all tests pass, look for [refactor candidates](refactoring.md):
 [ ] Code is minimal for this test
 [ ] No speculative features added
 ```
+
+## Loop discipline
+
+During an implementation session, keep the feedback loop tight:
+
+- **Typecheck often.** After each cycle if the language has one - not just at the end.
+- **Run the single test file** on every cycle. Instant.
+- **Run the full test suite once** before considering the session done, and again after any
+  cross-cutting refactor. On cat/* repos and dots.factory that's `mise run test`.
+- **Typecheck / lint before PR** with the repo's pre-PR check task (`mise run check` on
+  cat/* and dots.factory; see repo AGENTS.md elsewhere).
+- **Commit at cycle boundaries** to the current branch. One passing cycle per commit is fine.
+  Small commits beat one heroic diff.
+- **Self-review before opening a PR.** Run the `review` skill - it walks the diff for
+  correctness, dead code, missing tests, and over-engineering.
+- **After the PR is out**, `review-comments` handles bot / human feedback rounds.
+
+## Checking library APIs
+
+Before implementing against a library or framework - reaching for a specific method,
+prop, config option, or a recent version's syntax - use `context7-docs` to verify the
+current API. Do not rely on training data. Library APIs churn faster than the model's
+training cutoff.

@@ -19,14 +19,8 @@ work.
 
 ## Vault Routing
 
-Detect which vault to use from the git remote:
-
-```bash
-git remote get-url origin 2>/dev/null
-```
-
-- Remote is on the corp GitHub host (work) → **nil vault** (`vault=nil`)
-- Remote is on `github.com` or there is no remote → **mist vault** (`vault=mist`)
+See the `vault` skill for vault selection (default `mist`; `vault-nil` on CMB
+routes work repos to `nil`).
 
 ## Saving to Nil (Work Repos)
 
