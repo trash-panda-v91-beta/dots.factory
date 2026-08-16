@@ -56,6 +56,8 @@ jobs:
         run: nix run nixpkgs#npins -- update
 
       - name: Bump Obsidian
+        env:
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
         run: packages/update-obsidian.sh
 
       - name: Refresh pi-* FOD hashes
