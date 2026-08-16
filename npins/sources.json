@@ -9,7 +9,7 @@
       },
       "pre_releases": false,
       "version_upper_bound": null,
-      "release_prefix": null,
+      "release_prefix": "@upstash/context7-pi@",
       "submodules": false,
       "version": "@upstash/context7-pi@0.1.2",
       "revision": "b250c2515694eee4b6df4db82fa056df9ed3e306",
