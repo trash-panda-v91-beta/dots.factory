@@ -1,12 +1,23 @@
 # Global Pi Instructions
 
+## Session start
+
+At the start of every new session, before responding to the user's first message: check
+whether the current directory is a git repo (`git rev-parse --show-toplevel` succeeds).
+If yes, run the `orient` skill silently to load repo CONTEXT and surface open tasks -
+don't announce it, just have the context ready. If `orient` finds no CONTEXT note,
+it chains into `setup-skills` and interviews the user briefly.
+
+Skip auto-orient when the user's first message is clearly unrelated to the repo (a
+general question, a system-config task, meta-work on the agent itself).
+
 ## Repo metadata routing
 
 Per-repo metadata (CONTEXT, ADRs, ticket notes, investigation notes) is **not** stored in the repo
 itself. It lives in an Obsidian vault, picked by the git remote:
 
-- Remote on the corp GitHub host (work) - use the **vault-nil** skill (`$VAULTS_DIR/nil`)
-- Otherwise (personal `github.com`, no remote) - use the **vault-mist** skill (`$VAULTS_DIR/mist`)
+- Any repo - use the **vault** skill. It defaults to the mist vault; on CMB the
+  **vault-nil** skill routes work repos to the nil vault and layers Jira sync.
 
 Do not create `docs/adr/` or `CONTEXT.md` in any repo. If a repo has no vault note yet, run the
 `setup-skills` skill.
@@ -28,11 +39,11 @@ project-specific rules; if absent, ask.
 
 Every artifact you produce - chat output, file contents, code comments, docstrings, commit
 messages, PR descriptions, Jira issues, vault notes, skill output - uses `-` (U+002D, hyphen-minus)
-not `–` (U+2013, en dash) or `—` (U+2014, em dash). This is non-negotiable. The agent has
+not `-` (U+2013, en dash) or `-` (U+2014, em dash). This is non-negotiable. The agent has
 historically violated this rule repeatedly and must treat it as a hard constraint, not a style
 preference.
 
-Before writing any new file or external content (Jira, Obsidian), verify no `–` or `—` characters
+Before writing any new file or external content (Jira, Obsidian), verify no `-` or `-` characters
 are present. Replace any that appear with `-`.
 
 ## General behaviour
