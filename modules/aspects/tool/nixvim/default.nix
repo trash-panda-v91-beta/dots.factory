@@ -106,7 +106,7 @@
             listchars = "tab:▸ ,trail:·,nbsp:␣,extends:⋯,precedes:⋯";
             fillchars = "foldopen:▾,foldclose:▸,fold: ,foldsep: ,diff:╱,eob: ";
             matchtime = 1;
-            number = true;
+            number = false;
             relativenumber = true;
             scrolloff = 10;
             shiftwidth = 2;
