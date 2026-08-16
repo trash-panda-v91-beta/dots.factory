@@ -324,7 +324,34 @@
           '';
         };
       };
-      mini-tabline.enable = true;
+      mini-tabline = {
+        enable = true;
+        settings = {
+          show_icons = true;
+          tabpage_section = "left";
+          format.__raw = ''
+            function(buf_id, label)
+              local FT = {
+                rust = "⊃", ruby = "◆", swift = "◁",
+                python = "⌊", lua = "⨀",
+                javascript = "◫", typescript = "◫",
+                javascriptreact = "◫", typescriptreact = "◫",
+                c = "ℂ", cpp = "ℂ", dart = "◁", nix = "✶",
+                dockerfile = "◧", go = "∩",
+                haskell = "❯L", julia = "◎", elixir = "△",
+                markdown = "≡", json = "◇", yaml = "≣", toml = "≡",
+                sh = "▶", bash = "▶", zsh = "▶", fish = "▶", nu = "▶",
+                vim = "◐", html = "◈", css = "◐", scss = "◐",
+                make = "▤", sql = "▦",
+              }
+              local ft = vim.bo[buf_id].filetype
+              local glyph = FT[ft] or "◇"
+              local mod = vim.bo[buf_id].modified and " ●" or ""
+              return string.format(" %s %s%s ", glyph, label, mod)
+            end
+          '';
+        };
+      };
 
       # Completion (replaces blink-cmp)
       mini-completion = {
