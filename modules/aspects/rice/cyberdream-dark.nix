@@ -160,8 +160,6 @@ in
             set("GeometryStatusBracket", { fg = "#7b8496" })
             set("GeometryStatusMod",     { fg = "#f1ff5e", italic = true })
             set("GeometryStatusDel",     { fg = "#ff6e5e", italic = true })
-            -- Statusline: time (right edge, dimmed like starship [time])
-            set("GeometryTime",       { fg = "#7b8496", italic = true })
             set("GeometryDiffAdd",   { fg = "#5eff6c", italic = true })
             set("GeometryDiffMod",   { fg = "#f1ff5e", italic = true })
             set("GeometryDiffDel",   { fg = "#ff6e5e", italic = true })
