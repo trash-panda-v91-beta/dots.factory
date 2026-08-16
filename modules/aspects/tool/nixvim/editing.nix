@@ -601,7 +601,7 @@
               enabled = true;
               if_many = false;
             };
-            multilines.enabled = true;
+            multilines.enabled = false;
             show_all_diags_on_cursorline = false;
             enable_on_insert = false;
             virt_texts.priority = 2048;
