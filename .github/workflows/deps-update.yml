@@ -84,5 +84,5 @@ jobs:
           gh pr create \
             --title "chore(deps): bump npins + pi-* hashes" \
             --body-file /tmp/pr-body.md \
-            --label deps-update \
+            --label area/ci \
             --head "$branch"
