@@ -15,13 +15,21 @@ Create a PR with `gh pr create`. Write it like a note to a teammate, not like do
 ```bash
 git branch --show-current
 git status --porcelain
-git log <base>..HEAD --oneline           # what is going in
+git fetch origin                          # always - base may have moved
+git log <base>..HEAD --oneline            # what is going in
 gh pr list --head "$(git branch --show-current)"  # already open?
 ```
 
-If on `main` / `master` / `trunk`: cut a feature branch first. Derive the name from the intended
-title (kebab-case, optional conventional-commit prefix). If there are uncommitted changes, ask
-whether to include them - don't silently `git add -A`.
+If on `main` / `master` / `trunk`: `git pull --ff-only` first, then cut the feature branch from
+the fresh tip. Derive the name from the intended title (kebab-case, optional conventional-commit
+prefix). If there are uncommitted changes, ask whether to include them - don't silently `git add -A`.
+
+If the branch already exists but was cut from a stale base (`git log <base>..HEAD` shows the base
+has moved on since), rebase onto the up-to-date remote base before pushing:
+
+```bash
+git rebase origin/main    # or origin/master, origin/trunk
+```
 
 Read the diff before writing the body. If a vault note gives you background, use it for your own
 understanding only.
