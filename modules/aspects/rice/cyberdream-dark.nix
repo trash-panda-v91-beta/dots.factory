@@ -181,6 +181,18 @@ in
             set("GeometryLocation",  { fg = "#7b8496", italic = true })
 
             set("MiniStatuslineInactive", { fg = "#7b8496" })
+
+            -- Tabline: geometry-style tabs with raised active/modified buttons.
+            -- Active tab pops via bgHighlight; modified overlays yellow across all states.
+            set("MiniTablineCurrent",         { fg = "#5ea1ff", bg = "#3c4048", bold = true })
+            set("MiniTablineVisible",         { fg = "#ffffff", italic = true })
+            set("MiniTablineHidden",          { fg = "#7b8496", italic = true })
+            set("MiniTablineModifiedCurrent", { fg = "#f1ff5e", bg = "#3c4048", bold = true, italic = true })
+            set("MiniTablineModifiedVisible", { fg = "#f1ff5e", italic = true })
+            set("MiniTablineModifiedHidden",  { fg = "#f1ff5e", italic = true })
+            set("MiniTablineFill",            { link = "Normal" })
+            set("MiniTablineTabpagesection",  { fg = "#16181a", bg = "#bd5eff", bold = true })
+            set("MiniTablineTrunc",           { fg = "#7b8496", italic = true })
           end
 
           -- Apply now (colorscheme is already loaded at extraConfigLua time)
