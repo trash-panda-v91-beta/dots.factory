@@ -9,12 +9,12 @@
       },
       "pre_releases": false,
       "version_upper_bound": null,
-      "release_prefix": null,
+      "release_prefix": "@upstash/context7-pi@",
       "submodules": false,
-      "version": "v1.0.30",
-      "revision": "f35c002beeada90ed6fdddf19c0345f9f41cccdb",
-      "url": "https://api.github.com/repos/upstash/context7/tarball/refs/tags/v1.0.30",
-      "hash": "sha256-cNm/NROFHy+3cOozzvC1WUhGb7bwccvOIiMt30lAN3E="
+      "version": "@upstash/context7-pi@0.1.2",
+      "revision": "b250c2515694eee4b6df4db82fa056df9ed3e306",
+      "url": "https://api.github.com/repos/upstash/context7/tarball/b250c2515694eee4b6df4db82fa056df9ed3e306",
+      "hash": "sha256-BqssEX4AcqOJJRe4H0ChbpCJE2Zw1TsOdL7sqc8kv2s="
     },
     "koda-nvim": {
       "type": "Git",
