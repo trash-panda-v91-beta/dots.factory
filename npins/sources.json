@@ -29,6 +29,64 @@
       "url": "https://github.com/oskarnurm/koda.nvim/archive/a7da3ced59eadafbda6eb4d7f7e2a6a3d9ecf858.tar.gz",
       "hash": "sha256-OiWW7c+cd/MioepNN40pFO3hTAm9ov80I1mVYmTW428="
     },
+    "obsidian-minimal-settings-main": {
+      "type": "MutableUrl",
+      "update_url": "https://github.com/kepano/obsidian-minimal-settings/releases/latest/download/main.js",
+      "unpack": false,
+      "url": "https://release-assets.githubusercontent.com/github-production-release-asset/312934934/6e84a6f2-8b06-4520-a02b-56f3c4738081?sp=r&sv=2018-11-09&sr=b&spr=https&se=2026-08-16T20%3A35%3A00Z&rscd=attachment%3B+filename%3Dmain.js&rsct=application%2Foctet-stream&skoid=96c2d410-5711-43a1-aedd-ab1947aa7ab0&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skt=2026-08-16T19%3A34%3A09Z&ske=2026-08-16T20%3A35%3A00Z&sks=b&skv=2018-11-09&sig=KwZWy2HVYtVNM1NTqOb%2FfvlVA6krivYoacFd9UtzR%2Bo%3D&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmVsZWFzZS1hc3NldHMuZ2l0aHVidXNlcmNvbnRlbnQuY29tIiwia2V5Ijoia2V5MSIsImV4cCI6MTc4NjkxMDU3NSwibmJmIjoxNzg2OTEwMjc1LCJwYXRoIjoicmVsZWFzZWFzc2V0cHJvZHVjdGlvbi5ibG9iLmNvcmUud2luZG93cy5uZXQifQ.MqZjwcLk4zChNrb8dI5X0uB8msWBx5wTDZWsXc6F8fg&response-content-disposition=attachment%3B%20filename%3Dmain.js&response-content-type=application%2Foctet-stream",
+      "hash": "sha256-91TgzmUj5DO/+OeZWoSPfX+sIFOZ+as7ElhDAmH9kMQ="
+    },
+    "obsidian-minimal-settings-manifest": {
+      "type": "MutableUrl",
+      "update_url": "https://github.com/kepano/obsidian-minimal-settings/releases/latest/download/manifest.json",
+      "unpack": false,
+      "url": "https://release-assets.githubusercontent.com/github-production-release-asset/312934934/e8f49dfb-fb80-4435-8882-52fe870ed229?sp=r&sv=2018-11-09&sr=b&spr=https&se=2026-08-16T20%3A49%3A07Z&rscd=attachment%3B+filename%3Dmanifest.json&rsct=application%2Foctet-stream&skoid=96c2d410-5711-43a1-aedd-ab1947aa7ab0&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skt=2026-08-16T19%3A48%3A47Z&ske=2026-08-16T20%3A49%3A07Z&sks=b&skv=2018-11-09&sig=QNo5NH8htNYUHv9BsqLo0329wXszdOX9sFtpGvDdTmw%3D&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmVsZWFzZS1hc3NldHMuZ2l0aHVidXNlcmNvbnRlbnQuY29tIiwia2V5Ijoia2V5MSIsImV4cCI6MTc4NjkxMDU3NiwibmJmIjoxNzg2OTEwMjc2LCJwYXRoIjoicmVsZWFzZWFzc2V0cHJvZHVjdGlvbi5ibG9iLmNvcmUud2luZG93cy5uZXQifQ.luLhv35cxF4ARI4jWM0xP3b1PjC0Ufh98jB4hQCvCEA&response-content-disposition=attachment%3B%20filename%3Dmanifest.json&response-content-type=application%2Foctet-stream",
+      "hash": "sha256-IDj5wfXKAm68Hz4Va62XxnHSxAGiBxg4RQjvcgcejF8="
+    },
+    "obsidian-minimal-settings-styles": {
+      "type": "MutableUrl",
+      "update_url": "https://github.com/kepano/obsidian-minimal-settings/releases/latest/download/styles.css",
+      "unpack": false,
+      "url": "https://release-assets.githubusercontent.com/github-production-release-asset/312934934/597dd625-5b4b-4bbc-ab8f-bc2d270e597e?sp=r&sv=2018-11-09&sr=b&spr=https&se=2026-08-16T20%3A53%3A38Z&rscd=attachment%3B+filename%3Dstyles.css&rsct=application%2Foctet-stream&skoid=96c2d410-5711-43a1-aedd-ab1947aa7ab0&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skt=2026-08-16T19%3A52%3A53Z&ske=2026-08-16T20%3A53%3A38Z&sks=b&skv=2018-11-09&sig=Bb%2BAtSPw0nO3jEWe2qUZTGu6Cyb17WULSZhpzWRuphE%3D&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmVsZWFzZS1hc3NldHMuZ2l0aHVidXNlcmNvbnRlbnQuY29tIiwia2V5Ijoia2V5MSIsImV4cCI6MTc4NjkxMDU3NywibmJmIjoxNzg2OTEwMjc3LCJwYXRoIjoicmVsZWFzZWFzc2V0cHJvZHVjdGlvbi5ibG9iLmNvcmUud2luZG93cy5uZXQifQ.FEMzcSL2tP4mhkrNQ_AzzjNwuPb1mK3nKp1vDef4EjQ&response-content-disposition=attachment%3B%20filename%3Dstyles.css&response-content-type=application%2Foctet-stream",
+      "hash": "sha256-UAhHYNqSelv1rBudO5YNxS4dCjv2kOVN+PTXb4ISYow="
+    },
+    "obsidian-minimal-theme": {
+      "type": "GitRelease",
+      "repository": {
+        "type": "GitHub",
+        "owner": "kepano",
+        "repo": "obsidian-minimal"
+      },
+      "pre_releases": false,
+      "version_upper_bound": null,
+      "release_prefix": null,
+      "submodules": false,
+      "version": "9.0.2",
+      "revision": "338a7274c7d3b84042207d70f512874b6af0a9d4",
+      "url": "https://api.github.com/repos/kepano/obsidian-minimal/tarball/refs/tags/9.0.2",
+      "hash": "sha256-9ASmzalN8xcwQHi8uarVZ9IHXlb6QLn7AE2jUcAvdyM="
+    },
+    "obsidian-tasknotes-main": {
+      "type": "MutableUrl",
+      "update_url": "https://github.com/callumalpass/tasknotes/releases/latest/download/main.js",
+      "unpack": false,
+      "url": "https://release-assets.githubusercontent.com/github-production-release-asset/985542247/812351a6-7953-4727-9bed-4ebf3f1aa95e?sp=r&sv=2018-11-09&sr=b&spr=https&se=2026-08-16T20%3A57%3A01Z&rscd=attachment%3B+filename%3Dmain.js&rsct=application%2Foctet-stream&skoid=96c2d410-5711-43a1-aedd-ab1947aa7ab0&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skt=2026-08-16T19%3A56%3A51Z&ske=2026-08-16T20%3A57%3A01Z&sks=b&skv=2018-11-09&sig=SmhLl9aY29DKRcABTg9uweokZ8WhpmUgEwXYzljtxJo%3D&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmVsZWFzZS1hc3NldHMuZ2l0aHVidXNlcmNvbnRlbnQuY29tIiwia2V5Ijoia2V5MSIsImV4cCI6MTc4NjkxMDU1MSwibmJmIjoxNzg2OTEwMjUxLCJwYXRoIjoicmVsZWFzZWFzc2V0cHJvZHVjdGlvbi5ibG9iLmNvcmUud2luZG93cy5uZXQifQ.OoG5PSzcdDMw4ld8RpbTdpGnwUMLXnYrVFW1J-VqOOY&response-content-disposition=attachment%3B%20filename%3Dmain.js&response-content-type=application%2Foctet-stream",
+      "hash": "sha256-eHZMCaZN5pGOnWESJ55yzPvK7OIY+WF1hTTrp5Z4RqE="
+    },
+    "obsidian-tasknotes-manifest": {
+      "type": "MutableUrl",
+      "update_url": "https://github.com/callumalpass/tasknotes/releases/latest/download/manifest.json",
+      "unpack": false,
+      "url": "https://release-assets.githubusercontent.com/github-production-release-asset/985542247/346c9a50-f9a9-4985-9d61-8cec0af5d7ee?sp=r&sv=2018-11-09&sr=b&spr=https&se=2026-08-16T20%3A35%3A00Z&rscd=attachment%3B+filename%3Dmanifest.json&rsct=application%2Foctet-stream&skoid=96c2d410-5711-43a1-aedd-ab1947aa7ab0&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skt=2026-08-16T19%3A34%3A24Z&ske=2026-08-16T20%3A35%3A00Z&sks=b&skv=2018-11-09&sig=5gBdKqXMpCNEKPusUul7kI%2Frzr%2FisU4DIQPj29fIJRw%3D&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmVsZWFzZS1hc3NldHMuZ2l0aHVidXNlcmNvbnRlbnQuY29tIiwia2V5Ijoia2V5MSIsImV4cCI6MTc4NjkxMDUzOSwibmJmIjoxNzg2OTEwMjM5LCJwYXRoIjoicmVsZWFzZWFzc2V0cHJvZHVjdGlvbi5ibG9iLmNvcmUud2luZG93cy5uZXQifQ.VgAp0HPxXp0DZFBEdj530EGGyvM-tW0WdfpEIMSilnE&response-content-disposition=attachment%3B%20filename%3Dmanifest.json&response-content-type=application%2Foctet-stream",
+      "hash": "sha256-/OyoRG1DY3jIcMh/NEsJmKog9xm8zvgrovr0JmifB7A="
+    },
+    "obsidian-tasknotes-styles": {
+      "type": "MutableUrl",
+      "update_url": "https://github.com/callumalpass/tasknotes/releases/latest/download/styles.css",
+      "unpack": false,
+      "url": "https://release-assets.githubusercontent.com/github-production-release-asset/985542247/8bfc0a35-0886-4714-bdcb-5e4931d4a751?sp=r&sv=2018-11-09&sr=b&spr=https&se=2026-08-16T20%3A54%3A53Z&rscd=attachment%3B+filename%3Dstyles.css&rsct=application%2Foctet-stream&skoid=96c2d410-5711-43a1-aedd-ab1947aa7ab0&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skt=2026-08-16T19%3A54%3A50Z&ske=2026-08-16T20%3A54%3A53Z&sks=b&skv=2018-11-09&sig=tbe53NtE%2FYLYaMHhq6tld7O3e3AEWQJeUNzNOcbpkeg%3D&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmVsZWFzZS1hc3NldHMuZ2l0aHVidXNlcmNvbnRlbnQuY29tIiwia2V5Ijoia2V5MSIsImV4cCI6MTc4NjkxMDU3MCwibmJmIjoxNzg2OTEwMjcwLCJwYXRoIjoicmVsZWFzZWFzc2V0cHJvZHVjdGlvbi5ibG9iLmNvcmUud2luZG93cy5uZXQifQ.VwvKssRuwjCU8LxENE7lrio1qZK2eBQqiEG2BalTJmk&response-content-disposition=attachment%3B%20filename%3Dstyles.css&response-content-type=application%2Foctet-stream",
+      "hash": "sha256-tnHJ6Da8Dw8hGH/Z5+6lP4TXW2mg/4RJJBIiAGKXp8Y="
+    },
     "pi-lsp": {
       "type": "GitRelease",
       "repository": {
