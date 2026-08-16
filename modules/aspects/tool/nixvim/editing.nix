@@ -754,68 +754,6 @@
         return string.format("◐ +%d ─ %s", n, first)
       end
       vim.opt.foldtext = "v:lua.GeometryFoldText()"
-
-      -- Winbar breadcrumb: mirrors starship [directory] grammar.
-      --   ⌂  ⌈ dots.factory  tool/nixvim  editing.nix
-      _G.GeometryWinbar = function()
-        local buf = vim.api.nvim_win_get_buf(vim.g.statusline_winid or 0)
-        if vim.bo[buf].buftype ~= "" then return "" end
-        local basename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(buf), ":t")
-        if basename == "" then return "" end
-
-        local repo_root = vim.b[buf].geometry_repo_root
-        if repo_root == nil then
-          repo_root = vim.fs.root(buf, ".git") or ""
-          vim.b[buf].geometry_repo_root = repo_root
-        end
-
-        local full = vim.api.nvim_buf_get_name(buf)
-        local parts = {}
-        if repo_root ~= "" and full:sub(1, #repo_root) == repo_root then
-          parts[#parts+1] = "%#GeometryWinbarHome#⌂ "
-          parts[#parts+1] = "%#GeometryWinbarSep#⌈ "
-          parts[#parts+1] = "%#GeometryWinbarRoot#" .. vim.fn.fnamemodify(repo_root, ":t")
-          local sub = vim.fn.fnamemodify(full:sub(#repo_root + 2), ":h")
-          if sub ~= "" and sub ~= "." then
-            parts[#parts+1] = "  %#GeometryWinbarSep#›  %#GeometryWinbarPath#" .. sub
-          end
-          parts[#parts+1] = "  %#GeometryWinbarSep#›  %#GeometryWinbarFile#" .. basename
-        else
-          parts[#parts+1] = "%#GeometryWinbarFile#" .. basename
-        end
-        return " " .. table.concat(parts, "")
-      end
-      vim.opt.winbar = "%!v:lua.GeometryWinbar()"
-
-      -- Sign-column mode dot: colored ◎ on the current line, tinted per mode.
-      -- Compensates for terminals (herdr) that block OSC 12 cursor-color changes.
-      local ns = vim.api.nvim_create_namespace("geometry_mode_dot")
-      local mode_sign_hl = {
-        n = "GeometryModeN", i = "GeometryModeI", v = "GeometryModeV",
-        V = "GeometryModeV", ["\22"] = "GeometryModeV",
-        s = "GeometryModeV", S = "GeometryModeV", ["\19"] = "GeometryModeV",
-        R = "GeometryModeR", c = "GeometryModeC", r = "GeometryModeC",
-        ["!"] = "GeometryModeC", t = "GeometryModeT",
-      }
-      local function paint_mode_dot()
-        local buf = vim.api.nvim_get_current_buf()
-        if not vim.api.nvim_buf_is_valid(buf) then return end
-        if vim.bo[buf].buftype ~= "" then
-          pcall(vim.api.nvim_buf_clear_namespace, buf, ns, 0, -1)
-          return
-        end
-        local hl = mode_sign_hl[vim.fn.mode():sub(1, 1)] or "GeometryModeN"
-        local row = vim.api.nvim_win_get_cursor(0)[1] - 1
-        pcall(vim.api.nvim_buf_clear_namespace, buf, ns, 0, -1)
-        pcall(vim.api.nvim_buf_set_extmark, buf, ns, row, 0, {
-          sign_text = "◎",
-          sign_hl_group = hl,
-          priority = 100,
-        })
-      end
-      vim.api.nvim_create_autocmd({ "ModeChanged", "CursorMoved", "CursorMovedI", "BufEnter" }, {
-        callback = vim.schedule_wrap(paint_mode_dot),
-      })
     '';
   };
 }

@@ -172,12 +172,6 @@ in
             set("GeometryLangBlue",   { fg = "#5ea1ff", italic = true })
             set("GeometryLangPurple", { fg = "#bd5eff", italic = true })
 
-            -- Winbar breadcrumb (mirrors starship [directory] palette).
-            set("GeometryWinbarHome", { fg = "#7b8496", italic = true })
-            set("GeometryWinbarRoot", { fg = "#5ea1ff", bold = true })
-            set("GeometryWinbarPath", { fg = "#5ea1ff", italic = true })
-            set("GeometryWinbarFile", { fg = "#5ea1ff", bold = true })
-            set("GeometryWinbarSep",  { fg = "#3c4048" })
             set("GeometryLocation",  { fg = "#7b8496", italic = true })
 
             set("MiniStatuslineInactive", { fg = "#7b8496" })
