@@ -103,12 +103,14 @@ export default function (pi: ExtensionAPI) {
 					const usage = ctx.getContextUsage();
 					const ctxPct = usage?.percent != null ? `${Math.round(usage.percent)}%` : "";
 
-					// Left: repo (accent bold)  △ branch (accent italic)
+					// Left: repo (accent bold, blue)  △ branch (borderAccent italic, cyan)
+					// Two shades of the cool family - harmonic, but the eye scans them
+					// as separate words instead of one blue blob.
 					const leftParts: string[] = [];
 					if (repo) leftParts.push(theme.fg("accent", theme.bold(repo)));
 					if (branch) {
 						leftParts.push(
-							`${theme.fg("accent", italic("△"))} ${theme.fg("accent", italic(branch))}`,
+							`${theme.fg("borderAccent", italic("△"))} ${theme.fg("borderAccent", italic(branch))}`,
 						);
 					}
 					const left = leftParts.join("  ");
