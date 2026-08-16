@@ -5,13 +5,16 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 
+GH_AUTH=()
+[[ -n "${GITHUB_TOKEN:-}" ]] && GH_AUTH=(-H "Authorization: Bearer $GITHUB_TOKEN")
+
 bump() {
   local dir=$1 repo=$2
   shift 2
   local files=("$@")
 
   local latest
-  latest=$(curl -fsSL "https://api.github.com/repos/$repo/releases/latest" | sed -n 's/.*"tag_name": *"\([^"]*\)".*/\1/p')
+  latest=$(curl -fsSL "${GH_AUTH[@]+${GH_AUTH[@]}}" "https://api.github.com/repos/$repo/releases/latest" | sed -n 's/.*"tag_name": *"\([^"]*\)".*/\1/p')
   local ver=${latest#v}
 
   local cur
@@ -41,7 +44,7 @@ bump obsidian-minimal-settings-plugin kepano/obsidian-minimal-settings main.js m
 bump_repo() {
   local dir=$1 repo=$2
   local latest
-  latest=$(curl -fsSL "https://api.github.com/repos/$repo/releases/latest" | sed -n 's/.*"tag_name": *"\([^"]*\)".*/\1/p')
+  latest=$(curl -fsSL "${GH_AUTH[@]+${GH_AUTH[@]}}" "https://api.github.com/repos/$repo/releases/latest" | sed -n 's/.*"tag_name": *"\([^"]*\)".*/\1/p')
   local cur
   cur=$(sed -n 's/.*rev = "\([^"]*\)";.*/\1/p' "$dir/default.nix")
   if [[ "$cur" == "$latest" ]]; then
