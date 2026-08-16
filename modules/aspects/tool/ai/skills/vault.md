@@ -225,7 +225,7 @@ obsidian-cli vault=$VAULT delete path="_tmp.base" silent
 ```
 
 Filter results client-side by `type` field. On nil, add `note.issue` to
-`properties:` and `order` to surface CAT keys.
+`properties:` and `order` to surface tracker keys.
 
 Bases filter/formula reference: `obsidian-bases` skill.
 

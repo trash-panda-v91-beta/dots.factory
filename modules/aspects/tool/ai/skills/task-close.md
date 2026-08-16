@@ -9,7 +9,7 @@ Close one task. Vault + tracker adapter if any.
 
 ## 1. Identify the task
 
-- **Already in context** (loaded by `orient` or referenced by name / CAT key):
+- **Already in context** (loaded by `orient` or referenced by name / tracker key):
   use it.
 - **User gives a tracker key** (e.g. a CAT / JIRA / GH issue key like `AAA-1234` or `#42`): find the vault note by that
   key.
@@ -36,15 +36,15 @@ root (`moveArchivedTasks = false` in home-manager).
 
 - **mist** - done.
 - **nil** - if the task has `issue:` set, hand off to `vault-nil`. It closes
-  the CAT ticket via the `jira-cli` closing recipe (the older `-RFixed` flag
+  the tracker ticket via the `jira-cli` closing recipe (the older `-RFixed` flag
   is broken - see `jira-cli` for the working transition sequence).
 
 If `issue:` is empty on nil (draft task, never promoted), skip the tracker
-step and just close the vault side. Warn the user that no CAT ticket existed.
+step and just close the vault side. Warn the user that no tracker ticket existed.
 
 ## 4. Report
 
 - vault: status = done
-- tracker: closed with CAT key (if adapter fired)
+- tracker: closed with tracker key (if adapter fired)
 - if the task had `blockedBy` relations on other open tasks - name them so the
   user can unblock the successors if wanted.

@@ -1,6 +1,6 @@
 ---
 name: task-new
-description: Create a new task in the current vault - and, on vaults with a tracker adapter, in the tracker too. Auto-fires when the user says "make a task", "capture this as a task", "add to backlog", "track this", "new ticket for", "create an issue for", "note this as a task", "new bug for X", "add a story for". Uses the universal task shape from the `vault` skill; on nil the vault-jira adapter creates the CAT ticket in the same pass.
+description: Create a new task in the current vault - and, on vaults with a tracker adapter, in the tracker too. Auto-fires when the user says "make a task", "capture this as a task", "add to backlog", "track this", "new ticket for", "create an issue for", "note this as a task", "new bug for X", "add a story for". Uses the universal task shape from the `vault` skill; on nil the vault-jira adapter creates the tracker ticket in the same pass.
 ---
 
 # task-new
@@ -72,7 +72,7 @@ places, books, patterns. Cast wide. Unresolved links are breadcrumbs. See
   `issue:` field.
 
 **On nil, run `leak-check` on the task description before it goes to Jira.** The
-vault Description is the CAT ticket body - coworkers will read it. No ADR
+vault Description is the tracker ticket body - coworkers will read it. No ADR
 pointers, no vault paths, no scratchpad phrasing. Restate the *why* directly.
 
 ## 5. Report
