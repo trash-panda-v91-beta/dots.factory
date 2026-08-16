@@ -151,6 +151,15 @@ in
             set("GeometryModified",  { fg = "#f1ff5e", italic = true })
             set("GeometryReadOnly",  { fg = "#ff5ef1", italic = true })
             set("GeometryBranch",    { fg = "#5ea1ff", italic = true })
+            set("GeometryBranchSym",  { fg = "#5ea1ff", bold = true, italic = true })
+            -- Statusline: repo/path pieces
+            set("GeometryTruncBox",   { fg = "#3c4048" })
+            set("GeometryRepoRoot",   { fg = "#5ea1ff", bold = true })
+            set("GeometryPath",       { fg = "#5ea1ff", italic = true })
+            -- Statusline: git status bracket + inline state
+            set("GeometryStatusBracket", { fg = "#7b8496" })
+            set("GeometryStatusMod",     { fg = "#f1ff5e", italic = true })
+            set("GeometryStatusDel",     { fg = "#ff6e5e", italic = true })
             set("GeometryDiffAdd",   { fg = "#5eff6c", italic = true })
             set("GeometryDiffMod",   { fg = "#f1ff5e", italic = true })
             set("GeometryDiffDel",   { fg = "#ff6e5e", italic = true })
@@ -163,15 +172,21 @@ in
             set("GeometryLangBlue",   { fg = "#5ea1ff", italic = true })
             set("GeometryLangPurple", { fg = "#bd5eff", italic = true })
 
-            -- Winbar breadcrumb (mirrors starship [directory] palette).
-            set("GeometryWinbarHome", { fg = "#7b8496", italic = true })
-            set("GeometryWinbarRoot", { fg = "#5ea1ff", bold = true })
-            set("GeometryWinbarPath", { fg = "#5ea1ff", italic = true })
-            set("GeometryWinbarFile", { fg = "#5ea1ff", bold = true })
-            set("GeometryWinbarSep",  { fg = "#3c4048" })
             set("GeometryLocation",  { fg = "#7b8496", italic = true })
 
             set("MiniStatuslineInactive", { fg = "#7b8496" })
+
+            -- Tabline: geometry-style tabs with raised active/modified buttons.
+            -- Active tab pops via bgHighlight; modified overlays yellow across all states.
+            set("MiniTablineCurrent",         { fg = "#5ea1ff", bg = "#3c4048", bold = true })
+            set("MiniTablineVisible",         { fg = "#ffffff", italic = true })
+            set("MiniTablineHidden",          { fg = "#7b8496", italic = true })
+            set("MiniTablineModifiedCurrent", { fg = "#f1ff5e", bg = "#3c4048", bold = true, italic = true })
+            set("MiniTablineModifiedVisible", { fg = "#f1ff5e", italic = true })
+            set("MiniTablineModifiedHidden",  { fg = "#f1ff5e", italic = true })
+            set("MiniTablineFill",            { link = "Normal" })
+            set("MiniTablineTabpagesection",  { fg = "#16181a", bg = "#bd5eff", bold = true })
+            set("MiniTablineTrunc",           { fg = "#7b8496", italic = true })
           end
 
           -- Apply now (colorscheme is already loaded at extraConfigLua time)
