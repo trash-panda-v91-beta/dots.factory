@@ -8,13 +8,15 @@
  *   ·∘◦○◎●◎○◦∘  (dot ramp - motion carried by shape, not color)
  *
  * Footer (line below content):
- *   repo △ branch          ⎪ ▴in ▿out ◈cost ⎥  provider∷model  ctx%
+ *   repo △ branch          ⎪ ▴in ▿out ◈cost ⎥  ⬡N  ◈level  provider∷model  ctx%
  *
  * Palette:
  *   ◎ / branch  = warning / accent (mirrors starship jetpack)
  *   ▴input      = success (green)  - flow up to model
  *   ▿output     = warning (yellow) - flow down from model
  *   ◈cost       = error   (red)    - outflow
+ *   ⬡N (mcps)  = borderAccent     - connected MCP servers (hexagon = geometry motif)
+ *   thinking    = thinkingOff..thinkingMax tokens - current reasoning level
  * Three-color chord = traffic light. Matches the nvim diff chord
  * (▴added ●changed ▿removed) so the two toolchains rhyme.
  */
@@ -23,6 +25,40 @@ import type { AssistantMessage } from "@earendil-works/pi-ai";
 import type { ExtensionAPI, Theme } from "@earendil-works/pi-coding-agent";
 import { VERSION } from "@earendil-works/pi-coding-agent";
 import { truncateToWidth, visibleWidth } from "@earendil-works/pi-tui";
+
+type ThinkingLevel = "off" | "minimal" | "low" | "medium" | "high" | "xhigh" | "max";
+type ThinkingColorToken =
+	| "thinkingOff"
+	| "thinkingMinimal"
+	| "thinkingLow"
+	| "thinkingMedium"
+	| "thinkingHigh"
+	| "thinkingXhigh"
+	| "thinkingMax";
+
+// Maps thinking level -> theme color token
+const THINKING_TOKEN: Record<ThinkingLevel, ThinkingColorToken> = {
+	off: "thinkingOff",
+	minimal: "thinkingMinimal",
+	low: "thinkingLow",
+	medium: "thinkingMedium",
+	high: "thinkingHigh",
+	xhigh: "thinkingXhigh",
+	max: "thinkingMax",
+};
+
+// Geometry-style glyphs: concentric circles = thinking depth
+const THINKING_GLYPH: Record<ThinkingLevel, string> = {
+	off: "·",     // dim dot - inactive
+	minimal: "○", // open circle
+	low: "◌",     // dashed circle
+	medium: "◎",  // bullseye (matches header glyph)
+	high: "●",    // filled circle
+	xhigh: "◉",   // fisheye - full + ring
+	max: "⦿",     // circle with dot - maximum
+};
+
+const MCP_STATUS_EVENT = "pi-mcp-adapter/status/v1";
 
 const italic = (s: string) => `\x1b[3m${s}\x1b[23m`;
 
@@ -52,6 +88,13 @@ const truncBranch = (b: string | null, max = 30) =>
 
 export default function (pi: ExtensionAPI) {
 	let footerRepaint: (() => void) | null = null;
+	let mcpConnected = 0;
+
+	// Track MCP server count via pi-mcp-adapter events
+	pi.events.on(MCP_STATUS_EVENT, (data: { connectedCount?: number }) => {
+		mcpConnected = data?.connectedCount ?? 0;
+		footerRepaint?.();
+	});
 
 	pi.on("session_start", (_event, ctx) => {
 		// Working indicator: dot ramp (·∘◦○◎●◎○◦∘). Motion in the shape, color stays flat.
@@ -74,7 +117,7 @@ export default function (pi: ExtensionAPI) {
 			invalidate() {},
 		}));
 
-		// Footer: repo △ branch          ⎪ ▴in ▿out ◈cost ⎥  provider∷model  ctx%
+		// Footer: repo △ branch          ⎪ ▴in ▿out ◈cost ⎥  ⬡N  glyph+level  provider∷model  ctx%
 		ctx.ui.setFooter((tui, theme: Theme, footerData) => {
 			footerRepaint = () => tui.requestRender();
 			const unsubBranch = footerData.onBranchChange(() => tui.requestRender());
@@ -102,10 +145,9 @@ export default function (pi: ExtensionAPI) {
 					const modelName = ctx.model?.id ?? "no-model";
 					const usage = ctx.getContextUsage();
 					const ctxPct = usage?.percent != null ? `${Math.round(usage.percent)}%` : "";
+					const level = (ctx.thinkingLevel ?? "off") as ThinkingLevel;
 
-					// Left: repo (accent bold, blue)  △ branch (borderAccent italic, cyan)
-					// Two shades of the cool family - harmonic, but the eye scans them
-					// as separate words instead of one blue blob.
+					// Left: repo (accent bold)  △ branch (borderAccent italic)
 					const leftParts: string[] = [];
 					if (repo) leftParts.push(theme.fg("accent", theme.bold(repo)));
 					if (branch) {
@@ -116,8 +158,6 @@ export default function (pi: ExtensionAPI) {
 					const left = leftParts.join("  ");
 
 					// Right cluster A: ⎪ ▴in ▿out ◈cost ⎥
-					// Three-color traffic-light chord: green in, yellow out, red cost.
-					// Hidden until the session accrues any cost, so fresh state stays clean.
 					const hasStats = input > 0 || output > 0 || cost > 0;
 					const stats = hasStats
 						? [
@@ -129,16 +169,30 @@ export default function (pi: ExtensionAPI) {
 							].join(" ")
 						: "";
 
-					// Right cluster B: provider∷model  (provider dim, model accent, like nvim's `nix ✶`)
+					// Right cluster B: ⬡N - connected MCP count (hexagon = geometry motif)
+					// Shown only when at least one server is connected.
+					const mcpLabel = mcpConnected > 0
+						? theme.fg("borderAccent", italic(`⬡${mcpConnected}`))
+						: "";
+
+					// Right cluster C: thinking level - geometry glyph + level name, colored by level
+					// glyph only when off; glyph+name otherwise so the eye reads both shape and depth
+					const thinkingText = level === "off"
+						? THINKING_GLYPH[level]
+						: `${THINKING_GLYPH[level]}${level}`;
+					const thinkingLabel = theme.fg(THINKING_TOKEN[level], italic(thinkingText));
+
+					// Right cluster D: provider∷model
 					const modelLabel = provider
 						? `${theme.fg("dim", italic(`${provider}∷`))}${theme.fg("accent", italic(modelName))}`
 						: theme.fg("accent", italic(modelName));
 
-					// Right cluster C: ctx% (dim, bare — mirrors nvim's bare `42:8` location)
+					// Right cluster E: ctx%
 					const ctxLabel = ctxPct ? theme.fg("dim", italic(ctxPct)) : "";
 
-					// Two-space breathing room between clusters (matches nvim right side).
-					const rightClusters = [stats, modelLabel, ctxLabel].filter((s) => s.length > 0);
+					const rightClusters = [stats, mcpLabel, thinkingLabel, modelLabel, ctxLabel].filter(
+						(s) => s.length > 0,
+					);
 					const right = rightClusters.join("  ");
 
 					const gap = Math.max(1, width - visibleWidth(left) - visibleWidth(right) - PAD.length * 2);
@@ -149,6 +203,7 @@ export default function (pi: ExtensionAPI) {
 	});
 
 	pi.on("model_select", () => footerRepaint?.());
+	pi.on("thinking_level_select", () => footerRepaint?.());
 	pi.on("agent_end", () => footerRepaint?.());
 
 	pi.on("session_shutdown", () => {
