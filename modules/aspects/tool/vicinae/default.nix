@@ -45,8 +45,8 @@
             src = pkgs.fetchFromGitHub {
               owner = "raycast";
               repo = "extensions";
-              rev = "d302c9d6429735e9936442de8bceec85877cbd21";
-              hash = "sha256-BtMFj1lr72NCAyDpOourR6V7dfVB4OKEdNGNyz6pDSM=";
+              rev = "a03e4c58dd53593042397b412413afda7117790e";
+              hash = "sha256-q7SM0M0cxTJqqWDkuZo4ay34G5Umv0QIxbvmcT1QJiY=";
               sparseCheckout = [ "/extensions/amazon-aws" ];
             } + "/extensions/amazon-aws";
           in
