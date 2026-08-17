@@ -40,20 +40,28 @@
             runHook postInstall
           '';
         };
-        awsExt =
-          let
-            src = pkgs.fetchFromGitHub {
-              owner = "raycast";
-              repo = "extensions";
-              rev = "a03e4c58dd53593042397b412413afda7117790e";
-              hash = "sha256-q7SM0M0cxTJqqWDkuZo4ay34G5Umv0QIxbvmcT1QJiY=";
-              sparseCheckout = [ "/extensions/amazon-aws" ];
-            } + "/extensions/amazon-aws";
-          in
-          inputs.vicinae.lib.${pkgs.stdenv.hostPlatform.system}.mkRayCastExtension {
-            name = "aws";
-            inherit src;
+        awsExt = pkgs.buildNpmPackage {
+          name = "aws";
+          src = pkgs.fetchFromGitHub {
+            owner = "raycast";
+            repo = "extensions";
+            rev = "a03e4c58dd53593042397b412413afda7117790e";
+            hash = "sha256-q7SM0M0cxTJqqWDkuZo4ay34G5Umv0QIxbvmcT1QJiY=";
+            sparseCheckout = [ "/extensions/amazon-aws" ];
+          } + "/extensions/amazon-aws";
+          inherit (pkgs.importNpmLock) npmConfigHook;
+          # committed lockfile - not read from upstream source at eval time
+          npmDeps = pkgs.importNpmLock {
+            npmRoot = ./aws-ext;
           };
+          npmFlags = [ "--ignore-scripts" ];
+          installPhase = ''
+            runHook preInstall
+            mkdir -p $out
+            cp -r "$HOME/.config/raycast/extensions"/*/. $out/
+            runHook postInstall
+          '';
+        };
         herdrExt = pkgs.buildNpmPackage {
           name = "herdr";
           src = ./herdr;
