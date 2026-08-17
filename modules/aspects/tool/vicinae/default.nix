@@ -40,6 +40,22 @@
             runHook postInstall
           '';
         };
+        awsExt = pkgs.buildNpmPackage {
+          name = "aws";
+          src = pkgs.fetchgit {
+            url = "https://github.com/raycast/extensions";
+            rev = "d302c9d6429735e9936442de8bceec85877cbd21";
+            sha256 = "sha256-BtMFj1lr72NCAyDpOourR6V7dfVB4OKEdNGNyz6pDSM=";
+            sparseCheckout = [ "/extensions/amazon-aws" ];
+          } + "/extensions/amazon-aws";
+          npmDepsHash = "sha256-Nxpg+oxXPyt6osUzrcN+8YgwMNxLOtbSey28byVAqYo=";
+          installPhase = ''
+            runHook preInstall
+            mkdir -p $out
+            cp -r $HOME/.config/raycast/extensions/aws/. $out/
+            runHook postInstall
+          '';
+        };
         herdrExt = pkgs.buildNpmPackage {
           name = "herdr";
           src = ./herdr;
@@ -90,6 +106,7 @@
           package = inputs.vicinae.packages.${pkgs.stdenv.hostPlatform.system}.default;
         };
 
+        xdg.dataFile."vicinae/extensions/store.raycast.aws".source = awsExt;
         xdg.dataFile."vicinae/extensions/herdr".source = herdrExt;
         xdg.dataFile."vicinae/extensions/misdr".source = misdrExt;
 
