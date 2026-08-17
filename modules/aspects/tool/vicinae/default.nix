@@ -40,30 +40,20 @@
             runHook postInstall
           '';
         };
-        awsExt = pkgs.buildNpmPackage {
-          name = "aws";
-          src = pkgs.fetchgit {
-            url = "https://github.com/raycast/extensions";
-            rev = "d302c9d6429735e9936442de8bceec85877cbd21";
-            sha256 = "sha256-BtMFj1lr72NCAyDpOourR6V7dfVB4OKEdNGNyz6pDSM=";
-            sparseCheckout = [ "/extensions/amazon-aws" ];
-          } + "/extensions/amazon-aws";
-          inherit (pkgs.importNpmLock) npmConfigHook;
-          npmDeps = pkgs.importNpmLock {
-            npmRoot = pkgs.fetchgit {
-              url = "https://github.com/raycast/extensions";
-              rev = "d302c9d6429735e9936442de8bceec85877cbd21";
-              sha256 = "sha256-BtMFj1lr72NCAyDpOourR6V7dfVB4OKEdNGNyz6pDSM=";
+        awsExt =
+          let
+            src = pkgs.fetchFromGitHub {
+              owner = "raycast";
+              repo = "extensions";
+              rev = "a03e4c58dd53593042397b412413afda7117790e";
+              hash = "sha256-q7SM0M0cxTJqqWDkuZo4ay34G5Umv0QIxbvmcT1QJiY=";
               sparseCheckout = [ "/extensions/amazon-aws" ];
             } + "/extensions/amazon-aws";
+          in
+          inputs.vicinae.lib.${pkgs.stdenv.hostPlatform.system}.mkRayCastExtension {
+            name = "aws";
+            inherit src;
           };
-          installPhase = ''
-            runHook preInstall
-            mkdir -p $out
-            cp -r "$HOME/.config/raycast/extensions"/*/. $out/
-            runHook postInstall
-          '';
-        };
         herdrExt = pkgs.buildNpmPackage {
           name = "herdr";
           src = ./herdr;
