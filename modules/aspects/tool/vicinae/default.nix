@@ -40,6 +40,30 @@
             runHook postInstall
           '';
         };
+        awsExt = pkgs.buildNpmPackage {
+          name = "aws";
+          src = pkgs.fetchgit {
+            url = "https://github.com/raycast/extensions";
+            rev = "d302c9d6429735e9936442de8bceec85877cbd21";
+            sha256 = "sha256-BtMFj1lr72NCAyDpOourR6V7dfVB4OKEdNGNyz6pDSM=";
+            sparseCheckout = [ "/extensions/amazon-aws" ];
+          } + "/extensions/amazon-aws";
+          inherit (pkgs.importNpmLock) npmConfigHook;
+          npmDeps = pkgs.importNpmLock {
+            npmRoot = pkgs.fetchgit {
+              url = "https://github.com/raycast/extensions";
+              rev = "d302c9d6429735e9936442de8bceec85877cbd21";
+              sha256 = "sha256-BtMFj1lr72NCAyDpOourR6V7dfVB4OKEdNGNyz6pDSM=";
+              sparseCheckout = [ "/extensions/amazon-aws" ];
+            } + "/extensions/amazon-aws";
+          };
+          installPhase = ''
+            runHook preInstall
+            mkdir -p $out
+            cp -r "$HOME/.config/raycast/extensions"/*/. $out/
+            runHook postInstall
+          '';
+        };
         herdrExt = pkgs.buildNpmPackage {
           name = "herdr";
           src = ./herdr;
@@ -71,6 +95,7 @@
               open-k9s.shortcut = "alt+K";
             };
             "@trash-panda-v91-beta/misdr".entrypoints.tasks.shortcut = "super+control+alt+shift+M";
+            "@Falcon/store.raycast.aws".preferences.useAWSVault = false;
             "@khasbilegt/store.raycast.1password".preferences = {
               version = "v8";
               primaryAction = "copy-password";
@@ -89,6 +114,7 @@
           package = inputs.vicinae.packages.${pkgs.stdenv.hostPlatform.system}.default;
         };
 
+        xdg.dataFile."vicinae/extensions/store.raycast.aws".source = awsExt;
         xdg.dataFile."vicinae/extensions/herdr".source = herdrExt;
         xdg.dataFile."vicinae/extensions/misdr".source = misdrExt;
 
