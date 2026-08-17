@@ -128,8 +128,7 @@
                 }
                 {
                   key = "v";
-                  name = "approve + LGTM";
-                  command = "gh pr review {{.PrNumber}} --approve --body 'LGTM' --repo {{.RepoName}}";
+                  builtin = "approve";
                 }
                 {
                   key = "u";
