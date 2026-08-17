@@ -25,10 +25,10 @@ stdenvNoCC.mkDerivation {
     export SSL_CERT_FILE=${cacert}/etc/ssl/certs/ca-bundle.crt
     mkdir -p "$HOME"
 
-    # Remove pnpm lockfile so bun does a fresh install instead of migrating + freezing
-    rm -f pnpm-lock.yaml
-
-    bun install --production --ignore-scripts
+    # Use our committed lock, not the source's pnpm lock (bun re-migrates it and drifts).
+    rm -f package-lock.json pnpm-lock.yaml
+    cp ${./bun.lock} bun.lock
+    bun install --ignore-scripts
 
     for ext in provider command-quotas quota-warnings sub-bar-integration; do
       bun build "extensions/$ext/index.ts" \
@@ -37,6 +37,9 @@ stdenvNoCC.mkDerivation {
         --outfile="$ext.js" \
         --external='@earendil-works/*' \
         --external=typebox
+      # The bundle embeds the build dir ($PWD), which differs per build/machine;
+      # normalize it so the FOD hash is identical on every host.
+      sed "s|$PWD|/bundle|g" "$ext.js" > "$ext.js.tmp" && mv "$ext.js.tmp" "$ext.js"
     done
 
     runHook postBuild

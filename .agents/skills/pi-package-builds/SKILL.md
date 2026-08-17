@@ -9,6 +9,28 @@ description: How pi-* packages (pi-web-access, pi-mcp-adapter, pi-neuralwatt, pi
 - `pi-web-access`, `pi-mcp-adapter`, `pi-neuralwatt` have real npm deps and are built as **whole-build FODs**: `bun install` + `bun build` in a single fixed-output derivation, the tiny bundled `.js` is what lands in the store.
 - When a flake input bumps, run the build; nix will report `got: sha256-...`; paste it into `outputHash`. That's the whole workflow.
 
+## Reproducibility (one `outputHash` works on every host)
+
+The whole-build FOD drift the old way: `bun install` with no lockfile resolved floating
+semver ranges per machine/day, AND `bun build` inlines the absolute build dir
+(`/nix/var/nix/builds/<n>/source/...`), which differs per build and per host. Both made
+the FOD hash non-reproducible, so the pinned `outputHash` matched cmb or pmb but not both.
+
+Two mechanisms keep the bundle byte-identical everywhere:
+
+1. **Committed `bun.lock`** - each `packages/<pkg>/bun.lock` pins the resolution.
+   The build copies it in, removes the source's own lockfile
+   (`package-lock.json` / `pnpm-lock.yaml`, which bun re-migrates and drifts), then runs
+   a plain `bun install --ignore-scripts` (**not** `--production`/`--frozen-lockfile` -
+   both imply frozen and spuriously error with `lockfile had changes` on these graphs).
+2. **Embedded-path normalization** - after `bun build`, `sed "s|$PWD|/bundle|g"` rewrites
+   the inlined absolute module path to a constant so the store hash doesn't depend on the
+   build dir. (The `*_default` identifier bun generates from the cwd basename is already
+   constant: the sandbox cwd basename is always `source`.)
+
+The FOD `outputHash` is now stable and reproducible - set it once, it holds on every host
+until the next source bump.
+
 ## Why whole-build FOD (and not fetchBunDeps / buildNpmPackage)
 
 The textbook nixpkgs pattern is:
@@ -56,11 +78,20 @@ mise run update    # bumps flake inputs (`nix flake update`), then npins
                    # `got: sha256-...` line.
 ```
 
+`refresh-pi-hashes.sh` does both steps automatically: it regenerates each package's
+`bun.lock` from the current npins source, then rebuilds and rewrites `outputHash`.
+So `mise run update` (and the single-package command below) are fully self-contained -
+no manual lock step needed.
+
+External peers (`@earendil-works/*`) may float in the regenerated lock, but they're
+`--external` in the build (never bundled), so they can't change `outputHash` - a
+cosmetic lock rewrite is harmless.
+
 Update a single package:
 
 ```bash
 nix run nixpkgs#npins -- update pi-web-access    # bump source rev
-packages/refresh-pi-hashes.sh                    # bump FOD hash
+packages/refresh-pi-hashes.sh                    # regen lock + bump FOD hash
 ```
 
 Manual path (if the script chokes): a flake input bump will fail the build
@@ -90,7 +121,10 @@ The [FOD sandbox escape CVE](https://github.com/NixOS/nix/security/advisories/GH
 ## Files
 
 - `packages/pi-lsp/default.nix` - pure, no FOD.
-- `packages/pi-web-access/default.nix` - whole-build FOD.
-- `packages/pi-mcp-adapter/default.nix` - whole-build FOD.
-- `packages/pi-neuralwatt/default.nix` - whole-build FOD.
+- `packages/pi-web-access/default.nix` + `bun.lock` - whole-build FOD.
+- `packages/pi-mcp-adapter/default.nix` + `bun.lock` - whole-build FOD.
+- `packages/pi-neuralwatt/default.nix` + `bun.lock` - whole-build FOD.
 - `packages/ponytail-pi/default.nix`, `packages/context7-pi/default.nix` - pure (no real deps, just bundle).
+
+`refresh-pi-hashes.sh` regenerates each `bun.lock` from the current source before
+rebuilding, so a source bump that changes `package.json` is handled automatically.
