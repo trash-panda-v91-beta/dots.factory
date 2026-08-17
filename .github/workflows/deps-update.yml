@@ -68,11 +68,15 @@ jobs:
             echo '```'
             mise run refresh-hashes 2>&1
             echo '```'
+            echo '### vicinae aws ext'
+            echo '```'
+            GITHUB_TOKEN="$GH_TOKEN" packages/refresh-aws-ext.sh 2>&1
+            echo '```'
           ) | tee /tmp/pr-body.md
 
           GH_TOKEN="$VAULT_READ_TOKEN" mise run check
 
-          git add npins/sources.json packages/
+          git add npins/sources.json packages/ modules/aspects/tool/vicinae/default.nix
 
           if git diff --cached --quiet; then
             echo "No changes - nothing to PR"

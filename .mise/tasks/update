@@ -18,3 +18,6 @@ nix run nixpkgs#npins -- update
 
 # 4. Refresh outputHash for pi-* whole-build FODs whose source just changed.
 "$root/packages/refresh-pi-hashes.sh"
+
+# 5. Refresh rev + hash for the amazon-aws vicinae extension.
+"$root/packages/refresh-aws-ext.sh"
