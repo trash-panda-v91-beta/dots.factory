@@ -20,6 +20,11 @@
               default = {};
               description = "Extra top-level settings merged into vicinae settings.json.";
             };
+            options.vicinae.extraExtensions = lib.mkOption {
+              type = lib.types.attrsOf lib.types.package;
+              default = {};
+              description = "Extra extensions: name -> store path, wired as xdg.dataFile entries.";
+            };
           })
         ];
       }
@@ -37,28 +42,6 @@
             runHook preInstall
             mkdir -p $out
             npm run build -- --out $out
-            runHook postInstall
-          '';
-        };
-        awsExt = pkgs.buildNpmPackage {
-          name = "aws";
-          src = pkgs.fetchFromGitHub {
-            owner = "raycast";
-            repo = "extensions";
-            rev = "a03e4c58dd53593042397b412413afda7117790e";
-            hash = "sha256-q7SM0M0cxTJqqWDkuZo4ay34G5Umv0QIxbvmcT1QJiY=";
-            sparseCheckout = [ "/extensions/amazon-aws" ];
-          } + "/extensions/amazon-aws";
-          inherit (pkgs.importNpmLock) npmConfigHook;
-          # committed lockfile - not read from upstream source at eval time
-          npmDeps = pkgs.importNpmLock {
-            npmRoot = ./aws-ext;
-          };
-          npmFlags = [ "--ignore-scripts" ];
-          installPhase = ''
-            runHook preInstall
-            mkdir -p $out
-            cp -r "$HOME/.config/raycast/extensions"/*/. $out/
             runHook postInstall
           '';
         };
@@ -93,7 +76,6 @@
               open-k9s.shortcut = "alt+K";
             };
             "@trash-panda-v91-beta/misdr".entrypoints.tasks.shortcut = "super+control+alt+shift+M";
-            "@Falcon/store.raycast.aws".preferences.useAWSVault = false;
             "@khasbilegt/store.raycast.1password".preferences = {
               version = "v8";
               primaryAction = "copy-password";
@@ -112,9 +94,13 @@
           package = inputs.vicinae.packages.${pkgs.stdenv.hostPlatform.system}.default;
         };
 
-        xdg.dataFile."vicinae/extensions/store.raycast.aws".source = awsExt;
-        xdg.dataFile."vicinae/extensions/herdr".source = herdrExt;
-        xdg.dataFile."vicinae/extensions/misdr".source = misdrExt;
+        xdg.dataFile = lib.mapAttrs'
+          (name: src: lib.nameValuePair "vicinae/extensions/${name}" { inherit src; })
+          config.vicinae.extraExtensions
+        // {
+          "vicinae/extensions/herdr".source = herdrExt;
+          "vicinae/extensions/misdr".source = misdrExt;
+        };
 
         xdg.configFile."vicinae/settings.json".source = vicinaeSettings;
 

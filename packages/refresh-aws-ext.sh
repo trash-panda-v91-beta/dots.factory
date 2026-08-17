@@ -11,8 +11,8 @@
 set -euo pipefail
 cd "$(git rev-parse --show-toplevel)"
 
-FILE="modules/aspects/tool/vicinae/default.nix"
-LOCKFILE="modules/aspects/tool/vicinae/aws-ext/package-lock.json"
+FILE="modules/aspects/bundle/aws.nix"
+LOCKFILE="modules/aspects/bundle/aws-ext/package-lock.json"
 
 cur_rev=$(sed -n 's/.*rev = "\([^"]*\)";.*/\1/p' "$FILE" | head -1)
 cur_hash=$(sed -n 's/.*hash = "\(sha256-[^"]*\)";.*/\1/p' "$FILE" | head -1)
