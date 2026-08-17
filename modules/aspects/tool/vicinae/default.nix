@@ -71,6 +71,7 @@
               open-k9s.shortcut = "alt+K";
             };
             "@trash-panda-v91-beta/misdr".entrypoints.tasks.shortcut = "super+control+alt+shift+M";
+            "@Falcon/store.raycast.aws".preferences.useAWSVault = false;
             "@khasbilegt/store.raycast.1password".preferences = {
               version = "v8";
               primaryAction = "copy-password";
