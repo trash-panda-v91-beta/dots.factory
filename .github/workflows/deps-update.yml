@@ -76,7 +76,7 @@ jobs:
 
           GH_TOKEN="$VAULT_READ_TOKEN" mise run check
 
-          git add npins/sources.json packages/ modules/aspects/tool/vicinae/default.nix
+          git add npins/sources.json packages/ modules/aspects/tool/vicinae/default.nix modules/aspects/tool/vicinae/aws-ext/
 
           if git diff --cached --quiet; then
             echo "No changes - nothing to PR"
