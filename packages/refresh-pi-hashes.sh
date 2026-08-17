@@ -6,7 +6,9 @@
 # npins/sources.json). When you run `npins update <pkg>`, the source rev
 # bumps, but the FOD outputHash in the package's default.nix stays stale.
 # This script rebuilds each affected package, catches the hash mismatch,
-# and rewrites default.nix in place. Wired into `mise run update`.
+# and rewrites default.nix in place. It also regenerates each package's
+# committed bun.lock from the current source, so a source bump that changes
+# package.json doesn't leave installs floating. Wired into `mise run update`.
 set -euo pipefail
 cd "$(git rev-parse --show-toplevel)"
 
@@ -18,7 +20,33 @@ pkgs=(
   pi-neuralwatt
 )
 
+# The pinned bun that the package derivations build with.
+bun_path=$(nix build --impure --no-link --print-out-paths --expr \
+  'let f = builtins.getFlake (toString ./.); in f.inputs.nixpkgs.legacyPackages.aarch64-darwin.bun' 2>/dev/null | tail -1)
+BUN="$bun_path/bin/bun"
+
+# Regenerate a package's committed bun.lock from its current npins source, so
+# version ranges track the pinned rev. Keeps the source's own lockfile for the
+# migration (that's what pins the bundled deps). External peers (@earendil-works/*)
+# may float in the lock, but they're --external in the build (never bundled), so
+# they can't change outputHash - a cosmetic lock rewrite is harmless.
+regen_lock() {
+  local pkg="$1" src out changed
+  src=$(nix-instantiate --eval --impure --expr "(import ./npins).$pkg.outPath" | tr -d '"')
+  out=$(mktemp -d)
+  cp -R "$src/." "$out/" 2>/dev/null
+  chmod -R u+w "$out" 2>/dev/null
+  ( cd "$out" && HOME="$out" "$BUN" install --lockfile-only --ignore-scripts >/dev/null 2>&1 )
+  if ! cmp -s "$out/bun.lock" "packages/$pkg/bun.lock"; then
+    cp "$out/bun.lock" "packages/$pkg/bun.lock"
+    git add "packages/$pkg/bun.lock"
+    echo "  regenerated packages/$pkg/bun.lock"
+  fi
+  rm -rf "$out"
+}
+
 for pkg in "${pkgs[@]}"; do
+  regen_lock "$pkg"
   file="packages/$pkg/default.nix"
   cur=$(sed -n 's/.*outputHash = "\(sha256-[^"]*\)".*/\1/p' "$file")
   echo "==> $pkg (current: $cur)"

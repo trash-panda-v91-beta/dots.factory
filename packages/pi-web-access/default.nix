@@ -16,7 +16,7 @@ stdenvNoCC.mkDerivation {
 
   outputHashAlgo = "sha256";
   outputHashMode = "recursive";
-  outputHash = "sha256-ozemVLdWecWxRwomyJNYZatmDWKL7konId9otGEFXFE=";
+  outputHash = "sha256-pNooiOg7+rd5FREqTejejvecy7yp+oEuPFTriFGMbUE=";
 
   buildPhase = ''
     runHook preBuild
@@ -25,13 +25,20 @@ stdenvNoCC.mkDerivation {
     export SSL_CERT_FILE=${cacert}/etc/ssl/certs/ca-bundle.crt
     mkdir -p "$HOME"
 
-    bun install --production --ignore-scripts
+    # Use our committed lock, not the source's npm lock (bun re-migrates it and drifts).
+    rm -f package-lock.json pnpm-lock.yaml
+    cp ${./bun.lock} bun.lock
+    bun install --ignore-scripts
     bun build index.ts \
       --target=node \
       --format=esm \
       --outfile=index.js \
       --external='@earendil-works/*' \
       --external=typebox
+
+    # The bundle embeds the build dir ($PWD), which differs per build/machine;
+    # normalize it so the FOD hash is identical on every host.
+    sed "s|$PWD|/bundle|g" index.js > index.js.tmp && mv index.js.tmp index.js
 
     runHook postBuild
   '';
