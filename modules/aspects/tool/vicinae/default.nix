@@ -48,11 +48,19 @@
             sha256 = "sha256-BtMFj1lr72NCAyDpOourR6V7dfVB4OKEdNGNyz6pDSM=";
             sparseCheckout = [ "/extensions/amazon-aws" ];
           } + "/extensions/amazon-aws";
-          npmDepsHash = "sha256-Nxpg+oxXPyt6osUzrcN+8YgwMNxLOtbSey28byVAqYo=";
+          inherit (pkgs.importNpmLock) npmConfigHook;
+          npmDeps = pkgs.importNpmLock {
+            npmRoot = pkgs.fetchgit {
+              url = "https://github.com/raycast/extensions";
+              rev = "d302c9d6429735e9936442de8bceec85877cbd21";
+              sha256 = "sha256-BtMFj1lr72NCAyDpOourR6V7dfVB4OKEdNGNyz6pDSM=";
+              sparseCheckout = [ "/extensions/amazon-aws" ];
+            } + "/extensions/amazon-aws";
+          };
           installPhase = ''
             runHook preInstall
             mkdir -p $out
-            cp -r $HOME/.config/raycast/extensions/aws/. $out/
+            cp -r "$HOME/.config/raycast/extensions"/*/. $out/
             runHook postInstall
           '';
         };
