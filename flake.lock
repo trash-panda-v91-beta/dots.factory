@@ -395,10 +395,27 @@
         "nixpkgs": "nixpkgs",
         "nixpkgs-master": "nixpkgs-master",
         "nixvim": "nixvim",
+        "sable-tap": "sable-tap",
         "sops-nix": "sops-nix",
         "systems": "systems_2",
         "vicinae": "vicinae",
         "zen-browser": "zen-browser"
+      }
+    },
+    "sable-tap": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1787001369,
+        "narHash": "sha256-B3QWPEN5iQ0a5rh63xt05uHc2+xrL8VLphlO5pN9CDI=",
+        "owner": "SableClient",
+        "repo": "homebrew-sable",
+        "rev": "5d1cdf4d2ff733419a22763fd07b10d93e35312a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "SableClient",
+        "repo": "homebrew-sable",
+        "type": "github"
       }
     },
     "sops-nix": {
