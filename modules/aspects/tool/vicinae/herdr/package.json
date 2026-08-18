@@ -19,11 +19,18 @@
       "mode": "view"
     },
     {
-      "name": "new-worktree",
-      "title": "New Worktree",
+      "name": "worktree-create",
+      "title": "Worktree Create",
       "subtitle": "Herdr",
       "description": "Create a new git worktree from the current workspace",
       "mode": "view"
+    },
+    {
+      "name": "worktree-remove",
+      "title": "Worktree Remove",
+      "subtitle": "Herdr",
+      "description": "Remove the active worktree (focused workspace must be a linked worktree)",
+      "mode": "no-view"
     },
     {
       "name": "open-k9s",
