@@ -90,55 +90,17 @@
                   key = "down";
                   builtin = "pageDown";
                 }
-                {
-                  key = "j";
-                  builtin = "down";
-                }
-                {
-                  key = "k";
-                  builtin = "up";
-                }
-                {
-                  key = "h";
-                  builtin = "prevSection";
-                }
-                {
-                  key = "l";
-                  builtin = "nextSection";
-                }
               ];
               prs = [
                 {
-                  key = " ";
-                  builtin = "checkout";
-                }
-                {
-                  key = "d";
+                  key = "D";
                   name = "codediff";
                   command = "cd {{.RepoPath}}; nvim -c \"CodeDiff {{.BaseRefName}}\"";
                 }
                 {
-                  key = "D";
-                  builtin = "diff";
-                }
-                {
-                  key = "c";
+                  key = "O";
                   name = "edit in octo";
                   command = "nvim -c \"Octo pr edit {{.PrNumber}}\"";
-                }
-                {
-                  key = "v";
-                  builtin = "approve";
-                }
-                {
-                  key = "u";
-                  name = "update branch (rebase)";
-                  command = "gh pr update-branch {{.PrNumber}} --rebase --repo {{.RepoName}}";
-                }
-                {
-                  key = "U";
-                  name = "update branch (merge)";
-                  command = "gh pr update-branch {{.PrNumber}} --repo {{.RepoName}}";
                 }
                 {
                   key = "M";
