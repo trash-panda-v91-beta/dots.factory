@@ -4,7 +4,7 @@
     description = "Git workflow: git, gh, delta + gitsigns, neogit, codediff, octo";
 
     homeManager =
-      { config, lib, ... }:
+      { pkgs, config, lib, ... }:
       {
         options.dots.reposDir = lib.mkOption {
           type = lib.types.str;
@@ -41,7 +41,10 @@
           };
         };
 
-        config.programs.gh.enable = true;
+        config.programs.gh = {
+          enable = true;
+          extensions = [ pkgs.gh-enhance ];
+        };
         config.programs.gh-dash = {
           enable = true;
           settings = {
@@ -101,6 +104,11 @@
                   key = "O";
                   name = "edit in octo";
                   command = "nvim -c \"Octo pr edit {{.PrNumber}}\"";
+                }
+                {
+                  key = "T";
+                  name = "enhance (actions)";
+                  command = "gh enhance -R {{.RepoName}} {{.PrNumber}}";
                 }
                 {
                   key = "M";
