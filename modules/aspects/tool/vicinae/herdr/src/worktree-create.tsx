@@ -36,13 +36,12 @@ export default function NewWorktree() {
           <Action.SubmitForm
             title="Create Worktree"
             onSubmit={async (values) => {
-              const repo = String(values.repo ?? "");
               const branch = String(values.branch ?? "");
               const base = String(values.base ?? "");
               const baseBranch = base.trim() || "main";
-              fetchMain(repo, baseBranch);
+              fetchMain(cwd, baseBranch);
               try {
-                herdr("worktree", "create", "--cwd", repo, "--branch", branch, "--base", `origin/${baseBranch}`, "--focus");
+                herdr("worktree", "create", "--cwd", cwd, "--branch", branch, "--base", `origin/${baseBranch}`, "--focus");
                 await closeMainWindow();
                 focusTerminalApp();
               } catch (e) {
@@ -53,9 +52,9 @@ export default function NewWorktree() {
         </ActionPanel>
       }
     >
-      <Form.TextField id="repo" title="Repo path" defaultValue={cwd} placeholder="/path/to/repo" />
       <Form.TextField id="branch" title="Branch" placeholder="feat/my-feature" />
       <Form.TextField id="base" title="Base branch" defaultValue="main" placeholder="main" />
+      {cwd ? <Form.Description title="Repo" text={cwd} /> : <Form.Description title="Repo" text="(no focused workspace)" />}
     </Form>
   );
 }
