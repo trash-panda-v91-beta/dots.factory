@@ -21,6 +21,7 @@
         { pkgs, ... }:
         {
           users.users.trash-panda-v91-beta.shell = pkgs.nushell;
+          homebrew.casks = [ "sable" ];
         };
 
       homeManager =
