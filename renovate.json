@@ -3,6 +3,7 @@
   "extends": [
     "github>trash-panda-v91-beta/renovate-config"
   ],
+  "ignorePaths": ["modules/aspects/bundle/**/package-lock.json"],
   "nix": {
     "enabled": true
   },
@@ -11,6 +12,18 @@
     "schedule": ["after 2am and before 3am on monday"]
   },
   "packageRules": [
+    {
+      "description": "Group herdr dependency updates",
+      "groupName": "herdr deps",
+      "matchFileNames": ["modules/aspects/tool/vicinae/herdr/package-lock.json"],
+      "schedule": ["every weekend"]
+    },
+    {
+      "description": "Group misdr dependency updates",
+      "groupName": "misdr deps",
+      "matchFileNames": ["modules/aspects/tool/vicinae/misdr/package-lock.json"],
+      "schedule": ["every weekend"]
+    },
     {
       "description": "Group all mise tool updates into a single PR",
       "groupName": "mise tools",
