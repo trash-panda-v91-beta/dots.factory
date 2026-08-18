@@ -95,7 +95,7 @@
         };
 
         xdg.dataFile = lib.mapAttrs'
-          (name: src: lib.nameValuePair "vicinae/extensions/${name}" { inherit src; })
+          (name: src: lib.nameValuePair "vicinae/extensions/${name}" { source = src; })
           config.vicinae.extraExtensions
         // {
           "vicinae/extensions/herdr".source = herdrExt;
