@@ -30,6 +30,12 @@
       "schedule": ["every weekend"]
     },
     {
+      "description": "Group aws-ext dependency updates",
+      "groupName": "aws-ext deps",
+      "matchFileNames": ["modules/aspects/bundle/aws-ext/package-lock.json"],
+      "schedule": ["every weekend"]
+    },
+    {
       "description": "Group all mise tool updates into a single PR",
       "groupName": "mise tools",
       "matchManagers": ["mise"],
