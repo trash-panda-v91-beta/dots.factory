@@ -8,25 +8,25 @@
   },
   "lockFileMaintenance": {
     "enabled": true,
-    "schedule": ["after 2am and before 3am on monday"]
+    "schedule": ["on monday"]
   },
   "packageRules": [
     {
       "description": "Group herdr dependency updates",
       "groupName": "herdr deps",
-      "matchFileNames": ["modules/aspects/tool/vicinae/herdr/**"],
+      "matchFileNames": ["packages/herdr/**"],
       "schedule": ["every weekend"]
     },
     {
       "description": "Group misdr dependency updates",
       "groupName": "misdr deps",
-      "matchFileNames": ["modules/aspects/tool/vicinae/misdr/**"],
+      "matchFileNames": ["packages/misdr/**"],
       "schedule": ["every weekend"]
     },
     {
       "description": "Group aws-ext dependency updates",
       "groupName": "aws-ext deps",
-      "matchFileNames": ["modules/aspects/bundle/aws-ext/**"],
+      "matchFileNames": ["packages/aws-ext/**"],
       "schedule": ["every weekend"]
     },
     {
