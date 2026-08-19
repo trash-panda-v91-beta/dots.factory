@@ -32,8 +32,8 @@
         };
       in
       {
-        vicinae.extraExtensions."store.raycast.aws" = awsExt;
-        vicinae.extraProviders."@Falcon/store.raycast.aws".preferences.useAWSVault = false;
+        xdg.dataFile."vicinae/extensions/store.raycast.aws".source = awsExt;
+        programs.vicinae.settings.providers."@Falcon/store.raycast.aws".preferences.useAWSVault = false;
       };
   };
 }

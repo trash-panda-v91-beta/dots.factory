@@ -4,7 +4,7 @@
     description = "Git workflow: git, gh, delta + gitsigns, neogit, codediff, octo";
 
     homeManager =
-      { config, lib, ... }:
+      { pkgs, config, lib, ... }:
       {
         options.dots.reposDir = lib.mkOption {
           type = lib.types.str;
@@ -41,7 +41,10 @@
           };
         };
 
-        config.programs.gh.enable = true;
+        config.programs.gh = {
+          enable = true;
+          extensions = [ pkgs.gh-enhance ];
+        };
         config.programs.gh-dash = {
           enable = true;
           settings = {
@@ -90,55 +93,22 @@
                   key = "down";
                   builtin = "pageDown";
                 }
-                {
-                  key = "j";
-                  builtin = "down";
-                }
-                {
-                  key = "k";
-                  builtin = "up";
-                }
-                {
-                  key = "h";
-                  builtin = "prevSection";
-                }
-                {
-                  key = "l";
-                  builtin = "nextSection";
-                }
               ];
               prs = [
                 {
-                  key = " ";
-                  builtin = "checkout";
-                }
-                {
-                  key = "d";
+                  key = "D";
                   name = "codediff";
                   command = "cd {{.RepoPath}}; nvim -c \"CodeDiff {{.BaseRefName}}\"";
                 }
                 {
-                  key = "D";
-                  builtin = "diff";
-                }
-                {
-                  key = "c";
+                  key = "O";
                   name = "edit in octo";
                   command = "nvim -c \"Octo pr edit {{.PrNumber}}\"";
                 }
                 {
-                  key = "v";
-                  builtin = "approve";
-                }
-                {
-                  key = "u";
-                  name = "update branch (rebase)";
-                  command = "gh pr update-branch {{.PrNumber}} --rebase --repo {{.RepoName}}";
-                }
-                {
-                  key = "U";
-                  name = "update branch (merge)";
-                  command = "gh pr update-branch {{.PrNumber}} --repo {{.RepoName}}";
+                  key = "T";
+                  name = "enhance (actions)";
+                  command = "gh enhance -R {{.RepoName}} {{.PrNumber}}";
                 }
                 {
                   key = "M";
