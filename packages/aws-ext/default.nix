@@ -10,6 +10,9 @@ buildNpmPackage {
   } + "/extensions/amazon-aws";
   inherit (importNpmLock) npmConfigHook;
   npmDeps = importNpmLock { npmRoot = ./.; };
+  postPatch = ''
+    python3 ${./patch-s3.py}
+  '';
   npmFlags = [ "--ignore-scripts" ];
   installPhase = ''
     runHook preInstall
