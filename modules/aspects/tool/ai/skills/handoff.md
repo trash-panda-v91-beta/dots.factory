@@ -1,8 +1,7 @@
 ---
 name: handoff
-description: Compact the current conversation into a handoff document and save it as a note in the appropriate Obsidian vault (nil for work repos, mist for personal repos).
+description: Save a handoff note to Obsidian so a fresh agent can continue the work. Use when the user says "handoff", "create handoff", "write a handoff", "handoff note", "save handoff", "write handoff doc", "end session", or "hand off to next agent".
 argument-hint: "What will the next session be used for?"
-disable-model-invocation: true
 ---
 
 Write a handoff document summarising the current conversation so a fresh agent can continue the
