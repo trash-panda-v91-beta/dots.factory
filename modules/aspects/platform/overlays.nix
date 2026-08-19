@@ -56,6 +56,9 @@ in
           });
 
           local = {
+            herdr-ext = prev.callPackage "${pkgsDir}/herdr" { };
+            misdr-ext = prev.callPackage "${pkgsDir}/misdr" { };
+            aws-ext = prev.callPackage "${pkgsDir}/aws-ext" { };
             koda-nvim = prev.callPackage "${pkgsDir}/koda-nvim" { inherit inputs; };
             pi-nvim = inputs.pi-nvim;
             context7-pi = prev.callPackage "${pkgsDir}/context7-pi" { inherit inputs; };
