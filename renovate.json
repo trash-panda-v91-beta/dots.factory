@@ -3,7 +3,6 @@
   "extends": [
     "github>trash-panda-v91-beta/renovate-config"
   ],
-  "ignorePaths": ["modules/aspects/bundle/**/package-lock.json"],
   "nix": {
     "enabled": true
   },
@@ -22,6 +21,12 @@
       "description": "Group misdr dependency updates",
       "groupName": "misdr deps",
       "matchFileNames": ["modules/aspects/tool/vicinae/misdr/package-lock.json"],
+      "schedule": ["every weekend"]
+    },
+    {
+      "description": "Group aws-ext dependency updates",
+      "groupName": "aws-ext deps",
+      "matchFileNames": ["modules/aspects/bundle/aws-ext/package-lock.json"],
       "schedule": ["every weekend"]
     },
     {
