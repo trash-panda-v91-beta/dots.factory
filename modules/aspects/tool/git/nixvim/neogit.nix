@@ -19,17 +19,9 @@
                 local git = require("neogit.lib.git")
                 local client = require("neogit.client")
                 git.branch.checkout("main")
-
-                local current = git.branch.current()
-                local pushRemote = git.branch.pushRemote() or git.branch.set_pushRemote()
-                if pushRemote and current then
-                  git.cli.pull.env(client.get_envs_git_editor()).args(pushRemote, current).arg_list(popup:get_arguments()).call {
-                    pty = true,
-                    on_error = function(res)
-                      return res.code == 128 or res.code == 129
-                    end,
-                  }
-                end
+                git.cli.pull.env(client.get_envs_git_editor()).args("origin", "main").arg_list(popup:get_arguments()).call {
+                  pty = true,
+                }
               end)
             end
           '';
