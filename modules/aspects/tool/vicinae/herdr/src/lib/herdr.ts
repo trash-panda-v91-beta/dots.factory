@@ -30,6 +30,7 @@ export interface WorktreeInfo {
   path: string;
   branch: string;
   is_linked_worktree: boolean;
+  open_workspace_id?: string;
 }
 
 export interface WorkspaceCreated {
