@@ -10,30 +10,8 @@
     homeManager =
       { config, pkgs, lib, ... }:
       let
-        misdrExt = pkgs.buildNpmPackage {
-          name = "misdr";
-          src = ./misdr;
-          inherit (pkgs.importNpmLock) npmConfigHook;
-          npmDeps = pkgs.importNpmLock { npmRoot = ./misdr; };
-          installPhase = ''
-            runHook preInstall
-            mkdir -p $out
-            npm run build -- --out $out
-            runHook postInstall
-          '';
-        };
-        herdrExt = pkgs.buildNpmPackage {
-          name = "herdr";
-          src = ./herdr;
-          inherit (pkgs.importNpmLock) npmConfigHook;
-          npmDeps = pkgs.importNpmLock { npmRoot = ./herdr; };
-          installPhase = ''
-            runHook preInstall
-            mkdir -p $out
-            npm run build -- --out $out
-            runHook postInstall
-          '';
-        };
+        herdrExt = pkgs.local.herdr-ext;
+        misdrExt = pkgs.local.misdr-ext;
       in
       {
         programs.vicinae = {
