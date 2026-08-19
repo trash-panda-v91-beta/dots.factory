@@ -3,9 +3,14 @@
   "name": "herdr",
   "title": "Herdr",
   "description": "Herdr workspace commands",
-  "categories": ["Developer Tools"],
+  "categories": [
+    "Developer Tools"
+  ],
   "license": "MIT",
-  "platforms": ["macOS", "Linux"],
+  "platforms": [
+    "macOS",
+    "Linux"
+  ],
   "author": "trash-panda-v91-beta",
   "contributors": [],
   "pastContributors": [],
@@ -81,6 +86,6 @@
     "@vicinae/api": "^0.25.0"
   },
   "devDependencies": {
-    "typescript": "^7.0.0"
+    "typescript": "^5.9.3"
   }
 }
