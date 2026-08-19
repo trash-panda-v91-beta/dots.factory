@@ -172,14 +172,14 @@ export default function (pi: ExtensionAPI) {
 					// Right cluster B: ⬡N - connected MCP count (hexagon = geometry motif)
 					// Shown only when at least one server is connected.
 					const mcpLabel = mcpConnected > 0
-						? theme.fg("borderAccent", italic(`⬡${mcpConnected}`))
+						? theme.fg("borderAccent", italic(`⬡ ${mcpConnected}`))
 						: "";
 
 					// Right cluster C: thinking level - geometry glyph + level name, colored by level
 					// glyph only when off; glyph+name otherwise so the eye reads both shape and depth
 					const thinkingText = level === "off"
 						? THINKING_GLYPH[level]
-						: `${THINKING_GLYPH[level]}${level}`;
+						: `${THINKING_GLYPH[level]} ${level}`;
 					const thinkingLabel = theme.fg(THINKING_TOKEN[level], italic(thinkingText));
 
 					// Right cluster D: provider∷model
@@ -193,7 +193,7 @@ export default function (pi: ExtensionAPI) {
 					const rightClusters = [stats, mcpLabel, thinkingLabel, modelLabel, ctxLabel].filter(
 						(s) => s.length > 0,
 					);
-					const right = rightClusters.join("  ");
+					const right = rightClusters.join("   ");
 
 					const gap = Math.max(1, width - visibleWidth(left) - visibleWidth(right) - PAD.length * 2);
 					return [truncateToWidth(`${PAD}${left}${" ".repeat(gap)}${right}${PAD}`, width)];
