@@ -14,19 +14,19 @@
     {
       "description": "Group herdr dependency updates",
       "groupName": "herdr deps",
-      "matchFileNames": ["modules/aspects/tool/vicinae/herdr/package-lock.json"],
+      "matchFileNames": ["modules/aspects/tool/vicinae/herdr/**"],
       "schedule": ["every weekend"]
     },
     {
       "description": "Group misdr dependency updates",
       "groupName": "misdr deps",
-      "matchFileNames": ["modules/aspects/tool/vicinae/misdr/package-lock.json"],
+      "matchFileNames": ["modules/aspects/tool/vicinae/misdr/**"],
       "schedule": ["every weekend"]
     },
     {
       "description": "Group aws-ext dependency updates",
       "groupName": "aws-ext deps",
-      "matchFileNames": ["modules/aspects/bundle/aws-ext/package-lock.json"],
+      "matchFileNames": ["modules/aspects/bundle/aws-ext/**"],
       "schedule": ["every weekend"]
     },
     {
