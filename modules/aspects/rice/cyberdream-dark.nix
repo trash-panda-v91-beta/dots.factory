@@ -443,7 +443,7 @@ in
             colors.text.selection = { background = "#5ea1ff"; foreground = "#ffffff"; };
           };
 
-        vicinae.extraSettings.theme.dark.name = "Cyberdream";
+        programs.vicinae.settings.theme.dark.name = lib.mkForce "cyberdream";
 
         programs.herdr.settings.theme = {
           name = "terminal";
