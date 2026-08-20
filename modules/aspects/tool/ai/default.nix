@@ -73,8 +73,8 @@ in
           # Skills live in ~/.pi/agent/skills (copied from the repo tree).
           home.file."${config.programs.pi-coding-agent.configDir}/skills".source = skillsDir;
 
-          # litellm is PMB-only; overwritten from pmb.nix. pi-mcp-adapter reads
-          # ~/.pi/agent/mcp.json at runtime.
+          # mcp.json is PMB-only; pmb.nix overrides it per (MCP) server.
+          # pi-mcp-adapter reads ~/.pi/agent/mcp.json at runtime.
           home.file."${config.programs.pi-coding-agent.configDir}/mcp.json".text = lib.mkDefault (builtins.toJSON {
             mcpServers = { };
           });

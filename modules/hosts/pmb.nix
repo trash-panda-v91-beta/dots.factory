@@ -45,15 +45,29 @@
               };
             };
 
-          # litellm MCP is PMB-only; bearer token resolved from env at runtime.
+          # PMB-only MCP servers, added one by one. Shared litellm wiring lives
+          # here once; each new server is one line. Bearer token from env at runtime.
           home.file."${config.programs.pi-coding-agent.configDir}/mcp.json".text =
-            builtins.toJSON {
-              mcpServers.litellm = {
-                url = "https://litellm.nebular-grid.space/mcp/";
+            let
+              litellm = name: {
+                url = "https://litellm.nebular-grid.space/${name}/mcp";
                 auth = "bearer";
                 bearerTokenEnv = "LITELLM_API_KEY";
                 lifecycle = "lazy";
                 idleTimeout = 10;
+              };
+            in
+            builtins.toJSON {
+              mcpServers = {
+                actual_mcp = litellm "actual_mcp";
+                unifi_network_mcp = litellm "unifi_network_mcp";
+                grafana_mcp = litellm "grafana_mcp";
+                context7 = litellm "context7";
+                ha_mcp = litellm "ha_mcp";
+                searxng_mcp = litellm "searxng_mcp";
+                obsidian_mcp = litellm "obsidian_mcp";
+                donetick_mcp = litellm "donetick_mcp";
+                truenas_mcp = litellm "truenas_mcp";
               };
             };
 
