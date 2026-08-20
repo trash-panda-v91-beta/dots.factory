@@ -11,6 +11,11 @@
           default = "${config.home.homeDirectory}/repos";
           description = "Root directory for all repos (host-specific)";
         };
+        options.dots.ghDashBotApproveLabel = lib.mkOption {
+          type = lib.types.str;
+          default = "approval/trashbot-9000";
+          description = "gh-dash R keymap label for bot-approve";
+        };
         config.programs.git = {
           enable = true;
           lfs.enable = true;
@@ -116,9 +121,9 @@
                   command = "gh pr merge {{.PrNumber}} --auto --squash --repo {{.RepoName}}";
                 }
                 {
-                  key = "L";
-                  name = "label approval/robocat";
-                  command = "gh pr edit {{.PrNumber}} --add-label 'approval/robocat' --repo {{.RepoName}}";
+                  key = "R";
+                  name = "bot-approve";
+                  command = "gh pr edit {{.PrNumber}} --add-label '${config.dots.ghDashBotApproveLabel}' --repo {{.RepoName}}";
                 }
               ];
             };
