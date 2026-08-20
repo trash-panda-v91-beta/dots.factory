@@ -18,7 +18,7 @@ $REPOS/
 Vault:
 
 ```text
-$VAULTS_DIR/                        # = ~/vaults
+$VAULTS_DIR/
   mist/                             # personal - the only vault on PMB
 ```
 
