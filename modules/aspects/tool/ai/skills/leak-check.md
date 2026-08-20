@@ -5,7 +5,7 @@ description: >
   description, Jira comment, code comment, docstring, Slack message, or any text
   a stranger will read. Auto-fires unconditionally at the last moment before
   send. Catches vault paths, ADR pointer phrases like "see ADR NNN" or "per
-  ADR X", scratchpad phrasing, `$VAULTS_DIR` / `Coding/` / vault note filenames,
+  ADR X", scratchpad phrasing, `$VAULTS_DIR` / vault note filenames,
   and any other reference to a private-side artifact the reader cannot open.
   Also runs the reverse direction - corp strings landing in personal-side files.
   Triggered by every outbound skill (`create-pr`, `review-comments`, `task-new`,
@@ -58,7 +58,7 @@ Applied to any text going into:
 
 Never allowed:
 
-- Vault paths (`$VAULTS_DIR`, `/mist`, `/nil`, `Coding/`)
+- Vault paths (`$VAULTS_DIR`, `/mist`, `/nil`)
 - ADR identifiers used as pointers ("ADR 003", "see ADR NNN", "our ADR on X")
 - Scratchpad phrasing or vault filenames
 - `dots.factory` / `dots.corpo` paths in code that ships publicly
@@ -68,7 +68,7 @@ Never allowed:
 One-liner scan (bash):
 
 ```bash
-grep -nEi '\$VAULTS_DIR|vaults/(mist|nil)|Coding/|ADR [0-9]{2,4}|Scratchpad|dots\.factory|dots\.corpo' <text>
+grep -nEi '\$VAULTS_DIR|vaults/(mist|nil)|ADR [0-9]{2,4}|Scratchpad|dots\.factory|dots\.corpo' <text>
 ```
 
 If the reader might genuinely need the *reasoning*, restate it in the outbound
@@ -89,11 +89,11 @@ grep -nEi 'concur\.com|CAT-[0-9]|jira\.concur|github\.concur|cima-|tmas-|plz/|\b
 
 ```bash
 # from `review` skill, before hand-off to create-pr
-git diff --cached | grep -nEi '\$VAULTS_DIR|vaults/(mist|nil)|Coding/|ADR [0-9]{2,4}|Scratchpad|dots\.factory|dots\.corpo' \
+git diff --cached | grep -nEi '\$VAULTS_DIR|vaults/(mist|nil)|ADR [0-9]{2,4}|Scratchpad|dots\.factory|dots\.corpo' \
   && { echo "LEAK: private strings in outbound diff"; exit 1; }
 
 # for a PR body / commit message / Jira comment held in $TEXT
-grep -nEi '\$VAULTS_DIR|vaults/(mist|nil)|Coding/|ADR [0-9]{2,4}|Scratchpad|dots\.factory|dots\.corpo' <<<"$TEXT" \
+grep -nEi '\$VAULTS_DIR|vaults/(mist|nil)|ADR [0-9]{2,4}|Scratchpad|dots\.factory|dots\.corpo' <<<"$TEXT" \
   && { echo "LEAK: private strings in outbound text"; exit 1; }
 ```
 
