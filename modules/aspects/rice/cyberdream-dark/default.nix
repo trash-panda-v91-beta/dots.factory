@@ -1,6 +1,6 @@
 { ... }:
 let
-  riceDir = ../../rice/cyberdream-dark;
+  riceDir = ./.;
 in
 {
   dots.rice._.cyberdream-dark = {
