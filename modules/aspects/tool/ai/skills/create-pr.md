@@ -81,13 +81,13 @@ PR is a public artifact - the reader has no access to your vault, ADRs,
 scratchpad, or personal skill pack.
 
 Specifically forbid: `see ADR NNN`, `per ADR X`, `see the vault`,
-`per the CONTEXT note`, `$VAULTS_DIR`, `Coding/`, vault note filenames, any
+`per the CONTEXT note`, `$VAULTS_DIR`, vault note filenames, any
 `dots.factory` / `dots.corpo` path. If the reader needs the *reasoning*, restate
 it in the PR body directly. Never point at a path or ADR they cannot open.
 
 ```bash
 # scan the draft
-grep -nEi '\$VAULTS_DIR|vaults/(mist|nil)|Coding/|ADR [0-9]{2,4}|Scratchpad|dots\.(factory|corpo)|see the vault' <<<"$TITLE"$'\n'"$BODY" \
+grep -nEi '\$VAULTS_DIR|vaults/(mist|nil)|ADR [0-9]{2,4}|Scratchpad|dots\.(factory|corpo)|see the vault' <<<"$TITLE"$'\n'"$BODY" \
   && { echo "LEAK - rewrite before sending"; exit 1; }
 ```
 
