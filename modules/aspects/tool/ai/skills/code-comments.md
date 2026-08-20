@@ -27,8 +27,11 @@ five seconds away?" Nothing? Delete.
 5. **Wire-flow module docstrings are fair.**
    `"""ecr-push Lambda: ECR Image Action (via SQS) -> image.collected."""` gives a reader the ends
    of the pipe in one line. `"""Settings for ecr-push."""` doesn't.
-6. **TODOs stay only if they name *what next* and *when*.** `# TODO: fix this` is noise.
-   `# TODO: move to shared cat/models once it ships` is a plan.
+6. **Deferred-work markers: use standard tags, not `ponytail:`.** Reach for `TODO`, `FIXME`,
+   `HACK`, `XXX`, or `NOTE` - every editor, linter, and team member recognises them.
+   `ponytail:` is agent-internal scaffolding; strip it before committing.
+   A marker earns its place by naming *what* and *when*: `# TODO: move to shared cat/models once it ships`.
+   `# TODO: fix this` is noise - delete or file an issue.
 
 ## Anti-patterns
 
@@ -39,6 +42,9 @@ five seconds away?" Nothing? Delete.
 - **Ceremonial dividers** - `# ─────`, `# =========`, `# ***`.
 - **Restated types** - `"""Returns a list of dicts."""` under `-> list[dict]`.
 - **AI-slop preamble** - "This function handles the case where..." Cut straight to the *why*.
+- **Ghost history** - a comment describing a refactor, rename, or previous behaviour that the file
+  no longer contains. `# was using X, switched to Y` after the switch is complete adds nothing; the
+  git log has the story. Delete.
 
 ## Python mechanics
 
@@ -69,7 +75,9 @@ five seconds away?" Nothing? Delete.
 | Contract for another service / caller | Keep as docstring |
 | ASCII decoration around a section | Replace with one-line intent |
 | TODO with a plan | Keep |
+| `ponytail:` marker in committed code | Strip - replace with TODO/FIXME/HACK as appropriate |
 | TODO without a plan | Delete or file an issue |
+| Comment describing history the file no longer contains | Delete - git log has it |
 | Suppression comment without reason | Add inline reason or remove suppression |
 | Source attribution for copied code | Keep - one URL is enough |
 | Module docstring giving wire-flow | Keep, one line |
