@@ -36,7 +36,7 @@ mise run fix      # formatters
   host-specific user provides
 - `modules/users/<user>.nix` - user aspect; manifest of capability bundles to enable
 - `packages/` - local package derivations
-- `.agents/skills/` - repo-local skills (`add-aspect`, `den`)
+- `.agents/skills/` - repo-local skills (`add-aspect`, `den`, `nixpkgs-lookup`)
 
 ## Decision tree - where does X go?
 
@@ -62,6 +62,7 @@ include it.
 
 - **Adding software** -> use the `add-aspect` skill
 - **Den / aspect authoring** -> use the `den` skill
+- **Checking nixpkgs before writing overlays** -> use the `nixpkgs-lookup` skill
 - **Finding / editing skills** -> use the `ai-skills` skill (`.agents/skills/ai-skills/SKILL.md`)
 - **Aspect naming** - declare via `dots.<category>._.<name> = { … };` so
   angle-bracket includes (`<dots/<category>/<name>>`) resolve through the namespace's
