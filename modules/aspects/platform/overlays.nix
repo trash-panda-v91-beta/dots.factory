@@ -20,33 +20,7 @@ in
 
       nixpkgs.overlays = [
         (_final: prev: {
-          # herdr's source build vendors libghostty-vt which needs xcrun; use
-          # upstream release binary on darwin.
           herdr-splits = prev.callPackage "${pkgsDir}/herdr-splits" { };
-          # herdr source tree (integration assets, etc.) - kept separate from the
-          # binary-fetch herdr derivation below which has no src attribute.
-          herdr-src = prev.herdr.src;
-
-          herdr = prev.stdenv.mkDerivation {
-            pname = "herdr";
-            version = "0.7.1";
-            src = prev.fetchurl {
-              url = "https://github.com/ogulcancelik/herdr/releases/download/v0.7.1/herdr-macos-aarch64";
-              hash = "sha256-FvRlPwSR6h59K0a1sCVC8Y4bguiNqvnikAVy5btjTfg=";
-            };
-            dontUnpack = true;
-            installPhase = ''
-              install -Dm755 $src $out/bin/herdr
-            '';
-            meta = {
-              description = "Terminal workspace manager for AI coding agents";
-              homepage = "https://herdr.dev";
-              license = lib.licenses.agpl3Plus;
-              mainProgram = "herdr";
-              platforms = [ "aarch64-darwin" ];
-              sourceProvenance = [ lib.sourceTypes.binaryNativeCode ];
-            };
-          };
 
           obsidian = prev.obsidian.overrideAttrs (old: {
             # 1.13.x DMG nests the app under a versioned prefix directory.
