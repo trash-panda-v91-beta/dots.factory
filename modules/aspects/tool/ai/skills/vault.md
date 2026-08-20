@@ -25,7 +25,7 @@ Pass `vault=$VAULT` to every `obsidian-cli` call. Plugin commands
 (`tasknotes:capture`, `daily:*`) silently ignore `vault=` - see `obsidian-cli` skill
 for the URI-focus workaround.
 
-`$VAULTS_DIR` resolves to `~/vaults`; the two vaults are at
+`$VAULTS_DIR` points to the local vaults root; the two vaults are at
 `$VAULTS_DIR/mist` and (on CMB only) `$VAULTS_DIR/nil`.
 
 ## Structure

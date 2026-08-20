@@ -58,7 +58,7 @@ Applied to any text going into:
 
 Never allowed:
 
-- Vault paths (`$VAULTS_DIR`, `~/vaults`, `/mist`, `/nil`, `Coding/`)
+- Vault paths (`$VAULTS_DIR`, `/mist`, `/nil`, `Coding/`)
 - ADR identifiers used as pointers ("ADR 003", "see ADR NNN", "our ADR on X")
 - Scratchpad phrasing or vault filenames
 - `dots.factory` / `dots.corpo` paths in code that ships publicly
