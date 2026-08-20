@@ -83,7 +83,7 @@ let
     name: keyboard:
     lib.nameValuePair (mkName name) {
       command =
-        "/Applications/kanata --cfg ${keyboard.configFile}"
+        "/usr/local/bin/kanata --cfg ${keyboard.configFile}"
         + lib.optionalString (keyboard.port != null) " --port ${toString keyboard.port}"
         + lib.optionalString (keyboard.extraArgs != [ ]) " ${lib.concatStringsSep " " keyboard.extraArgs}";
       serviceConfig = {
@@ -144,8 +144,8 @@ in
         ${parentAppDir}/.Karabiner-VirtualHIDDevice-Manager.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Manager activate 2>/dev/null || true
       fi
 
-      echo "Creating kanata symlink in /Applications..."
-      ln -sf ${cfg.package}/bin/kanata /Applications/kanata
+      echo "Copying kanata to stable path..."
+      install -m 755 ${cfg.package}/bin/kanata /usr/local/bin/kanata
 
       echo "Starting kanata services..."
       ${lib.concatStringsSep "\n" (
