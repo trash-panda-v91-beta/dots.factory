@@ -14,8 +14,9 @@ and name the skills likely to help.
 REPO=$(basename "$(git rev-parse --show-toplevel)")
 ```
 
-Vault selection per the `vault` skill (default mist; on CMB, `vault-nil` may
-route to nil).
+Vault selection per the `vault` skill. Default is `mist`. Use `nil` only if
+`vault-nil` appears in the session's available skills list (CMB only) - never
+read vault-nil by guessing a path.
 
 ## 2. Query vault in one shot
 

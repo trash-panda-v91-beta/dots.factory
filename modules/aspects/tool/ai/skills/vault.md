@@ -17,9 +17,10 @@ Default: `mist`.
 VAULT=mist
 ```
 
-On CMB, the `vault-nil` skill provides a routing rule that flips this to `nil`
-for work repos and layers Jira sync on top. On PMB or any machine where
-`vault-nil` isn't loaded, always use `mist`.
+On CMB, `vault-nil` provides a routing rule that flips this to `nil` for work
+repos and layers Jira sync on top. Do **not** attempt to read vault-nil by
+guessing a path - check whether the skill appears in the session's available
+skills list. On PMB it is absent; always use `mist` and skip vault-nil entirely.
 
 Pass `vault=$VAULT` to every `obsidian-cli` call. Plugin commands
 (`tasknotes:capture`, `daily:*`) silently ignore `vault=` - see `obsidian-cli` skill
