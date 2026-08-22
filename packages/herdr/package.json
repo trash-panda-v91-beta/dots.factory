@@ -83,9 +83,9 @@
     "dev": "vici develop"
   },
   "dependencies": {
-    "@vicinae/api": "^0.25.0"
+    "@vicinae/api": "^0.26.0"
   },
   "devDependencies": {
-    "typescript": "^5.9.3"
+    "typescript": "^7.0.0"
   }
 }
