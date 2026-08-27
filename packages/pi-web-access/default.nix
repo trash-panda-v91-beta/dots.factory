@@ -12,7 +12,10 @@ stdenvNoCC.mkDerivation {
 
   src = inputs.pi-web-access;
 
-  nativeBuildInputs = [ bun cacert ];
+  nativeBuildInputs = [
+    bun
+    cacert
+  ];
 
   outputHashAlgo = "sha256";
   outputHashMode = "recursive";

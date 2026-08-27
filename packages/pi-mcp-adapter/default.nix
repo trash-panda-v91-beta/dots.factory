@@ -12,7 +12,10 @@ stdenvNoCC.mkDerivation {
 
   src = inputs.pi-mcp-adapter;
 
-  nativeBuildInputs = [ bun cacert ];
+  nativeBuildInputs = [
+    bun
+    cacert
+  ];
 
   outputHashAlgo = "sha256";
   outputHashMode = "recursive";
