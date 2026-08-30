@@ -91,7 +91,7 @@ in
             servers = {
               biome = {
                 command = [
-                  "biome"
+                  "${pkgs.biome}/bin/biome"
                   "lsp-proxy"
                 ];
                 extensions = [
@@ -111,7 +111,7 @@ in
               };
               ts_ls = {
                 command = [
-                  "typescript-language-server"
+                  "${pkgs.typescript-language-server}/bin/typescript-language-server"
                   "--stdio"
                 ];
                 extensions = [
@@ -125,7 +125,7 @@ in
               };
               ruff = {
                 command = [
-                  "ruff"
+                  "${pkgs.ruff}/bin/ruff"
                   "server"
                 ];
                 extensions = [
@@ -135,7 +135,7 @@ in
               };
               ty = {
                 command = [
-                  "ty"
+                  "${pkgs.ty}/bin/ty"
                   "server"
                 ];
                 extensions = [
@@ -145,7 +145,7 @@ in
               };
               bashls = {
                 command = [
-                  "bash-language-server"
+                  "${pkgs.bash-language-server}/bin/bash-language-server"
                   "start"
                 ];
                 extensions = [
@@ -154,16 +154,16 @@ in
                 ];
               };
               nixd = {
-                command = [ "nixd" ];
+                command = [ "${pkgs.nixd}/bin/nixd" ];
                 extensions = [ ".nix" ];
               };
               gopls = {
-                command = [ "gopls" ];
+                command = [ "${pkgs.gopls}/bin/gopls" ];
                 extensions = [ ".go" ];
               };
               jsonls = {
                 command = [
-                  "vscode-json-language-server"
+                  "${pkgs.vscode-langservers-extracted}/bin/vscode-json-language-server"
                   "--stdio"
                 ];
                 extensions = [
@@ -182,7 +182,7 @@ in
                 ];
               };
               lua_ls = {
-                command = [ "lua-language-server" ];
+                command = [ "${pkgs.lua-language-server}/bin/lua-language-server" ];
                 extensions = [ ".lua" ];
               };
               harper_ls = {
@@ -208,14 +208,14 @@ in
               };
               rumdl = {
                 command = [
-                  "rumdl"
+                  "${pkgs.rumdl}/bin/rumdl"
                   "server"
                 ];
                 extensions = [ ".md" ];
               };
               tombi = {
                 command = [
-                  "tombi"
+                  "${pkgs.tombi}/bin/tombi"
                   "lsp"
                 ];
                 extensions = [ ".toml" ];
