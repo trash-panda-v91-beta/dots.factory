@@ -173,7 +173,7 @@ in
               };
               yamlls = {
                 command = [
-                  "yaml-language-server"
+                  "${pkgs.yaml-language-server}/bin/yaml-language-server"
                   "--stdio"
                 ];
                 extensions = [
@@ -187,7 +187,7 @@ in
               };
               harper_ls = {
                 command = [
-                  "harper-ls"
+                  "${pkgs.harper}/bin/harper-ls"
                   "--stdio"
                 ];
                 extensions = [
