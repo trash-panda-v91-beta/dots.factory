@@ -43,6 +43,7 @@ in
             obsidian-tasknotes-plugin = prev.callPackage "${pkgsDir}/obsidian-tasknotes-plugin" {
               inherit inputs;
             };
+            cfn-lsp = prev.callPackage "${pkgsDir}/cfn-lsp" { };
             pi-lsp = prev.callPackage "${pkgsDir}/pi-lsp" { inherit inputs; };
             ponytail-pi = prev.callPackage "${pkgsDir}/ponytail-pi" { inherit inputs; };
             pi-mcp-adapter = prev.callPackage "${pkgsDir}/pi-mcp-adapter" { inherit inputs; };
