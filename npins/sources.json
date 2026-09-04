@@ -25,29 +25,29 @@
       },
       "branch": "main",
       "submodules": false,
-      "revision": "a7da3ced59eadafbda6eb4d7f7e2a6a3d9ecf858",
-      "url": "https://github.com/oskarnurm/koda.nvim/archive/a7da3ced59eadafbda6eb4d7f7e2a6a3d9ecf858.tar.gz",
-      "hash": "sha256-OiWW7c+cd/MioepNN40pFO3hTAm9ov80I1mVYmTW428="
+      "revision": "25a5c98ca2f6bb0b69f5e2654a78f0d7c7e0721d",
+      "url": "https://github.com/oskarnurm/koda.nvim/archive/25a5c98ca2f6bb0b69f5e2654a78f0d7c7e0721d.tar.gz",
+      "hash": "sha256-RqhjuR2zeApdcjfISLUJp5uueTbLXH0wotp5nhug4VM="
     },
     "obsidian-minimal-settings-main": {
       "type": "MutableUrl",
       "update_url": "https://github.com/kepano/obsidian-minimal-settings/releases/latest/download/main.js",
       "unpack": false,
-      "url": "https://release-assets.githubusercontent.com/github-production-release-asset/312934934/6e84a6f2-8b06-4520-a02b-56f3c4738081?sp=r&sv=2018-11-09&sr=b&spr=https&se=2026-08-16T21%3A01%3A06Z&rscd=attachment%3B+filename%3Dmain.js&rsct=application%2Foctet-stream&skoid=96c2d410-5711-43a1-aedd-ab1947aa7ab0&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skt=2026-08-16T20%3A00%3A17Z&ske=2026-08-16T21%3A01%3A06Z&sks=b&skv=2018-11-09&sig=3HrMDKO9mH2caqZN%2BidbG4YoB9fj1Z9dmmcWQFJlgZg%3D&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmVsZWFzZS1hc3NldHMuZ2l0aHVidXNlcmNvbnRlbnQuY29tIiwia2V5Ijoia2V5MSIsImV4cCI6MTc4NjkxMjE1MSwibmJmIjoxNzg2OTExODUxLCJwYXRoIjoicmVsZWFzZWFzc2V0cHJvZHVjdGlvbi5ibG9iLmNvcmUud2luZG93cy5uZXQifQ.BeeBP6bWHoA4oSgMzeMa_yUhvSJtxAWYOEstbrsqSIQ&response-content-disposition=attachment%3B%20filename%3Dmain.js&response-content-type=application%2Foctet-stream",
+      "url": "https://release-assets.githubusercontent.com/github-production-release-asset/312934934/6e84a6f2-8b06-4520-a02b-56f3c4738081?sp=r&sv=2018-11-09&sr=b&spr=https&se=2026-08-27T20%3A06%3A24Z&rscd=attachment%3B+filename%3Dmain.js&rsct=application%2Foctet-stream&skoid=96c2d410-5711-43a1-aedd-ab1947aa7ab0&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skt=2026-08-27T19%3A05%3A31Z&ske=2026-08-27T20%3A06%3A24Z&sks=b&skv=2018-11-09&sig=jtUUUSjtTymuP0rba4Vat14dOn5Cfu9Wf5Hor0wJBkc%3D&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmVsZWFzZS1hc3NldHMuZ2l0aHVidXNlcmNvbnRlbnQuY29tIiwia2V5Ijoia2V5MSIsImV4cCI6MTc4Nzg1ODQ0MywibmJmIjoxNzg3ODU4MTQzLCJwYXRoIjoicmVsZWFzZWFzc2V0cHJvZHVjdGlvbi5ibG9iLmNvcmUud2luZG93cy5uZXQifQ.lXlhqsorzqDrNyfIj41T9qTZDdIpZMOZNWrLjefihIs&response-content-disposition=attachment%3B%20filename%3Dmain.js&response-content-type=application%2Foctet-stream",
       "hash": "sha256-91TgzmUj5DO/+OeZWoSPfX+sIFOZ+as7ElhDAmH9kMQ="
     },
     "obsidian-minimal-settings-manifest": {
       "type": "MutableUrl",
       "update_url": "https://github.com/kepano/obsidian-minimal-settings/releases/latest/download/manifest.json",
       "unpack": false,
-      "url": "https://release-assets.githubusercontent.com/github-production-release-asset/312934934/e8f49dfb-fb80-4435-8882-52fe870ed229?sp=r&sv=2018-11-09&sr=b&spr=https&se=2026-08-16T21%3A04%3A02Z&rscd=attachment%3B+filename%3Dmanifest.json&rsct=application%2Foctet-stream&skoid=96c2d410-5711-43a1-aedd-ab1947aa7ab0&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skt=2026-08-16T20%3A03%3A44Z&ske=2026-08-16T21%3A04%3A02Z&sks=b&skv=2018-11-09&sig=w1vjRG5Sk0cMuHUtqvL27ONJQSzvkw%2BGKrz8su8pZBs%3D&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmVsZWFzZS1hc3NldHMuZ2l0aHVidXNlcmNvbnRlbnQuY29tIiwia2V5Ijoia2V5MSIsImV4cCI6MTc4NjkxMjE1MSwibmJmIjoxNzg2OTExODUxLCJwYXRoIjoicmVsZWFzZWFzc2V0cHJvZHVjdGlvbi5ibG9iLmNvcmUud2luZG93cy5uZXQifQ.BeeBP6bWHoA4oSgMzeMa_yUhvSJtxAWYOEstbrsqSIQ&response-content-disposition=attachment%3B%20filename%3Dmanifest.json&response-content-type=application%2Foctet-stream",
+      "url": "https://release-assets.githubusercontent.com/github-production-release-asset/312934934/e8f49dfb-fb80-4435-8882-52fe870ed229?sp=r&sv=2018-11-09&sr=b&spr=https&se=2026-08-27T20%3A02%3A12Z&rscd=attachment%3B+filename%3Dmanifest.json&rsct=application%2Foctet-stream&skoid=96c2d410-5711-43a1-aedd-ab1947aa7ab0&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skt=2026-08-27T19%3A02%3A11Z&ske=2026-08-27T20%3A02%3A12Z&sks=b&skv=2018-11-09&sig=fBJPTrMZF0jaRmYsPS72BcMGK5Sx36be4HEflV4%2FK4U%3D&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmVsZWFzZS1hc3NldHMuZ2l0aHVidXNlcmNvbnRlbnQuY29tIiwia2V5Ijoia2V5MSIsImV4cCI6MTc4Nzg1ODQ0MywibmJmIjoxNzg3ODU4MTQzLCJwYXRoIjoicmVsZWFzZWFzc2V0cHJvZHVjdGlvbi5ibG9iLmNvcmUud2luZG93cy5uZXQifQ.lXlhqsorzqDrNyfIj41T9qTZDdIpZMOZNWrLjefihIs&response-content-disposition=attachment%3B%20filename%3Dmanifest.json&response-content-type=application%2Foctet-stream",
       "hash": "sha256-IDj5wfXKAm68Hz4Va62XxnHSxAGiBxg4RQjvcgcejF8="
     },
     "obsidian-minimal-settings-styles": {
       "type": "MutableUrl",
       "update_url": "https://github.com/kepano/obsidian-minimal-settings/releases/latest/download/styles.css",
       "unpack": false,
-      "url": "https://release-assets.githubusercontent.com/github-production-release-asset/312934934/597dd625-5b4b-4bbc-ab8f-bc2d270e597e?sp=r&sv=2018-11-09&sr=b&spr=https&se=2026-08-16T21%3A20%3A55Z&rscd=attachment%3B+filename%3Dstyles.css&rsct=application%2Foctet-stream&skoid=96c2d410-5711-43a1-aedd-ab1947aa7ab0&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skt=2026-08-16T20%3A20%3A19Z&ske=2026-08-16T21%3A20%3A55Z&sks=b&skv=2018-11-09&sig=Uibt3BvV8xgxob%2BD2h59J4gvtBaMtDeriw0abqQO1oU%3D&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmVsZWFzZS1hc3NldHMuZ2l0aHVidXNlcmNvbnRlbnQuY29tIiwia2V5Ijoia2V5MSIsImV4cCI6MTc4NjkxMjE1MSwibmJmIjoxNzg2OTExODUxLCJwYXRoIjoicmVsZWFzZWFzc2V0cHJvZHVjdGlvbi5ibG9iLmNvcmUud2luZG93cy5uZXQifQ.BeeBP6bWHoA4oSgMzeMa_yUhvSJtxAWYOEstbrsqSIQ&response-content-disposition=attachment%3B%20filename%3Dstyles.css&response-content-type=application%2Foctet-stream",
+      "url": "https://release-assets.githubusercontent.com/github-production-release-asset/312934934/597dd625-5b4b-4bbc-ab8f-bc2d270e597e?sp=r&sv=2018-11-09&sr=b&spr=https&se=2026-08-27T19%3A57%3A13Z&rscd=attachment%3B+filename%3Dstyles.css&rsct=application%2Foctet-stream&skoid=96c2d410-5711-43a1-aedd-ab1947aa7ab0&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skt=2026-08-27T18%3A56%3A17Z&ske=2026-08-27T19%3A57%3A13Z&sks=b&skv=2018-11-09&sig=to43p7dKL2qWo598%2F8YnINg%2F3lBmL8lwMpVFq2XgC6s%3D&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmVsZWFzZS1hc3NldHMuZ2l0aHVidXNlcmNvbnRlbnQuY29tIiwia2V5Ijoia2V5MSIsImV4cCI6MTc4Nzg1ODQ0MywibmJmIjoxNzg3ODU4MTQzLCJwYXRoIjoicmVsZWFzZWFzc2V0cHJvZHVjdGlvbi5ibG9iLmNvcmUud2luZG93cy5uZXQifQ.lXlhqsorzqDrNyfIj41T9qTZDdIpZMOZNWrLjefihIs&response-content-disposition=attachment%3B%20filename%3Dstyles.css&response-content-type=application%2Foctet-stream",
       "hash": "sha256-UAhHYNqSelv1rBudO5YNxS4dCjv2kOVN+PTXb4ISYow="
     },
     "obsidian-minimal-theme": {
@@ -70,22 +70,22 @@
       "type": "MutableUrl",
       "update_url": "https://github.com/callumalpass/tasknotes/releases/latest/download/main.js",
       "unpack": false,
-      "url": "https://release-assets.githubusercontent.com/github-production-release-asset/985542247/812351a6-7953-4727-9bed-4ebf3f1aa95e?sp=r&sv=2018-11-09&sr=b&spr=https&se=2026-08-16T21%3A12%3A54Z&rscd=attachment%3B+filename%3Dmain.js&rsct=application%2Foctet-stream&skoid=96c2d410-5711-43a1-aedd-ab1947aa7ab0&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skt=2026-08-16T20%3A12%3A34Z&ske=2026-08-16T21%3A12%3A54Z&sks=b&skv=2018-11-09&sig=3tvnraqnXrADLzksVCoz%2Bor7u0GM48VPRt252%2B91C9U%3D&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmVsZWFzZS1hc3NldHMuZ2l0aHVidXNlcmNvbnRlbnQuY29tIiwia2V5Ijoia2V5MSIsImV4cCI6MTc4NjkxMjE1MiwibmJmIjoxNzg2OTExODUyLCJwYXRoIjoicmVsZWFzZWFzc2V0cHJvZHVjdGlvbi5ibG9iLmNvcmUud2luZG93cy5uZXQifQ.MMzlTqhHFkkoYbpvUWHPaARb1X4Ds7Ae9Klq-U1K-fk&response-content-disposition=attachment%3B%20filename%3Dmain.js&response-content-type=application%2Foctet-stream",
-      "hash": "sha256-eHZMCaZN5pGOnWESJ55yzPvK7OIY+WF1hTTrp5Z4RqE="
+      "url": "https://release-assets.githubusercontent.com/github-production-release-asset/985542247/74fdd8c3-9fce-4479-ad89-f79cb54c90c7?sp=r&sv=2018-11-09&sr=b&spr=https&se=2026-08-27T19%3A56%3A18Z&rscd=attachment%3B+filename%3Dmain.js&rsct=application%2Foctet-stream&skoid=96c2d410-5711-43a1-aedd-ab1947aa7ab0&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skt=2026-08-27T18%3A55%3A56Z&ske=2026-08-27T19%3A56%3A18Z&sks=b&skv=2018-11-09&sig=cb%2F9pv%2BHY0VZixANdRtOOq%2Fr4wxYhK0%2F%2FOrsa4JLzEY%3D&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmVsZWFzZS1hc3NldHMuZ2l0aHVidXNlcmNvbnRlbnQuY29tIiwia2V5Ijoia2V5MSIsImV4cCI6MTc4Nzg1ODQ0NCwibmJmIjoxNzg3ODU4MTQ0LCJwYXRoIjoicmVsZWFzZWFzc2V0cHJvZHVjdGlvbi5ibG9iLmNvcmUud2luZG93cy5uZXQifQ.bqZV0aniZTlzWepQFWhaER6TGKaIJcZ7LjEDaFWZkGU&response-content-disposition=attachment%3B%20filename%3Dmain.js&response-content-type=application%2Foctet-stream",
+      "hash": "sha256-UHtwF3VgX/PHjqMxQ/yXOoZQCB3n3DIMv2v0lXlcA7c="
     },
     "obsidian-tasknotes-manifest": {
       "type": "MutableUrl",
       "update_url": "https://github.com/callumalpass/tasknotes/releases/latest/download/manifest.json",
       "unpack": false,
-      "url": "https://release-assets.githubusercontent.com/github-production-release-asset/985542247/346c9a50-f9a9-4985-9d61-8cec0af5d7ee?sp=r&sv=2018-11-09&sr=b&spr=https&se=2026-08-16T21%3A12%3A20Z&rscd=attachment%3B+filename%3Dmanifest.json&rsct=application%2Foctet-stream&skoid=96c2d410-5711-43a1-aedd-ab1947aa7ab0&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skt=2026-08-16T20%3A11%3A49Z&ske=2026-08-16T21%3A12%3A20Z&sks=b&skv=2018-11-09&sig=PPuxAiXaOo%2BEEOXxEiRwDTV8Gfv%2B52o1vmopzG0yy54%3D&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmVsZWFzZS1hc3NldHMuZ2l0aHVidXNlcmNvbnRlbnQuY29tIiwia2V5Ijoia2V5MSIsImV4cCI6MTc4NjkxMjE1MiwibmJmIjoxNzg2OTExODUyLCJwYXRoIjoicmVsZWFzZWFzc2V0cHJvZHVjdGlvbi5ibG9iLmNvcmUud2luZG93cy5uZXQifQ.MMzlTqhHFkkoYbpvUWHPaARb1X4Ds7Ae9Klq-U1K-fk&response-content-disposition=attachment%3B%20filename%3Dmanifest.json&response-content-type=application%2Foctet-stream",
-      "hash": "sha256-/OyoRG1DY3jIcMh/NEsJmKog9xm8zvgrovr0JmifB7A="
+      "url": "https://release-assets.githubusercontent.com/github-production-release-asset/985542247/e9658187-19e8-422c-ace4-ae902f888586?sp=r&sv=2018-11-09&sr=b&spr=https&se=2026-08-27T19%3A59%3A20Z&rscd=attachment%3B+filename%3Dmanifest.json&rsct=application%2Foctet-stream&skoid=96c2d410-5711-43a1-aedd-ab1947aa7ab0&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skt=2026-08-27T18%3A58%3A38Z&ske=2026-08-27T19%3A59%3A20Z&sks=b&skv=2018-11-09&sig=4MCSX2O5oPz7GFMwgXvukkrJsSqhYMdK%2Bzo7BU9Bo%2FM%3D&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmVsZWFzZS1hc3NldHMuZ2l0aHVidXNlcmNvbnRlbnQuY29tIiwia2V5Ijoia2V5MSIsImV4cCI6MTc4Nzg1ODQ0NCwibmJmIjoxNzg3ODU4MTQ0LCJwYXRoIjoicmVsZWFzZWFzc2V0cHJvZHVjdGlvbi5ibG9iLmNvcmUud2luZG93cy5uZXQifQ.bqZV0aniZTlzWepQFWhaER6TGKaIJcZ7LjEDaFWZkGU&response-content-disposition=attachment%3B%20filename%3Dmanifest.json&response-content-type=application%2Foctet-stream",
+      "hash": "sha256-b0Vvry47J5WEBesCGCOGseTEcUMpWXUUN7bgIMD030Y="
     },
     "obsidian-tasknotes-styles": {
       "type": "MutableUrl",
       "update_url": "https://github.com/callumalpass/tasknotes/releases/latest/download/styles.css",
       "unpack": false,
-      "url": "https://release-assets.githubusercontent.com/github-production-release-asset/985542247/8bfc0a35-0886-4714-bdcb-5e4931d4a751?sp=r&sv=2018-11-09&sr=b&spr=https&se=2026-08-16T21%3A13%3A40Z&rscd=attachment%3B+filename%3Dstyles.css&rsct=application%2Foctet-stream&skoid=96c2d410-5711-43a1-aedd-ab1947aa7ab0&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skt=2026-08-16T20%3A13%3A16Z&ske=2026-08-16T21%3A13%3A40Z&sks=b&skv=2018-11-09&sig=Ry7euaTcolqmi94ViQBhdjBuPMhVEWb0%2BWBCzh6iEvo%3D&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmVsZWFzZS1hc3NldHMuZ2l0aHVidXNlcmNvbnRlbnQuY29tIiwia2V5Ijoia2V5MSIsImV4cCI6MTc4NjkxMjE1MiwibmJmIjoxNzg2OTExODUyLCJwYXRoIjoicmVsZWFzZWFzc2V0cHJvZHVjdGlvbi5ibG9iLmNvcmUud2luZG93cy5uZXQifQ.MMzlTqhHFkkoYbpvUWHPaARb1X4Ds7Ae9Klq-U1K-fk&response-content-disposition=attachment%3B%20filename%3Dstyles.css&response-content-type=application%2Foctet-stream",
-      "hash": "sha256-tnHJ6Da8Dw8hGH/Z5+6lP4TXW2mg/4RJJBIiAGKXp8Y="
+      "url": "https://release-assets.githubusercontent.com/github-production-release-asset/985542247/76b28b7b-f339-4f7c-868d-fd47edc19a2a?sp=r&sv=2018-11-09&sr=b&spr=https&se=2026-08-27T19%3A57%3A50Z&rscd=attachment%3B+filename%3Dstyles.css&rsct=application%2Foctet-stream&skoid=96c2d410-5711-43a1-aedd-ab1947aa7ab0&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skt=2026-08-27T18%3A57%3A37Z&ske=2026-08-27T19%3A57%3A50Z&sks=b&skv=2018-11-09&sig=cH6lfaRyeID2sInFSEnpBIA4r8v5tYCCfqdYgEQ%2BUn0%3D&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmVsZWFzZS1hc3NldHMuZ2l0aHVidXNlcmNvbnRlbnQuY29tIiwia2V5Ijoia2V5MSIsImV4cCI6MTc4Nzg1ODQ0NCwibmJmIjoxNzg3ODU4MTQ0LCJwYXRoIjoicmVsZWFzZWFzc2V0cHJvZHVjdGlvbi5ibG9iLmNvcmUud2luZG93cy5uZXQifQ.bqZV0aniZTlzWepQFWhaER6TGKaIJcZ7LjEDaFWZkGU&response-content-disposition=attachment%3B%20filename%3Dstyles.css&response-content-type=application%2Foctet-stream",
+      "hash": "sha256-r7aMzN3vlKpSM9EPazZe9nkBOlEYDtl48XJzVETz54s="
     },
     "pi-lsp": {
       "type": "GitRelease",
@@ -114,10 +114,10 @@
       "version_upper_bound": null,
       "release_prefix": null,
       "submodules": false,
-      "version": "v2.26.0",
-      "revision": "ca2f1b4270f5a14c23178e32d4f93c4f98d5a05e",
-      "url": "https://api.github.com/repos/nicobailon/pi-mcp-adapter/tarball/refs/tags/v2.26.0",
-      "hash": "sha256-l8PDjwNk6SC4mzanp7gxOCsVm2NQcigNBl+7zs+CbWM="
+      "version": "v2.29.0",
+      "revision": "90b2a5b614706d62a3490fe3f7d77c257b40875f",
+      "url": "https://api.github.com/repos/nicobailon/pi-mcp-adapter/tarball/refs/tags/v2.29.0",
+      "hash": "sha256-T8prXgJdPYmJVHPofokNFxA4Q473MuOLIWCE+LLvOjg="
     },
     "pi-neuralwatt": {
       "type": "GitRelease",
@@ -130,10 +130,10 @@
       "version_upper_bound": null,
       "release_prefix": null,
       "submodules": false,
-      "version": "v0.14.2",
-      "revision": "5ada3066f0959f44647a9640068718a2e019253d",
-      "url": "https://api.github.com/repos/aliou/pi-neuralwatt/tarball/refs/tags/v0.14.2",
-      "hash": "sha256-rxUaKboCrIPM7bs+EEQF29Vbl3RI1jlwZ4KKF+SKBT0="
+      "version": "v0.15.0",
+      "revision": "29abdec7ac45eacbb1eda3ee5a1c49b7b243f093",
+      "url": "https://api.github.com/repos/aliou/pi-neuralwatt/tarball/refs/tags/v0.15.0",
+      "hash": "sha256-HmXBwgjCFW4VSgmIeXXpArJC4/TXbHlnEZnN9sTuGQM="
     },
     "pi-nvim": {
       "type": "Git",
@@ -159,10 +159,10 @@
       "version_upper_bound": null,
       "release_prefix": null,
       "submodules": false,
-      "version": "v0.23.0",
-      "revision": "c1ce8590d684842ba129241a2121b6157dcf4223",
-      "url": "https://api.github.com/repos/nicobailon/pi-web-access/tarball/refs/tags/v0.23.0",
-      "hash": "sha256-q/TZUkgeC/W/Ft7RMVIDc6m/Dsj2amicHhSeCbzk05E="
+      "version": "v0.25.0",
+      "revision": "97b107eb9c5bb36ab3da805e050b90cd20947892",
+      "url": "https://api.github.com/repos/nicobailon/pi-web-access/tarball/refs/tags/v0.25.0",
+      "hash": "sha256-Ad8H3vdY4zOivqqWhQd+FWhL0DGtFtGG4TY+w7eCFqk="
     },
     "ponytail": {
       "type": "GitRelease",
