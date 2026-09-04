@@ -16,7 +16,7 @@ in
       ];
 
       homeManager =
-        { config, pkgs, ... }:
+        { config, pkgs, lib, ... }:
         let
           piWebAccess = pkgs.local.pi-web-access;
           piMcpAdapter = pkgs.local.pi-mcp-adapter;
@@ -26,6 +26,14 @@ in
           piNvim = pkgs.local.pi-nvim;
         in
         {
+          imports = [
+            {
+              options.piLspExtraServers = lib.mkOption {
+                type = lib.types.attrsOf lib.types.anything;
+                default = { };
+              };
+            }
+          ];
           home.sessionVariables.CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC = 1;
           home.sessionVariables.PI_SKIP_VERSION_CHECK = 1;
           programs.claude-code = {
@@ -220,7 +228,7 @@ in
                 ];
                 extensions = [ ".toml" ];
               };
-            };
+            } // config.piLspExtraServers;
           };
         };
     };
