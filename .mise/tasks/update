@@ -13,11 +13,8 @@ nix flake update
 #    opencode-nvim). These live in npins/sources.json.
 nix run nixpkgs#npins -- update
 
-# 3. Bump Obsidian derivations (version + hashes from GitHub releases).
-"$root/packages/update-obsidian.sh"
-
-# 4. Refresh outputHash for pi-* whole-build FODs whose source just changed.
+# 3. Refresh outputHash for pi-* whole-build FODs whose source just changed.
 "$root/packages/refresh-pi-hashes.sh"
 
-# 5. Refresh rev + hash for the amazon-aws vicinae extension.
+# 4. Refresh rev + hash for the amazon-aws vicinae extension.
 "$root/packages/refresh-aws-ext.sh"
