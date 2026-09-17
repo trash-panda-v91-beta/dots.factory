@@ -20,7 +20,7 @@
       <dots/bundle/homelab>
       <dots/bundle/notes>
       <dots/bundle/desktop>
-      <dots/bundle/security>
+      <dots/bundle/onepassword>
       <dots/bundle/browse>
     ];
 
