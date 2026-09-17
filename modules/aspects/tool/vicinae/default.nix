@@ -38,6 +38,10 @@
                 open-k9s.shortcut = "alt+K";
               };
               "@trash-panda-v91-beta/misdr".entrypoints.tasks.shortcut = "super+control+alt+shift+M";
+              "store.raycast.keepassxc" = {
+                preferences.database = "${config.home.homeDirectory}/Library/CloudStorage/OneDrive-SAPSE(2)/Passwords.kdbx";
+                entrypoints.search.alias = "password";
+              };
               "@khasbilegt/store.raycast.1password".preferences = {
                 version = "v8";
                 primaryAction = "copy-password";

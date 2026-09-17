@@ -41,7 +41,7 @@
           colima
           docker
         ];
-        launchd.agents.colima-default = lib.mkIf pkgs.stdenv.isDarwin {
+        launchd.agents.colima-default = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
           enable = true;
           config = {
             ProgramArguments = [
