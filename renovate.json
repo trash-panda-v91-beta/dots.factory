@@ -10,6 +10,16 @@
     "enabled": true,
     "schedule": ["on monday"]
   },
+  "customManagers": [
+    {
+      "description": "fnox version pinned in mise global config inside dev-tools.nix",
+      "customType": "regex",
+      "managerFilePatterns": ["modules/aspects/tool/dev-tools\\.nix"],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>[a-z-]+) depName=(?<depName>[^\\n]+)\\n\\s+fnox = \"(?<currentValue>[^\"]+)\""
+      ]
+    }
+  ],
   "packageRules": [
     {
       "description": "Group herdr dependency updates",
@@ -39,6 +49,13 @@
       "description": "Group all mise tool updates into a single PR",
       "groupName": "mise tools",
       "matchManagers": ["mise"],
+      "schedule": ["every weekend"]
+    },
+    {
+      "description": "Group fnox custom manager update with mise tools",
+      "groupName": "mise tools",
+      "matchManagers": ["regex"],
+      "matchFileNames": ["modules/aspects/tool/dev-tools.nix"],
       "schedule": ["every weekend"]
     }
   ]
