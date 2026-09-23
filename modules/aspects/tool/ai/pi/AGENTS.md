@@ -67,3 +67,5 @@ are present. Replace any that appear with `-`.
 - After editing or creating any file, run `lsp_diagnostics` on it. Fix all diagnostics where the
   fix is clear. If suppressing a diagnostic makes more sense than fixing it, ask the user before
   adding an ignore comment.
+- Never print sensitive values in chat - no API keys, passwords, tokens, secrets, private keys,
+  or credentials of any kind. Redact with `***` if you must reference them at all.
