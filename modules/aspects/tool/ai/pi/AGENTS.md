@@ -30,6 +30,12 @@ like "ADR 003" - a reader cannot open it. If the reader needs the rationale, wri
 your own words; never point at a path or ADR they cannot see. Keep the *why* explanation, drop the
 pointer.
 
+## Machine identity
+
+Before constructing any path or assuming which dotfiles repo / vault is present, run
+`echo $HOSTNAME` or check `$HOSTNAME` in the environment. `pmb` = personal Mac,
+`cmb` = work Mac. Never assume PMB when the session could be on CMB.
+
 ## Stack
 
 Mostly Nix (nix-darwin, home-manager, nixvim) and TypeScript. Check the project AGENTS.md for
