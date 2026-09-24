@@ -68,6 +68,7 @@
                 obsidian_mcp = litellm "obsidian_mcp";
                 donetick_mcp = litellm "donetick_mcp";
                 truenas_mcp = litellm "truenas_mcp";
+                sparky_fitness = litellm "sparky_fitness";
               };
             };
 
