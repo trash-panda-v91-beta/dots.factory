@@ -27,7 +27,8 @@
           fnox-env = "https://github.com/jdx/mise-env-fnox"
 
           [tools]
-          fnox = "1.25.0"
+          # renovate: datasource=github-releases depName=jdx/fnox
+          fnox = "1.35.2"
 
           [settings]
           env_cache = true
