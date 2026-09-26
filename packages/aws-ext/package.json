@@ -348,16 +348,16 @@
     "@aws-sdk/client-ssm": "^3.1052.0",
     "@aws-sdk/shared-ini-file-loader": "^3.374.0",
     "@aws-sdk/util-dynamodb": "^3.996.2",
-    "@raycast/api": "^1.102.4",
+    "@raycast/api": "^2.0.0",
     "@raycast/utils": "^2.2.0",
     "util": "^0.12.5"
   },
   "devDependencies": {
     "@raycast/eslint-config": "^2.0.4",
     "@types/react": "^19.1.10",
-    "eslint": "^9.33.0",
+    "eslint": "^10.0.0",
     "prettier": "^3.6.2",
-    "typescript": "^5.9.2"
+    "typescript": "^7.0.0"
   },
   "scripts": {
     "build": "ray build -e dist",
