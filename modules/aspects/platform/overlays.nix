@@ -46,7 +46,6 @@ in
             cfn-lsp = prev.callPackage "${pkgsDir}/cfn-lsp" { };
             pi-lsp = prev.callPackage "${pkgsDir}/pi-lsp" { inherit inputs; };
             ponytail-pi = prev.callPackage "${pkgsDir}/ponytail-pi" { inherit inputs; };
-            pi-mcp-adapter = prev.callPackage "${pkgsDir}/pi-mcp-adapter" { inherit inputs; };
             pi-web-access = prev.callPackage "${pkgsDir}/pi-web-access" { inherit inputs; };
             pi-neuralwatt = prev.callPackage "${pkgsDir}/pi-neuralwatt" { inherit inputs; };
             tiny-code-action-nvim = prev.callPackage "${pkgsDir}/tiny-code-action-nvim" { inherit inputs; };

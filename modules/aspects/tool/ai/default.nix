@@ -19,7 +19,6 @@ in
         { config, pkgs, lib, ... }:
         let
           piWebAccess = pkgs.local.pi-web-access;
-          piMcpAdapter = pkgs.local.pi-mcp-adapter;
           context7Pi = pkgs.local.context7-pi;
           piLsp = pkgs.local.pi-lsp;
           ponytailPi = pkgs.local.ponytail-pi;
@@ -63,7 +62,6 @@ in
               extensions = [
                 "${piWebAccess}/index.js"
                 "${context7Pi}/context7.js"
-                "${piMcpAdapter}/index.js"
                 "${piLsp}/pi-lsp.js"
                 "${ponytailPi}/index.js"
                 "${piNvim}/extension.ts"
@@ -81,8 +79,7 @@ in
           # Skills live in ~/.pi/agent/skills (copied from the repo tree).
           home.file."${config.programs.pi-coding-agent.configDir}/skills".source = skillsDir;
 
-          # mcp.json is PMB-only; pmb.nix overrides it per (MCP) server.
-          # pi-mcp-adapter reads ~/.pi/agent/mcp.json at runtime.
+          # mcp.json is PMB-only; pmb.nix overrides it per MCP server.
           home.file."${config.programs.pi-coding-agent.configDir}/mcp.json".text = lib.mkDefault (builtins.toJSON {
             mcpServers = { };
           });

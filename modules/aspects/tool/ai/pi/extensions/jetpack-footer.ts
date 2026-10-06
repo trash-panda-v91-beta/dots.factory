@@ -8,14 +8,13 @@
  *   ·∘◦○◎●◎○◦∘  (dot ramp - motion carried by shape, not color)
  *
  * Footer (line below content):
- *   repo △ branch          ⎪ ▴in ▿out ◈cost ⎥  ⬡N  ◈level  provider∷model  ctx%
+ *   repo △ branch          ⎪ ▴in ▿out ◈cost ⎥  ◈level  provider∷model  ctx%
  *
  * Palette:
  *   ◎ / branch  = warning / accent (mirrors starship jetpack)
  *   ▴input      = success (green)  - flow up to model
  *   ▿output     = warning (yellow) - flow down from model
  *   ◈cost       = error   (red)    - outflow
- *   ⬡N (mcps)  = borderAccent     - connected MCP servers (hexagon = geometry motif)
  *   thinking    = thinkingOff..thinkingMax tokens - current reasoning level
  * Three-color chord = traffic light. Matches the nvim diff chord
  * (▴added ●changed ▿removed) so the two toolchains rhyme.
@@ -58,8 +57,6 @@ const THINKING_GLYPH: Record<ThinkingLevel, string> = {
 	max: "⦿",     // circle with dot - maximum
 };
 
-const MCP_STATUS_EVENT = "pi-mcp-adapter/status/v1";
-
 const italic = (s: string) => `\x1b[3m${s}\x1b[23m`;
 
 // Chrome margin - matches pi's `outputPad = 1` so header/footer align with messages.
@@ -88,13 +85,6 @@ const truncBranch = (b: string | null, max = 30) =>
 
 export default function (pi: ExtensionAPI) {
 	let footerRepaint: (() => void) | null = null;
-	let mcpConnected = 0;
-
-	// Track MCP server count via pi-mcp-adapter events
-	pi.events.on(MCP_STATUS_EVENT, (data: { connectedCount?: number }) => {
-		mcpConnected = data?.connectedCount ?? 0;
-		footerRepaint?.();
-	});
 
 	pi.on("session_start", (_event, ctx) => {
 		// Working indicator: dot ramp (·∘◦○◎●◎○◦∘). Motion in the shape, color stays flat.
@@ -117,7 +107,7 @@ export default function (pi: ExtensionAPI) {
 			invalidate() {},
 		}));
 
-		// Footer: repo △ branch          ⎪ ▴in ▿out ◈cost ⎥  ⬡N  glyph+level  provider∷model  ctx%
+		// Footer: repo △ branch          ⎪ ▴in ▿out ◈cost ⎥  glyph+level  provider∷model  ctx%
 		ctx.ui.setFooter((tui, theme: Theme, footerData) => {
 			footerRepaint = () => tui.requestRender();
 			const unsubBranch = footerData.onBranchChange(() => tui.requestRender());
@@ -169,12 +159,6 @@ export default function (pi: ExtensionAPI) {
 							].join(" ")
 						: "";
 
-					// Right cluster B: ⬡N - connected MCP count (hexagon = geometry motif)
-					// Shown only when at least one server is connected.
-					const mcpLabel = mcpConnected > 0
-						? theme.fg("borderAccent", italic(`⬡ ${mcpConnected}`))
-						: "";
-
 					// Right cluster C: thinking level - geometry glyph + level name, colored by level
 					// glyph only when off; glyph+name otherwise so the eye reads both shape and depth
 					const thinkingText = level === "off"
@@ -190,7 +174,7 @@ export default function (pi: ExtensionAPI) {
 					// Right cluster E: ctx%
 					const ctxLabel = ctxPct ? theme.fg("dim", italic(ctxPct)) : "";
 
-					const rightClusters = [stats, mcpLabel, thinkingLabel, modelLabel, ctxLabel].filter(
+					const rightClusters = [stats, thinkingLabel, modelLabel, ctxLabel].filter(
 						(s) => s.length > 0,
 					);
 					const right = rightClusters.join("   ");

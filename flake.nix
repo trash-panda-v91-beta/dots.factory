@@ -86,7 +86,7 @@
     };
 
     # Sources pinned via npins (not flake inputs): koda-nvim, pi-nvim,
-    # opencode-nvim, context7-pi, pi-lsp, pi-mcp-adapter, ponytail,
+    # opencode-nvim, context7-pi, pi-lsp, ponytail,
     # pi-web-access, pi-neuralwatt.
     # Update those with `npins update <name>` (or `mise run update`).
 
