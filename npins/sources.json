@@ -103,22 +103,6 @@
       "url": "https://api.github.com/repos/narumiruna/pi-extensions/tarball/refs/tags/v0.49.5",
       "hash": "sha256-V9YbPFAfUr7PFrsc72BtnFEW9XN2APTd3Csk1tW/2Lk="
     },
-    "pi-mcp-adapter": {
-      "type": "GitRelease",
-      "repository": {
-        "type": "GitHub",
-        "owner": "nicobailon",
-        "repo": "pi-mcp-adapter"
-      },
-      "pre_releases": false,
-      "version_upper_bound": null,
-      "release_prefix": null,
-      "submodules": false,
-      "version": "v2.37.0",
-      "revision": "9cfca1a8829a2e054a9ff22fb1eccb5f5251d4bf",
-      "url": "https://api.github.com/repos/nicobailon/pi-mcp-adapter/tarball/refs/tags/v2.37.0",
-      "hash": "sha256-fZ6sAJhNjSMz/KVsuuNtjkomkI5rQ0qlWMpvFVPinEc="
-    },
     "pi-neuralwatt": {
       "type": "GitRelease",
       "repository": {
