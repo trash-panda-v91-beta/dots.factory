@@ -50,6 +50,10 @@ in
             pi-neuralwatt = prev.callPackage "${pkgsDir}/pi-neuralwatt" { inherit inputs; };
             tiny-code-action-nvim = prev.callPackage "${pkgsDir}/tiny-code-action-nvim" { inherit inputs; };
             vault-workspace = prev.callPackage "${pkgsDir}/vault-workspace" { };
+            vault-nvim = prev.callPackage "${pkgsDir}/vault-nvim" { };
+            vault-obsidian = prev.callPackage "${pkgsDir}/vault-obsidian" {
+              vault-workspace = prev.callPackage "${pkgsDir}/vault-workspace" { };
+            };
           };
         })
       ];
