@@ -630,6 +630,21 @@
     # Snippets file
     programs.nixvim.extraFiles."snippets/nix.json".source = ./snippets/nix.json;
 
+    # Soft wrap for prose filetypes - visual wrap only, no hard line breaks
+    programs.nixvim.autoCmd = [
+      {
+        event = "FileType";
+        pattern = [ "markdown" "text" ];
+        callback.__raw = ''
+          function()
+            vim.opt_local.wrap = true
+            vim.opt_local.linebreak = true
+            vim.opt_local.breakindent = true
+          end
+        '';
+      }
+    ];
+
     # Codediff keymaps
     programs.nixvim.keymaps = [
       {
