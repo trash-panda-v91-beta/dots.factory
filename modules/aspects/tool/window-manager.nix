@@ -32,7 +32,19 @@
           settings = {
             config-version = 2;
 
-            persistent-workspaces = [ "t" "b" "m" "c" "w" "h" ];
+            persistent-workspaces = [ "t" "b" "m" "n" "c" "w" "h" ];
+
+            # Monitor 1 = Studio Display (main), Monitor 2 = MacBook built-in (right).
+            # Vault workspaces stay on the MacBook; everything else on the big screen.
+            workspace-to-monitor-force-assignment = {
+              m = [ 2 ];
+              n = [ 2 ];
+              t = [ 1 ];
+              b = [ 1 ];
+              c = [ 1 ];
+              w = [ 1 ];
+              h = [ 1 ];
+            };
 
             enable-normalization-flatten-containers = true;
             enable-normalization-opposite-orientation-for-nested-containers = true;
@@ -49,6 +61,7 @@
               ctrl-alt-cmd-shift-t   = "workspace t";
               ctrl-alt-cmd-shift-b   = [ "exec-and-forget /usr/bin/open -a \"Zen Browser\"" "workspace b" ];
               ctrl-alt-cmd-shift-m   = [ "exec-and-forget ${vaultWorkspace} mist m" "workspace m" ];
+              ctrl-alt-cmd-shift-n   = [ "exec-and-forget ${vaultWorkspace} nil n" "workspace n" ];
               ctrl-alt-cmd-shift-c   = [ "exec-and-forget /usr/bin/open -a Slack" "workspace c" ];
               ctrl-alt-cmd-shift-w   = [ "exec-and-forget /usr/bin/open -a \"Microsoft Teams\"" "workspace w" ];
               ctrl-alt-cmd-shift-tab = "focus-back-and-forth";
@@ -73,6 +86,7 @@
               t   = [ "workspace t" "mode main" ];
               b   = [ "exec-and-forget /usr/bin/open -a \"Zen Browser\"" "workspace b" "mode main" ];
               m   = [ "exec-and-forget ${vaultWorkspace} mist m" "workspace m" "mode main" ];
+              n   = [ "exec-and-forget ${vaultWorkspace} nil n" "workspace n" "mode main" ];
               c   = [ "exec-and-forget /usr/bin/open -a Slack" "workspace c" "mode main" ];
               w   = [ "exec-and-forget /usr/bin/open -a \"Microsoft Teams\"" "workspace w" "mode main" ];
               h   = [ "workspace h" "mode main" ];
@@ -98,8 +112,12 @@
                 run = [ "move-node-to-workspace m" ];
               }
               {
-                # Guard: ghostty opened by vault-workspace in m stays in m.
+                # Guard: ghostty opened by vault-workspace in m or n stays there.
                 "if" = "test %{app-bundle-id} = com.mitchellh.ghostty && test %{workspace} = m";
+                run = [ ];
+              }
+              {
+                "if" = "test %{app-bundle-id} = com.mitchellh.ghostty && test %{workspace} = n";
                 run = [ ];
               }
               {
