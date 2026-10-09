@@ -10,6 +10,15 @@ description: >
 
 Create a PR with `gh pr create`. Write it like a note to a teammate, not like documentation.
 
+## Repo workflow rules
+
+| Repo | Workflow |
+|---|---|
+| `dots.factory` | always PR - never commit directly to main |
+| `dots.corpo` | commit directly to main - no PR needed |
+
+Check `git remote get-url origin` to identify the repo when it is ambiguous.
+
 ## Before Opening
 
 ```bash
