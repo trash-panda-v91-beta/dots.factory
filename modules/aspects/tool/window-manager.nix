@@ -114,6 +114,10 @@
                 run = [ "layout floating" ];
               }
               {
+                "if" = "test %{app-bundle-id} = org.keepassxc.keepassxc";
+                run = [ "layout floating" ];
+              }
+              {
                 "if" = "test %{app-bundle-id} = md.obsidian";
                 run = [ "move-node-to-workspace m" ];
               }
