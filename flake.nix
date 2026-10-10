@@ -52,11 +52,6 @@
       url = "github:homebrew/homebrew-cask";
       flake = false;
     };
-    sable-tap = {
-      url = "github:SableClient/homebrew-sable";
-      flake = false;
-    };
-
     vicinae.url = "github:vicinaehq/vicinae";
 
     den.url = "github:vic/den/v0.18.0";

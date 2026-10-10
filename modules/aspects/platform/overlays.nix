@@ -32,6 +32,7 @@ in
           local = {
             herdr-ext = prev.callPackage "${pkgsDir}/herdr" { };
             misdr-ext = prev.callPackage "${pkgsDir}/misdr" { };
+            sable = prev.callPackage "${pkgsDir}/sable" { };
             aws-ext = prev.callPackage "${pkgsDir}/aws-ext" { };
             koda-nvim = prev.callPackage "${pkgsDir}/koda-nvim" { inherit inputs; };
             pi-nvim = inputs.pi-nvim;

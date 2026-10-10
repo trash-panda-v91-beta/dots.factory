@@ -25,7 +25,6 @@
         { pkgs, ... }:
         {
           users.users.trash-panda-v91-beta.shell = pkgs.nushell;
-          homebrew.casks = [ "sable" ];
         };
 
       homeManager =
@@ -92,17 +91,17 @@
 
           programs.aerospace.settings = {
             mode.main.binding.ctrl-alt-cmd-shift-c = lib.mkForce [
-              "exec-and-forget /usr/bin/open -a Sable"
+              "exec-and-forget /usr/bin/open -a 'Sable v2 Nightly'"
               "workspace c"
             ];
             mode.launcher.binding.c = lib.mkForce [
-              "exec-and-forget /usr/bin/open -a Sable"
+              "exec-and-forget /usr/bin/open -a 'Sable v2 Nightly'"
               "workspace c"
               "mode main"
             ];
             on-window-detected = lib.mkAfter [
               {
-                "if" = "test %{app-bundle-id} = moe.sable.client";
+                "if" = "test %{app-bundle-id} = moe.sable.next.nightly";
                 run = [ "move-node-to-workspace c" ];
               }
             ];

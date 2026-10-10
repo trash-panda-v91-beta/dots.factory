@@ -15,6 +15,9 @@
       # Look
       <dots/rice/cyberdream-dark>
 
+      # PMB-only apps
+      <dots/tool/sable>
+
       # Capability bundles
       <dots/bundle/dev>
       <dots/bundle/homelab>
