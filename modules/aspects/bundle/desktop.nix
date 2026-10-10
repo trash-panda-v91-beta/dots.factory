@@ -8,7 +8,6 @@
       <dots/tool/vicinae>
       <dots/tool/keyboard>
       <dots/tool/iamb>
-      <dots/tool/element>
     ];
   };
 }

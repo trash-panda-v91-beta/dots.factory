@@ -16,7 +16,6 @@ cd "$(git rev-parse --show-toplevel)"
 # `outputHash = "sha256-...";` tied to an npins source.
 pkgs=(
   pi-web-access
-  pi-mcp-adapter
   pi-neuralwatt
 )
 
@@ -31,7 +30,7 @@ BUN="$bun_path/bin/bun"
 # may float in the lock, but they're --external in the build (never bundled), so
 # they can't change outputHash - a cosmetic lock rewrite is harmless.
 regen_lock() {
-  local pkg="$1" src out changed
+  local pkg="$1" src out
   src=$(nix-instantiate --eval --impure --expr "(import ./npins).$pkg.outPath" | tr -d '"')
   out=$(mktemp -d)
   cp -R "$src/." "$out/" 2>/dev/null

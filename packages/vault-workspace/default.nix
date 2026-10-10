@@ -75,6 +75,6 @@ writeShellApplication {
       done
     fi
 
-    aerospace layout --workspace "$workspace" accordion 2>/dev/null || true
+    aerospace layout --workspace "$workspace" --root accordion 2>/dev/null || true
   '';
 }

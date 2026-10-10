@@ -6,13 +6,17 @@
     homeManager =
       { pkgs, config, lib, ... }:
       let
-        # vault-workspace is in home.packages so ~/.nix-profile/bin/vault-workspace
-        # is a stable path. Embedding the store path directly causes the toml to
-        # change on every build, triggering reload-config and reshuffling windows.
-        vaultWorkspace = "${config.home.homeDirectory}/.nix-profile/bin/vault-workspace";
+        # Stable profile paths avoid store-path churn in the toml (which would
+        # trigger reload-config and reshuffle windows on every build).
+        vaultNvim       = "${config.home.homeDirectory}/.nix-profile/bin/vault-nvim";
+        vaultObsidian   = "${config.home.homeDirectory}/.nix-profile/bin/vault-obsidian";
       in
       {
-        home.packages = [ pkgs.local.vault-workspace ];
+        home.packages = [
+          pkgs.local.vault-workspace
+          pkgs.local.vault-nvim
+          pkgs.local.vault-obsidian
+        ];
 
         # Re-apply workspace routing after every activation. Obsidian reloads its
         # plugins whenever the home-manager-files derivation changes (any input bump
@@ -32,7 +36,19 @@
           settings = {
             config-version = 2;
 
-            persistent-workspaces = [ "t" "b" "m" "c" "w" "h" ];
+            persistent-workspaces = [ "t" "b" "m" "n" "c" "w" "h" ];
+
+            # Monitor 1 = Studio Display (main), Monitor 2 = MacBook built-in (right).
+            # Vault workspaces stay on the MacBook; everything else on the big screen.
+            workspace-to-monitor-force-assignment = {
+              m = [ 2 ];
+              n = [ 2 ];
+              t = [ 1 ];
+              b = [ 1 ];
+              c = [ 1 ];
+              w = [ 1 ];
+              h = [ 1 ];
+            };
 
             enable-normalization-flatten-containers = true;
             enable-normalization-opposite-orientation-for-nested-containers = true;
@@ -48,7 +64,9 @@
             mode.main.binding = {
               ctrl-alt-cmd-shift-t   = "workspace t";
               ctrl-alt-cmd-shift-b   = [ "exec-and-forget /usr/bin/open -a \"Zen Browser\"" "workspace b" ];
-              ctrl-alt-cmd-shift-m   = [ "exec-and-forget ${vaultWorkspace} mist m" "workspace m" ];
+              ctrl-alt-cmd-shift-o   = [ "exec-and-forget ${vaultObsidian} mist m" "workspace m" ];
+              ctrl-alt-cmd-shift-m   = "exec-and-forget ${vaultNvim} mist m";
+              ctrl-alt-cmd-shift-n   = "exec-and-forget ${vaultNvim} nil n";
               ctrl-alt-cmd-shift-c   = [ "exec-and-forget /usr/bin/open -a Slack" "workspace c" ];
               ctrl-alt-cmd-shift-w   = [ "exec-and-forget /usr/bin/open -a \"Microsoft Teams\"" "workspace w" ];
               ctrl-alt-cmd-shift-tab = "focus-back-and-forth";
@@ -72,7 +90,9 @@
             mode.launcher.binding = {
               t   = [ "workspace t" "mode main" ];
               b   = [ "exec-and-forget /usr/bin/open -a \"Zen Browser\"" "workspace b" "mode main" ];
-              m   = [ "exec-and-forget ${vaultWorkspace} mist m" "workspace m" "mode main" ];
+              o   = [ "exec-and-forget ${vaultObsidian} mist m" "workspace m" "mode main" ];
+              m   = [ "exec-and-forget ${vaultNvim} mist m" "mode main" ];
+              n   = [ "exec-and-forget ${vaultNvim} nil n" "mode main" ];
               c   = [ "exec-and-forget /usr/bin/open -a Slack" "workspace c" "mode main" ];
               w   = [ "exec-and-forget /usr/bin/open -a \"Microsoft Teams\"" "workspace w" "mode main" ];
               h   = [ "workspace h" "mode main" ];
@@ -94,12 +114,20 @@
                 run = [ "layout floating" ];
               }
               {
+                "if" = "test %{app-bundle-id} = org.keepassxc.keepassxc";
+                run = [ "layout floating" ];
+              }
+              {
                 "if" = "test %{app-bundle-id} = md.obsidian";
                 run = [ "move-node-to-workspace m" ];
               }
               {
-                # Guard: ghostty opened by vault-workspace in m stays in m.
+                # Guard: ghostty opened by vault-workspace in m or n stays there.
                 "if" = "test %{app-bundle-id} = com.mitchellh.ghostty && test %{workspace} = m";
+                run = [ ];
+              }
+              {
+                "if" = "test %{app-bundle-id} = com.mitchellh.ghostty && test %{workspace} = n";
                 run = [ ];
               }
               {

@@ -2,7 +2,11 @@
 #
 # Host aspect = platform-level only. Everything else is enabled per-capability
 # from the user aspect (modules/users/trash-panda-v91-beta.nix).
-{ __findFile, ... }:
+{
+  # deadnix: skip
+  __findFile,
+  ...
+}:
 {
   den.aspects.pmb = {
     description = "Personal MacBook - darwin host aspect";
@@ -21,11 +25,15 @@
         { pkgs, ... }:
         {
           users.users.trash-panda-v91-beta.shell = pkgs.nushell;
-          homebrew.casks = [ "sable" ];
         };
 
       homeManager =
-        { config, pkgs, lib, ... }:
+        {
+          config,
+          pkgs,
+          lib,
+          ...
+        }:
         {
           programs.pi-coding-agent.settings.extensions = lib.mkAfter [
             "${pkgs.local.pi-neuralwatt}/provider.js"
@@ -35,15 +43,21 @@
           ];
 
           # pi-web-access reads its config from ~/.pi/web-search.json (not configDir).
-          home.file.".pi/web-search.json".text =
-            builtins.toJSON {
-              workflow = "none";
-              searxngBaseUrl = "https://search.nebular-grid.space";
-              searchRouting = {
-                providers = [ "searxng" "exa" "openai" ];
-                fallbackOn = [ "transient" "network" ];
-              };
+          home.file.".pi/web-search.json".text = builtins.toJSON {
+            workflow = "none";
+            searxngBaseUrl = "https://search.nebular-grid.space";
+            searchRouting = {
+              providers = [
+                "searxng"
+                "exa"
+                "openai"
+              ];
+              fallbackOn = [
+                "transient"
+                "network"
+              ];
             };
+          };
 
           # PMB-only MCP servers, added one by one. Shared litellm wiring lives
           # here once; each new server is one line. Bearer token from env at runtime.
@@ -67,12 +81,31 @@
                 searxng_mcp = litellm "searxng_mcp";
                 obsidian_mcp = litellm "obsidian_mcp";
                 donetick_mcp = litellm "donetick_mcp";
+                mealie_mcp = litellm "mealie_mcp";
                 truenas_mcp = litellm "truenas_mcp";
                 sparky_fitness = litellm "sparky_fitness";
               };
             };
 
           programs.bun.enable = false;
+
+          programs.aerospace.settings = {
+            mode.main.binding.ctrl-alt-cmd-shift-c = lib.mkForce [
+              "exec-and-forget /usr/bin/open -a 'Sable v2 Nightly'"
+              "workspace c"
+            ];
+            mode.launcher.binding.c = lib.mkForce [
+              "exec-and-forget /usr/bin/open -a 'Sable v2 Nightly'"
+              "workspace c"
+              "mode main"
+            ];
+            on-window-detected = lib.mkAfter [
+              {
+                "if" = "test %{app-bundle-id} = moe.sable.next.nightly";
+                run = [ "move-node-to-workspace c" ];
+              }
+            ];
+          };
 
           programs.ssh.settings."asc.internal" = {
             header = "Host asc.internal";

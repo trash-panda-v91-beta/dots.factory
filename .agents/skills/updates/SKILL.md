@@ -28,9 +28,9 @@ mise run switch    # activate
 | Input | Managed by | Update command |
 |---|---|---|
 | nixpkgs, nixpkgs-master, home-manager, darwin, den, nixvim, flake-parts, import-tree, sops-nix, zen-browser, hunk, vicinae, nix-homebrew, brew-src, homebrew-core, homebrew-cask, systems | flake input (`flake.nix`) | `nix flake update <name>` (or all: `nix flake update`) |
-| pi-web-access, pi-mcp-adapter, pi-lsp, pi-neuralwatt, ponytail, context7-pi, koda-nvim, pi-nvim, opencode-nvim | npins (`npins/sources.json`) | `npins update <name>` (or all: `npins update`) |
+| pi-web-access, pi-lsp, pi-neuralwatt, ponytail, context7-pi, koda-nvim, pi-nvim, opencode-nvim | npins (`npins/sources.json`) | `npins update <name>` (or all: `npins update`) |
 | Obsidian (version + release-asset hashes in `packages/*obsidian*/default.nix`) | `packages/update-obsidian.sh` (curl -> GitHub Releases API) | script auto-detects latest tag |
-| Whole-build FOD hashes for pi-web-access, pi-mcp-adapter, pi-neuralwatt (in each `packages/pi-*/default.nix` under `outputHash = "sha256-..."`) | `packages/refresh-pi-hashes.sh` (build, catch `got: sha256-...`) | run after any npins bump of those pkgs |
+| Whole-build FOD hashes for pi-web-access and pi-neuralwatt (in each `packages/pi-*/default.nix` under `outputHash = "sha256-..."`) | `packages/refresh-pi-hashes.sh` (build, catch `got: sha256-...`) | run after any npins bump of those pkgs |
 
 Why the split: real flakes live as flake inputs so nixpkgs' Nix ecosystem tooling works. The nine `flake = false` sources moved to npins in commit `dba2de4` because `npins update <pkg>` is a natural per-package update, and dots.corpo already uses npins - same mental model across both repos now.
 
@@ -89,7 +89,7 @@ mise run build
 
 ### After a Renovate PR arrives
 
-Renovate PRs typically bump one flake input (or one npins pin) at a time. If the PR touches a package that has a whole-build FOD (pi-web-access, pi-mcp-adapter, pi-neuralwatt), the build will fail with a hash mismatch. On the Renovate branch:
+Renovate PRs typically bump one flake input (or one npins pin) at a time. If the PR touches a package that has a whole-build FOD (pi-web-access or pi-neuralwatt), the build will fail with a hash mismatch. On the Renovate branch:
 
 ```bash
 mise run refresh-hashes

@@ -1,12 +1,12 @@
 ---
 name: pi-package-builds
-description: How pi-* packages (pi-web-access, pi-mcp-adapter, pi-neuralwatt, pi-lsp) are built in this repo, why they use a "whole-build FOD" pattern instead of the textbook nixpkgs split-FOD approach, and how to update their hashes when a flake input bumps.
+description: How pi-* packages (pi-web-access, pi-neuralwatt, pi-lsp) are built in this repo, why they use a "whole-build FOD" pattern instead of the textbook nixpkgs split-FOD approach, and how to update their hashes when a flake input bumps.
 ---
 
 ## TL;DR
 
 - `pi-lsp` has zero npm deps -> plain `stdenvNoCC.mkDerivation`, no FOD, hermetic.
-- `pi-web-access`, `pi-mcp-adapter`, `pi-neuralwatt` have real npm deps and are built as **whole-build FODs**: `bun install` + `bun build` in a single fixed-output derivation, the tiny bundled `.js` is what lands in the store.
+- `pi-web-access` and `pi-neuralwatt` have real npm deps and are built as **whole-build FODs**: `bun install` + `bun build` in a single fixed-output derivation, the tiny bundled `.js` is what lands in the store.
 - When a flake input bumps, run the build; nix will report `got: sha256-...`; paste it into `outputHash`. That's the whole workflow.
 
 ## Reproducibility (one `outputHash` works on every host)
@@ -122,7 +122,6 @@ The [FOD sandbox escape CVE](https://github.com/NixOS/nix/security/advisories/GH
 
 - `packages/pi-lsp/default.nix` - pure, no FOD.
 - `packages/pi-web-access/default.nix` + `bun.lock` - whole-build FOD.
-- `packages/pi-mcp-adapter/default.nix` + `bun.lock` - whole-build FOD.
 - `packages/pi-neuralwatt/default.nix` + `bun.lock` - whole-build FOD.
 - `packages/ponytail-pi/default.nix`, `packages/context7-pi/default.nix` - pure (no real deps, just bundle).
 
