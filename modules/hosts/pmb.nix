@@ -65,10 +65,7 @@
             let
               litellm = name: {
                 url = "https://litellm.nebular-grid.space/${name}/mcp";
-                auth = "bearer";
-                bearerTokenEnv = "LITELLM_API_KEY";
-                lifecycle = "lazy";
-                idleTimeout = 10;
+                headers.Authorization = "Bearer \${LITELLM_API_KEY}";
               };
             in
             builtins.toJSON {
