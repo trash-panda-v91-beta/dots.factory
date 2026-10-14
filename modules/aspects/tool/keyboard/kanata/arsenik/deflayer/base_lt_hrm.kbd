@@ -2,9 +2,9 @@
 
 (deflayer base
   _    _    _    _    _    _    _    _    _    _    _
-  q    @ww  e    r    @tt        y    u    @ii  @oo  p
+  q    @ww  e    r    @tt        y    @uu  @ii  @oo  p
   a    @ss  @dd  @ff  g         h    @jj  @kk  @ll  ;
-  z    @xx  @cc  v    @bb  <    @nn   @mm  ,    .    /
+  z    x    @cc  v    @bb  <    @nn   @mm  ,    .    /
             @sft          @nav            @sym
 )
 
@@ -36,7 +36,7 @@
   nn (tap-hold $tap_timeout $long_hold_timeout n (layer-while-held launch-n))
   ii (tap-hold $tap_timeout $long_hold_timeout i (layer-while-held launch-i))
   oo (tap-hold $tap_timeout $long_hold_timeout o (layer-while-held launch-o))
-  xx (tap-hold $tap_timeout $long_hold_timeout x (layer-while-held launch-x))
+  uu (tap-hold $tap_timeout $long_hold_timeout u (layer-while-held launch-u))
 )
 
 (deflayer launch-t
@@ -103,12 +103,12 @@
             _             @open-o         _
 )
 
-(deflayer launch-x
+(deflayer launch-u
   _    _    _    _    _    _    _    _    _    _    _
   _    _    _    _    _         _    _    _    _    _
   _    _    _    _    _         _    _    _    _    _
   _    _    _    _    _    _    _    _    _    _    _
-            _             @open-x         _
+            _             @open-u         _
 )
 
 (defalias
@@ -122,7 +122,7 @@
   open-n M-S-C-A-n
   open-i M-S-C-A-i
   open-o M-S-C-A-o
-  open-x M-S-C-A-x
+  open-u M-S-C-A-u
 )
 
 ;; vim: set ft=lisp:

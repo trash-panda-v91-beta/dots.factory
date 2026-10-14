@@ -79,14 +79,14 @@ Adding a new app launcher (`X` = mnemonic letter):
 4. Wire the matching `ctrl-alt-cmd-shift-x` binding in aerospace (see Layer 2).
 
 Common mnemonic letters to avoid (taken or reserved):
-- taken launchers: `t` terminal, `b` browser (Zen), `c` chat/Slack, `w` work/Teams,
-  `m` mist, `n` nil, `x` Sable (2nd browser)
+- taken launchers: `t` terminal, `b` browser (Zen), `c` chat (Slack; Sable on PMB
+  via host override), `w` work/Teams, `m` mist, `n` nil, `u` Actual Budget
 - `s`/`d`/`f`/`j`/`k`/`l` are home-row mods - **never** use for launchers (holding them
   is your Cmd/Ctrl/Alt/Meta)
 - `space` is the nav-layer tap - cannot be a launcher key
 
 Available mnemonic slots: `a` (ai/app), `e` (explorer/editor), `g` (git),
-`p` (picker/vicinae), `q`, `r`, `u`, `v`, `y`, `z` (zoxide/jump)
+`p` (picker/vicinae), `q`, `r`, `u`, `v`, `x`, `y`, `z` (zoxide/jump)
 (`i`/`o` have launch layers wired in kanata but no aerospace workspace yet)
 
 ### Space+nav = vicinae entrypoints

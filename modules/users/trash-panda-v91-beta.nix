@@ -18,6 +18,9 @@
       # PMB-only apps
       <dots/tool/sable>
 
+      # Cross-host apps
+      <dots/tool/actual-budget>
+
       # Capability bundles
       <dots/bundle/dev>
       <dots/bundle/homelab>

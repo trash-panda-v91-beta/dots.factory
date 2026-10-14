@@ -83,6 +83,26 @@
 
           programs.bun.enable = false;
 
+          # Sable (not Slack) is the chat app on PMB: force the c workspace
+          # launcher bindings and route Sable windows to c.
+          programs.aerospace.settings = {
+            mode.main.binding.ctrl-alt-cmd-shift-c = lib.mkForce [
+              "exec-and-forget /usr/bin/open -a 'Sable'"
+              "workspace c"
+            ];
+            mode.launcher.binding.c = lib.mkForce [
+              "exec-and-forget /usr/bin/open -a 'Sable'"
+              "workspace c"
+              "mode main"
+            ];
+            on-window-detected = lib.mkAfter [
+              {
+                "if" = "test %{app-bundle-id} = moe.sable.client";
+                run = [ "move-node-to-workspace c" ];
+              }
+            ];
+          };
+
           programs.ssh.settings."asc.internal" = {
             header = "Host asc.internal";
             User = "trash-panda-v91-beta";
