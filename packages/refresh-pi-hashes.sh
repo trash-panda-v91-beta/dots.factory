@@ -16,7 +16,6 @@ cd "$(git rev-parse --show-toplevel)"
 # `outputHash = "sha256-...";` tied to an npins source.
 pkgs=(
   pi-web-access
-  pi-neuralwatt
 )
 
 # The pinned bun that the package derivations build with.

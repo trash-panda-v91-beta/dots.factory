@@ -103,22 +103,6 @@
       "url": "https://api.github.com/repos/narumiruna/pi-extensions/tarball/refs/tags/v0.49.5",
       "hash": "sha256-V9YbPFAfUr7PFrsc72BtnFEW9XN2APTd3Csk1tW/2Lk="
     },
-    "pi-neuralwatt": {
-      "type": "GitRelease",
-      "repository": {
-        "type": "GitHub",
-        "owner": "aliou",
-        "repo": "pi-neuralwatt"
-      },
-      "pre_releases": false,
-      "version_upper_bound": null,
-      "release_prefix": null,
-      "submodules": false,
-      "version": "v0.16.1",
-      "revision": "a969dfd1424796c1a55edebe97ddffc7fa3ebf01",
-      "url": "https://api.github.com/repos/aliou/pi-neuralwatt/tarball/refs/tags/v0.16.1",
-      "hash": "sha256-GQL/Y9qF9EiwmisQlrlOZwoASQuFnWkSxYbVUDZj+Yo="
-    },
     "pi-nvim": {
       "type": "Git",
       "repository": {

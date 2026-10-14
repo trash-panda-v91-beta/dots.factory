@@ -81,8 +81,7 @@
     };
 
     # Sources pinned via npins (not flake inputs): koda-nvim, pi-nvim,
-    # opencode-nvim, context7-pi, pi-lsp, ponytail,
-    # pi-web-access, pi-neuralwatt.
+    # opencode-nvim, context7-pi, pi-lsp, ponytail, pi-web-access.
     # Update those with `npins update <name>` (or `mise run update`).
 
     # CMB — private repo (corp host).
