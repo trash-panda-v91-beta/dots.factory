@@ -36,7 +36,7 @@
           settings = {
             config-version = 2;
 
-            persistent-workspaces = [ "t" "b" "m" "n" "c" "w" "h" ];
+            persistent-workspaces = [ "t" "b" "m" "n" "c" "w" "u" "h" ];
 
             # Monitor 1 = Studio Display (main), Monitor 2 = MacBook built-in (right).
             # Vault workspaces stay on the MacBook; everything else on the big screen.
@@ -47,6 +47,7 @@
               b = [ 1 ];
               c = [ 1 ];
               w = [ 1 ];
+              u = [ 1 ];
               h = [ 1 ];
             };
 
@@ -69,6 +70,7 @@
               ctrl-alt-cmd-shift-n   = "exec-and-forget ${vaultNvim} nil n";
               ctrl-alt-cmd-shift-c   = [ "exec-and-forget /usr/bin/open -a Slack" "workspace c" ];
               ctrl-alt-cmd-shift-w   = [ "exec-and-forget /usr/bin/open -a \"Microsoft Teams\"" "workspace w" ];
+              ctrl-alt-cmd-shift-u   = [ "exec-and-forget /usr/bin/open -a \"Actual\"" "workspace u" ];
               ctrl-alt-cmd-shift-tab = "focus-back-and-forth";
               ctrl-alt-cmd-shift-i   = "focus dfs-next --wrap-around";
               ctrl-alt-cmd-shift-g   = "workspace-back-and-forth";
@@ -95,6 +97,7 @@
               n   = [ "exec-and-forget ${vaultNvim} nil n" "mode main" ];
               c   = [ "exec-and-forget /usr/bin/open -a Slack" "workspace c" "mode main" ];
               w   = [ "exec-and-forget /usr/bin/open -a \"Microsoft Teams\"" "workspace w" "mode main" ];
+              u   = [ "exec-and-forget /usr/bin/open -a \"Actual\"" "workspace u" "mode main" ];
               h   = [ "workspace h" "mode main" ];
               esc = "mode main";
               ctrl-alt-cmd-shift-p = "mode main";
@@ -149,6 +152,10 @@
               {
                 "if" = "test %{app-bundle-id} = com.microsoft.teams2";
                 run = [ "move-node-to-workspace w" ];
+              }
+              {
+                "if" = "test %{app-bundle-id} = com.actualbudget.actual";
+                run = [ "move-node-to-workspace u" ];
               }
             ];
           };

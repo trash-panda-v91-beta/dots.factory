@@ -80,7 +80,7 @@ Adding a new app launcher (`X` = mnemonic letter):
 
 Common mnemonic letters to avoid (taken or reserved):
 - taken launchers: `t` terminal, `b` browser (Zen), `c` chat (Slack; Sable on PMB
-  via host override), `w` work/Teams, `m` mist, `n` nil
+  via host override), `w` work/Teams, `m` mist, `n` nil, `u` Actual Budget
 - `s`/`d`/`f`/`j`/`k`/`l` are home-row mods - **never** use for launchers (holding them
   is your Cmd/Ctrl/Alt/Meta)
 - `space` is the nav-layer tap - cannot be a launcher key
