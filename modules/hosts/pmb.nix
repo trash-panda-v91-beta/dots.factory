@@ -83,24 +83,6 @@
 
           programs.bun.enable = false;
 
-          programs.aerospace.settings = {
-            mode.main.binding.ctrl-alt-cmd-shift-c = lib.mkForce [
-              "exec-and-forget /usr/bin/open -a 'Sable v2 Nightly'"
-              "workspace c"
-            ];
-            mode.launcher.binding.c = lib.mkForce [
-              "exec-and-forget /usr/bin/open -a 'Sable v2 Nightly'"
-              "workspace c"
-              "mode main"
-            ];
-            on-window-detected = lib.mkAfter [
-              {
-                "if" = "test %{app-bundle-id} = moe.sable.next.nightly";
-                run = [ "move-node-to-workspace c" ];
-              }
-            ];
-          };
-
           programs.ssh.settings."asc.internal" = {
             header = "Host asc.internal";
             User = "trash-panda-v91-beta";

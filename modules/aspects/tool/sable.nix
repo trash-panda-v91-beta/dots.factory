@@ -1,12 +1,10 @@
-{ ... }:
+{
+  ...
+}:
 {
   dots.tool._.sable = {
-    description = "Sable Next (nightly) Matrix client macOS app, installed from the upstream release bundle";
+    description = "Sable Matrix client macOS app, installed via homebrew cask from the upstream tap";
 
-    homeManager =
-      { pkgs, ... }:
-      {
-        home.packages = [ pkgs.local.sable ];
-      };
+    darwin.homebrew.casks = [ "sable" ];
   };
 }
