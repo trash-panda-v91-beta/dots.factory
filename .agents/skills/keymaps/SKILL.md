@@ -79,15 +79,15 @@ Adding a new app launcher (`X` = mnemonic letter):
 4. Wire the matching `ctrl-alt-cmd-shift-x` binding in aerospace (see Layer 2).
 
 Common mnemonic letters to avoid (taken or reserved):
-- taken launchers: `t` terminal, `b` browser, `c` chat/Slack, `w` work/Teams,
-  `m` mist, `n` nil
+- taken launchers: `t` terminal, `b` browser (Zen), `c` chat/Slack, `w` work/Teams,
+  `m` mist, `n` nil, `x` Sable (2nd browser)
 - `s`/`d`/`f`/`j`/`k`/`l` are home-row mods - **never** use for launchers (holding them
   is your Cmd/Ctrl/Alt/Meta)
 - `space` is the nav-layer tap - cannot be a launcher key
 
 Available mnemonic slots: `a` (ai/app), `e` (explorer/editor), `g` (git),
-`i` (inbox/mail), `o` (obsidian), `p` (picker/vicinae), `v` (vicinae), `q`, `r`, `u`,
-`x`, `y`, `z` (zoxide/jump)
+`p` (picker/vicinae), `q`, `r`, `u`, `v`, `y`, `z` (zoxide/jump)
+(`i`/`o` have launch layers wired in kanata but no aerospace workspace yet)
 
 ### Space+nav = vicinae entrypoints
 
@@ -311,9 +311,11 @@ Given app `X` (mnemonic letter), app bundle ID `com.vendor.X`, app name "AppName
 
 1. **aerospace first** (owns the logic) - add `ctrl-alt-cmd-shift-x` in
    `mode.main.binding` (workspace switch + app open), `x` in `mode.launcher.binding`,
-   and an `on-window-detected` rule in `window-manager.nix`
+   an `on-window-detected` rule in `window-manager.nix`, plus `x` in
+   `persistent-workspaces` and `workspace-to-monitor-force-assignment`
 2. **kanata** - add `@xx` alias + `launch-x` layer + `open-x M-S-C-A-x` in
-   `deflayer/base_lt_hrm.kbd`. This just emits the hyper chord aerospace listens for
+   `deflayer/base_lt_hrm.kbd` (swap the plain letter on the base layer for `@xx`).
+   This just emits the hyper chord aerospace listens for
 3. **vicinae** (optional) - add a provider shortcut if vicinae has an extension for it
 4. Test: `mise run build` - no changes needed to nvim unless the app has an nvim plugin
 

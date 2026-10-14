@@ -4,7 +4,7 @@
   _    _    _    _    _    _    _    _    _    _    _
   q    @ww  e    r    @tt        y    u    @ii  @oo  p
   a    @ss  @dd  @ff  g         h    @jj  @kk  @ll  ;
-  z    x    @cc  v    @bb  <    @nn   @mm  ,    .    /
+  z    @xx  @cc  v    @bb  <    @nn   @mm  ,    .    /
             @sft          @nav            @sym
 )
 
@@ -36,6 +36,7 @@
   nn (tap-hold $tap_timeout $long_hold_timeout n (layer-while-held launch-n))
   ii (tap-hold $tap_timeout $long_hold_timeout i (layer-while-held launch-i))
   oo (tap-hold $tap_timeout $long_hold_timeout o (layer-while-held launch-o))
+  xx (tap-hold $tap_timeout $long_hold_timeout x (layer-while-held launch-x))
 )
 
 (deflayer launch-t
@@ -102,6 +103,14 @@
             _             @open-o         _
 )
 
+(deflayer launch-x
+  _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _         _    _    _    _    _
+  _    _    _    _    _         _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _
+            _             @open-x         _
+)
+
 (defalias
   ;; <letter>+Space emit the aerospace hyper chord; aerospace owns the
   ;; workspace-switch + app-open logic (single source of truth).
@@ -113,6 +122,7 @@
   open-n M-S-C-A-n
   open-i M-S-C-A-i
   open-o M-S-C-A-o
+  open-x M-S-C-A-x
 )
 
 ;; vim: set ft=lisp:
