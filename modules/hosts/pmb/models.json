@@ -1,0 +1,88 @@
+{
+  "providers": {
+    "neuralwatt": {
+      "baseUrl": "https://api.neuralwatt.com/v1",
+      "api": "openai-completions",
+      "apiKey": "$NEURALWATT_API_KEY",
+      "authHeader": true,
+      "compat": {
+        "supportsDeveloperRole": false,
+        "supportsReasoningEffort": false
+      },
+      "models": [
+        {
+          "id": "Qwen/Qwen3.6-35B-A3B",
+          "name": "Qwen3.6 35B",
+          "reasoning": true,
+          "input": ["text", "image"],
+          "contextWindow": 131056,
+          "maxTokens": 32768,
+          "cost": { "input": 0.05, "output": 0.10, "cacheRead": 0, "cacheWrite": 0 }
+        },
+        {
+          "id": "moonshotai/Kimi-K2.6",
+          "name": "Kimi K2.6",
+          "reasoning": true,
+          "input": ["text", "image"],
+          "contextWindow": 262128,
+          "maxTokens": 65536,
+          "cost": { "input": 0.69, "output": 3.22, "cacheRead": 0, "cacheWrite": 0 }
+        },
+        {
+          "id": "moonshotai/Kimi-K2.5",
+          "name": "Kimi K2.5",
+          "reasoning": true,
+          "input": ["text", "image"],
+          "contextWindow": 262128,
+          "maxTokens": 65536,
+          "cost": { "input": 0.52, "output": 2.59, "cacheRead": 0, "cacheWrite": 0 }
+        },
+        {
+          "id": "zai-org/GLM-5.1-FP8",
+          "name": "GLM-5.1",
+          "reasoning": true,
+          "input": ["text"],
+          "contextWindow": 202736,
+          "maxTokens": 32768,
+          "cost": { "input": 1.10, "output": 3.60, "cacheRead": 0, "cacheWrite": 0 }
+        },
+        {
+          "id": "Qwen/Qwen3.5-397B-A17B-FP8",
+          "name": "Qwen3.5 397B",
+          "reasoning": true,
+          "input": ["text"],
+          "contextWindow": 262128,
+          "maxTokens": 65536,
+          "cost": { "input": 0.69, "output": 4.14, "cacheRead": 0, "cacheWrite": 0 }
+        },
+        {
+          "id": "MiniMaxAI/MiniMax-M2.5",
+          "name": "MiniMax M2.5",
+          "reasoning": true,
+          "input": ["text"],
+          "contextWindow": 196592,
+          "maxTokens": 49152,
+          "cost": { "input": 0.35, "output": 1.38, "cacheRead": 0, "cacheWrite": 0 }
+        },
+        {
+          "id": "mistralai/Devstral-Small-2-24B-Instruct-2512",
+          "name": "Devstral 24B",
+          "reasoning": false,
+          "input": ["text", "image"],
+          "contextWindow": 262128,
+          "maxTokens": 65536,
+          "cost": { "input": 0.12, "output": 0.35, "cacheRead": 0, "cacheWrite": 0 }
+        },
+        {
+          "id": "openai/gpt-oss-20b",
+          "name": "GPT-OSS 20B",
+          "reasoning": true,
+          "input": ["text"],
+          "contextWindow": 16368,
+          "maxTokens": 4096,
+          "cost": { "input": 0.03, "output": 0.16, "cacheRead": 0, "cacheWrite": 0 }
+        }
+      ]
+    }
+  }
+}

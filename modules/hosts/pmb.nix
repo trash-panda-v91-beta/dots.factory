@@ -30,17 +30,14 @@
       homeManager =
         {
           config,
-          pkgs,
           lib,
           ...
         }:
         {
-          programs.pi-coding-agent.settings.extensions = lib.mkAfter [
-            "${pkgs.local.pi-neuralwatt}/provider.js"
-            "${pkgs.local.pi-neuralwatt}/command-quotas.js"
-            "${pkgs.local.pi-neuralwatt}/quota-warnings.js"
-            "${pkgs.local.pi-neuralwatt}/sub-bar-integration.js"
-          ];
+          # Neuralwatt via the official recipe (models.json provider, not the
+          # custom pi-neuralwatt extension). API key from env at runtime.
+          home.file."${config.programs.pi-coding-agent.configDir}/models.json".source =
+            ./pmb/models.json;
 
           # pi-web-access reads its config from ~/.pi/web-search.json (not configDir).
           home.file.".pi/web-search.json".text = builtins.toJSON {
