@@ -401,10 +401,27 @@
         "nixpkgs": "nixpkgs",
         "nixpkgs-master": "nixpkgs-master",
         "nixvim": "nixvim",
+        "sable-tap": "sable-tap",
         "sops-nix": "sops-nix",
         "systems": "systems_2",
         "vicinae": "vicinae",
         "zen-browser": "zen-browser"
+      }
+    },
+    "sable-tap": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1791810778,
+        "narHash": "sha256-16/5K5Uw82lFSwsiNgaAtNPlXfEHM1lt1t+h1/2JHYM=",
+        "ref": "refs/heads/main",
+        "rev": "3986629bb00ac2ef882538af114d73a04f1cab89",
+        "revCount": 5,
+        "type": "git",
+        "url": "https://git.sable.moe/SableClient/homebrew-sable"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://git.sable.moe/SableClient/homebrew-sable"
       }
     },
     "sops-nix": {
