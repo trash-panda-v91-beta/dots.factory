@@ -200,7 +200,7 @@ in
 
         programs.k9s = {
           skins.cyberdream = riceDir + "/programs/k9s/skin.yaml";
-          settings.k9s.skin = "cyberdream";
+          settings.k9s.ui.skin = "cyberdream";
         };
 
         programs.pi-coding-agent.settings.theme = lib.mkForce "cyberdream";
