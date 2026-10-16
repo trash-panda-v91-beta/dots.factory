@@ -26,7 +26,13 @@ writeShellApplication {
   text = ''
     session="''${1:?usage: vault-workspace <session> <workspace>}"
     workspace="''${2:?usage: vault-workspace <session> <workspace>}"
-    vault="''${VAULTS_DIR:?VAULTS_DIR is not set}/$session"
+    # AeroSpace is a launchd agent, so it launches without the home-manager
+    # session vars - pull VAULTS_DIR from there instead of guessing a path.
+    if [ -z "''${VAULTS_DIR:-}" ] && [ -f "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh" ]; then
+      # shellcheck source=/dev/null
+      . "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
+    fi
+    vault="''${VAULTS_DIR:-$HOME/vaults}/$session"
 
     ghostty_ids() {
       aerospace list-windows --monitor all --app-bundle-id com.mitchellh.ghostty --json \

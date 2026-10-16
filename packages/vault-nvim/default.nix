@@ -7,13 +7,13 @@ writeShellApplication {
   runtimeInputs = [ aerospace jq ];
   text = ''
     name="''${1:?usage: vault-nvim <vault> [workspace]}"
-    if [ -n "''${VAULTS_DIR:-}" ]; then
-      vault="$VAULTS_DIR/$name"
-    elif [ -d "$HOME/SAPDevelop/vaults/$name" ]; then
-      vault="$HOME/SAPDevelop/vaults/$name"
-    else
-      vault="$HOME/vaults/$name"
+    # AeroSpace is a launchd agent, so it launches without the home-manager
+    # session vars - pull VAULTS_DIR from there instead of guessing a path.
+    if [ -z "''${VAULTS_DIR:-}" ] && [ -f "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh" ]; then
+      # shellcheck source=/dev/null
+      . "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
     fi
+    vault="''${VAULTS_DIR:-$HOME/vaults}/$name"
     [ -d "$vault" ] || { echo "vault not found: $vault" >&2; exit 1; }
 
     find_window() {
