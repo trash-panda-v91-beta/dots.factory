@@ -28,7 +28,7 @@
 
           [tools]
           # renovate: datasource=github-releases depName=jdx/fnox
-          fnox = "1.35.2"
+          fnox = "1.39.0"
 
           [settings]
           env_cache = true
