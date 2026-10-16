@@ -4,8 +4,8 @@ buildNpmPackage {
   src = fetchFromGitHub {
     owner = "raycast";
     repo = "extensions";
-    rev = "3c654737b0d566d3103fcdf72221a9f34664bdf2";
-    hash = "sha256-7S2DGFdeTI4jEoSBLbX6iBQcA5d8Ljdu16yfXnQK7V4=";
+    rev = "c33bf4cb4b9ad70c2b93432ee713ffb7486ed331";
+    hash = "sha256-4KfzNYhi+kD903iq8zfOz+PpdqSZCUudX90NthlmIpA=";
     sparseCheckout = [ "/extensions/amazon-aws" ];
   } + "/extensions/amazon-aws";
   inherit (importNpmLock) npmConfigHook;
