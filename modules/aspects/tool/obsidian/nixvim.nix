@@ -75,7 +75,7 @@
             };
 
             daily_notes = {
-              folder = "Daily";
+              folder = "";
               date_format = "%Y-%m-%d";
               template = "Daily Note Template";
               default_tags = [ "daily" ];
@@ -89,7 +89,7 @@
 
               customizations = {
                 "Task Template" = {
-                  notes_subdir = "Tasks";
+                  notes_subdir = "";
                   note_id_func.__raw = ''
                     function(title)
                       local prefix = os.date("%Y-%m-%d %H%M")
@@ -101,7 +101,7 @@
                     end
                   '';
                 };
-                "Clipping Template".notes_subdir = "Clippings";
+                "Clipping Template".notes_subdir = "";
                 "Actor Template".notes_subdir = "References";
                 "Album Template".notes_subdir = "References";
                 "App Template".notes_subdir = "References";
