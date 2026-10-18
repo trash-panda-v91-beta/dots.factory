@@ -70,6 +70,27 @@ restated here because it's the moment agents most often drift.
 Rule: use the timestamp ID `YYYY-MM-DD HHMM` when nothing else is globally unique.
 Books / people / places / repos have canonical names - use them.
 
+## Journaling
+
+The daily note is the diary: one per day, at the vault root, `YYYY-MM-DD.md` from
+the daily-notes core plugin (`folder = "/"`, nix-managed - never point it at a
+subfolder). Append to it, never rewrite it.
+
+Linking runs both ways, and both halves get written in the same pass:
+
+- the daily entry wikilinks every entity it mentions - people, places, projects,
+  devices, games - the usual breadcrumb rule
+- the entity note keeps its own dated list, one line per day, linking back to the
+  daily note (`## Sessions` on a game, `## Work` on a person or project)
+
+A hub that only gets updated by hand goes stale, and the recent days stop being
+reachable from it - which is the point of keeping the hub at all.
+
+Filenames never carry `:` `/` `\` `?` `*` `"` `<` `>` `|`: illegal on macOS and
+iOS, and Obsidian will not open such a note. Use ` - `. To fix an existing one,
+rename the file and add the old name to the note's `aliases` so incoming
+wikilinks keep resolving.
+
 ## `projects:` - the universal filter
 
 Every coding-related note carries `projects: ["[[<repo>]]"]`. That's the one field
