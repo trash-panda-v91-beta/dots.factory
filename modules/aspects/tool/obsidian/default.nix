@@ -28,7 +28,7 @@
                 {
                   name = "daily-notes";
                   settings = {
-                    folder = "/";
+                    folder = "Daily";
                     template = "Templates/Daily Note Template";
                   };
                 }
@@ -59,8 +59,8 @@
                   name = "zk-prefixer";
                   settings = {
                     format = "YYYY-MM-DD HHmm";
-                    folder = "/";
-                    template = "Templates/Journal Template";
+                    folder = "Journal";
+                    template = "Templates/Journal Entry Template";
                   };
                 }
               ];
