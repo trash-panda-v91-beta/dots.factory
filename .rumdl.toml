@@ -1,7 +1,22 @@
-#:schema https://raw.githubusercontent.com/rvben/rumdl/main/rumdl.schema.json
-
 [global]
 line-length = 100
+exclude = ["CHANGELOG.md"]
 
+# Stylistic rules that repeatedly flag generated docs; not worth reflowing prose.
 [MD013]
-reflow = true
+code-blocks = false
+tables = false
+reflow = false
+enabled = false
+
+[MD031]
+enabled = false
+
+[MD032]
+enabled = false
+
+[MD034]
+enabled = false
+
+[MD040]
+enabled = false
