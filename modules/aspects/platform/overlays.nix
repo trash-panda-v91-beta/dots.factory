@@ -36,13 +36,11 @@ in
             koda-nvim = prev.callPackage "${pkgsDir}/koda-nvim" { inherit inputs; };
             pi-nvim = inputs.pi-nvim;
             context7-pi = prev.callPackage "${pkgsDir}/context7-pi" { inherit inputs; };
-            obsidian-minimal-settings-plugin = prev.callPackage "${pkgsDir}/obsidian-minimal-settings-plugin" {
-              inherit inputs;
-            };
+            obsidian-minimal-settings-plugin =
+              prev.callPackage "${pkgsDir}/obsidian-minimal-settings-plugin"
+                { };
             obsidian-minimal-theme = prev.callPackage "${pkgsDir}/obsidian-minimal-theme" { inherit inputs; };
-            obsidian-tasknotes-plugin = prev.callPackage "${pkgsDir}/obsidian-tasknotes-plugin" {
-              inherit inputs;
-            };
+            obsidian-tasknotes-plugin = prev.callPackage "${pkgsDir}/obsidian-tasknotes-plugin" { };
             cfn-lsp = prev.callPackage "${pkgsDir}/cfn-lsp" { };
             pi-lsp = prev.callPackage "${pkgsDir}/pi-lsp" { inherit inputs; };
             ponytail-pi = prev.callPackage "${pkgsDir}/ponytail-pi" { inherit inputs; };
