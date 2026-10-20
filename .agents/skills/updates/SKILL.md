@@ -13,8 +13,7 @@ Runs, in order:
 
 1. `nix flake update` - bumps real flakes (nixpkgs, home-manager, darwin, den, nixvim, ...)
 2. `npins update` - bumps pi-*, ponytail, context7-pi, koda-nvim, pi-nvim, opencode-nvim
-3. `packages/update-obsidian.sh` - Obsidian version + hashes from GitHub releases
-4. `packages/refresh-pi-hashes.sh` - rewrites `outputHash` for whole-build FOD pi-* packages when their source rev bumped
+3. `packages/refresh-pi-hashes.sh` - rewrites `outputHash` for whole-build FOD pi-* packages when their source rev bumped
 
 Then verify:
 
@@ -29,7 +28,7 @@ mise run switch    # activate
 |---|---|---|
 | nixpkgs, nixpkgs-master, home-manager, darwin, den, nixvim, flake-parts, import-tree, sops-nix, zen-browser, hunk, vicinae, nix-homebrew, brew-src, homebrew-core, homebrew-cask, systems | flake input (`flake.nix`) | `nix flake update <name>` (or all: `nix flake update`) |
 | pi-web-access, pi-lsp, ponytail, context7-pi, koda-nvim, pi-nvim, opencode-nvim | npins (`npins/sources.json`) | `npins update <name>` (or all: `npins update`) |
-| Obsidian (version + release-asset hashes in `packages/*obsidian*/default.nix`) | `packages/update-obsidian.sh` (curl -> GitHub Releases API) | script auto-detects latest tag |
+| Obsidian plugins (`version` + `hashes` in `packages/obsidian-*/default.nix`) | hand-edited, pinned to a release tag | bump tag, then `nix store prefetch-file --json <url>` for the three assets |
 | Whole-build FOD hashes for pi-web-access (in each `packages/pi-*/default.nix` under `outputHash = "sha256-..."`) | `packages/refresh-pi-hashes.sh` (build, catch `got: sha256-...`) | run after any npins bump of those pkgs |
 
 Why the split: real flakes live as flake inputs so nixpkgs' Nix ecosystem tooling works. The nine `flake = false` sources moved to npins in commit `dba2de4` because `npins update <pkg>` is a natural per-package update, and dots.corpo already uses npins - same mental model across both repos now.
@@ -42,7 +41,7 @@ Why the split: real flakes live as flake inputs so nixpkgs' Nix ecosystem toolin
 
 **GitHub Action `deps-update.yml`** (weekly Monday 06:00 UTC, or `workflow_dispatch`):
 - Runs on macos-latest
-- `npins update` -> `update-obsidian.sh` -> `refresh-pi-hashes.sh` -> `mise run check`
+- `npins update` -> `refresh-pi-hashes.sh` -> `mise run check`
 - Opens a PR on branch `deps/weekly-npins`
 
 **Check (`check.yml`)** runs on every PR (Renovate's, deps-update's, or manual):
@@ -80,12 +79,21 @@ nix flake update nixpkgs
 mise run build
 ```
 
-Obsidian only:
+Obsidian plugins only (tasknotes, minimal-settings):
 
 ```bash
-packages/update-obsidian.sh
+# pick the new tag, then hash the three assets
+for f in main.js manifest.json styles.css; do
+  nix store prefetch-file --json \
+    "https://github.com/callumalpass/tasknotes/releases/download/<tag>/$f"
+done
 mise run build
 ```
+
+Keep the URLs on `releases/download/<tag>/...`. Do not use `releases/latest/download`
+or an npins `MutableUrl` pin for these: npins stores the resolved
+`release-assets.githubusercontent.com` URL, whose signature expires after an hour, so
+any rebuild after a store GC fails with `curl: (22) ... 618`.
 
 ### After a Renovate PR arrives
 
