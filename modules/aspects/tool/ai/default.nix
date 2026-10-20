@@ -16,7 +16,12 @@ in
       ];
 
       homeManager =
-        { config, pkgs, lib, ... }:
+        {
+          config,
+          pkgs,
+          lib,
+          ...
+        }:
         let
           piWebAccess = pkgs.local.pi-web-access;
           context7Pi = pkgs.local.context7-pi;
@@ -80,9 +85,13 @@ in
           home.file."${config.programs.pi-coding-agent.configDir}/skills".source = skillsDir;
 
           # Pi does not support legacy SSE servers; pi-web-access handles those.
-          home.file."${config.programs.pi-coding-agent.configDir}/mcp.json".text = lib.mkDefault (builtins.toJSON {
-            mcpServers = lib.filterAttrs (_: server: (server.type or null) != "sse") config.programs.mcp.servers;
-          });
+          home.file."${config.programs.pi-coding-agent.configDir}/mcp.json".text = lib.mkDefault (
+            builtins.toJSON {
+              mcpServers = lib.mapAttrs (_: lib.filterAttrs (_: value: value != null)) (
+                lib.filterAttrs (_: server: (server.type or null) != "sse") config.programs.mcp.servers
+              );
+            }
+          );
 
           programs.mcp.enable = true;
 
@@ -225,7 +234,8 @@ in
                 ];
                 extensions = [ ".toml" ];
               };
-            } // config.piLspExtraServers;
+            }
+            // config.piLspExtraServers;
           };
         };
     };
