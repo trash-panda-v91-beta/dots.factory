@@ -79,9 +79,9 @@ in
           # Skills live in ~/.pi/agent/skills (copied from the repo tree).
           home.file."${config.programs.pi-coding-agent.configDir}/skills".source = skillsDir;
 
-          # mcp.json is PMB-only; pmb.nix overrides it per MCP server.
+          # Pi does not support legacy SSE servers; pi-web-access handles those.
           home.file."${config.programs.pi-coding-agent.configDir}/mcp.json".text = lib.mkDefault (builtins.toJSON {
-            mcpServers = { };
+            mcpServers = lib.filterAttrs (_: server: (server.type or null) != "sse") config.programs.mcp.servers;
           });
 
           programs.mcp.enable = true;
