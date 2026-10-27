@@ -34,6 +34,11 @@
           ...
         }:
         {
+          programs.pi-coding-agent.settings = {
+            defaultProvider = "neuralwatt";
+            defaultModel = "deepseek-v4.1-flash-flex";
+          };
+
           # Neuralwatt via the official recipe (models.json provider, not the
           # custom pi-neuralwatt extension). API key from env at runtime.
           home.file."${config.programs.pi-coding-agent.configDir}/models.json".source =
