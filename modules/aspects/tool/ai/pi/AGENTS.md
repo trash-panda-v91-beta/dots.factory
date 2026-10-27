@@ -41,6 +41,15 @@ Before constructing any path or assuming which dotfiles repo / vault is present,
 Mostly Nix (nix-darwin, home-manager, nixvim) and TypeScript. Check the project AGENTS.md for
 project-specific rules; if absent, ask.
 
+## security CLI - hard constraint
+
+Never run `security` CLI commands. This includes any invocation of `/usr/bin/security`
+or the `security` shell built-in - e.g. `security find-generic-password`,
+`security delete-generic-password`, `security find-internet-password`, `security dump-keychain`,
+or any other subcommand. Do not use them to investigate stale keychain items, rotate
+credentials, locate tokens, or for any other purpose. If a task seems to require them,
+stop and ask the user to run the command manually.
+
 ## Dashes - hard constraint
 
 Every artifact you produce - chat output, file contents, code comments, docstrings, commit
