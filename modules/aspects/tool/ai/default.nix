@@ -72,6 +72,7 @@ in
                 "${piNvim}/extension.ts"
                 "${config.programs.pi-coding-agent.configDir}/extensions/herdr-agent-state.ts"
                 "${config.programs.pi-coding-agent.configDir}/extensions/jetpack-footer.ts"
+                "${config.programs.pi-coding-agent.configDir}/extensions/security-command-guard.ts"
               ];
               skills = [
                 "${piWebAccess}/skills"
@@ -100,6 +101,9 @@ in
 
           home.file."${config.programs.pi-coding-agent.configDir}/extensions/jetpack-footer.ts".source =
             ./pi/extensions/jetpack-footer.ts;
+
+          home.file."${config.programs.pi-coding-agent.configDir}/extensions/security-command-guard.ts".source =
+            ./pi/extensions/security-command-guard.ts;
 
           home.file."${config.programs.pi-coding-agent.configDir}/pi-lsp.json".text = builtins.toJSON {
             servers = {
