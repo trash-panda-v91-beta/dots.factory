@@ -69,7 +69,7 @@ in
                 "${context7Pi}/context7.js"
                 "${piLsp}/pi-lsp.js"
                 "${ponytailPi}/index.js"
-                "${piNvim}/extension.ts"
+                "${piNvim}/index.ts"
                 "${config.programs.pi-coding-agent.configDir}/extensions/herdr-agent-state.ts"
                 "${config.programs.pi-coding-agent.configDir}/extensions/jetpack-footer.ts"
                 "${config.programs.pi-coding-agent.configDir}/extensions/security-command-guard.ts"
