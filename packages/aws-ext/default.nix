@@ -1,13 +1,19 @@
-{ buildNpmPackage, importNpmLock, fetchFromGitHub }:
+{
+  buildNpmPackage,
+  importNpmLock,
+  fetchFromGitHub,
+}:
 buildNpmPackage {
   name = "aws";
-  src = fetchFromGitHub {
-    owner = "raycast";
-    repo = "extensions";
-    rev = "c33bf4cb4b9ad70c2b93432ee713ffb7486ed331";
-    hash = "sha256-4KfzNYhi+kD903iq8zfOz+PpdqSZCUudX90NthlmIpA=";
-    sparseCheckout = [ "/extensions/amazon-aws" ];
-  } + "/extensions/amazon-aws";
+  src =
+    fetchFromGitHub {
+      owner = "raycast";
+      repo = "extensions";
+      rev = "e0511c9b16807959defd661f91c435745b1342c9";
+      hash = "sha256-CUfqboGTdlUd86o4X9stIpvqg8KEtyPECL8FnSEnrt8=";
+      sparseCheckout = [ "/extensions/amazon-aws" ];
+    }
+    + "/extensions/amazon-aws";
   inherit (importNpmLock) npmConfigHook;
   npmDeps = importNpmLock { npmRoot = ./.; };
   postPatch = ''

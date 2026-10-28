@@ -85,10 +85,10 @@
       "version_upper_bound": null,
       "release_prefix": null,
       "submodules": false,
-      "version": "v0.41.0",
-      "revision": "e0bd758ac4c03275225c784fdcb03fb8899a9128",
-      "url": "https://api.github.com/repos/nicobailon/pi-web-access/tarball/refs/tags/v0.41.0",
-      "hash": "sha256-rO7rj3RVS/79cUpWUZCXktaxJbjLO4QDPezRTn+H120="
+      "version": "v0.45.0",
+      "revision": "759b4fcb99663facbdde2babfba995c40fa99f2c",
+      "url": "https://api.github.com/repos/nicobailon/pi-web-access/tarball/refs/tags/v0.45.0",
+      "hash": "sha256-0ddDs0lkH1AuMWIBcoIu7QAv13ZU6SnymRyOeJgg6ao="
     },
     "ponytail": {
       "type": "GitRelease",
@@ -101,10 +101,10 @@
       "version_upper_bound": null,
       "release_prefix": null,
       "submodules": false,
-      "version": "v5.2.0",
-      "revision": "2961b52fc1fe6a5a87c7a959a79512e5c2f3ffe5",
-      "url": "https://api.github.com/repos/DietrichGebert/ponytail/tarball/refs/tags/v5.2.0",
-      "hash": "sha256-3GopEvTySUvo0ghGz4CF6xbN7x3kbB/IHEY7Dwr4dls="
+      "version": "v5.3.2",
+      "revision": "16352ac229eb08a9598dcae48fe9f2b342567d86",
+      "url": "https://api.github.com/repos/DietrichGebert/ponytail/tarball/refs/tags/v5.3.2",
+      "hash": "sha256-IJlhfkdXI6pMZZCZO7XBRg88LBiNfzc5Gnm4ofGybL8="
     },
     "tiny-code-action-nvim": {
       "type": "Git",
