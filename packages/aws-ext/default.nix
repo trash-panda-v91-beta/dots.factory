@@ -9,8 +9,8 @@ buildNpmPackage {
     fetchFromGitHub {
       owner = "raycast";
       repo = "extensions";
-      rev = "e0511c9b16807959defd661f91c435745b1342c9";
-      hash = "sha256-CUfqboGTdlUd86o4X9stIpvqg8KEtyPECL8FnSEnrt8=";
+      rev = "568a3b23c434ecdc48788496a7daa865d49cebe7";
+      hash = "sha256-9f5q3ZViBSBAjTi4ufysxPu5tHMlrKHySnpfFbO6JWE=";
       sparseCheckout = [ "/extensions/amazon-aws" ];
     }
     + "/extensions/amazon-aws";
