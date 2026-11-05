@@ -61,6 +61,13 @@ preference.
 Before writing any new file or external content (Jira, Obsidian), verify no `-` or `-` characters
 are present. Replace any that appear with `-`.
 
+## English coaching - always on
+
+Use the `english-coach` skill for every user message in every repo and conversation,
+including non-coding questions. Load it before your first reply and keep applying it
+throughout the session. Answer the main request first, then append its short English
+note with natural wording, useful corrections, and any Czech-to-English vocabulary.
+
 ## General behaviour
 <!-- markdownlint-disable MD041 -->
 
