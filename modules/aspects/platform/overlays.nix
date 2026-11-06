@@ -29,6 +29,18 @@ in
             sourceRoot = "Obsidian ${old.version}-universal";
           });
 
+          # shortcut: pins 1Password at 8.12.44 while nixpkgs still ships
+          # 8.12.42; the MAS 1Password for Safari extension (8.12.44) has
+          # already migrated the shared data dir, so the frozen app refuses
+          # to start. Remove once nixpkgs ships >= 8.12.44.
+          _1password-gui = prev._1password-gui.overrideAttrs (old: {
+            version = "8.12.44";
+            src = prev.fetchurl {
+              url = "https://downloads.1password.com/mac/1Password-8.12.44-aarch64.zip";
+              hash = "sha256-mySxRkv0N4DwThr6+LB0LyFjypTbiwYgBZ56BaJJj6E=";
+            };
+          });
+
           local = {
             herdr-ext = prev.callPackage "${pkgsDir}/herdr" { };
             misdr-ext = prev.callPackage "${pkgsDir}/misdr" { };

@@ -17,6 +17,12 @@
     homeManager =
       { pkgs, config, ... }:
       {
+        # The MAS 1Password for Safari extension shares its data dir with the
+        # nix-pinned main app; a self-updated extension migrates the data and
+        # the frozen app refuses to start. This App Store toggle keeps the
+        # extension at the version the app pin was bumped to.
+        home.activation.freezeAppStoreAutoUpdate = "/usr/bin/defaults write com.apple.commerce AutoUpdate -bool NO";
+
         home.packages = [ pkgs._1password-cli ];
 
         programs.ssh = {
