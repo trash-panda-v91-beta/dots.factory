@@ -60,9 +60,9 @@ or a value pasted into chat. Use the `fnox` MCP server before anything else:
 - `mcp__fnox__request_secret` - if enabled, opens a local page for me to type a missing
   value. Use it instead of asking me to paste the secret.
 
-Missing secret with no MCP path? Give me the exact `fnox set` command to run. On PMB the
-`fnox-secrets` skill covers storing a new secret and keeping its 1Password copy in sync -
-load it before adding or rotating one.
+Missing secret with no MCP path? Give me the exact `fnox set` command to run. Load the
+`fnox-secrets` skill before adding or rotating a secret; on PMB `fnox-onepassword` adds
+the 1Password flow.
 
 ## Dashes - hard constraint
 
