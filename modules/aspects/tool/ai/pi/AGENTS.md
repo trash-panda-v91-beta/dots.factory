@@ -50,6 +50,20 @@ or any other subcommand. Do not use them to investigate stale keychain items, ro
 credentials, locate tokens, or for any other purpose. If a task seems to require them,
 stop and ask the user to run the command manually.
 
+## Secrets - fnox first
+
+Credentials go through fnox, never through `.env` files, `env | grep`, the macOS keychain,
+or a value pasted into chat. Use the `fnox` MCP server before anything else:
+
+- `mcp__fnox__exec` - run a command with secrets injected; output comes back redacted.
+- `mcp__fnox__get_secret` - only when the value itself is needed. Never print it.
+- `mcp__fnox__request_secret` - if enabled, opens a local page for me to type a missing
+  value. Use it instead of asking me to paste the secret.
+
+Missing secret with no MCP path? Give me the exact `fnox set` command to run. Load the
+`fnox-secrets` skill before adding or rotating a secret; on PMB `fnox-onepassword` adds
+the 1Password flow.
+
 ## Dashes - hard constraint
 
 Every artifact you produce - chat output, file contents, code comments, docstrings, commit

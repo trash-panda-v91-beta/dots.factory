@@ -36,6 +36,11 @@ in
                 type = lib.types.attrsOf lib.types.anything;
                 default = { };
               };
+              options.piExtraMcpServers = lib.mkOption {
+                type = lib.types.attrsOf lib.types.anything;
+                default = { };
+                description = "MCP servers for pi only, merged over programs.mcp.servers.";
+              };
             }
           ];
           home.sessionVariables.CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC = 1;
@@ -89,12 +94,23 @@ in
           home.file."${config.programs.pi-coding-agent.configDir}/mcp.json".text = lib.mkDefault (
             builtins.toJSON {
               mcpServers = lib.mapAttrs (_: lib.filterAttrs (_: value: value != null)) (
-                lib.filterAttrs (_: server: (server.type or null) != "sse") config.programs.mcp.servers
+                lib.filterAttrs (_: server: (server.type or null) != "sse") (
+                  config.programs.mcp.servers // config.piExtraMcpServers
+                )
               );
             }
           );
 
           programs.mcp.enable = true;
+
+          # The mise shim tracks the fnox version pinned in dev-tools.nix. Agents
+          # start it in the project dir, so a local fnox.toml wins.
+          programs.mcp.servers.fnox = {
+            command = "${config.home.homeDirectory}/.local/share/mise/shims/fnox";
+            args = [ "mcp" ];
+            description = "Secrets via fnox: run a command with secrets injected, read or request one secret.";
+            exposure = "direct";
+          };
 
           home.file."${config.programs.pi-coding-agent.configDir}/extensions/herdr-agent-state.ts".source =
             pkgs.herdr.src + "/src/integration/assets/pi/herdr-agent-state.ts";
