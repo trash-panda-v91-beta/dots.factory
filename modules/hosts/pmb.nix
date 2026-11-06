@@ -37,12 +37,12 @@
           programs.pi-coding-agent.settings = {
             defaultProvider = "neuralwatt";
             defaultModel = "deepseek-v4.1-flash-flex";
+            skills = lib.mkAfter [ ./pmb/skills ];
           };
 
           # Neuralwatt via the official recipe (models.json provider, not the
           # custom pi-neuralwatt extension). API key from env at runtime.
-          home.file."${config.programs.pi-coding-agent.configDir}/models.json".source =
-            ./pmb/models.json;
+          home.file."${config.programs.pi-coding-agent.configDir}/models.json".source = ./pmb/models.json;
 
           # pi-web-access reads its config from ~/.pi/web-search.json (not configDir).
           home.file.".pi/web-search.json".text = builtins.toJSON {
@@ -63,27 +63,25 @@
 
           # PMB-only MCP servers, added one by one. Shared litellm wiring lives
           # here once; each new server is one line. Bearer token from env at runtime.
-          home.file."${config.programs.pi-coding-agent.configDir}/mcp.json".text =
+          piExtraMcpServers =
             let
               litellm = name: {
                 url = "https://litellm.nebular-grid.space/${name}/mcp";
                 headers.Authorization = "Bearer \${LITELLM_API_KEY}";
               };
             in
-            builtins.toJSON {
-              mcpServers = {
-                actual_mcp = litellm "actual_mcp";
-                unifi_network_mcp = litellm "unifi_network_mcp";
-                grafana_mcp = litellm "grafana_mcp";
-                context7 = litellm "context7";
-                ha_mcp = litellm "ha_mcp";
-                searxng_mcp = litellm "searxng_mcp";
-                obsidian_mcp = litellm "obsidian_mcp";
-                donetick_mcp = litellm "donetick_mcp";
-                mealie_mcp = litellm "mealie_mcp";
-                truenas_mcp = litellm "truenas_mcp";
-                sparky_fitness = litellm "sparky_fitness";
-              };
+            {
+              actual_mcp = litellm "actual_mcp";
+              unifi_network_mcp = litellm "unifi_network_mcp";
+              grafana_mcp = litellm "grafana_mcp";
+              context7 = litellm "context7";
+              ha_mcp = litellm "ha_mcp";
+              searxng_mcp = litellm "searxng_mcp";
+              obsidian_mcp = litellm "obsidian_mcp";
+              donetick_mcp = litellm "donetick_mcp";
+              mealie_mcp = litellm "mealie_mcp";
+              truenas_mcp = litellm "truenas_mcp";
+              sparky_fitness = litellm "sparky_fitness";
             };
 
           programs.bun.enable = false;
