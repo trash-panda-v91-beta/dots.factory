@@ -10,7 +10,6 @@
     ];
 
     darwin = {
-      homebrew.masApps."1Password For Safari" = 1569813296;
       programs._1password-gui.enable = true;
     };
 
